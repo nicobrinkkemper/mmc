@@ -159,7 +159,7 @@ const App = () => {
           <About />
           <footer className="App-footer">
             <a
-              href="https://discord.gg/yqdgu2Z"
+              href="https://discord.gg/8mnW3XfZq9"
               rel="noopener noreferrer"
               target="_BLANK"
             >
