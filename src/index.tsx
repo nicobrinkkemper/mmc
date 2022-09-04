@@ -17,11 +17,7 @@ const AppJSX = (
     <AppWrapper />
   </React.StrictMode>
 );
-if (rootElement?.hasChildNodes()) {
-  hydrateRoot(rootElement, AppJSX);
-} else {
-  createRoot(rootElement!).render(AppJSX);
-}
+createRoot(rootElement!).render(AppJSX);
 
 if (isProduction) {
   TagManager.initialize(tagManagerArgs);

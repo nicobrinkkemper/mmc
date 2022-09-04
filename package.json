@@ -7,6 +7,7 @@
     "start": "npm-run-all csvtojson react:start",
     "serve": "serve build",
     "build": "npm-run-all csvtojson react:build",
+    "postbuild": "react-snap",
     "test": "npm-run-all csvtojson react:test",
     "react:test": "react-scripts test",
     "react:build": "react-scripts build",
@@ -103,5 +104,8 @@
     "react": "$react",
     "react-dom": "$react-dom",
     "@babel/runtime": "$@babel/runtime"
+  },
+  "dependencies": {
+    "react-snap": "^1.23.0"
   }
 }
