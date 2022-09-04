@@ -1,0 +1,7 @@
+version: "3.9" 
+services:
+  web:
+    container_name: ymm
+    build: .
+    ports:
+      - "8080:80"

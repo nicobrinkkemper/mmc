@@ -1,0 +1,104 @@
+.Batches .BatchCard{
+  flex-flow: row;
+  display: flex;
+}
+
+.Batches .BatchCard .batchNumber{
+    display: flex;
+    border-radius: 50%;
+    height:2.4375rem;
+    width:2.4375rem;
+    min-width:2.4375rem;
+    font-size: 2rem;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color:#F6F7F8;
+    background-color: #FACD00;
+    color:#F6F7F8;
+    margin:0 .875rem 0 0;
+    font-family: 'SuperMario', sans-serif;
+}
+.Batches .BatchCard.isNew .batchNumber {
+    background-color: #AF044A;
+}
+
+.Batches .BatchCard picture {
+    display: flex;
+}
+.Batches .BatchCard picture img {
+    border-radius: 0.25rem;
+}
+.Batches .BatchCard .releaseInfo{
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex: 1 0 0;
+    justify-content: flex-end;
+}
+@media only screen and (max-width: 370px) {
+    .Batches .BatchCard .tags {
+        flex-flow: column;
+    }
+ }
+.Batches .BatchCard .releaseDay {
+    font-size:1rem;
+    line-height: 1.125rem;
+}
+.Batches .BatchCard .batchLevelAmount{
+    font-size:.875rem;
+    line-height: 1rem;
+}
+.Batches .BatchCard.isUnreleased .batchNumber{
+    background-color: #194670;
+    color:inherit
+}
+.Batches .BatchCard .new, .BatchCard.isUnreleased .unreleased, .BatchCard.isFinal .final {
+    line-height: .8125rem;
+    border-radius: .25rem;
+    font-size:.75rem;
+    height:1.375rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center; 
+    padding:.25rem .5rem;
+    margin:.3rem
+}
+.Batches .BatchCard.isNew .new{
+    background-color: #AF044A;
+    color:#F6F7F8;
+}
+.Batches .BatchCard  .final{
+    background-color: black;
+}
+.Batches .BatchCard .unreleased{
+    background-color: black;
+}
+
+.Batches .BatchCard .tags {
+    padding-top: 0.2rem;
+    padding-right: 0.2rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+.Batches .Card.disabled{
+    background:#FFF;
+    opacity: .5;
+}
+.Batches .Card.disabled + .Card.disabled{
+    opacity: .3;
+}
+.Batches .Card.disabled + .Card.disabled + .Card.disabled{
+    opacity: .1;
+}
+.Batches .Card.disabled + .Card.disabled + .Card.disabled + .Card.disabled{
+    display:none;
+}
+
+@media only screen and (max-width: 370px) {
+    .Batches .BatchCard picture {
+      display: none;
+    }
+  }
