@@ -11,7 +11,7 @@ const NotFound = ({error}:{error:string}) => {
         <p>This page was not found, sorry! Jank can happen sometimes.</p>
         <p>The error message for the web developer: {error}</p>
         <p>
-          <Button primary={true} icon="arrow-right" to="/levels">
+          <Button primary={true} icon="arrow-right" to="/levels/">
             To the levels
           </Button>
         </p>

@@ -42,7 +42,7 @@ const CreditsContent = () => {
                 <h2>Website</h2>
                 <dl>
                     <dt>Web Developer</dt>
-                    <dd><a href="https://twitter.com/bbmariomaker2" target="_BLANK" rel="noreferrer">General BB / Geitje</a></dd>
+                    <dd><a href="https://twitter.com/bbmariomaker2" target="_BLANK" rel="noreferrer" className="highlight">General BB / Geitje</a></dd>
 
                     <dt>UX Design</dt>
                     <dd>Birdhare</dd>

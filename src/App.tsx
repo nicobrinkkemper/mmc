@@ -42,7 +42,7 @@ const CreditPage = () => (
   <>
     <header className="App-header">
       <div className="toolbar big">
-        <Logo logo="logo" />
+        <Logo logo="logo_special" />
         <AboutButton />
       </div>
       <BackButton />
@@ -116,7 +116,7 @@ const HomePage = () => (
   <>
     <header className="App-header">
       <div className="toolbar big">
-        <Logo />
+        <Logo logo="logo_special" />
         <AboutButton />
       </div>
     </header>
@@ -172,7 +172,7 @@ const App = () => {
             >
               Youtube
             </a>
-            <Link to="/credits">Credits</Link>
+            <Link to="/credits/">Credits</Link>
           </footer>
         </ErrorBoundary>
       </div>

@@ -1,6 +1,6 @@
-import { ReportHandler } from 'web-vitals';
+import { CLSReportCallback } from 'web-vitals';
 
-const reportWebVitals = (onPerfEntry?: ReportHandler) => {
+const reportWebVitals = (onPerfEntry?: CLSReportCallback) => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
     import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
       getCLS(onPerfEntry);
@@ -12,4 +12,4 @@ const reportWebVitals = (onPerfEntry?: ReportHandler) => {
   }
 };
 
-export default reportWebVitals;
+export { reportWebVitals };

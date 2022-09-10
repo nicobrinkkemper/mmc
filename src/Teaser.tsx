@@ -9,7 +9,7 @@ const trailerYtId = "3FtgBWY0XVY";
 const Completionist = () => {
   return (
     <span style={{ display: "flex", margin: "1rem 0", color: "#000" }}>
-      <Button primary={true} icon="arrow-right" to="/levels">
+      <Button primary={true} icon="arrow-right" to="/levels/">
         To the levels
       </Button>
     </span>

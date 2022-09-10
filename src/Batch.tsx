@@ -2,7 +2,7 @@ import "./Batch.css";
 import Card from "Card";
 import { useLevelData, releaseDays } from "useLevelData";
 import { useParams } from "react-router-dom";
-import { lowerCase } from "lodash";
+import { lowerCase, snakeCase } from "lodash";
 import Stars from "./Stars";
 import Seo from "./Seo";
 import { DEFAULT_TITLE } from "./constants";
@@ -16,13 +16,12 @@ const Batch = () => {
   const isNew = newestBatch === Number(batchNumber) - 1;
   const batchLevels = levels(Number(batchNumber));
   const isUnreleased = releasedBatches.indexOf(releaseDay) === -1;
-  batchLevels.map(({ levelName }) => levelName).join(", ");
   if (isNew) classes.push("isNew");
   if (isUnreleased) return <span>...</span>;
-  const levelNames = batchLevels.map(({ levelName }) => levelName);
+  const levelNames = humanReadableArray(batchLevels.map(({ levelName }) => levelName));
   return (
     <>
-      <div className="Batch">
+      <div className={classes.join(' ')}>
         <h1>
           {new Intl.DateTimeFormat("en-US", {
             month: "long",
@@ -32,7 +31,7 @@ const Batch = () => {
         {batchLevels.map((level, i) => {
           const tags = level.tags.split(",");
           return (
-            <Card key={String(i)} to={`/level/${batchNumber}/${level.order}`}>
+            <Card key={String(i)} to={`/level/${batchNumber}/${level.order}/`}>
               <div className={"LevelCard"}>
                 <LevelImage levelName={level.levelName} />
                 <div className="info">
@@ -50,7 +49,7 @@ const Batch = () => {
                   <div className="levelInfo">
                     <div className={"tags"}>
                       {tags.map((tag, i) => (
-                        <span className="tag" key={i.toString()}>
+                        <span className={`tag ${snakeCase(tag)}`} key={`${level.batchIndex}${tag}`}>
                           {tag}
                         </span>
                       ))}
@@ -66,9 +65,7 @@ const Batch = () => {
                 </div>
               </div>
               <Seo
-                description={`Week ${batchNumber} of 7MMC has started! In this week's trailer we show off eight new levels: ${humanReadableArray(
-                  levelNames
-                )}. Celebrating Six years of MarioMaker! Week ${batchNumber} released at ${releaseDay.toDateString()}.`}
+                description={`Week ${batchNumber} of 7MMC has started! In this week's trailer we show off eight new levels: ${levelNames}. Celebrating Six years of MarioMaker! Week ${batchNumber} released at ${releaseDay.toDateString()}.`}
                 title={`${DEFAULT_TITLE} | Week ${batchNumber}`}
               />
             </Card>

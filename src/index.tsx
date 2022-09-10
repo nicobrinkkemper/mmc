@@ -1,15 +1,10 @@
-import "./index.css";
 import React from "react";
-import "./index.css";
-import reportWebVitals from "./reportWebVitals";
-import { createRoot, hydrateRoot } from 'react-dom/client';
-import TagManager from "react-gtm-module";
-import { isProduction } from "./environment";
+import { reportWebVitals } from "./reportWebVitals";
+import { createRoot } from 'react-dom/client';
+import { PRODUCTION } from "./constants";
 import { AppWrapper } from "./AppWrapper";
-
-const tagManagerArgs = {
-  gtmId: "G-J20RKJ4B98"
-};
+import * as TagManager from "TagManager";
+import "./index.css";
 
 const rootElement = document.getElementById("root");
 const AppJSX = (
@@ -19,7 +14,7 @@ const AppJSX = (
 );
 createRoot(rootElement!).render(AppJSX);
 
-if (isProduction) {
-  TagManager.initialize(tagManagerArgs);
+if (PRODUCTION) {
   reportWebVitals();
+  TagManager.initialize();
 }

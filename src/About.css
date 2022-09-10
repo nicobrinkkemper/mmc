@@ -19,6 +19,7 @@
   right: 1.95rem;
   top: 1.25rem;
   height: 0.875rem;
+  z-index: 1;
   width: 0.875rem;
   cursor: pointer;
   background: none;
@@ -35,7 +36,6 @@
   max-height: calc(100% - 3rem);
   width: calc(100% - 3rem);
   box-shadow: 0px 0.25rem 0.25rem rgba(46, 47, 48, 0.1);
-  border-radius: 0.25rem;
 }
 .About h1 {
   font-size: 1.5rem;

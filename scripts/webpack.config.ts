@@ -17,7 +17,7 @@ const configLevels: webpack.Configuration = {
     filename: "levelImages.bundle.js"
   },
   resolve: {
-    extensions: [".png"]
+    extensions: [".png",".jpg"]
   },
   module: {
     rules: [
@@ -55,7 +55,7 @@ const configMakers: webpack.Configuration = {
     filename: "makerImages.bundle.js"
   },
   resolve: {
-    extensions: [".png"]
+    extensions: [".png",".jpg"]
   },
   module: {
     rules: [

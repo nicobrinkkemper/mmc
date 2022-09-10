@@ -1,5 +1,4 @@
 import "./Batches.css";
-import React from "react";
 import Card from "./Card";
 import { useLevelData, releaseDays } from "./useLevelData";
 import Seo from "./Seo";
@@ -20,7 +19,7 @@ function Batches() {
         if (isUnreleased) classes.push("isUnreleased");
         if (isFinalWeek) classes.push("isFinal");
         return (
-          <Card key={String(i)} disabled={isUnreleased} to={`/levels/${i + 1}`}>
+          <Card key={String(i)} disabled={isUnreleased} to={`/levels/${i + 1}/`}>
             <div className={classes.join(" ")}>
               <span className="batchNumber">{i + 1}</span>
               <div className="releaseInfo">
@@ -34,7 +33,7 @@ function Batches() {
                 {isUnreleased ? (
                   <span className="unreleased">Unreleased</span>
                 ) : null}
-                {isFinalWeek ? (
+                {isFinalWeek && !isUnreleased ? (
                   <span className="final">Lost Levels</span>
                 ) : null}
               </div>

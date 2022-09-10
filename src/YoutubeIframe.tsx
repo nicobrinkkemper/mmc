@@ -54,14 +54,16 @@ const YouTubeIframe = (props: Props): JSX.Element => {
     }, [command]);
 
     return (
-        <iframe
-            title={videoId}
-            ref={iframeVideoRef}
-            frameBorder='0'
-            allowFullScreen={true}
-            allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
-            src={`https://www.youtube.com/embed/${videoId}?modestbranding=1&enablejsapi=1&controls=1&rel=0&loop=1&listType=playlist`}
-        />
+        <div className="youtubeContainer">
+            <iframe
+                title={videoId}
+                ref={iframeVideoRef}
+                frameBorder='0'
+                allowFullScreen={true}
+                allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
+                src={`https://www.youtube.com/embed/${videoId}?modestbranding=1&enablejsapi=1&controls=1&rel=0&loop=1&listType=playlist`}
+            />
+        </div>
     );
 };
 

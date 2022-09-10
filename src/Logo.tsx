@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import logo1x from "./assets/logo_simple1x.webp";
 import logo2x from "./assets/logo_simple2x.webp";
 import logo3x from "./assets/logo_simple3x.webp";
-import simpleLogo1x from "./assets/logo_special1x.webp";
-import simpleLogo2x from "./assets/logo_special2x.webp";
-import simpleLogo3x from "./assets/logo_special3x.webp";
+import specialLogo1x from "./assets/logo_special1x.webp";
+import specialLogo2x from "./assets/logo_special2x.webp";
+import specialLogo3x from "./assets/logo_special3x.webp";
 const logos = {
   logo: (
     <picture className="Picture">
@@ -15,8 +15,8 @@ const logos = {
   ),
   logo_special: (
     <picture className="Picture">
-      <source srcSet={`${simpleLogo1x} 272w,${simpleLogo2x} 528w, ${simpleLogo3x} 1096w`} />
-      <img src={simpleLogo1x} className="Picture-img" alt="logo" width="100%" height='auto' />
+      <source srcSet={`${specialLogo1x} 272w,${specialLogo2x} 528w, ${specialLogo3x} 1096w`} />
+      <img src={specialLogo1x} className="Picture-img" alt="logo" width="100%" height='auto' />
     </picture>
   )
 };

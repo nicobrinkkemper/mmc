@@ -1,5 +1,6 @@
+import { PRODUCTION } from "./constants";
 import memoizeOne from "memoize-one";
-import data from "./data/5YMM Master Spreadsheet - Sheet1.json";
+import data from "./data/MasterSpreadsheet.json";
 
 /**
 
@@ -17,7 +18,7 @@ const addDays = (date:Date, days:number) => {
 }
 const dateFirst=(a:Date, b:Date) => Date.now() - a.getTime() - (Date.now() - b.getTime());
 
-const startDateString = "10 Sep 2022 15:00:00 GMT";
+const startDateString = PRODUCTION ? "10 Sep 2022 15:00:00 GMT" : "10 Sep 2022 00:00:00 GMT";
 export const startDate = new Date(Date.parse(startDateString));
 export const releaseDays = generateFromStartDate(startDate);
 // add any field here from the csv headers to make it a valid level value
@@ -58,6 +59,8 @@ enum csvHeaders {
   "progress",
   "difficultyName",
   "gameStyle",
+  "Genre",
+  "Music?",
   "mainTheme",
   "subTheme",
   "clearCondition",
@@ -67,8 +70,7 @@ enum csvHeaders {
   "difficulty",
   "tags",
   "nationality",
-  "levelCode",
-  "5YMMor7MMC"
+  "levelCode"
 }
 const createLevel = (levelRow: string[], index?: number, arr?: string[][]) => ({
   order: Number(levelRow[csvHeaders["order"]]),

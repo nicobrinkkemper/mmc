@@ -6,6 +6,8 @@
 /public/levelImages/*.webp
 /.pnp
 .pnp.js
+scripts/.*
+scripts/.oauthkey.json
 
 # testing
 /coverage

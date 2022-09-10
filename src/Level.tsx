@@ -93,13 +93,13 @@ const Level = () => {
           <Button
             icon="arrow-left"
             iconPosition="left"
-            to={`/level/${Number(batchNumber)}/${Number(order) - 1}`}
+            to={`/level/${Number(batchNumber)}/${Number(order) - 1}/`}
           ></Button>
         ) : null}
         {hasNextLevel ? (
           <Button
             icon="arrow-right"
-            to={`/level/${Number(batchNumber)}/${Number(order) + 1}`}
+            to={`/level/${Number(batchNumber)}/${Number(order) + 1}/`}
           >
             Next level
           </Button>

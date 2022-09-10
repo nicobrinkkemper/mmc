@@ -1,15 +1,7 @@
 import { useParams } from "react-router";
 import { YouTubeIframe } from "./YoutubeIframe";
 export const weekTrailers = [
-  "b26QvbP4MUI",
-  "-f83uRDCZpA",
-  "ouKbaTu5YKc",
-  "13Sb6V8ydPM",
-  "G4mhHeXk3k0",
-  "lANqCC2xPoo",
-  "rvBtTv9aeo0",
-  "oR_7lE_Zx2c",
-  "VLiyJwx5T3E"
+  "PbKK8_liEqA"
 ];
 
 const WeekTrailer = () => {
@@ -20,7 +12,7 @@ const WeekTrailer = () => {
     return (
       <div className="youtubeFlexDisable">
         <YouTubeIframe
-          videoId={weekTrailer || "iY6Qj6L_oF0"}
+          videoId={weekTrailer || "3FtgBWY0XVY"}
         />
       </div>
     );

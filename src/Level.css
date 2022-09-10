@@ -1,6 +1,6 @@
 .Level {
-  display: flex;
-  flex-flow: column;
+  display: grid;
+  gap:1rem;
 }
 
 .Level .Card {
@@ -12,6 +12,7 @@
   align-self: center;
   justify-self: center;
   height:  50vw;
+  width:100%;
 }
 @media only screen and (min-width: 620px) {
   .Level .levelPicture {
@@ -30,14 +31,14 @@
 .Level .makerPicture {
   align-self: center;
   justify-self: center;
-  height: 6.125rem;
-  width: 6.125rem;
+  height: 10rem;
+  width: 10rem;
 }
 .Level .makerImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0.25rem;
+  border-radius: 0.01rem;
 }
 .Level .loading .makerImg {
   opacity: 0.5;
@@ -58,6 +59,7 @@
 .Level .levelName {
   font-size: 1.25rem;
   line-height: 1.5rem;
+  font-weight: bolder;
 }
 .Level .makerInfo {
   display: flex;
@@ -72,10 +74,15 @@
   font-size: 1rem;
   flex: 1 0 0;
   margin-top: 0.5rem;
+  align-self: center;
+}
+.Level .makerName,
+.Level .stars,
+.Level .makerPicture{
+  mix-blend-mode: multiply;
 }
 .Level .makerId {
   font-size: 0.5rem;
-  font-family: "latoregular", Arial, Helvetica, sans-serif;
   display: block;
 }
 .Level .nationality {
@@ -83,13 +90,14 @@
 }
 .Level .levelCode {
   font-size: 1rem;
-  background: #af044a;
-  font-family: "latoregular", Arial, Helvetica, sans-serif;
+  background: rgb(255 0 229 / 30%);
   font-weight: 900;
   border-radius: 0px 0px 0.25rem 0.25rem;
-  color: white;
   padding: 1rem;
   margin-bottom: 1rem;
+  mix-blend-mode: color-burn;
+  filter: invert(100%);
+  color: white;
 }
 
 .Level .info {
@@ -109,6 +117,8 @@
 }
 
 .Level .tags {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-self: flex-end;
   padding-top: 0.2rem;
   padding-right: 0.2rem;

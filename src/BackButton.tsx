@@ -24,7 +24,7 @@ const BackButton = () => {
             <Button
                 icon="arrow-left-inverted"
                 iconPosition="left"
-                to={`/levels/${batchNumber}`}
+                to={`/levels/${batchNumber}/`}
                 inverted={true}
                 classList={['backTo']}
             >
@@ -36,7 +36,7 @@ const BackButton = () => {
             <Button
                 icon="arrow-left-inverted"
                 iconPosition="left"
-                to="/levels"
+                to="/levels/"
                 inverted={true}
                 classList={['backTo']}
             >

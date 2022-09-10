@@ -1,23 +1,40 @@
 import { PropsWithChildren } from "react";
 import { Link, To } from "react-router-dom";
-import carcTexture1x from "./assets/card_texture1x.webp";
-import carcTexture2x from "./assets/card_texture2x.webp";
-import carcTexture3x from "./assets/card_texture3x.webp";
+import cardTexture1x from "./assets/card_texture1x.webp";
+import junior1x from "./assets/junior1x.webp";
+import junior2x from "./assets/junior2x.webp";
+import junior3x from "./assets/junior3x.webp";
+import map1x from "./assets/map1x.webp";
+import map2x from "./assets/map2x.webp";
+import map3x from "./assets/map3x.webp";
 
 const illustrations = {
-  cake_mario: (
+  junior: (
     <picture className="Illustration-picture">
       <source
-        srcSet={`${carcTexture1x} 140w, ${carcTexture2x} 280w, ${carcTexture3x} 560w`}
+        srcSet={`${junior1x} 140w, ${junior2x} 280w, ${junior3x} 560w`}
       />
       <img
-        src={carcTexture1x}
+        src={cardTexture1x}
         className="Illustration-img"
-        alt="Mario wants CAKE!"
+        alt="Drawing by Lektor Junior!"
         width="100%"
       />
     </picture>
   ),
+  map : (
+    <picture className="Illustration-picture">
+      <source
+        srcSet={`${map1x} 140w, ${map2x} 280w, ${map3x} 560w`}
+      />
+      <img
+        src={cardTexture1x}
+        className="Illustration-img"
+        alt="A map!"
+        width="100%"
+      />
+    </picture>
+  )
 };
 
 type allowedIllustration = keyof typeof illustrations;

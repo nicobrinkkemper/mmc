@@ -1,8 +1,8 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
     "cSpell.ignorePaths": [
-        "./src/data/5YMM Master Spreadsheet - Sheet1.json",
-        "./src/data/5YMM Master Spreadsheet - Sheet1.csv",
+        "./src/data/MasterSpreadsheet.json",
+        "./src/data/MasterSpreadsheet.csv",
         "./package.json",
         "./package-lock.json"
     ],

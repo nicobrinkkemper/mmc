@@ -23,7 +23,6 @@
   -ms-justify-content: column;
   flex-direction: column;
   -ms-flex-direction: column;
-  text-align: center;
   background-image: url("assets/gridpaper_special1x.webp");
   background-size: 512px 512px;
   background-color: #FFF;

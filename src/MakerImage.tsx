@@ -6,7 +6,7 @@ import { PICTURE_PLACEHOLDER } from "./constants";
 const MakerImage = ({ makerName }: { makerName: string }) => {
   const s = makerPath(makerName, 250);
   const m = makerPath(makerName, 500);
-  const Fallback = <img src={PICTURE_PLACEHOLDER} className={"makerImg loading"} alt="loading" />
+  const Fallback = <img src={PICTURE_PLACEHOLDER} className={"makerImg loading"} alt={`Maker Mii: ${makerName}`} />
   return (
         <picture className={`makerPicture`}>
           <Suspense fallback={Fallback}>

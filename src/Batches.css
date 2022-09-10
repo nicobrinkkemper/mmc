@@ -1,3 +1,7 @@
+.Batches{
+    gap: .875rem;
+    display: grid;
+}
 .Batches .BatchCard{
   flex-flow: row;
   display: flex;
@@ -13,21 +17,19 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    color:#F6F7F8;
     background-color: #FACD00;
-    color:#F6F7F8;
+    border:1px solid rgba(0,0,0,.3);
+    color:#111;
     margin:0 .875rem 0 0;
-    font-family: 'SuperMario', sans-serif;
-}
-.Batches .BatchCard.isNew .batchNumber {
-    background-color: #AF044A;
+    font-family: 'HeaderMarker', sans-serif;
+    mix-blend-mode: color-burn;
 }
 
 .Batches .BatchCard picture {
     display: flex;
 }
 .Batches .BatchCard picture img {
-    border-radius: 0.25rem;
+    border-radius: 0.01rem;
 }
 .Batches .BatchCard .releaseInfo{
     display: flex;
@@ -35,7 +37,6 @@
     align-items: flex-start;
     justify-content: space-between;
     flex: 1 0 0;
-    justify-content: flex-end;
 }
 @media only screen and (max-width: 370px) {
     .Batches .BatchCard .tags {
@@ -45,56 +46,45 @@
 .Batches .BatchCard .releaseDay {
     font-size:1rem;
     line-height: 1.125rem;
+    font-family: "HeaderMarker";
 }
 .Batches .BatchCard .batchLevelAmount{
     font-size:.875rem;
     line-height: 1rem;
 }
 .Batches .BatchCard.isUnreleased .batchNumber{
-    background-color: #194670;
     color:inherit
 }
-.Batches .BatchCard .new, .BatchCard.isUnreleased .unreleased, .BatchCard.isFinal .final {
+.Batches .tags span {
     line-height: .8125rem;
-    border-radius: .25rem;
+    border-radius: 0.01rem;
     font-size:.75rem;
     height:1.375rem;
     display: inline-flex;
     justify-content: center;
     align-items: center; 
     padding:.25rem .5rem;
-    margin:.3rem
-}
-.Batches .BatchCard.isNew .new{
-    background-color: #AF044A;
-    color:#F6F7F8;
-}
-.Batches .BatchCard  .final{
-    background-color: black;
-}
-.Batches .BatchCard .unreleased{
-    background-color: black;
+    margin:0 .3rem;
+    font-weight: 900;
 }
 
 .Batches .BatchCard .tags {
     padding-top: 0.2rem;
-    padding-right: 0.2rem;
-    display: flex;
-    justify-content: space-between;
+    padding-right: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap:.3em;
   }
 
 .Batches .Card.disabled{
-    background:#FFF;
-    opacity: .5;
+    color: rgba(0,0,0,.3);
 }
-.Batches .Card.disabled + .Card.disabled{
-    opacity: .3;
+.Card.disabled + .Card.disabled {
+    margin-top: -1.5rem;
+    max-height: 6.25rem;
 }
-.Batches .Card.disabled + .Card.disabled + .Card.disabled{
-    opacity: .1;
-}
-.Batches .Card.disabled + .Card.disabled + .Card.disabled + .Card.disabled{
-    display:none;
+.Batches .Card.disabled .batchNumber {
+    filter: grayscale(90%);
 }
 
 @media only screen and (max-width: 370px) {
