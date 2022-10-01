@@ -2,7 +2,9 @@ import { useParams } from "react-router";
 import { YouTubeIframe } from "./YoutubeIframe";
 export const weekTrailers = [
   "PbKK8_liEqA",
-  "s5QguY9AAig"
+  "s5QguY9AAig",
+  "ZE8hAA6mi2Y",
+  "Ju_XQ1RKnU8"
 ];
 
 const WeekTrailer = () => {
