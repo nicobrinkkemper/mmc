@@ -65,7 +65,7 @@ const Batch = () => {
                 </div>
               </div>
               <Seo
-                description={`Week ${batchNumber} of 7MMC has started! In this week's trailer we show off eight new levels: ${levelNames}. Celebrating Six years of MarioMaker! Week ${batchNumber} released at ${releaseDay.toDateString()}.`}
+                description={`Week ${batchNumber} of 7MMC has started! In this week's trailer we show off eight new levels: ${levelNames}. Celebrating Seven years of Mario Maker! Week ${batchNumber} released at ${releaseDay.toDateString()}.`}
                 title={`${DEFAULT_TITLE} | Week ${batchNumber}`}
               />
             </Card>
