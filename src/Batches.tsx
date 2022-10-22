@@ -14,7 +14,7 @@ function Batches() {
         const isNew = levelData.newestBatch === i;
         const isUnreleased =
           levelData.releasedBatches.indexOf(releaseDay) === -1;
-        const isFinalWeek = releaseDays.indexOf(releaseDay) === releaseDays.length - 1;
+        const isFinalWeek = releaseDays.indexOf(releaseDay) === 5;
         if (isNew) classes.push("isNew");
         if (isUnreleased) classes.push("isUnreleased");
         if (isFinalWeek) classes.push("isFinal");
@@ -34,7 +34,7 @@ function Batches() {
                   <span className="unreleased">Unreleased</span>
                 ) : null}
                 {isFinalWeek && !isUnreleased ? (
-                  <span className="final">Lost Levels</span>
+                  <span className="final">Finale</span>
                 ) : null}
               </div>
             </div>

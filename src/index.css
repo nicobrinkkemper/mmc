@@ -42,6 +42,7 @@ a{
 }
 .tags span.new:before,
 .tags span.gimmick:before,
+.tags span.puzzle:before,
 .tags span.music:before  {
   background-image: url('./assets/highlight_cyan.svg');
 }

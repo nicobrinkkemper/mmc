@@ -54,6 +54,7 @@
   font-size: 0.75rem;
   align-self: flex-end;
   justify-self: flex-end;
+  min-width: 9rem;
 }
 
 .Batch .tags {

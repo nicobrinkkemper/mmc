@@ -17,6 +17,9 @@ writeStream
 papa.parse(file, {
   worker: true, // Don't bog down the main thread if its a big file
   complete: function (results) {
-    writeStream.end(JSON.stringify(results.data));
+    writeStream.end(JSON
+      .stringify(results.data)
+      // remove some junk at the end of the file
+    );
   },
 });

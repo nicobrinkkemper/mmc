@@ -5,7 +5,7 @@ import data from "./data/MasterSpreadsheet.json";
 /**
 
  */
-const generateFromStartDate = (starDataStr:Date, _amountOfDays: number)=>Array.from(Array(_amountOfDays).keys()).map((index)=>{
+const generateFromStartDate = (starDataStr:Date, _amountofWeeks: number)=>Array.from(Array(_amountofWeeks).keys()).map((index)=>{
   if (index === 0){
     return starDataStr;
   }
@@ -18,13 +18,22 @@ const addDays = (date:Date, days:number) => {
 }
 const dateFirst=(a:Date, b:Date) => Date.now() - a.getTime() - (Date.now() - b.getTime());
 
-const amountOfDays = 6;
+const amountofWeeks = 6;
 const startDateString = PRODUCTION ?
   "10 Sep 2022 15:00:00 GMT" // start date used on live website
   : "10 Sep 2022 00:00:00 GMT"; // start date used during development
-  
+
+
 export const startDate = new Date(Date.parse(startDateString));
-export const releaseDays = generateFromStartDate(startDate, amountOfDays);
+const _releaseDays = generateFromStartDate(startDate, amountofWeeks);
+export const releaseDays = [
+  _releaseDays[0],
+  _releaseDays[1],
+  _releaseDays[2],
+  _releaseDays[3],
+  _releaseDays[4],
+  addDays(_releaseDays[5], 1)
+];
 // add any field here from the csv headers to make it a valid level value
 export type levelRows = string[][];
 export type level = {
