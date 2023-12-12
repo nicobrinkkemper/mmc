@@ -1,23 +1,34 @@
-import path from 'node:path';
-import sharp from 'sharp';
-import sizeOf from 'image-size'
-const [
-  inputArg,
-  width = 1024
-] = process.argv.slice(2);
-const input = path.parse(inputArg);
-const newBaseName = input.name.replace('original_', '');
-const newPath = input.dir + '/' + newBaseName;
-const { width: originalWidth } = sizeOf(inputArg)
+import path from "node:path";
+import { readDirectory } from "./readDirectory.mjs";
+import { resizeImages } from "./resizeImages.mjs";
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const imagesDir = path.join(__dirname, "resizeImages");
+const { images } = await readDirectory(imagesDir);
 
-const getWidth = (divider) => Math.min(originalWidth, Math.round(width / divider))
+/**
+ * Throw any image into the "resizeImages" folder at the corresponding folder you want it to resize to.
+ */
+const getInfo = ({
+  // filePath,
+  // name,
+  // dirname,
+  // filenameWithoutExt,
+  // ext,
+  originalSize,
+  relativeInputPath,
+}) => {
+  const isPublic = relativeInputPath.includes("public");
+  const isSmall = originalSize.width < 500;
+  const isReallySmall = originalSize.width < 250;
+  if (isPublic) return [{ width: 500 }, { width: 250 }];
+  if (isReallySmall) return [{ width: originalSize.width }];
+  if (isSmall) return [{ width: originalSize.width }, { width: 250 }];
+  return [1, 2, 3].map((divider) => ({
+    width: Math.min(
+      originalSize.width,
+      Math.round(originalSize.width / divider)
+    ),
+  }));
+};
 
-await Promise.all(
-  [1, 2, 3].map((n) => {
-    console.info(`resizing ${newBaseName} from ${originalWidth} to ${getWidth(n)}`)
-    return sharp(inputArg)
-      .webp()
-      .resize({ width: getWidth(n) })
-      .toFile(`${newPath}${n}x.webp`)
-  })
-);
+await resizeImages(images, getInfo, imagesDir, "./resizeTest");

@@ -2,13 +2,11 @@
   width: calc(100vw - 2rem);
   max-width: 35rem;
 }
+
 .NotFound .Logo {
   height: 40vmin;
   pointer-events: none;
   padding-bottom: 2em;
-}
-.NotFound .App-link {
-  color: #61dafb;
 }
 
 .NotFound header {
@@ -18,5 +16,4 @@
 .NotFound .copy {
   padding-top: 2em;
   padding-bottom: 1em;
-  color: #f6f7f8;
 }

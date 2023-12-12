@@ -1,9 +1,8 @@
 
-import React from 'react';
-
 import './About.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AboutContent } from 'content/AboutContent';
+import { AboutContent } from './content/AboutContent';
+
 
 const CloseSvg = () => (
     <svg viewBox="0 0 14 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -15,13 +14,12 @@ const About = () => {
     const location = useLocation()
     const navigate = useNavigate()
     if (location.hash !== '#!/about') return null
-
     return (
         <div className="About-outer">
             <div className="About">
                 <div className="About-inner">
                     <div className="About-header">
-                        <button className="closeBtn" onClick={()=>navigate(location.pathname)}>
+                        <button className="closeBtn" onClick={() => navigate(location.pathname)}>
                             <CloseSvg />
                         </button>
                     </div>

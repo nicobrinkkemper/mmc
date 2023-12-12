@@ -1,6 +1,6 @@
 import { levelPath } from "./levelPath";
 import React, { Suspense } from "react";
-import { SuspenseImg } from "SuspenseImage";
+import { SuspenseImg } from "./SuspenseImage";
 import { PICTURE_PLACEHOLDER } from "./constants";
 
 const LevelImage = ({ levelName }: { levelName: string }) => {

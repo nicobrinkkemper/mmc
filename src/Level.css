@@ -1,9 +1,10 @@
 .Level {
   display: grid;
-  gap:1rem;
+  gap: 1rem;
 }
 
 .Level .Card {
+  overflow: hidden;
   padding: 0.5rem;
 }
 
@@ -11,38 +12,45 @@
   display: block;
   align-self: center;
   justify-self: center;
-  height:  50vw;
-  width:100%;
+  height: 50vw;
+  width: 100%;
 }
+
 @media only screen and (min-width: 620px) {
   .Level .levelPicture {
     height: 18.1245rem;
   }
 }
+
 .Level .levelImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: opacity 0.1s ease-in-out;
 }
+
 .Level .loading .levelImg {
   opacity: 0.5;
 }
+
 .Level .makerPicture {
   align-self: center;
   justify-self: center;
   height: 10rem;
   width: 10rem;
 }
+
 .Level .makerImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 0.01rem;
 }
+
 .Level .loading .makerImg {
   opacity: 0.5;
 }
+
 .Level .makerDescription {
   padding-top: 1rem;
   white-space: pre-line;
@@ -56,11 +64,13 @@
 .Level .levelInfo {
   display: flex;
 }
+
 .Level .levelName {
   font-size: 1.25rem;
   line-height: 1.5rem;
   font-weight: bolder;
 }
+
 .Level .makerInfo {
   display: flex;
   flex: 1 0 0;
@@ -70,35 +80,38 @@
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .Level .makerName {
   font-size: 1rem;
   flex: 1 0 0;
   margin-top: 0.5rem;
   align-self: center;
 }
+
 .Level .makerName,
 .Level .stars,
-.Level .makerPicture{
-  mix-blend-mode: multiply;
+.Level .makerPicture {
+  mix-blend-mode: var(--maker-info-mix-blend-mode, none);
 }
+
 .Level .makerId {
   font-size: 0.5rem;
   display: block;
 }
+
 .Level .nationality {
   margin-right: 0.45rem;
   filter: brightness(.96);
 }
+
 .Level .levelCode {
-  font-size: 1rem;
-  background: rgb(255 0 229 / 30%);
-  font-weight: 900;
   border-radius: 0px 0px 0.25rem 0.25rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  mix-blend-mode: color-burn;
-  filter: invert(100%);
-  color: white;
+  padding-left: 1rem;
+  font: var(--level-code-font, 'inherit');
+  background: var(--level-code-background, #111);
+  mix-blend-mode: var(--level-code-mix-blend-mode, none);
+  filter: var(--level-code-filter, none);
+  color: var(--level-code-color, #111);
 }
 
 .Level .info {
@@ -107,6 +120,7 @@
   flex-flow: column;
   width: 100%;
 }
+
 .Level .levelInfo {
   display: flex;
 }
@@ -134,29 +148,36 @@
   white-space: pre-line;
   padding-top: 1rem;
 }
+
 .Level .Icon.arrow-left {
   margin: 0;
 }
+
 .Level .navigation.hasNextLevel {
   display: flex;
   justify-content: flex-end;
 }
+
 .Level .navigation.hasNextLevel.hasPreviousLevel {
   display: flex;
   justify-content: space-between;
 }
+
 .Level .navigation {
-  display:flex;
+  display: flex;
   flex-flow: row;
 }
+
 .Level .navigation .Button.arrow-right {
   align-self: flex-end;
   justify-self: flex-end;
 }
-.Level .navigation.hasNextLevel.hasPreviousLevel .Button.arrow-right{
-  margin-left:0;
+
+.Level .navigation.hasNextLevel.hasPreviousLevel .Button.arrow-right {
+  margin-left: 0;
 }
+
 .Level .navigation .Button.arrow-left {
   max-width: 5.125rem;
-  margin-right:0;
+  margin-right: 0;
 }

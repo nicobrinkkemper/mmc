@@ -1,34 +1,40 @@
 .Batch {
   display: grid;
-  gap:.875rem;
+  gap: .875rem;
 }
 
 .Batch .Card {
   padding: 0.5rem;
 }
+
 .Batch .LevelCard {
   display: flex;
   flex-flow: row;
 }
+
 .Batch .LevelCard .levelName {
   font-size: 1rem;
   line-height: 1.5rem;
   font-weight: 900;
 }
+
 .Batch .info {
   padding: 0.5rem 0.85rem;
   display: flex;
   flex-flow: column;
   width: 100%;
 }
+
 .Batch .levelImg {
   height: 6.125rem;
   width: 6.125rem;
   object-fit: cover;
 }
+
 .Batch .levelInfo {
   display: flex;
 }
+
 .Batch .makerInfo {
   display: flex;
   flex: 1 0 0;
@@ -37,19 +43,24 @@
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .Batch .makerName {
   font-size: 0.77777777777rem;
   flex: 1 0 0;
 }
+
 .Batch .Card picture {
   display: flex;
 }
+
 .Batch .Card picture img {
   border-radius: 0.01rem;
 }
+
 .Batch .nationality {
   margin-right: 0.45rem;
 }
+
 .Batch .difficulty {
   font-size: 0.75rem;
   align-self: flex-end;
@@ -67,7 +78,8 @@
   grid-template-rows: max-content;
   grid-gap: 0.3rem;
 }
-.Batch .tags > span {
+
+.Batch .tags>span {
   display: inline-flex;
 }
 
@@ -76,6 +88,7 @@
     display: none;
   }
 }
+
 @media only screen and (max-width: 320px) {
   .Batch .tags {
     grid-template-columns: max-content;

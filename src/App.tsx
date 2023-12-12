@@ -1,40 +1,40 @@
 import "./App.css";
-import About from "About";
-import Teaser from "Teaser";
+import About from "./About";
+import Teaser from "./Teaser";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
-import { Logo } from "Logo";
-import { startDate } from "./useLevelData";
+import { Logo } from "./Logo";
+import { useLevelData } from "./useLevelData";
 import { Credits } from "./Credits";
 import { Level } from "./Level";
 import Batches from "./Batches";
 import Batch from "./Batch";
 import { Seo } from "./Seo";
-import { DEFAULT_TITLE, DEFAULT_DESCRIPTION } from "./constants";
-import NotFound from "./NotFound";
-import { ErrorBoundary } from "react-error-boundary";
-import { ErrorFallback } from "ErrorFallback";
-import { WeekTrailer } from "WeekTrailer";
-import { AboutButton } from "AboutButton";
-import { BackButton } from "BackButton";
-import { WelcomeContent } from "content/WelcomeContent";
+import { DEFAULT_DESCRIPTION } from "./constants";
+import { NotFound } from "./NotFound";
+import { WeekTrailer } from "./WeekTrailer";
+import { AboutButton } from "./AboutButton";
+import { BackButton } from "./BackButton";
+import { WelcomeContent } from "./content/WelcomeContent";
+import { useTheme } from "./theme/useTheme";
 
 const CountdownApp = () => {
   return (<Routes>
     <Route path="/credits" element={<CreditPage />} />
-    <Route path="/" element={<CountdownPage />} />
+    <Route index element={<CountdownPage />} />
     <Route path="*" element={<NotFoundPage />} />
   </Routes>)
 }
 
 const MainApp = () => {
-  return <Routes>
-    <Route path="/level/:batchNumber/:order" element={<LevelPage />} />
-    <Route path="/levels/:batchNumber" element={<BatchPage />} />
-    <Route path="/levels/:batchNumber" element={<BatchPage />} />
-    <Route path="/levels" element={<LevelsPage />} />
-    <Route path="/credits" element={<CreditPage />} />
-    <Route path="/" element={<HomePage />} />
-    <Route path="*" element={<NotFoundPage />} />
+
+  return <Routes >
+    <Route path={`/level/:batchNumber/:order`} element={<LevelPage />} />
+    <Route path={`/levels/:batchNumber`} element={<BatchPage />} />
+    <Route path={`/levels/:batchNumber`} element={<BatchPage />} />
+    <Route path={`/levels`} element={<LevelsPage />} />
+    <Route path={`/credits`} element={<CreditPage />} />
+    <Route path={`/`} index element={<HomePage />} />
+    <Route path={`*`} element={<NotFoundPage />} />
   </Routes>
 }
 
@@ -52,23 +52,27 @@ const CreditPage = () => (
     </article>
   </>
 );
-const CountdownPage = () => (
-  <>
-    <header className="App-header">
-      <div className="toolbar small">
-        <Logo small logo="logo" />
-        <AboutButton />
-      </div>
-    </header>
-    <article className="App-body countdownPage">
-      <Teaser />
-    </article>
-    <Seo
-      description={`${DEFAULT_DESCRIPTION}. We will start ${startDate.toDateString()}`}
-      title={`${DEFAULT_TITLE} | We are getting ready`}
-    />
-  </>
-);
+const CountdownPage = () => {
+  const levelData = useLevelData();
+  const { info: { caps } } = useTheme();
+  return (
+    <>
+      <header className="App-header">
+        <div className="toolbar small">
+          <Logo small logo="logo" />
+          <AboutButton />
+        </div>
+      </header>
+      <article className="App-body countdownPage">
+        <Teaser />
+      </article>
+      <Seo
+        description={`${DEFAULT_DESCRIPTION}. We will start ${levelData.startDate.toDateString()}`}
+        title={`${caps} | We are getting ready`}
+      />
+    </>
+  );
+}
 const LevelPage = () => (
   <>
     <header className="App-header">
@@ -112,20 +116,23 @@ const LevelsPage = () => (
     </article>
   </>
 )
-const HomePage = () => (
-  <>
-    <header className="App-header">
-      <div className="toolbar big">
-        <Logo logo="logo_special" />
-        <AboutButton />
-      </div>
-    </header>
-    <article className="App-body homePage">
-      <WelcomeContent />
-      <Seo title={`${DEFAULT_TITLE} | ${DEFAULT_DESCRIPTION}`} />
-    </article>
-  </>
-)
+const HomePage = () => {
+  const { info: { caps } } = useTheme();
+  return (
+    <>
+      <header className="App-header">
+        <div className="toolbar big">
+          <Logo logo="logo_special" />
+          <AboutButton />
+        </div>
+      </header>
+      <article className="App-body homePage">
+        <WelcomeContent />
+        <Seo title={`${caps} | ${DEFAULT_DESCRIPTION}`} />
+      </article>
+    </>
+  )
+}
 const NotFoundPage = () => (
   <>
     <header className="App-header">
@@ -134,48 +141,41 @@ const NotFoundPage = () => (
       </div>
     </header>
     <article className="App-body notFoundPage">
-      <NotFound error={"Could not find anything for this URL."} />
+      <NotFound />
     </article>
   </>
 )
 const App = () => {
   const location = useLocation();
+  const { startDate } = useLevelData();
+  const { themeSlug } = useTheme();
   const showAbout = location.hash === "#!/about";
-  const TeaserOrMain = startDate.getTime() >= Date.now() ? <CountdownApp /> : <MainApp />
   const style = showAbout ? { overflowY: "hidden", maxHeight: "100vh" } as const : {};
   return (
     <div
       className="App"
       style={style}
     >
-      <div className="ie-fixMinHeight">
-        <ErrorBoundary
-          FallbackComponent={ErrorFallback}
-          onReset={() => {
-            // reset the state of your app so the error doesn't happen again
-          }}
+
+      {startDate.getTime() >= Date.now() ? <CountdownApp /> : <MainApp />}
+      <About />
+      <footer className="App-footer">
+        <a
+          href="https://discord.gg/8mnW3XfZq9"
+          rel="noopener noreferrer"
+          target="_BLANK"
         >
-          {TeaserOrMain}
-          <About />
-          <footer className="App-footer">
-            <a
-              href="https://discord.gg/8mnW3XfZq9"
-              rel="noopener noreferrer"
-              target="_BLANK"
-            >
-              Discord
-            </a>
-            <a
-              href="https://www.youtube.com/channel/UClayAs7TxVjMbzBLxBbqyoQ"
-              rel="noopener noreferrer"
-              target="_BLANK"
-            >
-              Youtube
-            </a>
-            <Link to="/credits/">Credits</Link>
-          </footer>
-        </ErrorBoundary>
-      </div>
+          Discord
+        </a>
+        <a
+          href="https://www.youtube.com/channel/UClayAs7TxVjMbzBLxBbqyoQ"
+          rel="noopener noreferrer"
+          target="_BLANK"
+        >
+          Youtube
+        </a>
+        <Link relative={'route'} to={`${themeSlug}credits/`}>Credits</Link>
+      </footer>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { snakeCase } from "lodash";
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -25,8 +25,8 @@ export const accordionComponents = {
     </AccordionItemPanel>
   ),
   blockquote: (props: PropsWithChildren<{ key: any }>) => {
-    const header:any = Array.isArray(props.children) ? props.children[0] : null;
-    if(!header) return header;
+    const header: any = Array.isArray(props.children) ? props.children[0] : null;
+    if (!header) return header;
     const uuid = snakeCase(header.props.children)
     return <AccordionItem uuid={uuid}>{props.children}</AccordionItem>;
   }
