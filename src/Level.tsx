@@ -6,11 +6,12 @@ import { Button } from "./Button";
 import { levelPath } from "./levelPath";
 import Seo from "./Seo";
 import { parseMarkdown } from "./runtimeMarkdown";
-import { LevelImage } from "./LevelImage";
+import { PublicImage } from "./PublicImage";
 import { MakerImage } from "./MakerImage";
 import { useTheme } from "./theme/useTheme";
 import { Difficulty } from "./Difficulty";
 import classNames from "classnames";
+import { makerPath } from "./makerPath";
 
 const Level = () => {
   const { batchNumber: strBatchNumber, order: strOrder } =
@@ -48,7 +49,7 @@ const Level = () => {
             <div className="makerInfo">
               <span className={"levelName"}>{level.levelName}</span>
             </div>
-            <LevelImage levelName={level.levelName} />
+            <PublicImage name={level.levelName} type={'level'} />
             <div className="levelCode">
               {level.levelCode || "Code coming soon"}
             </div>
@@ -70,7 +71,7 @@ const Level = () => {
       <Card>
         <div className="makerCard">
           <div className="info">
-            <MakerImage makerName={level.makerName} />
+            <PublicImage name={level.makerName} type={'maker'} />
             <div className={"makerName"}>
               <span
                 className={`nationality flag-icon flag-icon-${level.nationality.toLowerCase()}`}
@@ -106,6 +107,7 @@ const Level = () => {
         title={`${level.levelName} | ${level.levelCode} | ${caps}`}
         image={`${levelPath(level.levelName)}`}
         twitter="summary_large_image"
+        favicon={`${makerPath(level.levelName, 128)}`}
       />
     </div>
   );

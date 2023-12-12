@@ -94,35 +94,26 @@ type SeoProps = {
   twitter?: string;
   image?: string;
 };
-const getLinkTags = ({ path }: {
+const getLinkTags = ({ path, favicon }: {
   path: string;
+  favicon: string
 }) => [
-    { rel: "icon", href: `${absoluteUrl(path)}favicon.ico` },
-    {
-      rel: "icon",
-      sizes: "16x16",
-      href: `${absoluteUrl(path)}favicon-16x16.png`,
-    },
+    { rel: "icon", href: `${absoluteUrl(path)}${favicon}` },
     {
       rel: "icon",
       sizes: "32x32",
-      href: `${absoluteUrl(path)}favicon-32x32.png`,
+      href: `${absoluteUrl(path)}favicon-32x32.ico`,
+    }, {
+      rel: "icon",
+      sizes: "64x64",
+      href: `${absoluteUrl(path)}favicon-32x32.ico`,
     },
-    {
-      rel: "apple-icon",
-      href: `${absoluteUrl(path)}apple-icon.png`,
-    },
-    {
-      rel: "apple-touch-icon",
-      href: `${absoluteUrl(path)}apple-touch-icon.png`,
-    },
-    { rel: "msapplication-TileColor", content: `#FFF` },
-    { name: "theme-color", content: `#FFF` },
     { rel: "manifest", href: `${absoluteUrl(path)}site.webmanifest` },
   ];
 const Seo = ({
   schema,
   title = '',
+  favicon = 'favicon.ico',
   description = DEFAULT_DESCRIPTION,
   contentType = "image/png",
   updated = new Date(Date.now()).toDateString(),
@@ -130,7 +121,7 @@ const Seo = ({
   tags = ["Mario Maker 2"],
   twitter = "summary",
   image = '',
-}: Omit<SeoProps, 'published' | 'path'>) => {
+}: Omit<SeoProps, 'published' | 'path'> & { favicon?: string }) => {
   const published = useLevelData().startDate.toDateString();
   const { themeSlug, info: { caps } } = useTheme();
   if (image === '') image = `${themeSlug}android-chrome-512x512.png`;
@@ -142,7 +133,7 @@ const Seo = ({
         schema,
       })}
       title={title}
-      link={getLinkTags({ path: themeSlug })}
+      link={getLinkTags({ path: themeSlug, favicon })}
       meta={getMetaTags({
         title,
         description,

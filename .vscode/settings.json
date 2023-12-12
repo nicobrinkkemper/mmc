@@ -6,5 +6,5 @@
     "./package-lock.json"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["papaparse", "Youtube"]
+  "cSpell.words": ["gridpaper", "papaparse", "Youtube"]
 }

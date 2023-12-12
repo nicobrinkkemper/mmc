@@ -12,6 +12,8 @@ a {
 .tags>span,
 .highlight {
   position: relative;
+  min-width: var(--tag-min-width, inherit);
+  text-align: var(--tag-text-align, inherit);
   color: var(--tag-color, var(--text-color, inherit));
 }
 
@@ -49,7 +51,7 @@ a {
   width: 1.5em;
   height: 1.5em;
   background-size: 100% 100%;
-  background-image: url('./assets/7mmc_troll_kiavik.webp');
+  background-image: url('./assets/7mmc/troll_kiavik.webp');
 }
 
 
@@ -111,9 +113,13 @@ code {
 
 
 .Logo {
-  align-self: center;
-  justify-self: center;
+  display: flex;
+  justify-content: center;
   width: 100%;
+}
+
+.Logo.small {
+  justify-content: left;
 }
 
 .Logo.small .Logo-img {
@@ -168,9 +174,9 @@ code {
   position: relative;
   padding: 0 1rem;
   margin: 0 auto;
-  border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
+  border-radius: var(--card-border-radius);
   background: var(--card-background);
-  min-width: 10rem;
+  width: 100%;
 }
 
 .Card-content {
@@ -219,7 +225,7 @@ code {
   width: 6rem;
   bottom: 3rem;
   right: 4rem;
-  transform: rotate(4deg) scale(2, 2) translate(2rem, 2rem);
+  transform: rotate(4deg) translate(2rem, 2rem);
   box-shadow: var(--box-shadow);
 }
 
@@ -276,20 +282,18 @@ code {
   left: 0;
   height: 100%;
   width: 100%;
+  background: var(--button-after-background, inherit);
   mix-blend-mode: var(--button-after-mix-blend-mode, none);
   box-shadow: var(--button-after-box-shadow, none);
 }
 
-.navigation .Button-inner:after {
-  background: var(--navigation-button-after-background, inherit);
-}
 
 .AboutBtn .Button-inner:after {
-  background: var(--about-button-after-background, inherit);
+  background: var(--about-button-after-background, var(--button-after-background, inherit));
 }
 
 .Card .Button-inner:after {
-  background: var(--card-button-after-background, inherit);
+  background: var(--card-button-after-background, var(--button-after-background, inherit));
   border: var(--card-button-after-border, inherit);
 }
 

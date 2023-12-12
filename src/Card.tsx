@@ -1,37 +1,21 @@
 
 import { PropsWithChildren } from "react";
 import { Link, To } from "react-router-dom";
-import map from "./assets/7mmc_map1x.webp";
-import marioBed from "./assets/8mmc_mario_bed.webp";
 import classnames from "classnames";
 import { useTheme } from "./theme/useTheme";
 import { Theme } from "./theme/ThemeContext";
+import { PublicImage } from "./PublicImage";
 const illustrations = {
   '7mmc': {
     card: (
-      <picture className="Illustration-picture">
-        <img
-          src={map}
-          className="Illustration-img"
-          alt="A map!"
-          width="100%"
-        />
-      </picture>
+      <PublicImage name={'illustration'} type={'illustration'} />
     )
   },
   '8mmc': {
     card: (
-      <picture className="Illustration-picture">
-        <img
-          src={marioBed}
-          className="Illustration-img"
-          alt="Wake up Mario!"
-          width="100%"
-        />
-      </picture>
+      <PublicImage name={'illustration'} type={'illustration'} />
     )
   },
-
 };
 
 export type CardProps = PropsWithChildren<{

@@ -8,42 +8,12 @@
   padding: 0.5rem;
 }
 
-.Level .levelPicture {
-  display: block;
-  align-self: center;
-  justify-self: center;
-  height: 50vw;
-  width: 100%;
-}
-
-@media only screen and (min-width: 620px) {
-  .Level .levelPicture {
-    height: 18.1245rem;
-  }
-}
-
-.Level .levelImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity 0.1s ease-in-out;
-}
-
-.Level .loading .levelImg {
-  opacity: 0.5;
-}
-
 .Level .makerPicture {
   align-self: center;
   justify-self: center;
-  height: 10rem;
-  width: 10rem;
 }
 
 .Level .makerImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   border-radius: 0.01rem;
 }
 

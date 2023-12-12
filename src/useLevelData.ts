@@ -74,57 +74,37 @@ enum csvHeaders {
   "nationality",
   "levelCode"
 }
+
 const createLevel = (levelRow: string[], index?: number, arr?: string[][]) => ({
-  order: parseCsvHeader(levelRow, "order", Number),
-  batchNumber: parseCsvHeader(levelRow, "batchNumber", Number),
-  levelName: parseCsvHeader(levelRow, "levelName", String),
-  description: parseCsvHeader(levelRow, "description", String),
-  makerDescription: parseCsvHeader(levelRow, "makerDescription", String),
-  makerName: parseCsvHeader(levelRow, "makerName", String),
-  makerId: parseCsvHeader(levelRow, "makerId", String),
-  nationality: parseCsvHeader(levelRow, "nationality", String),
-  progress: parseCsvHeader(levelRow, "progress", String),
-  difficultyName: parseCsvHeader(levelRow, "difficultyName", String),
-  genre: parseCsvHeader(levelRow, "Genre", String),
-  gameStyle: parseCsvHeader(levelRow, "gameStyle", String),
-  difficulty: parseCsvHeader(levelRow, "difficulty", Number),
-  tags: parseCsvHeader(levelRow, "tags", String),
-  levelCode: parseCsvHeader(levelRow, "levelCode", String),
+  order: parseCsvHeader(levelRow, "order", Number, index),
+  batchNumber: parseCsvHeader(levelRow, "batchNumber", Number, 1),
+  levelName: parseCsvHeader(levelRow, "levelName", String, "Level name coming soon"),
+  description: parseCsvHeader(levelRow, "description", String, "Description coming soon"),
+  makerDescription: parseCsvHeader(levelRow, "makerDescription", String, "Maker description coming soon"),
+  makerName: parseCsvHeader(levelRow, "makerName", String, "Maker name coming soon"),
+  makerId: parseCsvHeader(levelRow, "makerId", String, "Maker ID coming soon"),
+  nationality: parseCsvHeader(levelRow, "nationality", String, "us"),
+  progress: parseCsvHeader(levelRow, "progress", String, "100%"),
+  difficultyName: parseCsvHeader(levelRow, "difficultyName", String, "Expert"),
+  genre: parseCsvHeader(levelRow, "Genre", String, "Platformer"),
+  gameStyle: parseCsvHeader(levelRow, "gameStyle", String, "SMB1"),
+  difficulty: parseCsvHeader(levelRow, "difficulty", Number, (()=>{
+      const name = levelRow[csvHeaders['difficultyName']];
+      if(name === 'Easy') return 1;
+      if(name === 'Normal') return 5;
+      if(name === 'Expert') return 8;
+      return 10;
+  })()),
+  tags: parseCsvHeader(levelRow, "tags", String, ""),
+  levelCode: parseCsvHeader(levelRow, "levelCode", String, "Level code coming soon"),
   batchLength: Array.isArray(arr) ? levelRow.length : undefined,
   batchIndex: typeof index === "number" ? index : undefined
 });
 
-const parseCsvHeader = <H extends keyof typeof csvHeaders, T extends typeof String | typeof Number>(levelRow: string[], header: H, toType: T ): ReturnType<T> => {
+const parseCsvHeader = <H extends keyof typeof csvHeaders, T extends typeof String | typeof Number>(levelRow: string[], header: H, parse: T, defaultType?: ReturnType<T> ): ReturnType<T> => {
   const contents = levelRow[csvHeaders[header]];
-  if(!contents) {
-    if(header === "difficulty") {
-      const name = levelRow[csvHeaders['difficultyName']];
-      if(name === 'Easy') return 1 as never;
-      if(name === 'Normal') return 5 as never;
-      if(name === 'Expert') return 8 as never;
-      return 10 as never;
-    }
-    if(header === "tags") {
-      return '' as never;
-    }
-    if(header === 'levelCode'){
-      return 'Coming soon' as never;
-    }
-    if(header === 'nationality'){
-      return 'US' as never;
-    }
-    if(header === 'makerDescription'){
-      return 'Coming soon' as never;
-    }
-    if(header === 'makerName'){
-      return 'Coming soon' as never;
-    }
-    if(header === 'description'){
-      return 'Coming soon' as never;
-    }
-    throw new Error(`CSV HAS CHANGED: ${header} is missing`);
-  }
-  return toType(contents) as never;
+  if(!contents) return defaultType as never;
+  return parse(contents) as never;
 }
 
 
@@ -169,10 +149,14 @@ export const useLevelData = () => {
     // here we do a check if all headers are still correct
     let i = 0;
     for (const head of header) {
+      if(!head) {
+        console.warn(`Head missing at index ${i} is missing, between ${header[i-1]} and ${header[i+1]}`)
+        continue
+      };
       const v = csvHeaders[head as keyof typeof csvHeaders];
       if (!(typeof v === "number" && i === v)) {
         console.log(data);
-        throw new Error(`CSV HAS CHANGED: stopped at ${v}`);
+        throw new Error(`CSV HAS CHANGED: stopped at ${i} ${v}`);
       }
       i++;
     }

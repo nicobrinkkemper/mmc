@@ -1,49 +1,23 @@
 import { PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
-import mmc8Logo1x from "./assets/8mmc_logo1x.webp";
-import mmc8Logo2x from "./assets/8mmc_logo2x.webp";
-import mmc8Logo3x from "./assets/8mmc_logo3x.webp";
-import mmc7Logo1x from "./assets/7mmc_logo_simple1x.webp";
-import mmc7Logo2x from "./assets/7mmc_logo_simple2x.webp";
-import mmc7Logo3x from "./assets/7mmc_logo_simple3x.webp";
-import mmc7SpecialLogo1x from "./assets/7mmc_logo_special1x.webp";
-import mmc7SpecialLogo2x from "./assets/7mmc_logo_special2x.webp";
-import mmc7SpecialLogo3x from "./assets/7mmc_logo_special3x.webp";
 import { useTheme } from "./theme/useTheme";
 import classNames from "classnames";
+import { PublicImage } from "./PublicImage";
 const logos = {
   '7mmc': {
-    logo: (
-      <picture className="Picture">
-        <source srcSet={`${mmc7Logo1x} 272w, ${mmc7Logo2x} 328w, ${mmc7Logo3x} 1096w`} />
-        <img src={mmc7Logo1x} className="Logo-img" alt="logo" width="100%" height='auto' />
-      </picture>
-    ),
-    logo_special: (
-      <picture className="Picture">
-        <source srcSet={`${mmc7SpecialLogo1x} 272w,${mmc7SpecialLogo2x} 528w, ${mmc7SpecialLogo3x} 1096w`} />
-        <img src={mmc7SpecialLogo1x} className="Logo-img" alt="logo" width="100%" height='auto' />
-      </picture>
-    )
+    logo_small: <PublicImage name={'logo_simple'} type={'logo_small'} />,
+    logo: <PublicImage name={'logo_simple'} type={'logo'} />,
+    logo_special: <PublicImage name={'logo_special'} type={'logo'} />
   },
   '8mmc': {
-    logo: (
-      <picture className="Picture">
-        <source srcSet={`${mmc8Logo1x} 272w,${mmc8Logo2x} 528w, ${mmc8Logo3x} 1096w`} />
-        <img src={mmc8Logo1x} className="Logo-img" alt="logo" width="100%" height='auto' />
-      </picture>
-    ),
-    logo_special: (
-      <picture className="Picture">
-        <source srcSet={`${mmc8Logo1x} 272w,${mmc8Logo2x} 528w, ${mmc8Logo3x} 1096w`} />
-        <img src={mmc8Logo1x} className="Logo-img" alt="logo" width="100%" height='auto' />
-      </picture>
-    )
+    logo_small: <PublicImage name={'logo'} type={'logo_small'} />,
+    logo: <PublicImage name={'logo'} type={'logo'} />,
+    logo_special: <PublicImage name={'logo'} type={'logo'} />
   }
 } as const;
 
 export type LogoProps = PropsWithChildren<{
-  logo?: 'logo' | 'logo_special';
+  logo?: keyof typeof logos['7mmc'];
   small?: boolean;
 }>;
 
@@ -63,6 +37,8 @@ const ArrowRight = () => (
 );
 
 const Logo = ({ logo = "logo", small = false }: LogoProps) => {
+  if (small) logo = 'logo_small'
+  if (logo === 'logo_small') small = true;
   const { theme, themeSlug, locationWithoutTheme, info: { nextTheme, prevTheme } } = useTheme();
   return (
     <>

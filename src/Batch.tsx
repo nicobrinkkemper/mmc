@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { lowerCase, snakeCase } from "lodash";
 import Seo from "./Seo";
 import { humanReadableArray } from "./humanReadableArray";
-import { LevelImage } from "./LevelImage";
+import { PublicImage } from "./PublicImage";
 import { useTheme } from "./theme/useTheme";
 import { convertNumberToWord } from "./theme/convertNumberToWord";
 import { Difficulty } from "./Difficulty";
@@ -41,7 +41,7 @@ const Batch = () => {
           return (
             <Card key={to} to={to}>
               <div className={"LevelCard"}>
-                <LevelImage levelName={level.levelName} />
+                <PublicImage name={level.levelName} type={'level_thumbnail'} />
                 <div className="info">
                   <div className="makerInfo">
                     <span className={"levelName"}>{level.levelName}</span>

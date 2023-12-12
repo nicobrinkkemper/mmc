@@ -25,11 +25,6 @@
   width: 100%;
 }
 
-.Batch .levelImg {
-  height: 6.125rem;
-  width: 6.125rem;
-  object-fit: cover;
-}
 
 .Batch .levelInfo {
   display: flex;
@@ -79,19 +74,13 @@
   grid-gap: 0.3rem;
 }
 
-.Batch .tags>span {
-  display: inline-flex;
-}
-
-@media only screen and (max-width: 370px) {
+@media only screen and (max-width: 420px) {
   .Batch .Card picture {
     display: none;
   }
-}
 
-@media only screen and (max-width: 320px) {
-  .Batch .tags {
-    grid-template-columns: max-content;
-    grid-template-rows: max-content max-content;
+  .levelInfo {
+    display: flex;
+    flex-flow: column;
   }
 }

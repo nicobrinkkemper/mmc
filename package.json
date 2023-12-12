@@ -18,13 +18,7 @@
     "startup:csvToJson": "node ./scripts/csvToJson.mjs",
     "sync:csv": "node --experimental-fetch ./scripts/csv.sync.mjs",
     "bg": "convert ./src/assets/original_bg.webp ./src/assets/bg.webp",
-    "resize": "node ./scripts/resizeImage.mjs",
-    "assets:logo": "npm run resize ./src/assets/original_7mmc_logo.png 1600",
-    "assets:logo_8mmc": "npm run resize ./src/assets/original_8mmc_logo.png 1600",
-    "assets:logo_special": "npm run resize ./src/assets/original_7mmc_logo_special.png 1600",
-    "assets:logo_simple": "npm run resize ./src/assets/original_7mmc_logo_simple.png 1024",
-    "assets:map": "npm run resize ./src/assets/original_7mmc_map.jpg 1024",
-    "assets:gridpaper_special": "npm run resize ./src/assets/original_7mmc_gridpaper_special.jpg 1024",
+    "resize": "node ./scripts/resize.mjs",
     "assets": "run-p assets:*"
   },
   "engines": {
