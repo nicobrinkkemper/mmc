@@ -31,3 +31,5 @@ yarn-error.log*
 
 public/**/*
 src/assets/**/*
+scripts/data/*
+src/data/*
