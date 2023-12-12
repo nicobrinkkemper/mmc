@@ -3,15 +3,13 @@ import { useParams } from "react-router-dom";
 import Card from "./Card";
 import { useLevelData } from "./useLevelData";
 import { Button } from "./Button";
-import { levelPath } from "./levelPath";
 import Seo from "./Seo";
 import { parseMarkdown } from "./runtimeMarkdown";
 import { PublicImage } from "./PublicImage";
-import { MakerImage } from "./MakerImage";
 import { useTheme } from "./theme/useTheme";
 import { Difficulty } from "./Difficulty";
 import classNames from "classnames";
-import { makerPath } from "./makerPath";
+import { transformName } from "./transformName";
 
 const Level = () => {
   const { batchNumber: strBatchNumber, order: strOrder } =
@@ -105,9 +103,8 @@ const Level = () => {
       <Seo
         description={`${caps} level by ${level.makerName}: ${level.levelName} - ${level.levelCode}`}
         title={`${level.levelName} | ${level.levelCode} | ${caps}`}
-        image={`${levelPath(level.levelName)}`}
+        image={`${themeSlug}level/${transformName(level.levelName)}-1160.webp`}
         twitter="summary_large_image"
-        favicon={`${makerPath(level.levelName, 128)}`}
       />
     </div>
   );

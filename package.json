@@ -16,9 +16,9 @@
     "sync": "run-p sync:*",
     "startup": "run-p startup:*",
     "startup:csvToJson": "node ./scripts/csvToJson.mjs",
+    "startup:resize": "node ./scripts/resize.mjs",
     "sync:csv": "node --experimental-fetch ./scripts/csv.sync.mjs",
     "bg": "convert ./src/assets/original_bg.webp ./src/assets/bg.webp",
-    "resize": "node ./scripts/resize.mjs",
     "assets": "run-p assets:*"
   },
   "engines": {
