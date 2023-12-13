@@ -174,7 +174,7 @@ const App = () => {
         >
           Youtube
         </a>
-        <Link relative={'route'} to={`${themeSlug}credits/`}>Credits</Link>
+        <Link relative={'route'} to={`/${themeSlug}credits/`}>Credits</Link>
       </footer>
     </div>
   );

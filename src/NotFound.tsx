@@ -3,6 +3,7 @@ import Button from "./Button";
 import Card from "./Card";
 import Seo from "./Seo";
 import { useTheme } from "./theme/useTheme";
+import { ToTheLevels } from "./ToTheLevels";
 
 const NotFound = ({ error }: { error?: string }) => {
   const { themeSlug, info: { caps } } = useTheme();
@@ -12,12 +13,10 @@ const NotFound = ({ error }: { error?: string }) => {
         <p>This page was not found, sorry! Jank can happen sometimes.</p>
         {error ? <p>The error message for the web developer: {error}</p> : null}
         <p>
-          <Button primary={true} icon="arrow-right" to={`${themeSlug}levels/`}>
-            To the levels
-          </Button>
+          <ToTheLevels />
         </p>
         <p>
-          <Button icon="arrow-right" to={`${themeSlug}`}>
+          <Button icon="arrow-right" to={`/${themeSlug}`}>
             To homepage
           </Button>
         </p>

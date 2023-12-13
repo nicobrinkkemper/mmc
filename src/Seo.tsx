@@ -3,7 +3,12 @@ import { BASE_URL, DEFAULT_DESCRIPTION } from "./constants";
 import { useLevelData } from "./useLevelData";
 import { useTheme } from "./theme/useTheme";
 
-const absoluteUrl = (path: string) => `${BASE_URL}${path}`;
+export const absoluteUrl = (path: string) => {
+  if (path.startsWith('http')) return path;
+  if (path.startsWith('/')) path = path.slice(1);
+  if (BASE_URL === '/') return `${BASE_URL}${path}`;
+  return `${BASE_URL}/${path}`
+}
 
 type getMetaTagsProps = {
   title: string;
@@ -124,7 +129,7 @@ const Seo = ({
 }: Omit<SeoProps, 'published' | 'path'> & { favicon?: string }) => {
   const published = useLevelData().startDate.toDateString();
   const { themeSlug, info: { caps } } = useTheme();
-  if (image === '') image = `${themeSlug}android-chrome-512x512.png`;
+  if (image === '') image = `/${themeSlug}android-chrome-512x512.png`;
   if (title === '') title = caps
   tags.push(caps);
   return (

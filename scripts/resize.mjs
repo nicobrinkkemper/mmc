@@ -166,8 +166,8 @@ const getInfo = ({
   if (filenameWithoutExt === "favicon") return resizeFavicon;
   if (filenameWithoutExt === "illustration") return resizeIllustration;
   if (filenameWithoutExt === "logo") return resizeMainLogo;
+  if (filenameWithoutExt === "logo_simple") return resizeMainLogo;
   if (filenameWithoutExt === "logo_special") return resizeLogo;
-  if (filenameWithoutExt === "logo_simple") return resizeLogo;
   if (ext === ".svg") return [{}];
   const isLevel = relativeInputPath.includes("level");
   const isMaker = relativeInputPath.includes("maker");

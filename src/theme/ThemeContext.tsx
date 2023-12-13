@@ -26,7 +26,6 @@ export type ThemeContextType = {
     themeUp: () => void;
     themeDown: () => void;
     info: ThemeInfo
-    locationWithoutTheme: string;
     themeSlug: string;
 }
 

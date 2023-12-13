@@ -20,7 +20,7 @@ function Batches() {
         if (isUnreleased) classes.push("isUnreleased");
         if (isFinalWeek) classes.push("isFinal");
         return (
-          <Card key={releaseDay.toISOString()} disabled={isUnreleased} to={`${themeSlug}levels/${i + 1}/`}>
+          <Card key={releaseDay.toISOString()} disabled={isUnreleased} to={`/${themeSlug}levels/${i + 1}/`}>
             <div className={classes.join(" ")}>
               <span className="batchNumber">{i + 1}</span>
               <div className="releaseInfo">

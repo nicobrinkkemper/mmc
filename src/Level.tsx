@@ -88,13 +88,13 @@ const Level = () => {
           <Button
             icon="arrow-left"
             iconPosition="left"
-            to={`${themeSlug}level/${Number(batchNumber)}/${Number(order) - 1}/`}
+            to={`/${themeSlug}level/${Number(batchNumber)}/${Number(order) - 1}/`}
           ></Button>
         ) : null}
         {hasNextLevel ? (
           <Button
             icon="arrow-right"
-            to={`${themeSlug}level/${Number(batchNumber)}/${Number(order) + 1}/`}
+            to={`/${themeSlug}level/${Number(batchNumber)}/${Number(order) + 1}/`}
           >
             Next level
           </Button>
@@ -103,7 +103,7 @@ const Level = () => {
       <Seo
         description={`${caps} level by ${level.makerName}: ${level.levelName} - ${level.levelCode}`}
         title={`${level.levelName} | ${level.levelCode} | ${caps}`}
-        image={`${themeSlug}level/${transformName(level.levelName)}-1160.webp`}
+        image={`/${themeSlug}level/${transformName(level.levelName)}-1160.webp`}
         twitter="summary_large_image"
       />
     </div>

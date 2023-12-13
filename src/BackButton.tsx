@@ -14,7 +14,7 @@ const BackButton = () => {
             <Button
                 icon="arrow-left-inverted"
                 iconPosition="left"
-                to={`${themeSlug}`}
+                to={`/${themeSlug}`}
                 inverted={true}
                 classList={['backTo']}
             >
@@ -27,7 +27,7 @@ const BackButton = () => {
             <Button
                 icon="arrow-left-inverted"
                 iconPosition="left"
-                to={`${themeSlug}levels/${batchNumber}/`}
+                to={`/${themeSlug}levels/${batchNumber}/`}
                 inverted={true}
                 classList={['backTo']}
             >
@@ -39,7 +39,7 @@ const BackButton = () => {
             <Button
                 icon="arrow-left-inverted"
                 iconPosition="left"
-                to={`${themeSlug}levels/`}
+                to={`/${themeSlug}levels/`}
                 inverted={true}
                 classList={['backTo']}
             >
@@ -50,7 +50,7 @@ const BackButton = () => {
         <Button
             icon="arrow-left-inverted"
             iconPosition="left"
-            to={`${themeSlug}`}
+            to={`/${themeSlug}`}
             inverted={true}
             classList={['backTo']}
         >
