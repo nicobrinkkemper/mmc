@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { SuspenseImg } from "./SuspenseImage";
 import { useTheme } from "./theme/useTheme";
 import { transformName } from "./transformName";
+import { BASE_URL } from "./constants";
 
 const imageInfo = {
   level: { width: 580, height: 326, dir: 'level/' },
@@ -18,15 +19,16 @@ export const PublicImage = ({ name, type }: { name: string, type: keyof typeof i
   const { width, height, dir } = imageInfo[type];
   const mode = width === 'auto' ? "max-height" : "max-width";
   const suffix = width === 'auto' ? height : width;
-  const base = `/${themeSlug}${dir}${transformName(name)}`;
-  const preload = `${base}-${suffix * 0.1}.webp`;
-  const normal = `${base}-${suffix}.webp`;
-  const double = `${base}-${suffix * 2}.webp`;
+  let base = `${themeSlug}${dir}${transformName(name)}`;
+  if (BASE_URL !== '/') base = `${BASE_URL}${base}`;
+  const preload = `/${base}-${suffix * 0.1}.webp`;
+  const normal = `/${base}-${suffix}.webp`;
+  const double = `/${base}-${suffix * 2}.webp`;
   return (
     <picture className={`${type}Picture`} style={{ display: 'flex' }}>
       <Suspense fallback={<img src={preload}
         width={width}
-        height={height} className={`${type}Img loading`} alt={'Loading ' + name} style={{ color: 'rgba(0,0,0,0)', filter: "blur(64px)" }} />}>
+        height={height} className={`${type}Img loading`} alt={'Loading ' + name} style={{ color: 'rgba(0,0,0,0)', filter: "blur(16px)" }} />}>
         <SuspenseImg
           className={`${type}Img`}
           src={preload}
