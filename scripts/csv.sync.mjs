@@ -1,4 +1,4 @@
-import fs from "node:fs";
+import fs from "node:fs/promise";
 import stream from "node:stream";
 import util from "node:util";
 const streamPipeline = util.promisify(stream.pipeline);
