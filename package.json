@@ -1,7 +1,6 @@
 {
   "name": "ymm",
   "version": "1.0.0",
-  "type": "module",
   "private": true,
   "homepage": "https://mmcelebrations.com/",
   "scripts": {
@@ -9,6 +8,7 @@
     "lint": "eslint ./src --fix",
     "serve": "serve build",
     "build": "run-s startup react:build",
+    "build-gh": "export BUILD_PATH='_site'; run-s startup react:build",
     "postbuild": "react-snap",
     "test": "run-s startup react:testing",
     "react:test": "react-scripts test",
@@ -48,10 +48,12 @@
     ]
   },
   "reactSnap": {
+    "skipThirdPartyRequests": true,
+    "cacheAjaxRequests": false,
     "puppeteerArgs": [
       "--no-sandbox"
     ],
-    "concurrency": 1,
+    "concurrency": 12,
     "inlineCss": false
   },
   "devDependencies": {

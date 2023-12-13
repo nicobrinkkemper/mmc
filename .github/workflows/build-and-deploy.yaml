@@ -1,6 +1,6 @@
 name: Node.js CI
 
-on: [push]
+on: [main]
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: '20.x'
       - run: npm ci
-      - run: npm run build --if-present
+      - run: npm run build-gh --if-present
       - name: move to _site
         run: mv -v build _site
       - name: Fix permissions

@@ -1,9 +1,8 @@
 import React from "react";
-import { createRoot } from 'react-dom/client';
-import { PRODUCTION } from "./constants";
 import { AppWrapper } from "./AppWrapper";
-import { initialize } from "./TagManager";
 import "./index.css";
+
+import { hydrate, render } from "react-dom";
 
 const rootElement = document.getElementById("root");
 const AppJSX = (
@@ -11,8 +10,11 @@ const AppJSX = (
     <AppWrapper />
   </React.StrictMode>
 );
-createRoot(rootElement!).render(AppJSX);
-
-if (PRODUCTION) {
-  initialize();
+if (rootElement?.hasChildNodes()) {
+  hydrate(AppJSX, rootElement);
+} else {
+  render(AppJSX, rootElement);
 }
+
+
+
