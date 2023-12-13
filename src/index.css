@@ -222,11 +222,11 @@ code {
 
 .Card.hasIllustration .Illustration {
   position: absolute;
-  width: 6rem;
-  bottom: 3rem;
-  right: 4rem;
+  bottom: 0;
+  right: 0;
   transform: rotate(4deg) translate(2rem, 2rem);
   box-shadow: var(--box-shadow);
+  width: 220px;
 }
 
 @media only screen and (min-width: 620px) {
@@ -243,6 +243,13 @@ code {
     float: right;
     bottom: inherit;
     right: inherit;
+    margin-bottom: -20px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .Card.hasIllustration .Illustration {
+    transform: rotate(4deg) translate(2rem, 2rem) scale(.8, .8);
   }
 }
 

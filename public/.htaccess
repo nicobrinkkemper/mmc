@@ -6,14 +6,7 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule (.*) index.html [R=404,QSA,L]
 </ifModule>
+ErrorDocument 404 /404.html
 <FilesMatch ".(jpg|png|gif|webp)$">
-    ErrorDocument 404 "404.png"
+    ErrorDocument 404 "/404.png"
 </FilesMatch>
-<FilesMatch "\.(html|htm)$">
-    AddDefaultCharset utf-8
-    DefaultLanguage en-us
-    ErrorDocument 404 /404.html
-</FilesMatch>
-<directory ~>
-    ErrorDocument 404 /404.html
-</directory>

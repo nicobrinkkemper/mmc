@@ -34,7 +34,10 @@ jobs:
   deploy:
     # Add a dependency to the build job
     needs: build
-
+    on:
+      pull_request:
+        branches:
+          - main
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
       pages: write      # to deploy to Pages

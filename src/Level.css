@@ -95,10 +95,6 @@
   width: 100%;
 }
 
-.Level .levelInfo {
-  display: flex;
-}
-
 .Level .difficulty {
   font-size: 0.75rem;
   align-self: flex-end;
@@ -107,12 +103,10 @@
 
 .Level .tags {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   align-self: flex-end;
   padding-top: 0.2rem;
   padding-right: 0.2rem;
   flex: 1 0 0;
-  display: grid;
   grid-template-columns: max-content max-content;
   grid-template-rows: max-content;
   grid-gap: 0.3rem;

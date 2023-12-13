@@ -23,9 +23,9 @@ const WeekTrailer = () => {
 
   return (
     <div className="youtubeFlexDisable">
-      <YouTubeIframe
+      {navigator?.userAgent !== "ReactSnap" && <YouTubeIframe
         videoId={weekTrailer || "3FtgBWY0XVY"}
-      />
+      />}
     </div>
   );
 };

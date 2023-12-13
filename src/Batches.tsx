@@ -50,4 +50,3 @@ function Batches() {
   );
 }
 export { Batches };
-export default Batches;
