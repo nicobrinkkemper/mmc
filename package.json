@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "private": true,
-  "homepage": "https://mmcelebrations.com/",
+  "homepage": "/",
   "scripts": {
     "start": "run-s startup react:start",
     "lint": "eslint ./src --fix",
