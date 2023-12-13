@@ -3,6 +3,10 @@
   gap: 1rem;
 }
 
+.Level .levelImg {
+  max-width: 100%;
+}
+
 .Level .Card {
   overflow: hidden;
   padding: 0.5rem;

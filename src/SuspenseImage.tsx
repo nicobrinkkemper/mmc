@@ -24,5 +24,5 @@ const read = (src: string) => {
 
 export const SuspenseImg = ({ src, width, height, alt = '', ...rest }: ImgHTMLAttributes<{}>) => {
   if (typeof src === "string") read(src);
-  return <img loading="lazy" alt={alt} width={width} height={height} src={src} {...rest} style={{ color: 'rgba(0,0,0,0)', maxWidth: '100%', objectFit: 'cover' }} />;
+  return <img loading="lazy" alt={alt} width={width} height={height} src={src} {...rest} style={{ color: 'rgba(0,0,0,0)', objectFit: 'cover' }} />;
 };
