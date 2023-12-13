@@ -14,11 +14,11 @@ const imageInfo = {
 } as const
 
 export const PublicImage = ({ name, type }: { name: string, type: keyof typeof imageInfo }) => {
-  const { themeSlug } = useTheme();
+  const { theme } = useTheme();
   const { width, height, dir } = imageInfo[type];
   const mode = width === 'auto' ? "max-height" : "max-width";
   const suffix = width === 'auto' ? height : width;
-  const base = `${themeSlug}${dir}${transformName(name)}`;
+  const base = `${document.baseURI}${theme}/${dir}${transformName(name)}`;
   const preload = `${base}-${suffix * 0.1}.webp`;
   const normal = `${base}-${suffix}.webp`;
   const double = `${base}-${suffix * 2}.webp`;

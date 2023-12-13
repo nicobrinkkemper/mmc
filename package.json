@@ -2,7 +2,7 @@
   "name": "ymm",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://nicobrinkkemper.github.io/7mmc/",
+  "homepage": "/7mmc/",
   "scripts": {
     "start": "run-s startup react:start",
     "lint": "eslint ./src --fix",
