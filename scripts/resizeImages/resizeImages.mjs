@@ -22,8 +22,6 @@ export async function resizeImages(images, getInfo, inputPath, outputPath) {
 
       const imageBuffer = await fs.readFile(image.imageInputPath);
 
-      console.info(image.imageOutputPath);
-
       await fs.mkdir(outputDir, {
         recursive: true,
       });
