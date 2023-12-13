@@ -3,7 +3,6 @@ import { dirname } from "node:path";
 import { finished } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
 import papa from "papaparse";
-import util from "node:util";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -27,18 +26,6 @@ const files = [
   //   gid: "0",
   // },
 ];
-
-function readChunks(reader) {
-  return {
-    async *[Symbol.asyncIterator]() {
-      let readResult = await reader.read();
-      while (!readResult.done) {
-        yield readResult.value;
-        readResult = await reader.read();
-      }
-    },
-  };
-}
 
 for (let { link, name, gid } of files) {
   try {
