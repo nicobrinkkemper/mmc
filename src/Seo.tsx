@@ -1,13 +1,13 @@
 import { Helmet } from "react-helmet-async";
-import { BASE_URL, DEFAULT_DESCRIPTION } from "./constants";
+import { ABSOLUTE_BASE_URL, BASE_URL, DEFAULT_DESCRIPTION } from "./constants";
 import { useLevelData } from "./useLevelData";
 import { useTheme } from "./theme/useTheme";
 
-export const absoluteUrl = (path: string) => {
+export const absoluteUrl = (path: string = '') => {
   if (path.startsWith('http')) return path;
   if (path.startsWith('/')) path = path.slice(1);
-  if (BASE_URL === '/') return `${BASE_URL}${path}`;
-  return `${BASE_URL}/${path}`
+  if (ABSOLUTE_BASE_URL === '/') return `${ABSOLUTE_BASE_URL}${path}`;
+  return `${ABSOLUTE_BASE_URL}/${path}`
 }
 
 type getMetaTagsProps = {
@@ -113,7 +113,7 @@ const getLinkTags = ({ path, favicon }: {
       sizes: "64x64",
       href: `${absoluteUrl(path)}favicon-32x32.ico`,
     },
-    { rel: "manifest", href: `${absoluteUrl(path)}site.webmanifest` },
+    { rel: "manifest", href: `${absoluteUrl()}site.webmanifest` },
   ];
 const Seo = ({
   schema,
