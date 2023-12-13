@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "https://mmcelebrations.com/",
   "scripts": {
-    "type-css": "npx typed-css-modules src",
     "start": "run-s startup react:start",
+    "lint": "react-scripts lint",
     "serve": "serve build",
     "build": "run-s startup react:build",
     "postbuild": "react-snap",
@@ -15,17 +15,23 @@
     "react:start": "react-scripts start",
     "startup": "run-p startup:*",
     "startup:csv": "node ./scripts/csvToJson.mjs",
-    "startup:resize": "node ./scripts/resize.mjs",
-    "bg": "convert ./src/assets/original_bg.webp ./src/assets/bg.webp",
-    "assets": "run-p assets:*"
+    "startup:resize": "node ./scripts/resize.mjs"
   },
   "engines": {
     "node": ">=18"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
+    ],
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts?(x)"
+        ],
+        "rules": {}
+      }
     ]
   },
   "browserslist": {

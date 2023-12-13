@@ -44,6 +44,7 @@ for (let { link, name, gid } of files) {
 
     await finished(writeStream);
   } catch (e) {
+    console.trace(e);
     console.log(`couldnt sync ${name}.csv`, e.message);
   }
 }

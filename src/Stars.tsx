@@ -12,7 +12,6 @@ const stars = [
     </svg>
 ] as const
 
-
 const Star = (i: number, value: number) => {
     const name = String(starName[value]);
     const star = stars[value]

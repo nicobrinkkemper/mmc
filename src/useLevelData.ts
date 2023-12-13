@@ -1,4 +1,3 @@
-
 import { useMemo } from "react";
 import data7mmc from "./data/7mmc.json";
 import data8mmc from "./data/8mmc.json";
@@ -90,7 +89,7 @@ const createLevel = (levelRow: string[], index?: number, arr?: string[][]) => ({
   gameStyle: parseCsvHeader(levelRow, "gameStyle", String, "SMB1"),
   difficulty: parseCsvHeader(levelRow, "difficulty", Number, (()=>{
       const name = levelRow[csvHeaders['difficultyName']];
-      if(name === 'Easy') return 1;
+      if(name === 'Easy') return 1 as never;
       if(name === 'Normal') return 5;
       if(name === 'Expert') return 8;
       return 10;

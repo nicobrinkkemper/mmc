@@ -163,7 +163,6 @@ const getInfo = ({
   originalSize: { width },
   relativeInputPath,
 }) => {
-  console.log(filenameWithoutExt);
   if (filenameWithoutExt === "favicon") return resizeFavicon;
   if (filenameWithoutExt === "illustration") return resizeIllustration;
   if (filenameWithoutExt === "logo") return resizeMainLogo;

@@ -2,7 +2,7 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "./theme/ThemeProvider";
-import { Theme, themeKeys } from "./theme/ThemeContext";
+import { themeKeys } from "./theme/ThemeContext";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "./ErrorFallback";
 
