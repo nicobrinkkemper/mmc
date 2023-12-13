@@ -54,9 +54,9 @@ const Teaser = () => {
   return (
     <div className="Teaser">
       <div className="youtubeWrapper">
-        <YouTubeIframe
+        {navigator?.userAgent !== "ReactSnap" && <YouTubeIframe
           videoId={trailerYtId}
-        />
+        />}
       </div>
       <Card>
         <CountDown
@@ -84,4 +84,3 @@ const Teaser = () => {
 };
 
 export { Teaser };
-export default Teaser;

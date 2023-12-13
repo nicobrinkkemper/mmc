@@ -67,4 +67,4 @@ const YouTubeIframe = (props: Props): JSX.Element => {
     );
 };
 
-export {YouTubeIframe};
+export { YouTubeIframe };

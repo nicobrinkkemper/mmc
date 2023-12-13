@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { ABSOLUTE_BASE_URL, BASE_URL, DEFAULT_DESCRIPTION } from "./constants";
+import { ABSOLUTE_BASE_URL, DEFAULT_DESCRIPTION } from "./constants";
 import { useLevelData } from "./useLevelData";
 import { useTheme } from "./theme/useTheme";
 
@@ -39,14 +39,14 @@ const getMetaTags = ({
     { itemprop: "description", content: description },
     { name: "viewport", content: `width=device-width,initial-scale=1` },
     { name: "description", content: description },
-    { name: "twitter:title", content: `${title} | ${BASE_URL}` },
+    { name: "twitter:title", content: `${title} | ${ABSOLUTE_BASE_URL}` },
     { name: "twitter:description", content: description },
     { name: "twitter:creator", content: "@bbmariomaker2" },
-    { name: "og:title", content: `${title} | ${BASE_URL}` },
+    { name: "og:title", content: `${title} | ${ABSOLUTE_BASE_URL}` },
     { name: "og:type", content: contentType },
     { name: "og:url", content: url },
     { name: "og:description", content: description },
-    { name: "og:site_name", content: `${BASE_URL}` },
+    { name: "og:site_name", content: `${ABSOLUTE_BASE_URL}` },
     { name: "og:locale", content: "en_EN" },
   ];
 
@@ -111,7 +111,7 @@ const getLinkTags = ({ path, favicon }: {
     }, {
       rel: "icon",
       sizes: "64x64",
-      href: `${absoluteUrl(path)}favicon-32x32.ico`,
+      href: `${absoluteUrl(path)}favicon-64x64.ico`,
     },
     { rel: "manifest", href: `${absoluteUrl()}site.webmanifest` },
   ];
@@ -129,7 +129,7 @@ const Seo = ({
 }: Omit<SeoProps, 'published' | 'path'> & { favicon?: string }) => {
   const published = useLevelData().startDate.toDateString();
   const { themeSlug, info: { caps } } = useTheme();
-  if (image === '') image = `/${themeSlug}android-chrome-512x512.png`;
+  if (image === '') image = `/${themeSlug}favicon-512x512.ico`;
   if (title === '') title = caps
   tags.push(caps);
   return (
@@ -149,7 +149,7 @@ const Seo = ({
         category,
         tags,
         twitter,
-        image: `${image}`,
+        image,
       })}
     />
   )

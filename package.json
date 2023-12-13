@@ -2,7 +2,7 @@
   "name": "ymm",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://mmcelebration.com",
+  "homepage": "/",
   "scripts": {
     "start": "run-s startup react:start",
     "lint": "eslint ./src --fix",
@@ -50,13 +50,15 @@
     ]
   },
   "reactSnap": {
+    "inlineCss": true,
     "puppeteerArgs": [
-      "--no-sandbox"
-    ],
-    "inlineCss": false
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ]
   },
   "devDependencies": {
     "@babel/runtime": "^7.23.5",
+    "@es-shims/api": "^2.4.2",
     "@fullstory/browser": "^2.0.0",
     "@google-cloud/local-auth": "^3.0.0",
     "@testing-library/jest-dom": "^6.1.5",
@@ -97,6 +99,7 @@
     "react-gtm-module": "^2.0.11",
     "react-helmet": "^6.1.0",
     "react-helmet-async": "^2.0.3",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.20.1",
     "react-scripts": "^5.0.1",
     "react-snap": "^1.23.0",

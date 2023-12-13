@@ -10,7 +10,7 @@ const CloseSvg = () => (
     </svg>
 )
 
-const About = () => {
+export const About = () => {
     const location = useLocation()
     const navigate = useNavigate()
     if (location.hash !== '#!/about') return null
@@ -33,5 +33,3 @@ const About = () => {
         </div>
     );
 }
-
-export default About;

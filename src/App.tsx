@@ -1,13 +1,13 @@
 import "./App.css";
-import About from "./About";
-import Teaser from "./Teaser";
+import { About } from "./About";
+import { Teaser } from "./Teaser";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { Logo } from "./Logo";
 import { useLevelData } from "./useLevelData";
 import { Credits } from "./Credits";
 import { Level } from "./Level";
-import Batches from "./Batches";
-import Batch from "./Batch";
+import { Batches } from "./Batches";
+import { Batch } from "./Batch";
 import { Seo } from "./Seo";
 import { DEFAULT_DESCRIPTION } from "./constants";
 import { NotFound } from "./NotFound";
@@ -27,9 +27,8 @@ const CountdownApp = () => {
 
 const MainApp = () => {
 
-  return <Routes >
+  return <Routes>
     <Route path={`/level/:batchNumber/:order`} element={<LevelPage />} />
-    <Route path={`/levels/:batchNumber`} element={<BatchPage />} />
     <Route path={`/levels/:batchNumber`} element={<BatchPage />} />
     <Route path={`/levels`} element={<LevelsPage />} />
     <Route path={`/credits`} element={<CreditPage />} />
