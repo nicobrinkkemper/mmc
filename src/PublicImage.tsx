@@ -20,7 +20,7 @@ export const PublicImage = ({ name, type }: { name: string, type: keyof typeof i
   const mode = width === 'auto' ? "max-height" : "max-width";
   const suffix = width === 'auto' ? height : width;
   let base = `${themeSlug}${dir}${transformName(name)}`;
-  if (BASE_URL !== '/') base = `${BASE_URL}${base}`;
+  if (BASE_URL !== '/') base = `${BASE_URL}/${base}`;
   const preload = `/${base}-${suffix * 0.1}.webp`;
   const normal = `/${base}-${suffix}.webp`;
   const double = `/${base}-${suffix * 2}.webp`;
