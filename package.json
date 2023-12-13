@@ -5,7 +5,7 @@
   "homepage": "https://mmcelebrations.com/",
   "scripts": {
     "start": "run-s startup react:start",
-    "lint": "react-scripts lint",
+    "lint": "eslint ./src --fix",
     "serve": "serve build",
     "build": "run-s startup react:build",
     "postbuild": "react-snap",
@@ -13,7 +13,7 @@
     "react:test": "react-scripts test",
     "react:build": "react-scripts build",
     "react:start": "react-scripts start",
-    "startup": "run-p startup:*",
+    "startup": "run-p lint startup:*",
     "startup:csv": "node ./scripts/csvToJson.mjs",
     "startup:resize": "node ./scripts/resize.mjs"
   },
