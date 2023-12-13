@@ -1,70 +1,77 @@
-.Batches{
+.Batches {
     gap: .875rem;
     display: grid;
 }
-.Batches .BatchCard{
-  flex-flow: row;
-  display: flex;
+
+.Batches .BatchCard {
+    flex-flow: row;
+    display: flex;
 }
 
-.Batches .BatchCard .batchNumber{
+.Batches .BatchCard .batchNumber {
     display: flex;
     border-radius: 50%;
-    height:2.4375rem;
-    width:2.4375rem;
-    min-width:2.4375rem;
-    font-size: 2rem;
+    height: 2.4375rem;
+    width: 2.4375rem;
+    min-width: 2.4375rem;
     text-align: center;
     justify-content: center;
     align-items: center;
-    background-color: #FACD00;
-    border:1px solid rgba(0,0,0,.3);
-    color:#111;
-    margin:0 .875rem 0 0;
-    font-family: 'HeaderMarker', sans-serif;
-    mix-blend-mode: color-burn;
+    margin: 0 .875rem 0 0;
+    font: var(--batch-number-font);
+    background: var(--batch-number-background, white);
+    border: var(--batch-number-border, none);
+    color: var(--batch-number-color, black);
+    mix-blend-mode: var(--batch-number-mix-blend-mode, none);
 }
 
 .Batches .BatchCard picture {
     display: flex;
 }
+
 .Batches .BatchCard picture img {
     border-radius: 0.01rem;
 }
-.Batches .BatchCard .releaseInfo{
+
+.Batches .BatchCard .releaseInfo {
     display: flex;
     flex-flow: column;
     align-items: flex-start;
     justify-content: space-between;
     flex: 1 0 0;
 }
+
 @media only screen and (max-width: 370px) {
     .Batches .BatchCard .tags {
         flex-flow: column;
     }
- }
-.Batches .BatchCard .releaseDay {
-    font-size:1rem;
-    line-height: 1.125rem;
-    font-family: "HeaderMarker";
 }
-.Batches .BatchCard .batchLevelAmount{
-    font-size:.875rem;
+
+.Batches .BatchCard .releaseDay {
+    font-size: 1rem;
+    line-height: 1.125rem;
+    font-family: var(--font-secondary);
+}
+
+.Batches .BatchCard .batchLevelAmount {
+    font-size: .875rem;
     line-height: 1rem;
 }
-.Batches .BatchCard.isUnreleased .batchNumber{
-    color:inherit
+
+.Batches .BatchCard.isUnreleased .batchNumber {
+    color: inherit
 }
+
 .Batches .tags span {
     line-height: .8125rem;
     border-radius: 0.01rem;
-    font-size:.75rem;
-    height:1.375rem;
+    font-size: .75rem;
+    height: 1.375rem;
     display: inline-flex;
     justify-content: center;
-    align-items: center; 
-    padding:.25rem .5rem;
-    margin:0 .3rem;
+    align-items: center;
+    padding: .25rem .5rem;
+    margin: 0 .3rem;
     font-weight: 900;
 }
 
@@ -73,22 +80,24 @@
     padding-right: 0.75rem;
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap:.3em;
-  }
-
-.Batches .Card.disabled{
-    color: rgba(0,0,0,.3);
+    grid-gap: .3em;
 }
-.Card.disabled + .Card.disabled {
+
+.Batches .Card.disabled {
+    color: rgba(0, 0, 0, .3);
+}
+
+.Card.disabled+.Card.disabled {
     margin-top: -1.5rem;
     max-height: 6.25rem;
 }
+
 .Batches .Card.disabled .batchNumber {
     filter: grayscale(90%);
 }
 
 @media only screen and (max-width: 370px) {
     .Batches .BatchCard picture {
-      display: none;
+        display: none;
     }
-  }
+}

@@ -1,7 +1,7 @@
-import { startDate } from "useLevelData";
-import * as React from "react";
 import { Helmet } from "react-helmet-async";
-import { BASE_URL, DEFAULT_DESCRIPTION, DEFAULT_TITLE } from "./constants";
+import { BASE_URL, DEFAULT_DESCRIPTION } from "./constants";
+import { useLevelData } from "./useLevelData";
+import { useTheme } from "./theme/useTheme";
 
 const absoluteUrl = (path: string) => `${BASE_URL}${path}`;
 
@@ -94,67 +94,61 @@ type SeoProps = {
   twitter?: string;
   image?: string;
 };
-type getLinkTagsProps = {
+const getLinkTags = ({ path, favicon }: {
   path: string;
-};
-const getLinkTags = ({ path }: getLinkTagsProps) => [
-  { rel: "canonical", href: absoluteUrl(path) },
-  { rel: "icon", href: `${absoluteUrl(path)}/favicon.ico` },
-  {
-    rel: "icon",
-    sizes: "16x16",
-    href: `${absoluteUrl(path)}/favicon-16x16.png`,
-  },
-  {
-    rel: "icon",
-    sizes: "32x32",
-    href: `${absoluteUrl(path)}/favicon-32x32.png`,
-  },
-  {
-    rel: "apple-icon",
-    href: `${absoluteUrl(path)}/apple-icon.png`,
-  },
-  {
-    rel: "apple-touch-icon",
-    href: `${absoluteUrl(path)}/apple-touch-icon.png`,
-  },
-  { rel: "msapplication-TileColor", content: `#FFF` },
-  { name: "theme-color", content: `#FFF` },
-  { rel: "manifest", href: `/site.webmanifest` },
-];
+  favicon: string
+}) => [
+    { rel: "icon", href: `${absoluteUrl(path)}${favicon}` },
+    {
+      rel: "icon",
+      sizes: "32x32",
+      href: `${absoluteUrl(path)}favicon-32x32.ico`,
+    }, {
+      rel: "icon",
+      sizes: "64x64",
+      href: `${absoluteUrl(path)}favicon-32x32.ico`,
+    },
+    { rel: "manifest", href: `${absoluteUrl(path)}site.webmanifest` },
+  ];
 const Seo = ({
   schema,
-  title = DEFAULT_TITLE,
+  title = '',
+  favicon = 'favicon.ico',
   description = DEFAULT_DESCRIPTION,
-  path = "",
   contentType = "image/png",
-  published = startDate.toDateString(),
   updated = new Date(Date.now()).toDateString(),
   category = "gaming",
-  tags = [DEFAULT_TITLE, "MarioMaker2"],
+  tags = ["Mario Maker 2"],
   twitter = "summary",
-  image = "/android-chrome-512x512.png",
-}: SeoProps) => (
-  <Helmet
-    htmlAttributes={getHtmlAttributes({
-      schema,
-    })}
-    title={title}
-    link={getLinkTags({ path })}
-    meta={getMetaTags({
-      title,
-      description,
-      contentType,
-      url: absoluteUrl(path),
-      published,
-      updated,
-      category,
-      tags,
-      twitter,
-      image,
-    })}
-  />
-);
+  image = '',
+}: Omit<SeoProps, 'published' | 'path'> & { favicon?: string }) => {
+  const published = useLevelData().startDate.toDateString();
+  const { themeSlug, info: { caps } } = useTheme();
+  if (image === '') image = `${themeSlug}android-chrome-512x512.png`;
+  if (title === '') title = caps
+  tags.push(caps);
+  return (
+    <Helmet
+      htmlAttributes={getHtmlAttributes({
+        schema,
+      })}
+      title={title}
+      link={getLinkTags({ path: themeSlug, favicon })}
+      meta={getMetaTags({
+        title,
+        description,
+        contentType,
+        url: absoluteUrl(themeSlug),
+        published,
+        updated,
+        category,
+        tags,
+        twitter,
+        image: `${image}`,
+      })}
+    />
+  )
+};
 
 export { Seo };
 export default Seo;

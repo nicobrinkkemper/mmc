@@ -22,7 +22,7 @@ const read = (src: string) => {
   return imgCache.__cache[src];
 };
 
-export const SuspenseImg = ({ src, alt = '', ...rest }: ImgHTMLAttributes<{}>) => {
+export const SuspenseImg = ({ src, width, height, alt = '', ...rest }: ImgHTMLAttributes<{}>) => {
   if (typeof src === "string") read(src);
-  return <img alt={alt} src={src} {...rest} />;
+  return <img loading="lazy" alt={alt} width={width} height={height} src={src} {...rest} style={{ color: 'rgba(0,0,0,0)', maxWidth: '100%', objectFit: 'cover' }} />;
 };

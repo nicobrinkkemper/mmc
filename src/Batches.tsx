@@ -1,25 +1,26 @@
 import "./Batches.css";
 import Card from "./Card";
-import { useLevelData, releaseDays } from "./useLevelData";
+import { useLevelData } from "./useLevelData";
 import Seo from "./Seo";
-import { DEFAULT_TITLE } from "./constants";
 import formatDate from "./formatBatchName";
+import { useTheme } from "./theme/useTheme";
 
 function Batches() {
   const levelData = useLevelData();
+  const { themeSlug, info: { caps } } = useTheme();
   return (
     <div className="Batches">
-      {releaseDays.map((releaseDay, i) => {
+      {levelData.releaseDays.map((releaseDay, i) => {
         const classes = ["BatchCard"];
         const isNew = levelData.newestBatch === i;
         const isUnreleased =
           levelData.releasedBatches.indexOf(releaseDay) === -1;
-        const isFinalWeek = releaseDays.indexOf(releaseDay) === 5;
+        const isFinalWeek = levelData.releaseDays.indexOf(releaseDay) === 5;
         if (isNew) classes.push("isNew");
         if (isUnreleased) classes.push("isUnreleased");
         if (isFinalWeek) classes.push("isFinal");
         return (
-          <Card key={String(i)} disabled={isUnreleased} to={`/levels/${i + 1}/`}>
+          <Card key={releaseDay.toISOString()} disabled={isUnreleased} to={`${themeSlug}levels/${i + 1}/`}>
             <div className={classes.join(" ")}>
               <span className="batchNumber">{i + 1}</span>
               <div className="releaseInfo">
@@ -42,8 +43,8 @@ function Batches() {
         );
       })}
       <Seo
-        description={`Week overview of ${DEFAULT_TITLE}. ${levelData.releasedBatches.length} weeks released so far!`}
-        title={`${DEFAULT_TITLE} | Week overview`}
+        description={`Week overview of ${caps}. ${levelData.releasedBatches.length} weeks released so far!`}
+        title={`${caps} | Week overview`}
       />
     </div>
   );

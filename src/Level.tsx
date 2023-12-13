@@ -1,15 +1,15 @@
 import "./Level.css";
 import { useParams } from "react-router-dom";
 import Card from "./Card";
-import { useLevelData, releaseDays } from "./useLevelData";
-import { Stars } from "./Stars";
+import { useLevelData } from "./useLevelData";
 import { Button } from "./Button";
-import { levelPath } from "./levelPath";
 import Seo from "./Seo";
-import { DEFAULT_TITLE } from "./constants";
 import { parseMarkdown } from "./runtimeMarkdown";
-import { LevelImage } from "LevelImage";
-import { MakerImage } from "MakerImage";
+import { PublicImage } from "./PublicImage";
+import { useTheme } from "./theme/useTheme";
+import { Difficulty } from "./Difficulty";
+import classNames from "classnames";
+import { transformName } from "./transformName";
 
 const Level = () => {
   const { batchNumber: strBatchNumber, order: strOrder } =
@@ -18,14 +18,14 @@ const Level = () => {
   const levelData = useLevelData();
   const batchLevels = levelData.levels(Number(strBatchNumber));
   const level = batchLevels.find(({ order: _order }) => _order === order);
-  
+  const { themeSlug, info: { caps } } = useTheme();
   if (typeof level !== "object") return <span>There is nothing here. Please come back later.</span>;
   const startOrder = batchLevels[0].order;
   const endOrder = batchLevels[batchLevels.length - 1].order;
   const batchNumber = Number(level.batchNumber);
   if (Number(strBatchNumber) !== level.batchNumber)
     return <span>A problem occurred. Please come back later.</span>;
-  const releaseDay = releaseDays[batchNumber - 1];
+  const releaseDay = levelData.releaseDays[batchNumber - 1];
   const classes = ["Level"];
   const isNew = levelData.newestBatch === batchNumber - 1;
   const isUnreleased = levelData.releasedBatches.indexOf(releaseDay) === -1;
@@ -38,34 +38,29 @@ const Level = () => {
   if (hasNextLevel) navigationClasses.push("hasNextLevel");
   if (isNew) classes.push("isNew");
   if (isUnreleased) return <span>This level hasn't been released yet.</span>;
-  
+
   return (
-    <div className="Level">
+    <div className={classNames(classes)}>
       <Card>
         <div className="levelCard">
           <div className="info">
             <div className="makerInfo">
               <span className={"levelName"}>{level.levelName}</span>
             </div>
-            <LevelImage levelName={level.levelName} />
+            <PublicImage name={level.levelName} type={'level'} />
             <div className="levelCode">
               {level.levelCode || "Code coming soon"}
             </div>
             <div className="levelInfo">
               <div className={"tags"}>
-                {tags.map((tag, i) => (
-                  <span className="tag" key={i.toString()}>
+                {tags.map((tag) => (
+                  <span className="tag" key={tag}>
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <div className={`difficulty`}>
-                <span>Difficulty: </span>
-                <span className={`stars stars-${level.difficulty}`}>
-                  <Stars value={level.difficulty} />
-                </span>
-              </div>
+              <Difficulty level={level} />
             </div>
             <div className="description">{parseMarkdown(level.description)}</div>
           </div>
@@ -74,7 +69,7 @@ const Level = () => {
       <Card>
         <div className="makerCard">
           <div className="info">
-            <MakerImage makerName={level.makerName} />
+            <PublicImage name={level.makerName} type={'maker'} />
             <div className={"makerName"}>
               <span
                 className={`nationality flag-icon flag-icon-${level.nationality.toLowerCase()}`}
@@ -93,22 +88,22 @@ const Level = () => {
           <Button
             icon="arrow-left"
             iconPosition="left"
-            to={`/level/${Number(batchNumber)}/${Number(order) - 1}/`}
+            to={`${themeSlug}level/${Number(batchNumber)}/${Number(order) - 1}/`}
           ></Button>
         ) : null}
         {hasNextLevel ? (
           <Button
             icon="arrow-right"
-            to={`/level/${Number(batchNumber)}/${Number(order) + 1}/`}
+            to={`${themeSlug}level/${Number(batchNumber)}/${Number(order) + 1}/`}
           >
             Next level
           </Button>
         ) : null}
       </div>
       <Seo
-        description={`${DEFAULT_TITLE} level by ${level.makerName}: ${level.levelName} - ${level.levelCode}`}
-        title={`${level.levelName} | ${level.levelCode} | ${DEFAULT_TITLE}`}
-        image={`${levelPath(level.levelName)}`}
+        description={`${caps} level by ${level.makerName}: ${level.levelName} - ${level.levelCode}`}
+        title={`${level.levelName} | ${level.levelCode} | ${caps}`}
+        image={`${themeSlug}level/${transformName(level.levelName)}-1160.webp`}
         twitter="summary_large_image"
       />
     </div>

@@ -1,17 +1,20 @@
-import Button from "Button";
-import formatDate from "formatBatchName";
+import Button from "./Button";
+import formatDate from "./formatBatchName";
+import { useTheme } from "./theme/useTheme";
+import { useLevelData } from "./useLevelData";
 import { useParams } from "react-router-dom";
-import { releaseDays } from "useLevelData";
 
 const BackButton = () => {
+    const levelData = useLevelData();
+    const { themeSlug } = useTheme();
     const { batchNumber, order } =
         useParams<{ batchNumber: string; order: string }>();
-    if (releaseDays[0].getTime() > Date.now())
+    if (levelData.startDate.getTime() > Date.now())
         return (
             <Button
                 icon="arrow-left-inverted"
                 iconPosition="left"
-                to={`/`}
+                to={`${themeSlug}`}
                 inverted={true}
                 classList={['backTo']}
             >
@@ -24,11 +27,11 @@ const BackButton = () => {
             <Button
                 icon="arrow-left-inverted"
                 iconPosition="left"
-                to={`/levels/${batchNumber}/`}
+                to={`${themeSlug}levels/${batchNumber}/`}
                 inverted={true}
                 classList={['backTo']}
             >
-                Back to {formatDate(releaseDays[Number(batchNumber) - 1])}
+                Back to {formatDate(levelData.releaseDays[Number(batchNumber) - 1])}
             </Button>
         );
     else if (typeof batchNumber === "string")
@@ -36,7 +39,7 @@ const BackButton = () => {
             <Button
                 icon="arrow-left-inverted"
                 iconPosition="left"
-                to="/levels/"
+                to={`${themeSlug}levels/`}
                 inverted={true}
                 classList={['backTo']}
             >
@@ -47,7 +50,7 @@ const BackButton = () => {
         <Button
             icon="arrow-left-inverted"
             iconPosition="left"
-            to="/"
+            to={`${themeSlug}`}
             inverted={true}
             classList={['backTo']}
         >

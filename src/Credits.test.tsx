@@ -1,6 +1,5 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import AppWrapper from 'AppWrapper';
+import AppWrapper from './AppWrapper';
 
 test('renders Trailers SECTION', () => {
   render(<AppWrapper />);

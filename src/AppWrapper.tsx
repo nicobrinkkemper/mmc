@@ -1,19 +1,31 @@
-import App from "App";
-import { BrowserRouter, BrowserRouterProps } from "react-router-dom";
+import App from "./App";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { ThemeProvider } from "./theme/ThemeProvider";
+import { themeKeys } from "./theme/ThemeContext";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "./ErrorFallback";
 
-const AppWrapper = ({
-  routerProps = {},
-}: {
-  routerProps?: BrowserRouterProps;
-}) => (
-  <HelmetProvider>
-    <BrowserRouter {...routerProps}>
-      <div className="App-wrapper">
-        <App />
-      </div>
-    </BrowserRouter>
-  </HelmetProvider>
+const themeRoutes = ['', ...themeKeys].map((theme) => (
+  {
+    path: `${theme}/*`,
+    element: (<ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider >
+    ),
+  }
+))
+
+const router = createBrowserRouter(themeRoutes);
+
+const AppWrapper = () => (
+  <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+  >
+    <HelmetProvider>
+      <RouterProvider router={router} />
+    </HelmetProvider >
+  </ErrorBoundary>
 );
 
 export { AppWrapper };

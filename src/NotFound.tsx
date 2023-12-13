@@ -2,29 +2,29 @@ import "./NotFound.css";
 import Button from "./Button";
 import Card from "./Card";
 import Seo from "./Seo";
-import { DEFAULT_TITLE } from "./constants";
+import { useTheme } from "./theme/useTheme";
 
-const NotFound = ({error}:{error:string}) => {
+const NotFound = ({ error }: { error?: string }) => {
+  const { themeSlug, info: { caps } } = useTheme();
   return (
     <div className="NotFound">
       <Card>
         <p>This page was not found, sorry! Jank can happen sometimes.</p>
-        <p>The error message for the web developer: {error}</p>
+        {error ? <p>The error message for the web developer: {error}</p> : null}
         <p>
-          <Button primary={true} icon="arrow-right" to="/levels/">
+          <Button primary={true} icon="arrow-right" to={`${themeSlug}levels/`}>
             To the levels
           </Button>
         </p>
         <p>
-          <Button icon="arrow-right" to="/">
+          <Button icon="arrow-right" to={`${themeSlug}`}>
             To homepage
           </Button>
         </p>
       </Card>
-      <Seo title={`404 | Jank Not Found | ${DEFAULT_TITLE}`} />
-    </div>
+      <Seo title={`404 | Jank Not Found | ${caps}`} />
+    </div >
   );
 };
 
 export { NotFound };
-export default NotFound;

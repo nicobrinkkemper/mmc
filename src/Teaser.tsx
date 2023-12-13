@@ -2,17 +2,15 @@ import React from "react";
 import CountDown, { CountdownRenderProps } from "react-countdown";
 import "./Teaser.css";
 import { YouTubeIframe } from "./YoutubeIframe";
-import { startDate } from "useLevelData";
-import Button from "Button";
-import Card from "Card";
+import { useLevelData } from "./useLevelData";
+import Card from "./Card";
+import { ToTheLevels } from "./ToTheLevels";
 const trailerYtId = "3FtgBWY0XVY";
 const Completionist = () => {
   return (
     <span style={{ display: "flex", margin: "1rem 0", color: "#000" }}>
-      <Button primary={true} icon="arrow-right" to="/levels/">
-        To the levels
-      </Button>
-    </span>
+      <ToTheLevels />
+    </span >
   );
 };
 
@@ -29,37 +27,36 @@ const renderer = ({
   } else {
     // Render a countdown
     return (
-      <>
-        <p className="countdown">
-          <strong>
-            {days}
-            {"\u00A0"}days{"\u00A0"}
-          </strong>
-          <strong>
-            {hours}
-            {"\u00A0"}hours{"\u00A0"}
-          </strong>
-          <strong>
-            {minutes}
-            {"\u00A0"}minutes{"\u00A0"}
-          </strong>
-          <strong>
-            {seconds}
-            {"\u00A0"}seconds{"\u00A0"}
-          </strong>
-        </p>
-      </>
+      <p className="countdown">
+        <strong>
+          {days}
+          {"\u00A0"}days{"\u00A0"}
+        </strong>
+        <strong>
+          {hours}
+          {"\u00A0"}hours{"\u00A0"}
+        </strong>
+        <strong>
+          {minutes}
+          {"\u00A0"}minutes{"\u00A0"}
+        </strong>
+        <strong>
+          {seconds}
+          {"\u00A0"}seconds{"\u00A0"}
+        </strong>
+      </p>
     );
   }
 };
 
 const Teaser = () => {
+  const { startDate } = useLevelData();
   return (
     <div className="Teaser">
       <div className="youtubeWrapper">
-          <YouTubeIframe
-            videoId={trailerYtId}
-          />
+        <YouTubeIframe
+          videoId={trailerYtId}
+        />
       </div>
       <Card>
         <CountDown

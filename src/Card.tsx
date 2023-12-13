@@ -1,71 +1,44 @@
+
 import { PropsWithChildren } from "react";
 import { Link, To } from "react-router-dom";
-import cardTexture1x from "./assets/card_texture1x.webp";
-import junior1x from "./assets/junior1x.webp";
-import junior2x from "./assets/junior2x.webp";
-import junior3x from "./assets/junior3x.webp";
-import map1x from "./assets/map1x.webp";
-import map2x from "./assets/map2x.webp";
-import map3x from "./assets/map3x.webp";
-
+import classnames from "classnames";
+import { useTheme } from "./theme/useTheme";
+import { Theme } from "./theme/ThemeContext";
+import { PublicImage } from "./PublicImage";
 const illustrations = {
-  junior: (
-    <picture className="Illustration-picture">
-      <source
-        srcSet={`${junior1x} 140w, ${junior2x} 280w, ${junior3x} 560w`}
-      />
-      <img
-        src={cardTexture1x}
-        className="Illustration-img"
-        alt="Drawing by Lektor Junior!"
-        width="100%"
-      />
-    </picture>
-  ),
-  map : (
-    <picture className="Illustration-picture">
-      <source
-        srcSet={`${map1x} 140w, ${map2x} 280w, ${map3x} 560w`}
-      />
-      <img
-        src={cardTexture1x}
-        className="Illustration-img"
-        alt="A map!"
-        width="100%"
-      />
-    </picture>
-  )
+  '7mmc': {
+    card: (
+      <PublicImage name={'illustration'} type={'illustration'} />
+    )
+  },
+  '8mmc': {
+    card: (
+      <PublicImage name={'illustration'} type={'illustration'} />
+    )
+  },
 };
 
-type allowedIllustration = keyof typeof illustrations;
 export type CardProps = PropsWithChildren<{
-  illustration?: allowedIllustration;
+  illustration?: keyof typeof illustrations[Theme];
   disabled?: boolean;
   to?: To;
   className?: string;
 }>;
 
-const createIllustration = (illustration: allowedIllustration) => {
-  return () => (
-    <span className={["Illustration", illustration].join(" ")}>
-      {illustrations[illustration]}
-    </span>
-  );
-};
-
 function hasIllustration(
-  key?: allowedIllustration
-): key is allowedIllustration {
+  theme: Theme,
+  key?: keyof typeof illustrations[Theme]
+): key is Exclude<typeof key, undefined> {
   return Boolean(
-    typeof key === "string" && typeof illustrations[key] === "object"
+    typeof key === "string" && typeof illustrations[theme][key] === "object"
   );
 }
 
-const WrapLink = ({ children, to, disabled }: CardProps) => {
+const WrapLink = ({ children, to, disabled, illustration, className }: CardProps) => {
   if (typeof to === "undefined" || disabled) return <>{children}</>;
   else
     return (
-      <Link to={to} className="Clickable">
+      <Link to={to} className={classnames("Clickable", illustration, className)}>
         {children}
       </Link>
     );
@@ -73,18 +46,18 @@ const WrapLink = ({ children, to, disabled }: CardProps) => {
 
 const Card = ({ children, illustration, disabled = false, to, className }: CardProps) => {
   const classes = ["Card", illustration];
+  const { theme } = useTheme();
+  const hasExtra = hasIllustration(theme, illustration);
   if (className) classes.push(className);
-  if (hasIllustration(illustration)) classes.push("hasIllustration");
+  if (hasExtra) classes.push("hasIllustration");
   if (disabled) classes.push("disabled");
-  const isClickable = typeof to === "string";
-  if (isClickable) classes.push("isClickable");
-  const Illustration = hasIllustration(illustration)
-    ? createIllustration(illustration)
-    : () => null;
+  if (typeof to === "string") classes.push("isClickable");
   return (
-    <div className={classes.join(" ")}>
+    <div className={classnames(classes)}>
       <WrapLink to={to} disabled={disabled}>
-        <Illustration />
+        {hasExtra && <span className={classnames("Illustration", illustration)}>
+          {illustrations[theme][illustration]}
+        </span>}
         <div className="Card-content">{children}</div>
       </WrapLink>
     </div>

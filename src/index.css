@@ -5,115 +5,135 @@
   box-sizing: border-box;
 }
 
-
-body,
-html,
-#root,
-.App {
-  width: 100%;
-}
-
-a{
+a {
   color: inherit;
 }
-.tags > span,
-.highlight{
-  position:relative
+
+.tags>span,
+.highlight {
+  position: relative;
+  min-width: var(--tag-min-width, inherit);
+  text-align: var(--tag-text-align, inherit);
+  color: var(--tag-color, var(--text-color, inherit));
 }
 
 .tags span:before,
-.highlight:before{
-    top: -.3em;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    content:'';
-    position: absolute;
-    background-image: url('./assets/highlight_yellow.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    transform: scale(1.3,1.5);
-    transform-origin: center;
-    mix-blend-mode: multiply;
+.highlight:before {
+  overflow: visible;
+  position: absolute;
+  content: var(--tag-before-content, none);
+  top: var(--tag-before-top, 0);
+  left: var(--tag-before-left, 0);
+  right: var(--tag-before-right, 0);
+  bottom: var(--tag-before-bottom, 0);
+  background: var(--tag-before-background, none);
+  transform: var(--tag-before-transform, none);
+  mix-blend-mode: var(--tag-before-mix-blend-mode, darken);
 }
+
 .tags span.new:before,
-.tags span.precision:before {
-  background-image: url('./assets/highlight_magenta.svg');
+.tags span.precision:before,
+.tags span.unreleased:before {
+  background: var(--tag-before-new-background);
 }
+
 .tags span.new:before,
 .tags span.gimmick:before,
 .tags span.puzzle:before,
-.tags span.music:before  {
-  background-image: url('./assets/highlight_cyan.svg');
+.tags span.music:before {
+  background: var(--tag-before-other-background);
 }
+
 .tags span.troll:after {
-  content:'';
+  content: '';
   margin-top: -.2em;
-  bottom:.2em;
-  width:1.5em;
-  height:1.5em;
+  bottom: .2em;
+  width: 1.5em;
+  height: 1.5em;
   background-size: 100% 100%;
-  background-image: url('./assets/troll_kiavik.webp');
-}
-.tags span.unreleased:before {
-  background-image: url('./assets/highlight_magenta.svg');
+  background-image: url('./assets/7mmc/troll_kiavik.webp');
 }
 
 
 
-a:active{
-  color:#2c001f
+
+
+a:active {
+  color: var(--link-color-active)
 }
-#root,
-.App {
-  position: relative;
-  overflow-x: auto;
-}
-div + h1 {
+
+div+h1 {
   margin-top: 2rem;
 }
 
-h2 ~ p {
-  margin-top:.2rem;
+h2~p {
+  margin-top: .2rem;
 }
-p ~ a {
-  margin-top:.75rem;
+
+p~a {
+  margin-top: .75rem;
 }
-p ~ p {
-  margin-top:.75rem;
+
+p~p {
+  margin-top: .75rem;
 }
 
 h1 {
   text-align: left;
-  padding: 0 0 1rem 0;
-  line-height: 1.3rem;
-  font-size: 1.5rem;
-  font-weight: normal;
-  letter-spacing: normal;
+  padding: 0;
+  margin: 0;
+  letter-spacing: var(--h1-letter-spacing, normal);
+  font: var(--h1-font);
 }
 
+h2,
+h3 {
+  font: var(--h2-font);
+}
+
+p {
+  text-align: left;
+}
+
+p>strong {
+  font-weight: bold;
+}
+
+h1,
+h2,
+p {
+  mix-blend-mode: var(--text-mix-blend-mode);
+  text-shadow: var(--text-shadow);
+  letter-spacing: var(--letter-spacing);
+}
+
+code {
+  font-family: var(--font-monospace);
+}
+
+
 .Logo {
-  width: 21.875rem;
-  max-width: 100%;
-  align-self: center;
-  justify-self: center;
-  padding: 1rem;
-}
-.Logo > a {
-  display: block;
-  height: 100%;
+  display: flex;
+  justify-content: center;
   width: 100%;
-  cursor: pointer;
 }
-.Logo > a:after{
-    content: inherit;
-}
+
 .Logo.small {
+  justify-content: left;
+}
+
+.Logo.small .Logo-img {
   width: 9rem;
   height: 3rem;
-  padding: 0;
-  align-self: center;
-  justify-self: center;
+  object-fit: contain;
+  object-position: 0 50%;
+}
+
+.Logo.normal .Logo-img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  object-position: 50% 50%;
 }
 
 .toolbar {
@@ -122,10 +142,10 @@ h1 {
   width: 100%;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  height: 300px;
 }
+
 .toolbar.small {
-  padding: 0 0 2rem 0;
   display: flex;
   flex: 1 0 0;
   width: 100%;
@@ -133,30 +153,20 @@ h1 {
   align-items: center;
   justify-content: space-between;
 }
-.toolbar.big {
-  justify-content: flex-end;
-  height: 13rem;
-}
 
 .toolbar .AboutBtn {
-  margin:1em 0 0 0;
-  height:auto;
-}
-.toolbar.big .Logo {
-  flex: 0 1 auto;
-  position: absolute; /* new */
-  left: 50%;
-  z-index: 100;
-  transform: translateX(-50%);
-}
-.toolbar .info-inverted {
-  max-width: 7rem;
-  
+  display: block;
+  position: absolute;
+  height: auto;
+  width: auto;
+  top: 0;
+  right: 0;
 }
 
 /* Shadows */
-.youtubeWrapper, .Card{
-  box-shadow: 0 1px 3px 1px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+.youtubeWrapper,
+.Card {
+  box-shadow: var(--box-shadow);
 }
 
 /* COMPONENTS */
@@ -164,31 +174,30 @@ h1 {
   position: relative;
   padding: 0 1rem;
   margin: 0 auto;
-  border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
-  width: calc(100vw - 2rem);
-  max-width: 30rem;
-  background-image: url('./assets/card_texture1x.webp');
-  min-width: 10rem;
+  border-radius: var(--card-border-radius);
+  background: var(--card-background);
+  width: 100%;
 }
-.Card.gridpaper {
-  background-image: url("assets/gridpaper1x.png");
-  background-size: 5rem 5rem;
-}
+
 .Card-content {
   display: flex;
   flex-flow: column;
 }
+
 .Card-content p:first-of-type,
 .Card-content h2:first-of-type {
-  margin-top:1rem;
+  margin-top: 1rem;
 }
+
 .Card-content p:last-of-type,
 .Card-content .Button:last-of-type {
   margin-bottom: 1rem;
 }
-.Card-content .BatchCard{
-  margin:1rem 0;
+
+.Card-content .BatchCard {
+  margin: 1rem 0;
 }
+
 .Card .Clickable {
   cursor: pointer;
   height: 100%;
@@ -197,6 +206,7 @@ h1 {
   color: inherit;
   text-decoration: none;
 }
+
 .Card .Clickable:before {
   content: "";
   position: absolute;
@@ -205,25 +215,30 @@ h1 {
   width: 100%;
   height: 100%;
 }
+
 .Card .Illustration-picture {
   display: flex;
 }
+
 .Card.hasIllustration .Illustration {
   position: absolute;
   width: 6rem;
   bottom: 3rem;
   right: 4rem;
-  transform: rotate(4deg) scale(2,2) translate(2rem, 2rem);
-  box-shadow: 0 1px 3px 1px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transform: rotate(4deg) translate(2rem, 2rem);
+  box-shadow: var(--box-shadow);
 }
+
 @media only screen and (min-width: 620px) {
   .Card {
     min-width: 34.25rem;
   }
+
   .Button {
     max-width: 34.25rem;
   }
-  .Card.hasIllustration .Illustration{
+
+  .Card.hasIllustration .Illustration {
     position: relative;
     float: right;
     bottom: inherit;
@@ -242,122 +257,105 @@ h1 {
   cursor: pointer;
   border: none;
   text-decoration: none;
-  background:none;
+  background: none;
 }
+
 .Button-inner {
   position: relative;
-  font-family: "BordersDivideButHeartsShallConquer";
-  font-size: 1.4rem;
-  line-height: 1.125rem;
   border: none;
   display: inline-flex;
   gap: 1rem;
   max-height: 3rem;
-  flex:1;
+  flex: 1;
   align-items: center;
-  font-weight: normal;
   padding: 0.875rem 1.75rem;
-  background-image: url('./assets/card_texture1x.webp');
-  background-size: 100% 100%;
+  color: var(--button-color);
+  font: var(--button-font);
+  background: var(--button-background);
+  border-radius: var(--button-border-radius);
 }
-.navigation  .Button-inner:after,
-.App-header .Button-inner:after,
-.Card .Button-inner:after {
-  content: '';
+
+.Button-inner:after {
+  content: var(--button-after-content, none);
   position: absolute;
-  top:0;
-  left:0;
-  height:100%;
-  width:100%;
-  mix-blend-mode: color-burn;
-  box-shadow: 0 1px 3px 1px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--button-after-background, inherit);
+  mix-blend-mode: var(--button-after-mix-blend-mode, none);
+  box-shadow: var(--button-after-box-shadow, none);
 }
-.navigation .Button-inner:after{
-  background:#ef25d8;
+
+
+.AboutBtn .Button-inner:after {
+  background: var(--about-button-after-background, var(--button-after-background, inherit));
 }
-.App-header .Button-inner:after{
-  background:#6dd7fe;
-}
+
 .Card .Button-inner:after {
-  background: #facd00;
-  border: 1px solid rgba(0,0,0,.5);
+  background: var(--card-button-after-background, var(--button-after-background, inherit));
+  border: var(--card-button-after-border, inherit);
 }
-.Button.info-inverted{
-  width:inherit;
-}
+
 .Button-inner .Icon {
   height: 1.125rem;
-  width:1.125rem;
+  width: 1.125rem;
 }
+
 .Button-inner .Icon svg {
   height: 100%;
   width: 100%;
 }
+
 .Button-inner .Icon.folder,
 .Button-inner .Icon.play-button {
   height: 1.5rem;
   width: 1.5rem;
 }
+
 .Button-inner .Icon.arrow-right {
   height: 1.125rem;
   width: 1.125rem;
 }
+
 .Button-inner .Icon.arrow-left {
   height: 1.125rem;
   width: 1.125rem;
 }
+
 .Button-inner .Icon.arrow-left-inverted {
   height: 1.125rem;
   width: 1.725rem;
 }
+
 .Button-inner .Icon.info-inverted {
   width: 1.5rem;
   height: 1.5rem;
 }
-.info-inverted {
-  width: auto;
+
+.Button.iconIsLeft .Button-inner {
+  padding-left: 1rem;
 }
+
+.Button:not(.iconIsLeft) .Button-inner {
+  padding-right: 1.4rem;
+}
+
 /* TYPOGRAPHY */
 body {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
   line-height: 1.125rem;
-  color: #f6f7f8;
 }
+
 @media only screen and (min-width: 620px) {
+
   html,
   body {
     font-size: 18px;
   }
-}
-h1{
-  font-family: "HeaderMarker";
-  font-weight: 900;
-}
-h2,
-h3 {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1rem;
-  font-weight: bolder;
-}
-p {
-  font-size: 1rem;
-  line-height: 1em;
-  text-align: left;
-  line-height: 1.2em;
-}
-p > strong {
-  font-weight: bold;
-}
-h1, h2, p{
-  mix-blend-mode: multiply;
-  text-shadow: 0 -1px #d8d8d8;
-}
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
 }
 
 .tag {
@@ -365,10 +363,12 @@ code {
   font-size: 0.75rem;
   line-height: 0.8125rem;
 }
+
 .stars {
   width: 3.27rem;
   display: inline-block;
 }
+
 .star svg {
   width: 0.8125rem;
   height: 0.75rem;
@@ -378,32 +378,38 @@ code {
   font-family: "SuperMarioMakerExtended";
   font-style: normal;
   font-weight: 400;
-  src: url("./fonts/SuperMarioMakerExtended.eot"); /* IE9 Compat Modes */
+  src: url("./fonts/SuperMarioMakerExtended.eot");
+  /* IE9 Compat Modes */
   src: local("Super-Mario-Maker-Extended"), local("SuperMarioMakerExtended"),
-    url("./fonts/SuperMarioMakerExtended.eot?#iefix")
-      format("embedded-opentype"),
-    /* IE6-IE8 */ url("./fonts/SuperMarioMakerExtended.woff2") format("woff2"),
-    /* Super Modern Browsers */ url("./fonts/SuperMarioMakerExtended.woff")
-      format("woff"),
-    /* Modern Browsers */ url("./fonts/SuperMarioMakerExtended.ttf")
-      format("truetype"),
+    url("./fonts/SuperMarioMakerExtended.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */
+    url("./fonts/SuperMarioMakerExtended.woff2") format("woff2"),
+    /* Super Modern Browsers */
+    url("./fonts/SuperMarioMakerExtended.woff") format("woff"),
+    /* Modern Browsers */
+    url("./fonts/SuperMarioMakerExtended.ttf") format("truetype"),
     /* Safari, Android, iOS */
-      url("./fonts/SuperMarioMakerExtended.svg#SuperMarioMakerExtended")
-      format("svg"); /* Legacy iOS */
+    url("./fonts/SuperMarioMakerExtended.svg#SuperMarioMakerExtended") format("svg");
+  /* Legacy iOS */
 }
 
 @font-face {
   font-family: "SuperMario";
   font-style: normal;
   font-weight: 400;
-  src: url("./fonts/SuperMario.eot"); /* IE9 Compat Modes */
+  src: url("./fonts/SuperMario.eot");
+  /* IE9 Compat Modes */
   src: local("Super-Mario"), local("SuperMario"),
     url("./fonts/SuperMario.eot?#iefix") format("embedded-opentype"),
-    /* IE6-IE8 */ url("./fonts/SuperMario.woff2") format("woff2"),
-    /* Super Modern Browsers */ url("./fonts/SuperMario.woff") format("woff"),
-    /* Modern Browsers */ url("./fonts/SuperMario.ttf") format("truetype"),
-    /* Safari, Android, iOS */ url("./fonts/SuperMario.svg#SuperMario")
-      format("svg"); /* Legacy iOS */
+    /* IE6-IE8 */
+    url("./fonts/SuperMario.woff2") format("woff2"),
+    /* Super Modern Browsers */
+    url("./fonts/SuperMario.woff") format("woff"),
+    /* Modern Browsers */
+    url("./fonts/SuperMario.ttf") format("truetype"),
+    /* Safari, Android, iOS */
+    url("./fonts/SuperMario.svg#SuperMario") format("svg");
+  /* Legacy iOS */
 }
 
 @font-face {
@@ -413,18 +419,22 @@ code {
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: "HeaderMarker";
   src: url("./fonts/HeaderMarker.otf");
 }
+
 @font-face {
   font-family: "HeartWarming";
   src: url("./fonts/HeartWarming.otf");
 }
+
 @font-face {
   font-family: "HeartWarmingExtra";
   src: url("./fonts/HeartWarmingExtra.otf");
 }
+
 @font-face {
   font-family: "BordersDivideButHeartsShallConquer";
   src: url('./fonts/BordersDivideButHeartsShallConquer.otf');

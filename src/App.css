@@ -1,35 +1,23 @@
-.ie-fixMinHeight {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  flex-flow: column;
-  /* Center vertically */
-  align-items: center;
-
-  /*Center horizontaly */
-  justify-content: center;
-
-  /*Center horizontaly ie */
-  -ms-flex-pack: center;
-  width: 100%;
-  min-height:100vh;
-}
-
 .App {
-  display:flex;
+  width: 100%;
+  gap: 1rem;
+  display: flex;
   align-items: center;
   -ms-align-items: column;
   justify-content: center;
   -ms-justify-content: column;
   flex-direction: column;
   -ms-flex-direction: column;
-  background-image: url("assets/gridpaper_special1x.webp");
-  background-size: 512px 512px;
-  background-color: #FFF;
-  background-repeat: repeat;
   min-height: 100vh;
-  font-size: calc(10px + 2vmin);
-  color: #111;
+  background: var(--app-background);
+  color: var(--text-color);
+  font: var(--app-font);
+}
+
+.App-header,
+.App-body {
+  width: calc(100vw - 2rem);
+  max-width: 34rem;
 }
 
 
@@ -38,68 +26,62 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-bottom:1em;
-  max-width: calc(100% - 1rem);
-  width: 30rem;
+  margin: 1rem 0;
+  gap: 1rem;
 }
+
 .App-body {
   display: flex;
   flex: 1 0 0;
 }
+
 .App-link {
-  color: #61dafb;
+  color: var(--link-color);
 }
-.App-footer{
+
+.App-footer {
   display: flex;
-  background: url('./assets/card_texture1x.webp');
+  background: var(--app-footer-background, inherit);
   padding: 1rem 0;
-  margin-top:2rem;
+  margin-top: 2rem;
   justify-content: center;
   width: 100%;
 }
-.App-footer a:last-child {
-  padding-right:0;
-}
+
 .App-footer a {
   font-size: .875rem;
-  color:#111;
+  color: var(--app-footer-color, inherit);
   text-decoration: none;
-  padding-right:1rem;
-}
-.App-footer a + a {
-  padding-left:1rem;
-  border-left:1px solid #111;
+  padding-right: 1rem;
 }
 
-.copy{
-  line-height:1.3em;
+.App-footer a:last-child {
+  padding-right: 0;
 }
-.copy.larger p {
-  font-size: 1rem;
-  line-height:1.65rem;
+
+.App-footer a+a {
+  padding-left: 1rem;
+  border-left: 1px solid var(--app-footer-color, #111);
 }
-.youtubeFlexDisable{
-  padding:0 0 1rem 0;
-  display:block;
+
+
+.youtubeFlexDisable {
+  display: block;
   width: 100%;
 }
 
-.youtubeContainer{
+.youtubeContainer {
   position: relative;
   padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
 }
-.youtubeContainer iframe{
-  position:absolute;
-	top:0;
-	left:0;
-	width:100%;
-  height:100%;
+
+.youtubeContainer iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: none;
-}
-@media only screen and (min-width: 620px) {
-  .App-header{
-    min-width: 34.25rem;
-  }
 }

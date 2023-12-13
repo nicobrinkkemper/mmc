@@ -1,9 +1,10 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "cSpell.ignorePaths": [
-        "./src/data/MasterSpreadsheet.json",
-        "./src/data/MasterSpreadsheet.csv",
-        "./package.json",
-        "./package-lock.json"
-    ],
+  "cSpell.ignorePaths": [
+    "./src/data/7mmc.json",
+    "./src/data/7mmc.csv",
+    "./package.json",
+    "./package-lock.json"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": ["gridpaper", "papaparse", "Youtube"]
 }
