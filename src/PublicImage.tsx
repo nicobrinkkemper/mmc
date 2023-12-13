@@ -18,7 +18,7 @@ export const PublicImage = ({ name, type }: { name: string, type: keyof typeof i
   const { width, height, dir } = imageInfo[type];
   const mode = width === 'auto' ? "max-height" : "max-width";
   const suffix = width === 'auto' ? height : width;
-  const base = `/${themeSlug}/${dir}${transformName(name)}`;
+  const base = `/${themeSlug}${dir}${transformName(name)}`;
   const preload = `${base}-${suffix * 0.1}.webp`;
   const normal = `${base}-${suffix}.webp`;
   const double = `${base}-${suffix * 2}.webp`;
