@@ -1,0 +1,35 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c2b2b10e.css",
+    "main.js": "/static/js/main.132d11ba.js",
+    "static/media/HeaderMarker.otf": "/static/media/HeaderMarker.624c0796f2df1815eb99.otf",
+    "static/media/SuperMario.svg": "/static/media/SuperMario.cb1574bee36037d924b5.svg",
+    "static/media/HeartWarmingExtra.otf": "/static/media/HeartWarmingExtra.7551abcfe096028c5917.otf",
+    "static/media/BordersDivideButHeartsShallConquer.otf": "/static/media/BordersDivideButHeartsShallConquer.3fa057ea2db84c3b813b.otf",
+    "static/media/gridpaper_special3x.webp": "/static/media/gridpaper_special3x.8e63eaa78c9fecbe5a98.webp",
+    "static/media/HeartWarming.otf": "/static/media/HeartWarming.1fa023dc3367881ffc74.otf",
+    "static/media/SuperMario.eot": "/static/media/SuperMario.bbf8705419600048f7df.eot",
+    "static/media/SuperMario.ttf": "/static/media/SuperMario.dba3f8e2b96fd6c40c6b.ttf",
+    "static/media/SuperMarioMakerExtended.svg": "/static/media/SuperMarioMakerExtended.a1744c1b2d3c0d13ec86.svg",
+    "static/media/SuperMario.woff": "/static/media/SuperMario.0f95e5b38b0b0bb604d1.woff",
+    "static/media/lato-regular.woff": "/static/media/lato-regular.5c1825be0938a36dab7c.woff",
+    "static/media/lato-regular.woff2": "/static/media/lato-regular.06d51f48a1719e29432e.woff2",
+    "static/media/SuperMarioMakerExtended.eot": "/static/media/SuperMarioMakerExtended.53bb18ecbcc3946fda61.eot",
+    "static/media/SuperMario.woff2": "/static/media/SuperMario.4c214cb77795476fbce6.woff2",
+    "static/media/SuperMarioMakerExtended.ttf": "/static/media/SuperMarioMakerExtended.9c8144efa7eb8da405d0.ttf",
+    "static/media/highlight_yellow.svg": "/static/media/highlight_yellow.4aa00f650747fe2b95b9.svg",
+    "static/media/highlight_magenta.svg": "/static/media/highlight_magenta.07df81633629f2cf7e53.svg",
+    "static/media/SuperMarioMakerExtended.woff": "/static/media/SuperMarioMakerExtended.32ddee02a1b74d05549b.woff",
+    "static/media/SuperMarioMakerExtended.woff2": "/static/media/SuperMarioMakerExtended.622ae5c71c4ca6285839.woff2",
+    "static/media/highlight_cyan.svg": "/static/media/highlight_cyan.987e3b9f96ddf920556a.svg",
+    "static/media/card_texture.webp": "/static/media/card_texture.da9d190b423384d38515.webp",
+    "static/media/troll_kiavik.webp": "/static/media/troll_kiavik.74812003b9401dbed969.webp",
+    "index.html": "/index.html",
+    "main.c2b2b10e.css.map": "/static/css/main.c2b2b10e.css.map",
+    "main.132d11ba.js.map": "/static/js/main.132d11ba.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c2b2b10e.css",
+    "static/js/main.132d11ba.js"
+  ]
+}
