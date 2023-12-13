@@ -19,11 +19,11 @@ export const PublicImage = ({ name, type }: { name: string, type: keyof typeof i
   const { width, height, dir } = imageInfo[type];
   const mode = width === 'auto' ? "max-height" : "max-width";
   const suffix = width === 'auto' ? height : width;
-  let base = `${themeSlug}${dir}${transformName(name)}`;
-  if (BASE_URL !== '/') base = `${BASE_URL}/${base}`;
-  const preload = `/${base}-${suffix * 0.1}.webp`;
-  const normal = `/${base}-${suffix}.webp`;
-  const double = `/${base}-${suffix * 2}.webp`;
+  let base = `${BASE_URL}${BASE_URL.endsWith("/") ? "" : "/"}${themeSlug}${dir}${transformName(name)}`;
+
+  const preload = `${base}-${suffix * 0.1}.webp`;
+  const normal = `${base}-${suffix}.webp`;
+  const double = `${base}-${suffix * 2}.webp`;
   return (
     <picture className={`${type}Picture`} style={{ display: 'flex' }}>
       <Suspense fallback={<img src={preload}
