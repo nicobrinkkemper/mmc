@@ -37,7 +37,7 @@ const Batch = () => {
 
         {batchLevels.map((level, i) => {
           const tags = level.tags.split(",");
-          const to = `${themeSlug}level/${batchNumber}/${level.order}/`
+          const to = `/${themeSlug}level/${batchNumber}/${level.order}/`
           return (
             <Card key={to} to={to}>
               <div className={"LevelCard"}>

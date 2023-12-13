@@ -1,6 +1,5 @@
 import { PropsWithChildren, useState, useMemo, useCallback, useEffect } from 'react';
 import { Theme, ThemeContext, createThemeContext, nextTheme, prevTheme, themeKeys } from './ThemeContext';
-import { useLocation } from 'react-router-dom';
 
 const defaultTheme = '8mmc';
 const hasValidParam = (themeParam: string): themeParam is Theme => themeKeys.includes(themeParam as Theme)
@@ -21,16 +20,14 @@ export function ThemeProvider({ children, theme: themeParam }: Readonly<PropsWit
             setTheme(defaultThemeFromParam);
         }
     }, [theme, themeParam, defaultThemeFromParam]);
-    const { pathname } = useLocation();
+    if (theme !== '8mmc' && theme !== '7mmc') console.error('Invalid theme', theme);
     const contextValue = useMemo(() => createThemeContext({
         theme,
         setTheme,
         themeUp,
         themeDown,
-        locationWithoutTheme: pathname.replace(theme + '/', ''),
-        themeSlug: `/${theme}/`,
+        themeSlug: `${theme}/`,
     }), [
-        pathname,
         theme,
         themeDown,
         themeUp

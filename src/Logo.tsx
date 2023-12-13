@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useTheme } from "./theme/useTheme";
 import classNames from "classnames";
 import { PublicImage } from "./PublicImage";
+import { BASE_URL } from "./constants";
 const logos = {
   '7mmc': {
     logo_small: <PublicImage name={'logo_simple'} type={'logo_small'} />,
@@ -39,16 +40,23 @@ const ArrowRight = () => (
 const Logo = ({ logo = "logo", small = false }: LogoProps) => {
   if (small) logo = 'logo_small'
   if (logo === 'logo_small') small = true;
-  const { theme, themeSlug, locationWithoutTheme, info: { nextTheme, prevTheme } } = useTheme();
+  const { theme, themeSlug, info: { nextTheme, prevTheme } } = useTheme();
+  let stripBase = window.location.pathname;
+  if (stripBase.startsWith(BASE_URL)) stripBase = stripBase.slice(BASE_URL.length);
+  if (stripBase.startsWith('/')) stripBase = stripBase.slice(1);
+  if (stripBase.startsWith(theme)) stripBase = stripBase.slice(theme.length);
+  if (stripBase.startsWith('/')) stripBase = stripBase.slice(1);
+  const nextThemeUrl = nextTheme + '/' + stripBase;
+  const prevThemeUrl = prevTheme + '/' + stripBase;
   return (
     <>
-      {!small ? <Link to={'/' + prevTheme + locationWithoutTheme}><ArrowLeft /></Link> : null}
+      {!small ? <Link to={`/${prevThemeUrl}`}><ArrowLeft /></Link> : null}
       <div className={classNames('Logo', small ? 'small' : 'normal')}>
-        <Link to={`${themeSlug}`}>
+        <Link to={`/${themeSlug}`}>
           <span className={classNames(logo)}>{logos[theme][logo]}</span>
         </Link>
       </div>
-      {!small ? <Link to={'/' + nextTheme + locationWithoutTheme}><ArrowRight /></Link > : null}
+      {!small ? <Link to={`/${nextThemeUrl}`}><ArrowRight /></Link > : null}
     </>
   );
 };

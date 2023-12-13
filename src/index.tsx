@@ -1,20 +1,12 @@
 import React from "react";
+import ReactDOM from "react-dom/client";
 import { AppWrapper } from "./AppWrapper";
 import "./index.css";
 
-import { hydrate, render } from "react-dom";
 
-const rootElement = document.getElementById("root");
-const AppJSX = (
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(
   <React.StrictMode>
     <AppWrapper />
   </React.StrictMode>
 );
-if (rootElement?.hasChildNodes()) {
-  hydrate(AppJSX, rootElement);
-} else {
-  render(AppJSX, rootElement);
-}
-
-
-

@@ -2,14 +2,16 @@
   "name": "ymm",
   "version": "1.0.0",
   "private": true,
-  "homepage": "/7mmc/",
+  "homepage": "https://mmcelebration.com",
   "scripts": {
     "start": "run-s startup react:start",
     "lint": "eslint ./src --fix",
     "serve": "serve build",
     "build": "run-s startup react:build",
-    "build-gh": "export BUILD_PATH='_site'; run-s startup react:build",
+    "build-gh": "export PUBLIC_URL='/7mmc'; npm run build",
     "postbuild": "react-snap",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build-gh",
     "test": "run-s startup react:testing",
     "react:test": "react-scripts test",
     "react:build": "react-scripts build",
@@ -48,12 +50,9 @@
     ]
   },
   "reactSnap": {
-    "skipThirdPartyRequests": true,
-    "cacheAjaxRequests": false,
     "puppeteerArgs": [
       "--no-sandbox"
     ],
-    "concurrency": 12,
     "inlineCss": false
   },
   "devDependencies": {
@@ -76,6 +75,7 @@
     "classnames": "^2.3.2",
     "clipboard": "^2.0.11",
     "cross-env": "^7.0.3",
+    "gh-pages": "^6.1.0",
     "google-auth-library": "^9.4.1",
     "googleapis": "^129.0.0",
     "htmdx": "^0.3.7",
