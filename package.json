@@ -1,6 +1,7 @@
 {
   "name": "ymm",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "homepage": "https://mmcelebrations.com/",
   "scripts": {
@@ -9,7 +10,7 @@
     "serve": "serve build",
     "build": "run-s startup react:build",
     "postbuild": "react-snap",
-    "test": "run-s startup react:test",
+    "test": "run-s startup react:testing",
     "react:test": "react-scripts test",
     "react:build": "react-scripts build",
     "react:start": "react-scripts start",
