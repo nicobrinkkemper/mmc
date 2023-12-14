@@ -4,20 +4,22 @@ import { useTheme } from "./theme/useTheme";
 import classNames from "classnames";
 import { PublicImage } from "./PublicImage";
 import { BASE_URL } from "./constants";
-import mmc7logos from "./data/public/7mmc/images.json";
-import mmc8logos from "./data/public/8mmc/images.json";
+import mmc7 from "./data/public/7mmc/images.json";
+import mmc8 from "./data/public/8mmc/images.json";
+
+type logoImageTypes = 'logo' | 'logo_simple' | 'logo_special' | 'logo_small';
 const logos = {
-  '7mmc': {
-    logo_small: <PublicImage {...mmc7logos['logo_simple']} height={60} name={'logo_simple'} type={'logo_small'} />,
-    logo: <PublicImage {...mmc7logos['logo']} height={200} name={'logo_simple'} type={'logo'} />,
-    logo_special: <PublicImage {...mmc7logos['logo_special']} height={200} name={'logo_special'} type={'logo'} />
-  },
-  '8mmc': {
-    logo_small: <PublicImage name={'logo'} height={60} type={'logo_small'} {...mmc8logos['logo']} />,
-    logo: <PublicImage name={'logo'} height={200} type={'logo'} {...mmc8logos['logo']} />,
-    logo_special: <PublicImage name={'logo'} height={200} type={'logo'} {...mmc8logos['logo']} />
-  }
+  '7mmc': mmc7 as Pick<typeof mmc7, logoImageTypes>,
+  '8mmc': mmc8 as Pick<typeof mmc8, 'logo' | 'logo_small'>
 } as const;
+
+function PublicLogo({ type }: Readonly<{ type: logoImageTypes }>) {
+  const { theme, info: { caps } } = useTheme();
+  const themeLogos = logos[theme];
+  let fallbackType = (type in themeLogos) ? type as keyof typeof themeLogos : 'logo';
+  const logo = themeLogos[fallbackType];
+  return <PublicImage alt={`${caps} Logo`} type={fallbackType} {...logo} />
+}
 
 export type LogoProps = PropsWithChildren<{
   logo?: keyof typeof logos['7mmc'];
@@ -41,7 +43,7 @@ const ArrowRight = () => (
 
 const Logo = ({ logo = "logo", small = false }: LogoProps) => {
   if (small) logo = 'logo_small'
-  if (logo === 'logo_small') small = true;
+  if (logo === 'logo_small') small = true
   const { theme, themeSlug, info: { nextTheme, prevTheme } } = useTheme();
   let stripBase = window.location.pathname;
   if (stripBase.startsWith(BASE_URL)) stripBase = stripBase.slice(BASE_URL.length);
@@ -55,7 +57,9 @@ const Logo = ({ logo = "logo", small = false }: LogoProps) => {
       {!small ? <Link to={`/${prevThemeUrl}`}><ArrowLeft /></Link> : null}
       <div className={classNames('Logo', small ? 'small' : 'normal')}>
         <Link to={`/${themeSlug}`}>
-          <span className={classNames(logo)}>{logos[theme][logo]}</span>
+          <span className={classNames(logo)}>
+            <PublicLogo type={logo} />
+          </span>
         </Link>
       </div>
       {!small ? <Link to={`/${nextThemeUrl}`}><ArrowRight /></Link > : null}

@@ -76,7 +76,7 @@ const LevelPage = () => (
   <>
     <header className="App-header">
       <div className="toolbar small">
-        <Logo small logo="logo_small" />
+        <Logo small logo="logo_simple" />
         <AboutButton />
       </div>
       <BackButton />
@@ -90,7 +90,7 @@ const BatchPage = () => (
   <>
     <header className="App-header">
       <div className="toolbar small">
-        <Logo logo="logo_small" />
+        <Logo logo="logo_simple" small />
         <AboutButton />
       </div>
       <WeekTrailer />

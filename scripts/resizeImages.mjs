@@ -45,13 +45,18 @@ function reduceJobGroupToData(data, job) {
       ? {
           [fallbackVersion]: [...data[reference][fallbackVersion], href],
         }
-      : { [fallbackVersion]: [href] }),
+      : {
+          [fallbackVersion]: [href],
+          original: job.original.original,
+          ...(placeholder && job.userInfo.resize),
+        }),
   };
   return {
     ...data,
     [reference]: outputConditional,
   };
 }
+
 function jobGroupToData(jobGroup) {
   return jobGroup.reduce(reduceJobGroupToData, {});
 }
@@ -104,7 +109,7 @@ function addJobOutput(job) {
       }, "");
 
   const reference = job.userInfo.reference
-    ? job.userInfo.reference
+    ? parse.snakecase(job) + job.userInfo.reference
     : parse.snakecase(job);
 
   return {
@@ -144,16 +149,11 @@ async function createFolder(job) {
 function createPlaceholderResize(job) {
   const {
     userInfo: { resize },
-    original: { originalSize },
   } = job;
-  const placeholderResize = {
-    width: 6,
-    height: 6,
-  };
-  for (let key in ["width", "height"])
-    placeholderResize[key] = Math.ceil(
-      (key in resize ? resize[key] : originalSize[key]) / 64
-    );
+  const placeholderResize = {};
+  for (let key of ["width", "height"])
+    if (key in resize)
+      placeholderResize[key] = Math.ceil(Number(resize[key]) / 32);
   return placeholderResize;
 }
 // create empty json file and create folders

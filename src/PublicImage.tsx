@@ -4,20 +4,19 @@ import { SNAP } from "./constants";
 // A Resource is an object with a read method returning the payload
 
 
-const imageInfo = {
-  level: { width: 580, height: 326 },
-  level_thumbnail: { width: 110, height: 110 },
-  maker: { width: 180, height: 180 },
-  logo_small: { width: "auto", height: 60 },
-  logo: { width: "auto", height: 200 },
-  logo_special: { width: "auto", height: 200 },
-  illustration: { width: 220, height: "auto" },
-} as const
+export type imageType =
+  | 'level'
+  | 'level_thumbnail'
+  | 'maker'
+  | 'logo_small'
+  | 'logo'
+  | 'logo_special'
+  | 'illustration'
 
 type WidthOrHeight = { width: number, height?: 'auto' } | { width?: 'auto', height: number } | { width: number, height: number };
 
 
-export const PublicImage = ({ name, type, placeholder, width = "auto", height = "auto", ...props }: { name: string, type: keyof typeof imageInfo, placeholder: string } & WidthOrHeight) => {
+export const PublicImage = ({ alt, type, placeholder, width = "auto", height = "auto", ...props }: { alt: string, type: imageType, placeholder: string } & WidthOrHeight) => {
   const mode = width === 'auto' ? "max-height" : "max-width";
   const size = Number(width === 'auto' ? height : width);
   const doubleSize = size * 2;
@@ -27,7 +26,7 @@ export const PublicImage = ({ name, type, placeholder, width = "auto", height = 
     className={`${type}Img`}
     width={width}
     height={height}
-    alt={name} style={{ color: 'rgba(0,0,0,0)', filter: "blur(8px)" }} />
+    alt={alt} style={{ color: 'rgba(0,0,0,0)', filter: "blur(8px)" }} />
   return (
     <picture className={`${type}Picture`} style={{ display: 'flex' }}>
       <Suspense fallback={
@@ -39,7 +38,7 @@ export const PublicImage = ({ name, type, placeholder, width = "auto", height = 
           src={double}
           srcSet={`${normal} ${size}w, ${double} ${doubleSize}w`}
           sizes={`(${mode}: ${size}px) ${size}px, ${doubleSize}px`}
-          alt={name}
+          alt={alt}
           width={width}
           height={height}
         /> : fallback}

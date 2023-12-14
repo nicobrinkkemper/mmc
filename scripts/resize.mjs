@@ -37,10 +37,13 @@ const resizeLevel = [
   {
     fileName: "[snakecase]-[width].webp",
     resize: { width: 110, height: 110 },
+    placeholder: true,
+    reference: "_thumbnail",
   },
   {
     fileName: "[snakecase]-[width].webp",
     resize: { width: 220, height: 220 },
+    reference: "_thumbnail",
   },
 ];
 
@@ -58,16 +61,16 @@ const resizeMaker = [
 const resizeIllustration = [
   {
     fileName: "[snakecase]-[width].webp",
-    resize: { width: 400 },
+    resize: { width: 220 },
     placeholder: true,
   },
   {
     fileName: "[snakecase]-[width].webp",
-    resize: { width: 800 },
+    resize: { width: 440 },
   },
 ];
 
-const resizeLogo = [
+const resizeLogoSpecial = [
   {
     fileName: "[snakecase]-[height].webp",
     resize: { height: 200 },
@@ -83,15 +86,18 @@ const resizeMainLogo = [
   {
     fileName: "[snakecase]-[height].webp",
     resize: { height: 60 },
+    reference: "_small",
     placeholder: true,
   },
   {
     fileName: "[snakecase]-[height].webp",
     resize: { height: 120 },
+    reference: "_small",
   },
   {
     fileName: "[snakecase]-[height].webp",
     resize: { height: 200 },
+    placeholder: true,
   },
   {
     fileName: "[snakecase]-[height].webp",
@@ -137,7 +143,7 @@ const getInfo = ({ name, ext, originalSize, relativeInputPath }) => {
   if (name === "illustration") return resizeIllustration;
   if (name === "logo") return resizeMainLogo;
   if (name === "logo_simple") return resizeMainLogo;
-  if (name === "logo_special") return resizeLogo;
+  if (name === "logo_special") return resizeLogoSpecial;
   if (ext === ".svg") return copySvg;
   if (relativeInputPath.includes("level")) return resizeLevel;
   if (relativeInputPath.includes("maker")) return resizeMaker;

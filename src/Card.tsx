@@ -11,12 +11,12 @@ import mmc8illustrations from "./data/public/8mmc/images.json";
 const illustrations = {
   '7mmc': {
     card: (
-      <PublicImage width={220} name={'illustration'} type={'illustration'} {...mmc7illustrations['illustration']} />
+      <PublicImage alt={'A treasure map!'} type={'illustration'} {...mmc7illustrations['illustration']} />
     )
   },
   '8mmc': {
     card: (
-      <PublicImage width={220} name={'illustration'} type={'illustration'} {...mmc8illustrations['illustration']} />
+      <PublicImage alt={'Mario wakes up'} type={'illustration'} {...mmc8illustrations['illustration']} />
     )
   },
 };

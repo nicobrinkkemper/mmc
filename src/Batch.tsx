@@ -41,12 +41,12 @@ const Batch = () => {
           const tags = level.tags.split(",");
           const to = `/${themeSlug}level/${batchNumber}/${level.order}/`
           const transformedLevelName = transformName(level.levelName);
-          const levelImage = levels[theme][transformedLevelName as never] as { placeholder: string }
+          const levelImage = levels[theme][`${transformedLevelName}_thumbnail` as never] as { placeholder: string, width: number, height: number }
           if (!levelImage) console.log('not found', level.levelName, transformedLevelName)
           return (
             <Card key={to} to={to}>
               <div className={"LevelCard"}>
-                <PublicImage width={110} name={level.levelName} type={'level_thumbnail'} {...levelImage} />
+                <PublicImage alt={level.levelName} type={'level_thumbnail'} {...levelImage} />
                 <div className="info">
                   <div className="makerInfo">
                     <span className={"levelName"}>{level.levelName}</span>
