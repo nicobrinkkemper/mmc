@@ -22,12 +22,13 @@
   padding: 0.5rem 0.85rem;
   display: flex;
   flex-flow: column;
-  width: 100%;
+  flex: 1 auto;
 }
 
 
 .Batch .levelInfo {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .Batch .makerInfo {
@@ -48,6 +49,11 @@
   display: flex;
 }
 
+.level_thumbnailPicture {
+  min-width: 110px;
+  min-height: 110px;
+}
+
 .Batch .Card picture img {
   border-radius: 0.01rem;
 }
@@ -60,6 +66,7 @@
   font-size: 0.75rem;
   align-self: flex-end;
   justify-self: flex-end;
+  margin-left: auto;
   min-width: 9rem;
 }
 

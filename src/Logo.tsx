@@ -4,16 +4,18 @@ import { useTheme } from "./theme/useTheme";
 import classNames from "classnames";
 import { PublicImage } from "./PublicImage";
 import { BASE_URL } from "./constants";
+import mmc7logos from "./data/public/7mmc/images.json";
+import mmc8logos from "./data/public/8mmc/images.json";
 const logos = {
   '7mmc': {
-    logo_small: <PublicImage name={'logo_simple'} type={'logo_small'} />,
-    logo: <PublicImage name={'logo_simple'} type={'logo'} />,
-    logo_special: <PublicImage name={'logo_special'} type={'logo'} />
+    logo_small: <PublicImage {...mmc7logos['logo_simple']} height={60} name={'logo_simple'} type={'logo_small'} />,
+    logo: <PublicImage {...mmc7logos['logo']} height={200} name={'logo_simple'} type={'logo'} />,
+    logo_special: <PublicImage {...mmc7logos['logo_special']} height={200} name={'logo_special'} type={'logo'} />
   },
   '8mmc': {
-    logo_small: <PublicImage name={'logo'} type={'logo_small'} />,
-    logo: <PublicImage name={'logo'} type={'logo'} />,
-    logo_special: <PublicImage name={'logo'} type={'logo'} />
+    logo_small: <PublicImage name={'logo'} height={60} type={'logo_small'} {...mmc8logos['logo']} />,
+    logo: <PublicImage name={'logo'} height={200} type={'logo'} {...mmc8logos['logo']} />,
+    logo_special: <PublicImage name={'logo'} height={200} type={'logo'} {...mmc8logos['logo']} />
   }
 } as const;
 

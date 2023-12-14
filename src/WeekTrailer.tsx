@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import { YouTubeIframe } from "./YoutubeIframe";
 import { useTheme } from "./theme/useTheme";
+import { SNAP } from "./constants";
 export const weekTrailers = {
   '7mmc': [
     "PbKK8_liEqA",
@@ -23,7 +24,7 @@ const WeekTrailer = () => {
 
   return (
     <div className="youtubeFlexDisable">
-      {navigator?.userAgent !== "ReactSnap" && <YouTubeIframe
+      {SNAP ?? <YouTubeIframe
         videoId={weekTrailer || "3FtgBWY0XVY"}
       />}
     </div>

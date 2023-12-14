@@ -9,15 +9,17 @@ import { PublicImage } from "./PublicImage";
 import { useTheme } from "./theme/useTheme";
 import { convertNumberToWord } from "./theme/convertNumberToWord";
 import { Difficulty } from "./Difficulty";
+import { transformName } from "./transformName";
+import { levels } from "./images";
 
 const Batch = () => {
   const { batchNumber } = useParams<Record<"batchNumber", string>>();
-  const { themeSlug, info: { caps, writtenOut } } = useTheme();
-  const { newestBatch, releaseDays, releasedBatches, levels } = useLevelData();
+  const { theme, themeSlug, info: { caps, writtenOut } } = useTheme();
+  const { newestBatch, releaseDays, releasedBatches, levels: getLevels } = useLevelData();
   const releaseDay = releaseDays[Number(batchNumber) - 1];
   const classes = ["Batch"];
   const isNew = newestBatch === Number(batchNumber) - 1;
-  const batchLevels = levels(Number(batchNumber));
+  const batchLevels = getLevels(Number(batchNumber));
   const isUnreleased = releasedBatches.indexOf(releaseDay) === -1;
   if (isNew) classes.push("isNew");
   if (isUnreleased) return <span>
@@ -35,13 +37,16 @@ const Batch = () => {
       </h1>
       <div className={classes.join(' ')}>
 
-        {batchLevels.map((level, i) => {
+        {batchLevels.map((level) => {
           const tags = level.tags.split(",");
           const to = `/${themeSlug}level/${batchNumber}/${level.order}/`
+          const transformedLevelName = transformName(level.levelName);
+          const levelImage = levels[theme][transformedLevelName as never] as { placeholder: string }
+          if (!levelImage) console.log('not found', level.levelName, transformedLevelName)
           return (
             <Card key={to} to={to}>
               <div className={"LevelCard"}>
-                <PublicImage name={level.levelName} type={'level_thumbnail'} />
+                <PublicImage width={110} name={level.levelName} type={'level_thumbnail'} {...levelImage} />
                 <div className="info">
                   <div className="makerInfo">
                     <span className={"levelName"}>{level.levelName}</span>

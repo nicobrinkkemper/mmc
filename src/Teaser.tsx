@@ -5,6 +5,7 @@ import { YouTubeIframe } from "./YoutubeIframe";
 import { useLevelData } from "./useLevelData";
 import Card from "./Card";
 import { ToTheLevels } from "./ToTheLevels";
+import { SNAP } from "./constants";
 const trailerYtId = "3FtgBWY0XVY";
 const Completionist = () => {
   return (
@@ -54,7 +55,7 @@ const Teaser = () => {
   return (
     <div className="Teaser">
       <div className="youtubeWrapper">
-        {navigator?.userAgent !== "ReactSnap" && <YouTubeIframe
+        {SNAP ?? <YouTubeIframe
           videoId={trailerYtId}
         />}
       </div>

@@ -10,6 +10,7 @@ import { useTheme } from "./theme/useTheme";
 import { Difficulty } from "./Difficulty";
 import classNames from "classnames";
 import { transformName } from "./transformName";
+import { levels, makers } from "./images";
 
 const Level = () => {
   const { batchNumber: strBatchNumber, order: strOrder } =
@@ -18,7 +19,7 @@ const Level = () => {
   const levelData = useLevelData();
   const batchLevels = levelData.levels(Number(strBatchNumber));
   const level = batchLevels.find(({ order: _order }) => _order === order);
-  const { themeSlug, info: { caps } } = useTheme();
+  const { theme, themeSlug, info: { caps } } = useTheme();
   if (typeof level !== "object") return <span>There is nothing here. Please come back later.</span>;
   const startOrder = batchLevels[0].order;
   const endOrder = batchLevels[batchLevels.length - 1].order;
@@ -38,7 +39,12 @@ const Level = () => {
   if (hasNextLevel) navigationClasses.push("hasNextLevel");
   if (isNew) classes.push("isNew");
   if (isUnreleased) return <span>This level hasn't been released yet.</span>;
-
+  const transformedLevelName = transformName(level.levelName);
+  const transformedMakerName = transformName(level.makerName);
+  const levelImage = levels[theme][transformedLevelName as never] as { placeholder: string };
+  const makerImage = makers[theme][transformedMakerName as never] as { placeholder: string };
+  if (!makerImage) console.log("Not found", transformedMakerName, makerImage)
+  if (!levelImage) console.log("Not found", transformedLevelName, levelImage)
   return (
     <div className={classNames(classes)}>
       <Card>
@@ -47,7 +53,7 @@ const Level = () => {
             <div className="makerInfo">
               <span className={"levelName"}>{level.levelName}</span>
             </div>
-            <PublicImage name={level.levelName} type={'level'} />
+            <PublicImage width={580} name={level.levelName} type={'level'} {...levelImage} />
             <div className="levelCode">
               {level.levelCode || "Code coming soon"}
             </div>
@@ -69,7 +75,7 @@ const Level = () => {
       <Card>
         <div className="makerCard">
           <div className="info">
-            <PublicImage name={level.makerName} type={'maker'} />
+            <PublicImage width={180} height={180} name={level.makerName} type={'maker'} {...makerImage} />
             <div className={"makerName"}>
               <span
                 className={`nationality flag-icon flag-icon-${level.nationality.toLowerCase()}`}
@@ -103,7 +109,7 @@ const Level = () => {
       <Seo
         description={`${caps} level by ${level.makerName}: ${level.levelName} - ${level.levelCode}`}
         title={`${level.levelName} | ${level.levelCode} | ${caps}`}
-        image={`/${themeSlug}level/${transformName(level.levelName)}-1160.webp`}
+        image={`/${themeSlug}level/${transformedLevelName}-1160.webp`}
         twitter="summary_large_image"
       />
     </div>

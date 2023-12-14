@@ -5,15 +5,18 @@ import classnames from "classnames";
 import { useTheme } from "./theme/useTheme";
 import { Theme } from "./theme/ThemeContext";
 import { PublicImage } from "./PublicImage";
+import mmc7illustrations from "./data/public/7mmc/images.json";
+import mmc8illustrations from "./data/public/8mmc/images.json";
+
 const illustrations = {
   '7mmc': {
     card: (
-      <PublicImage name={'illustration'} type={'illustration'} />
+      <PublicImage width={220} name={'illustration'} type={'illustration'} {...mmc7illustrations['illustration']} />
     )
   },
   '8mmc': {
     card: (
-      <PublicImage name={'illustration'} type={'illustration'} />
+      <PublicImage width={220} name={'illustration'} type={'illustration'} {...mmc8illustrations['illustration']} />
     )
   },
 };
