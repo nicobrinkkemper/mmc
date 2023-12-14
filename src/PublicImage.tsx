@@ -1,8 +1,6 @@
 import { Suspense } from "react";
 import { SuspenseImg } from "./SuspenseImage";
 import { SNAP } from "./constants";
-// A Resource is an object with a read method returning the payload
-
 
 export type imageType =
   | 'level'
@@ -14,7 +12,6 @@ export type imageType =
   | 'illustration'
 
 type WidthOrHeight = { width: number, height?: 'auto' } | { width?: 'auto', height: number } | { width: number, height: number };
-
 
 export const PublicImage = ({ alt, type, placeholder, width = "auto", height = "auto", ...props }: { alt: string, type: imageType, placeholder: string } & WidthOrHeight) => {
   const mode = width === 'auto' ? "max-height" : "max-width";
