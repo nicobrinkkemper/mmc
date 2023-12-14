@@ -125,7 +125,7 @@ const createLevelFinder = (levelRows: string[][]) => (order: number) => {
   if (typeof order !== "number")
     throw new TypeError(`order should be typeof number, got ${typeof order}`);
   return createLevel(
-    levelRows.find(level => Number(level[csvHeaders["order"]]) === order) || []
+    levelRows.find(level => Number(level[csvHeaders["order"]]) === order) ?? []
   );
 };
 const createBatchLevelFinder =

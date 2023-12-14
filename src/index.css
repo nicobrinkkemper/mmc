@@ -247,9 +247,9 @@ code {
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 620px) {
   .Card.hasIllustration .Illustration {
-    transform: rotate(4deg) translate(2rem, 2rem) scale(.8, .8);
+    transform: rotate(4deg) translate(2rem, 2rem) scale(.65, .65);
   }
 }
 

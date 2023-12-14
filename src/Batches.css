@@ -1,6 +1,7 @@
 .Batches {
     gap: .875rem;
     display: grid;
+    width: 100%;
 }
 
 .Batches .BatchCard {

@@ -5,6 +5,7 @@ import mmc8 from "./8mmc.module.css";
 import Credits from "./Credits.module.css";
 import { convertNumberToWord } from './convertNumberToWord';
 import { capitalize, snakeCase } from 'lodash';
+
 export const themesCss = {
     '7mmc': { ...base, ...mmc7 },
     '8mmc': { ...base, ...mmc8 },
@@ -12,6 +13,7 @@ export const themesCss = {
         // this ensures themes have the same keys
         [key in '7mmc' | '8mmc']: typeof mmc7 & typeof mmc8 & typeof base
     };
+
 export const themeKeys = Object.keys(themesCss) as Theme[];
 export const themesTotal = themeKeys.length
 
@@ -29,6 +31,7 @@ export type ThemeContextType = {
     themeSlug: string;
 }
 
+
 const getThemeInfo = (theme: Theme) => {
     const caps = theme.toUpperCase();
     const snake = snakeCase(theme);
@@ -37,7 +40,6 @@ const getThemeInfo = (theme: Theme) => {
     const themeYear = convertNumberToWord(ordinal, 'english');
     const writtenOutOrdinal = convertNumberToWord(ordinal, 'englishOrdinal');
     const writtenOut = capitalize(writtenOutOrdinal) + ' Mario Maker Celebration';
-
     return {
         caps,
         snake,

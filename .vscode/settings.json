@@ -6,5 +6,11 @@
     "./package-lock.json"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["gridpaper", "papaparse", "Youtube"]
+  "cSpell.words": [
+    "gridpaper",
+    "papaparse",
+    "Platformer",
+    "transform",
+    "Youtube"
+  ]
 }

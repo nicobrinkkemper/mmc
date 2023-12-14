@@ -34,14 +34,13 @@ for (let { link, name, gid } of files) {
       throw new Error(`unexpected response ${response.statusText}`);
     const to = `./src/data/${name}.json`;
 
-    let writeStream = fs.createWriteStream(__dirname + "/." + to);
+    let writeStream = fs.createWriteStream(to);
     papa.parse(await response.text(), {
       worker: true,
       complete: function (results) {
         writeStream.end(JSON.stringify(results.data));
       },
     });
-
     await finished(writeStream);
   } catch (e) {
     console.trace(e);
