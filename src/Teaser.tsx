@@ -55,7 +55,7 @@ const Teaser = () => {
   return (
     <div className="Teaser">
       <div className="youtubeWrapper">
-        {SNAP ?? <YouTubeIframe
+        {SNAP && <YouTubeIframe
           videoId={trailerYtId}
         />}
       </div>
