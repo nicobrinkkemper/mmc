@@ -17,7 +17,7 @@ const Batch = () => {
   const { theme, themeSlug, info: { caps, writtenOut } } = useTheme();
   const { newestBatch, releaseDays, releasedBatches, levels: getLevels } = useLevelData();
   const releaseDay = releaseDays[Number(batchNumber) - 1];
-  const classes = ["Batch"];
+  const classes = ["BatchLevels"];
   const isNew = newestBatch === Number(batchNumber) - 1;
   const batchLevels = getLevels(Number(batchNumber));
   const isUnreleased = releasedBatches.indexOf(releaseDay) === -1;
@@ -28,7 +28,7 @@ const Batch = () => {
   </span>;
   const levelNames = humanReadableArray(batchLevels.map(({ levelName }) => levelName));
   return (
-    <div>
+    <div className={'Batch'}>
       <h1>
         {new Intl.DateTimeFormat("en-US", {
           month: "long",
@@ -46,7 +46,7 @@ const Batch = () => {
           return (
             <Card key={to} to={to}>
               <div className={"LevelCard"}>
-                <PublicImage alt={level.levelName} type={'level_thumbnail'} {...levelImage} />
+                <PublicImage alt={level.levelName} {...levelImage} />
                 <div className="info">
                   <div className="makerInfo">
                     <span className={"levelName"}>{level.levelName}</span>

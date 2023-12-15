@@ -14,7 +14,7 @@
     "deploy": "gh-pages -d build",
     "test": "run-s startup react:testing",
     "react:test": "react-scripts test",
-    "react:build": "react-scripts build",
+    "react:build": "export NODE_ENV=production; react-scripts build",
     "react:start": "react-scripts start",
     "startup": "run-p lint startup:*",
     "startup:resize": "node ./scripts/resize.mjs",

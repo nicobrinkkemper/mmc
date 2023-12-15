@@ -37,7 +37,7 @@ const getThemeInfo = (theme: Theme) => {
     const snake = snakeCase(theme);
     const ordinalString = snake.split('_')[0];
     const ordinal = Number(ordinalString);
-    const themeYear = convertNumberToWord(ordinal, 'english').toLowerCase();
+    const themeYear = convertNumberToWord(ordinal, 'english');
     const writtenOutOrdinal = convertNumberToWord(ordinal, 'englishOrdinal');
     const writtenOut = capitalize(writtenOutOrdinal) + ' Mario Maker Celebration';
     return {

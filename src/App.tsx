@@ -96,7 +96,7 @@ const BatchPage = () => (
       <WeekTrailer />
       <BackButton />
     </header>
-    <article className="App-body batchPage">
+    <article className="App-body BatchPage">
       <Batch />
     </article>
   </>

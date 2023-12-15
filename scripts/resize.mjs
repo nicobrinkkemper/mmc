@@ -14,7 +14,6 @@ const { images } = await readDirectory(inputPath);
 
 const resizeX = (width) => (divider, index) => ({
   fileName: `[snakecase]-${index + 1}x.webp`,
-  placeholder: true,
   version: index + 1,
   resize:
     divider === 1
