@@ -22,7 +22,7 @@ const data = {
 
 const releaseDays = {
   '7mmc': (()=>{
-    const days = generateFromStartDate(new Date("10 Sep 2022 00:00:00 GMT"), 6);
+    const days = generateFromStartDate(new Date("10 Sep 2022 04:00:00 GMT"), 6);
     return [
       days[0],
       days[1],
@@ -33,7 +33,7 @@ const releaseDays = {
     ]
   })(),
   '8mmc': (()=>{
-    const days = generateFromStartDate(new Date("9 Dec 2023 00:00:00 GMT"), 1);
+    const days = generateFromStartDate(new Date("9 Dec 2023 04:00:00 GMT"), 1);
     return [
       days[0],
     ]

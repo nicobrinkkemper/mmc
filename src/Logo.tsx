@@ -13,13 +13,6 @@ const logos = {
   '8mmc': mmc8 as Pick<typeof mmc8, 'logo' | 'logo_small'>
 } as const;
 
-function PublicLogo({ type }: Readonly<{ type: logoImageTypes }>) {
-  const { theme, info: { caps } } = useTheme();
-  const themeLogos = logos[theme];
-  let fallbackType = (type in themeLogos) ? type as keyof typeof themeLogos : 'logo';
-  const logo = themeLogos[fallbackType];
-  return <PublicImage alt={`${caps} Logo`} type={fallbackType} {...logo} />
-}
 
 export type LogoProps = PropsWithChildren<{
   logo?: keyof typeof logos['7mmc'];
@@ -42,23 +35,30 @@ const ArrowRight = () => (
 );
 
 const Logo = ({ logo = "logo", small = false }: LogoProps) => {
-  if (small) logo = 'logo_small'
-  if (logo === 'logo_small') small = true
-  const { theme, themeSlug, info: { nextTheme, prevTheme } } = useTheme();
+  const endsWithSmall = logo.endsWith('_small')
+  if (small && !endsWithSmall) logo = logo + '_small'
+  if (endsWithSmall) small = true
+
+  const { theme, themeSlug, info: { nextTheme, prevTheme, caps } } = useTheme();
+
   let stripBase = window.location.pathname;
   if (stripBase.startsWith(BASE_URL)) stripBase = stripBase.slice(BASE_URL.length);
   if (stripBase.startsWith('/')) stripBase = stripBase.slice(1);
   if (stripBase.startsWith(theme)) stripBase = stripBase.slice(theme.length);
   if (stripBase.startsWith('/')) stripBase = stripBase.slice(1);
+
   const nextThemeUrl = nextTheme + '/' + stripBase;
   const prevThemeUrl = prevTheme + '/' + stripBase;
+  const themeLogos = logos[theme];
+  const fallbackType = ((logo in themeLogos) ? logo : 'logo' + (small ? '_small' : '')) as keyof typeof themeLogos
+
   return (
     <>
       {!small ? <Link to={`/${prevThemeUrl}`}><ArrowLeft /></Link> : null}
       <div className={classNames('Logo', small ? 'small' : 'normal')}>
         <Link to={`/${themeSlug}`}>
-          <span className={classNames(logo)}>
-            <PublicLogo type={logo} />
+          <span className={logo}>
+            <PublicImage alt={`${caps} Logo`} {...themeLogos[fallbackType]} />
           </span>
         </Link>
       </div>

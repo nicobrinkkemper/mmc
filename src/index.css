@@ -9,6 +9,20 @@ a {
   color: inherit;
 }
 
+picture {
+  display: flex;
+}
+
+picture img {
+  max-width: 100%;
+  color: transparent;
+  object-fit: cover;
+}
+
+.logo .image {
+  object-fit: contain;
+}
+
 .tags>span,
 .highlight {
   position: relative;
@@ -385,6 +399,7 @@ body {
   font-family: "SuperMarioMakerExtended";
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
   src: url("./fonts/SuperMarioMakerExtended.eot");
   /* IE9 Compat Modes */
   src: local("Super-Mario-Maker-Extended"), local("SuperMarioMakerExtended"),
@@ -404,6 +419,7 @@ body {
   font-family: "SuperMario";
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
   src: url("./fonts/SuperMario.eot");
   /* IE9 Compat Modes */
   src: local("Super-Mario"), local("SuperMario"),
@@ -421,6 +437,7 @@ body {
 
 @font-face {
   font-family: "latoregular";
+  font-display: swap;
   src: url("./fonts/lato-regular.woff2") format("woff2"),
     url("./fonts/lato-regular.woff") format("woff");
   font-weight: normal;
@@ -429,20 +446,24 @@ body {
 
 @font-face {
   font-family: "HeaderMarker";
+  font-display: swap;
   src: url("./fonts/HeaderMarker.otf");
 }
 
 @font-face {
   font-family: "HeartWarming";
+  font-display: swap;
   src: url("./fonts/HeartWarming.otf");
 }
 
 @font-face {
   font-family: "HeartWarmingExtra";
+  font-display: swap;
   src: url("./fonts/HeartWarmingExtra.otf");
 }
 
 @font-face {
   font-family: "BordersDivideButHeartsShallConquer";
+  font-display: swap;
   src: url('./fonts/BordersDivideButHeartsShallConquer.otf');
 }

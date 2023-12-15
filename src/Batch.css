@@ -1,6 +1,10 @@
-.Batch {
+.BatchLevels {
   display: grid;
   gap: .875rem;
+}
+
+.Batch {
+  width: 100%;
 }
 
 .Batch .Card {

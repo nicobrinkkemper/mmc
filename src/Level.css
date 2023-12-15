@@ -12,16 +12,12 @@
   padding: 0.5rem;
 }
 
-.Level .makerPicture {
-  align-self: center;
-  justify-self: center;
-}
-
-.Level .makerImg {
+.makerCard .image {
+  margin: 0 auto;
   border-radius: 0.01rem;
 }
 
-.Level .loading .makerImg {
+.makerCard .loading .image {
   opacity: 0.5;
 }
 
@@ -64,7 +60,7 @@
 
 .Level .makerName,
 .Level .stars,
-.Level .makerPicture {
+.Level .image {
   mix-blend-mode: var(--maker-info-mix-blend-mode, none);
 }
 

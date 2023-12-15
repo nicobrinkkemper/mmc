@@ -53,7 +53,7 @@ const Level = () => {
             <div className="makerInfo">
               <span className={"levelName"}>{level.levelName}</span>
             </div>
-            <PublicImage width={580} alt={level.levelName} type={'level'} {...levelImage} />
+            <PublicImage width={580} alt={level.levelName} {...levelImage} />
             <div className="levelCode">
               {level.levelCode || "Code coming soon"}
             </div>
@@ -75,7 +75,7 @@ const Level = () => {
       <Card>
         <div className="makerCard">
           <div className="info">
-            <PublicImage width={180} height={180} alt={level.makerName} type={'maker'} {...makerImage} />
+            <PublicImage width={180} height={180} alt={level.makerName} {...makerImage} />
             <div className={"makerName"}>
               <span
                 className={`nationality flag-icon flag-icon-${level.nationality.toLowerCase()}`}
