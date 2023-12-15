@@ -24,7 +24,7 @@ const WeekTrailer = () => {
 
   return (
     <div className="youtubeFlexDisable">
-      {SNAP ?? <YouTubeIframe
+      {SNAP && <YouTubeIframe
         videoId={weekTrailer || "3FtgBWY0XVY"}
       />}
     </div>
