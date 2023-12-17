@@ -1,30 +1,16 @@
 import { createContext } from 'react';
-import base from "./base.module.css";
-import mmc7 from "./7mmc.module.css";
-import mmc8 from "./8mmc.module.css";
-import Credits from "./Credits.module.css";
 import { convertNumberToWord } from './convertNumberToWord';
 import { capitalize, snakeCase } from 'lodash';
 
-export const themesCss = {
-    '7mmc': { ...base, ...mmc7 },
-    '8mmc': { ...base, ...mmc8 },
-} satisfies {
-        // this ensures themes have the same keys
-        [key in '7mmc' | '8mmc']: typeof mmc7 & typeof mmc8 & typeof base
-    };
 
-export const themeKeys = Object.keys(themesCss) as Theme[];
-export const themesTotal = themeKeys.length
-
-export type ThemeCSS = typeof themesCss
-export type Theme = keyof ThemeCSS;
+export const themeKeys = ['7mmc', '8mmc'] as const;
+export const themesTotal = 2
+export type Theme = typeof themeKeys[number];
+export type _Theme = `_${Theme}`;
 
 export type ThemeContextType = {
     theme: Theme;
     setTheme: (theme: Theme) => void;
-    classes: ThemeCSS[Theme];
-    Credits: typeof Credits;
     themeUp: () => void;
     themeDown: () => void;
     info: ThemeInfo
@@ -54,12 +40,9 @@ const getThemeInfo = (theme: Theme) => {
 }
 type ThemeInfo = ReturnType<typeof getThemeInfo>;
 
-export const createThemeContext = (context: Omit<ThemeContextType, 'classes' | 'Credits' | 'info'>): ThemeContextType => {
-
+export const createThemeContext = (context: Omit<ThemeContextType, 'Credits' | 'info'>): ThemeContextType => {
     return ({
         ...context,
-        classes: themesCss[context.theme],
-        Credits,
         info: getThemeInfo(context.theme)
     })
 };

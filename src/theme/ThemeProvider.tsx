@@ -12,7 +12,6 @@ export function ThemeProvider({ children, theme: themeParam }: Readonly<PropsWit
     const themeDown = useCallback(() => {
         setTheme(prevTheme(theme));
     }, [theme, setTheme]);
-
     useEffect(() => {
         if (hasValidParam(themeParam) && themeParam !== theme) {
             setTheme(themeParam);
@@ -34,9 +33,7 @@ export function ThemeProvider({ children, theme: themeParam }: Readonly<PropsWit
     ]);
     return (
         <ThemeContext.Provider value={contextValue}>
-            <div className={contextValue.classes?.Theme}>
-                {children}
-            </div>
+            {children}
         </ThemeContext.Provider>
     );
 }

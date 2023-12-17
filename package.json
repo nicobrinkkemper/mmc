@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "homepage": "/",
+  "type": "module",
   "scripts": {
     "start": "run-s startup react:start",
     "lint": "eslint ./src --fix",
@@ -17,7 +18,8 @@
     "react:build": "export NODE_ENV=production; react-scripts build",
     "react:start": "react-scripts start",
     "startup": "run-p lint startup:*",
-    "startup:resize": "node ./scripts/resize.mjs",
+    "startup:compile": "tsc --project tsconfig.node.json",
+    "startup:resize": "node ./startup_es/startup.mjs",
     "startup:csv": "node ./scripts/csvToJson.mjs"
   },
   "engines": {
@@ -107,7 +109,7 @@
     "responsive-loader": "^3.1.2",
     "serve": "^14.2.1",
     "sharp": "^0.33.0",
-    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
     "type-guard-helpers": "^1.1.21",
     "typescript": "^5.3.3",
     "typescript-plugin-css-modules": "^5.0.2",

@@ -1,5 +1,5 @@
 
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 import { Link, To } from "react-router-dom";
 import classnames from "classnames";
 import { useTheme } from "./theme/useTheme";
@@ -10,12 +10,12 @@ import mmc8illustrations from "./data/public/8mmc/images.json";
 
 const illustrations = {
   '7mmc': {
-    card: (
+    home: (
       <PublicImage alt={'A treasure map!'} height={126} {...mmc7illustrations['illustration']} />
     )
   },
   '8mmc': {
-    card: (
+    home: (
       <PublicImage alt={'Mario wakes up'} height={124} {...mmc8illustrations['illustration']} />
     )
   },
@@ -26,6 +26,8 @@ export type CardProps = PropsWithChildren<{
   disabled?: boolean;
   to?: To;
   className?: string;
+  heading?: React.ReactNode
+  subHeading?: React.ReactNode
 }>;
 
 function hasIllustration(
@@ -37,17 +39,7 @@ function hasIllustration(
   );
 }
 
-const WrapLink = ({ children, to, disabled, illustration, className }: CardProps) => {
-  if (typeof to === "undefined" || disabled) return <>{children}</>;
-  else
-    return (
-      <Link to={to} className={classnames("Clickable", illustration, className)}>
-        {children}
-      </Link>
-    );
-};
-
-const Card = ({ children, illustration, disabled = false, to, className }: CardProps) => {
+export const Card = ({ children, illustration, disabled = false, to, className, heading, subHeading }: CardProps) => {
   const classes = ["Card", illustration];
   const { theme } = useTheme();
   const hasExtra = hasIllustration(theme, illustration);
@@ -55,17 +47,21 @@ const Card = ({ children, illustration, disabled = false, to, className }: CardP
   if (hasExtra) classes.push("hasIllustration");
   if (disabled) classes.push("disabled");
   if (typeof to === "string") classes.push("isClickable");
+  const ContainerOuter: any = to ? Link : heading ? "div" : React.Fragment;
+  const ContainerOuterProps = to ? { to, disabled, className: classnames("Clickable", illustration, ...classes) } : {};
+  const ContainerInner = !ContainerOuterProps.className ? "div" : React.Fragment;
+  const ContainerInnerProps = !ContainerOuterProps.className ? { className: classnames(classes) } : {};
   return (
-    <div className={classnames(classes)}>
-      <WrapLink to={to} disabled={disabled}>
+    <ContainerOuter {...ContainerOuterProps}>
+      {heading ?? null}
+      <ContainerInner {...ContainerInnerProps}>
         {hasExtra && <span className={classnames("Illustration", illustration)}>
           {illustrations[theme][illustration]}
         </span>}
-        <div className="Card-content">{children}</div>
-      </WrapLink>
-    </div>
+        {subHeading ?? null}
+        {children}
+      </ContainerInner>
+    </ContainerOuter>
   );
 };
 
-export default Card;
-export { Card };

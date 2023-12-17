@@ -2,7 +2,11 @@ import {
   Accordion
 } from "react-accessible-accordion";
 import { useTheme } from '../../theme/useTheme';
-import { AboutItem, AboutItemHeading, AboutPanel, QuestionGetInTouch, QuestionWhatKindOfLevels } from '../default/DefaultAboutContent';
+import { AboutItem } from "../default/AboutItem";
+import { AboutItemHeading } from "../default/AboutItemHeading";
+import { AboutPanel } from "../default/AboutPanel";
+import { QuestionWhatKindOfLevels } from "../default/QuestionWhatKindOfLevels";
+import { QuestionGetInTouch } from "../default/QuestionGetInTouch";
 
 
 const AboutContent = () => {

@@ -1,0 +1,52 @@
+.outer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--modal-outer-background);
+  z-index: 2;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.close {
+  position: absolute;
+  right: 1.95rem;
+  top: 1.25rem;
+  height: 0.875rem;
+  z-index: 1;
+  width: 0.875rem;
+  cursor: pointer;
+  background: none;
+  color: var(--modal-inner-color);
+  outline: none;
+  border: none;
+}
+
+.inner {
+  text-align: left;
+  max-width: 30rem;
+  background: var(--modal-inner-background);
+  color: var(--modal-inner-color);
+  overflow-y: auto;
+  max-height: calc(100% - 3rem);
+  width: calc(100% - 3rem);
+  box-shadow: var(--modal-inner-box-shadow);
+}
+
+
+.header {
+  position: relative;
+}
+
+.body {
+  padding: 1.0625rem 1.5625rem;
+}

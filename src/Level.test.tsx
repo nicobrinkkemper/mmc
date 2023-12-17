@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import AppWrapper from './AppWrapper';
+import { AppWrapper } from './AppWrapper';
 import { useLevelData } from './useLevelData';
-import formatDate from './formatBatchName';
+import { formatDate } from './formatDate';
 
 
 jest.mock('react', () => {

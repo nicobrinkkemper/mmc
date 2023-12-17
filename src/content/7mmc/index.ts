@@ -1,3 +1,3 @@
-export * from "./AboutContent"
-export * from "./CreditsContent"
-export * from "./WelcomeContent"
+export {AboutContent} from "./AboutContent"
+export {CreditsContent} from "./CreditsContent"
+export {WelcomeContent} from "./WelcomeContent"

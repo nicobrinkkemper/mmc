@@ -1,5 +1,5 @@
 import Button from "./Button";
-import formatDate from "./formatBatchName";
+import { formatDate } from "./formatDate";
 import { useTheme } from "./theme/useTheme";
 import { useLevelData } from "./useLevelData";
 import { useParams } from "react-router-dom";

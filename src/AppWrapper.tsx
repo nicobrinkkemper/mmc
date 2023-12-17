@@ -1,4 +1,4 @@
-import App from "./App";
+import { App } from "./App";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "./theme/ThemeProvider";
@@ -27,15 +27,15 @@ const router = createBrowserRouter([{
   basename: BASE_URL
 });
 
-const AppWrapper = () => (
-  <ErrorBoundary
-    FallbackComponent={ErrorFallback}
-  >
-    <HelmetProvider>
-      <RouterProvider router={router} />
-    </HelmetProvider >
-  </ErrorBoundary>
-);
+export function AppWrapper() {
+  return (
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+    >
+      <HelmetProvider>
+        <RouterProvider router={router} />
+      </HelmetProvider >
+    </ErrorBoundary>
+  )
+}
 
-export { AppWrapper };
-export default AppWrapper;

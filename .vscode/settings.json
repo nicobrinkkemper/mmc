@@ -6,6 +6,7 @@
     "./package-lock.json"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnSave": true,
   "cSpell.words": [
     "gridpaper",
     "papaparse",

@@ -34,7 +34,7 @@ const ArrowRight = () => (
   </svg>
 );
 
-const Logo = ({ logo = "logo", small = false }: LogoProps) => {
+export const Logo = ({ logo = "logo", small = false }: LogoProps) => {
   const endsWithSmall = logo.endsWith('_small')
   if (small && !endsWithSmall) logo = logo + '_small'
   if (endsWithSmall) small = true
@@ -66,5 +66,3 @@ const Logo = ({ logo = "logo", small = false }: LogoProps) => {
     </>
   );
 };
-export { Logo };
-export default Logo;
