@@ -14,7 +14,7 @@ export const formatDate = (date: Date) =>
 export async function fetchSpreadsheetToJson(
   link: string,
   images: Record<
-    "7mmc" | "8mmc",
+    Theme,
     Record<"level" | "maker" | "images", ImageJsonStructure>
   >
 ) {

@@ -6,8 +6,11 @@ export async function isSameFile(
   file1: string,
   file2: string
 ): Promise<boolean> {
-  const [stat1, stat2] = await Promise.all([fs.stat(file1), fs.stat(file2)]);
-  if (stat1.size !== stat2.size) return false;
+  const [stat1, stat2] = await Promise.all([
+    fs.stat(file1).catch(() => undefined),
+    fs.stat(file2).catch(() => undefined),
+  ]);
+  if (!stat1 || !stat2 || stat1.size !== stat2.size) return false;
   return Promise.all([fs.readFile(file1), fs.readFile(file2)]).then(
     ([buf1, buf2]) => Buffer.compare(buf1, buf2) === 0
   );
