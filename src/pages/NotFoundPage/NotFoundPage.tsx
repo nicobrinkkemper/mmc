@@ -1,4 +1,4 @@
-import { Logo } from "../../Logo";
+import { Logo } from "../../layout/Logo";
 import { NotFound } from "./NotFound";
 
 export function NotFoundPage() {

@@ -1,10 +1,11 @@
-.BatchLevels {
+.Batch {
   display: grid;
   gap: .875rem;
 }
 
-.BatchLevel {
+.Card.BatchLevel {
   grid-template-columns: 110px auto;
+  padding: .5rem;
 }
 
 .BatchLevel .info.level .name {
@@ -39,10 +40,13 @@
 
 .BatchLevel .makerName {
   display: grid;
-  grid-template-columns: 24px 1fr;
   line-height: 150%;
   font-size: 0.7rem;
   align-items: flex-start;
+}
+
+.BatchLevel .nationality {
+  margin-right: 0.4em;
 }
 
 .level_thumbnailPicture {
@@ -68,12 +72,11 @@
 }
 
 .BatchLevel .tags {
+  display: flex;
   align-self: flex-end;
   padding-top: 0.2rem;
   padding-right: 0.2rem;
-  display: inline-grid;
-  width: min-content;
-  grid-auto-flow: column;
+  flex-wrap: wrap;
 }
 
 @media only screen and (max-width: 420px) {

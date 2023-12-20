@@ -1,10 +1,10 @@
 import CountDown, { CountdownRenderProps } from "react-countdown";
 import "./Teaser.css";
-import { YouTubeIframe } from "../../WeekTrailer/YoutubeIframe";
-import { useLevelData } from "../../useLevelData";
-import { Card } from "../../Card";
-import { ToTheLevels } from "../../ToTheLevels";
+import { YouTubeIframe } from "../LevelBatchPage/WeekTrailer/YoutubeIframe";
+import { Card } from "../../components/Card";
+import { ToTheLevels } from "../../components/ToTheLevels";
 import { SNAP } from "../../constants";
+
 const trailerYtId = "3FtgBWY0XVY";
 const Completionist = () => {
   return (
@@ -50,7 +50,8 @@ const renderer = ({
 };
 
 const Teaser = () => {
-  const { startDate } = useLevelData();
+  // not needed for now
+  const startDate = new Date('tomorrow');
   return (
     <div className="Teaser">
       <div className="youtubeWrapper">

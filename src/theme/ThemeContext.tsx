@@ -1,12 +1,12 @@
 import { createContext } from 'react';
 import { convertNumberToWord } from './convertNumberToWord';
 import { capitalize, snakeCase } from 'lodash';
+import themes from "../data/themes.json";
 
 
-export const themeKeys = ['7mmc', '8mmc'] as const;
-export const themesTotal = 2
+export const themeKeys = Object.keys(themes) as (keyof typeof themes)[];
+export const themesTotal = themeKeys.length
 export type Theme = typeof themeKeys[number];
-export type _Theme = `_${Theme}`;
 
 export type ThemeContextType = {
     theme: Theme;
@@ -15,6 +15,7 @@ export type ThemeContextType = {
     themeDown: () => void;
     info: ThemeInfo
     themeSlug: string;
+    data: typeof themes[Theme];
 }
 
 
@@ -40,9 +41,10 @@ const getThemeInfo = (theme: Theme) => {
 }
 type ThemeInfo = ReturnType<typeof getThemeInfo>;
 
-export const createThemeContext = (context: Omit<ThemeContextType, 'Credits' | 'info'>): ThemeContextType => {
+export const createThemeContext = (context: Omit<ThemeContextType, 'info' | 'data'>): ThemeContextType => {
     return ({
         ...context,
+        data: themes[context.theme],
         info: getThemeInfo(context.theme)
     })
 };

@@ -1,13 +1,13 @@
 import { AboutButton } from "../../about/AboutButton";
-import { Logo } from "../../Logo";
-import Seo from "../../Seo";
+import { Logo } from "../../layout/Logo";
+import Seo from "../../components/Seo";
 import { Teaser } from "./Teaser";
 import { DEFAULT_DESCRIPTION } from "../../constants";
 import { useTheme } from "../../theme/useTheme";
-import { useLevelData } from "../../useLevelData";
 
 export function CountdownPage() {
-    const levelData = useLevelData();
+    // not needed
+    const startDate = new Date('tomorrow');
     const {
         info: { caps },
     } = useTheme();
@@ -23,7 +23,7 @@ export function CountdownPage() {
                 <Teaser />
             </article>
             <Seo
-                description={`${DEFAULT_DESCRIPTION}. We will start ${levelData.startDate.toDateString()}`}
+                description={`${DEFAULT_DESCRIPTION}. We will start ${startDate.toDateString()}`}
                 title={`${caps} | We are getting ready`}
             />
         </>

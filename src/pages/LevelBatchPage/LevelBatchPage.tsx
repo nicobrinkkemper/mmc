@@ -1,8 +1,8 @@
 import { AboutButton } from "../../about/AboutButton";
-import { BackButton } from "../../BackButton";
-import Batch from "./Batch";
-import { Logo } from "../../Logo";
-import { WeekTrailer } from "../../WeekTrailer/WeekTrailer";
+import { BackButton } from "../../components/BackButton";
+import { Batch } from "./Batch";
+import { Logo } from "../../layout/Logo";
+import { WeekTrailer } from "./WeekTrailer/WeekTrailer";
 
 export function LevelBatchPage() {
     return <>

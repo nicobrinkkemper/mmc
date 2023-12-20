@@ -1,7 +1,7 @@
 import { AboutButton } from "../../about/AboutButton";
-import { BackButton } from "../../BackButton";
-import { Logo } from "../../Logo";
-import Seo from "../../Seo";
+import { BackButton } from "../../components/BackButton";
+import { Logo } from "../../layout/Logo";
+import Seo from "../../components/Seo";
 import { DEFAULT_DESCRIPTION } from "../../constants";
 import { useTheme } from "../../theme/useTheme";
 import styles from "./Credits.module.css";

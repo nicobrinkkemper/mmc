@@ -3,7 +3,6 @@ import { default as classes } from './About.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContent } from '../content/useContent';
 import { CloseSvg } from './CloseSvg';
-import "./accordion.css";
 
 export const About = () => {
     const location = useLocation()

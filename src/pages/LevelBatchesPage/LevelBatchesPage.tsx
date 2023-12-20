@@ -1,7 +1,7 @@
 import { AboutButton } from "../../about/AboutButton";
-import { BackButton } from "../../BackButton";
+import { BackButton } from "../../components/BackButton";
 import { Batches } from "./Batches";
-import { Logo } from "../../Logo";
+import { Logo } from "../../layout/Logo";
 
 export function BatchesPage() {
     return (

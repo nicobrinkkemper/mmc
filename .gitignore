@@ -33,4 +33,4 @@ public/**/*
 src/assets/**/*
 scripts/data/*
 
-startup_es
+startup/dist/**/*

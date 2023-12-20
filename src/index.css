@@ -152,22 +152,18 @@ code {
   height: auto;
   width: auto;
   right: 0;
-  font-size: .7rem;
+  font-size: .8rem;
   transform-origin: top right;
 }
-
-.AboutBtn .Button-inner {}
 
 .AboutBtn .Button-inner:after {
   background: var(--about-button-after-background, var(--button-after-background, inherit));
 }
 
-/* Shadows */
 .youtubeWrapper {
   box-shadow: var(--box-shadow);
 }
 
-/* COMPONENTS */
 .Card {
   display: grid;
   box-shadow: var(--box-shadow);
@@ -285,6 +281,14 @@ body {
 }
 
 @media only screen and (min-width: 620px) {
+
+  html,
+  body {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
 
   html,
   body {

@@ -1,6 +1,6 @@
-import Button from "../../Button";
-import { Card } from "../../Card";
-import { ToTheLevels } from "../../ToTheLevels";
+import Button from "../../components/Button";
+import { Card } from "../../components/Card";
+import { ToTheLevels } from "../../components/ToTheLevels";
 import { StayUpToDate } from "../default/StayUpToDate";
 
 export const MM7ContentCreator = () => (
@@ -31,7 +31,7 @@ const MM7ArtWork = () => (
 
 export const WelcomeContent = () => (
     <>
-        <Card illustration="home" heading={<h1>The seventh yearly Mario Maker celebration</h1>} subHeading={<h2>Mario Maker turns seven!</h2>}>
+        <Card illustration heading={<h1>The seventh yearly Mario Maker celebration</h1>} subHeading={<h2>Mario Maker turns seven!</h2>}>
             <p>
                 The anniversary project is under new management and a new banner, but you'll still see many familiar names crop up along with new ones as we celebrate another year of Mario Maker. Every weekend across the next couple of months we'll publish a batch of varied and rigorously playtested levels!
             </p>

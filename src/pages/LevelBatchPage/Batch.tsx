@@ -1,77 +1,59 @@
 import "./Batch.css";
-import { Card } from "../../Card";
-import { useLevelData } from "../../useLevelData";
-import { useParams } from "react-router-dom";
-import { lowerCase, snakeCase } from "lodash";
-import Seo from "../../Seo";
-import { humanReadableArray } from "../../humanReadableArray";
-import { PublicImage } from "../../PublicImage";
+import { Card } from "../../components/Card";
+import { snakeCase } from "lodash";
+import Seo from "../../components/Seo";
+import { PublicImage } from "../../components/PublicImage";
 import { useTheme } from "../../theme/useTheme";
 import { convertNumberToWord } from "../../theme/convertNumberToWord";
-import { Difficulty } from "../../Difficulty";
-import { TransformName } from "../../TransformName";
-import { levels } from "../../data/levelImages";
+import { Difficulty } from "../../components/Difficulty";
+import { useLevelFromParams } from "../../level/useLevelFromParams";
+import classNames from "classnames";
+import { MakerName } from "../../components/MakerName";
 
-const Batch = () => {
-  const { batchNumber } = useParams<Record<"batchNumber", string>>();
-  const { theme, themeSlug, info: { caps, writtenOut } } = useTheme();
-  const { newestBatch, releaseDays, releasedBatches, levels: getLevels } = useLevelData();
-  const releaseDay = releaseDays[Number(batchNumber) - 1];
-  const classes = ["BatchLevels"];
-  const isNew = newestBatch === Number(batchNumber) - 1;
-  const batchLevels = getLevels(Number(batchNumber));
-  const isUnreleased = releasedBatches.indexOf(releaseDay) === -1;
-  if (isNew) classes.push("isNew");
-  if (isUnreleased) return <span>
-    <h1>You have found a secret page!</h1>
-    <p>However, there's no week {batchNumber} for this event.</p>
-  </span>;
-  const levelNames = humanReadableArray(batchLevels.map(({ levelName }) => levelName));
+const humanReadableArray = <ARR extends readonly string[]>(a: ARR): string => {
+  if (a.length === 1) return a[0];
+  return [a.slice(0, a.length - 1).join(", "), a[a.length - 1]].join(" and ");
+};
+
+export function Batch() {
+  const level = useLevelFromParams();
+  const { batch: { batchNumber, levels, releaseDate } } = level;
+  const { themeSlug, info: { caps, writtenOut } } = useTheme();
+
   return (
     <>
       <h1>
         {new Intl.DateTimeFormat("en-US", {
           month: "long",
           day: "numeric",
-        }).format(releaseDay)}
+        }).format(new Date(releaseDate.date))}
       </h1>
-      <div className={classes.join(' ')}>
+      <div className={classNames('Batch')}>
 
-        {batchLevels.map((level) => {
-          const tags = level.tags.split(",");
+        {levels.map((level) => {
           const to = `/${themeSlug}level/${batchNumber}/${level.order}/`
-          const transformedLevelName = TransformName(level.levelName);
-          const levelImage = levels[theme][`${transformedLevelName}_thumbnail` as never] as { placeholder: string, width: number, height: number }
-          if (!levelImage) console.log('not found', level.levelName, transformedLevelName)
+          if (!level.levelThumbnail) console.log('not found', level.levelName.slug)
           return (
             <Card key={to} to={to} className={'BatchLevel'}>
-              <PublicImage alt={level.levelName} {...levelImage} />
+              <PublicImage alt={level.levelName.name} {...level.levelThumbnail} />
               <div className="info">
                 <div className="makerInfo">
-                  <span className={"levelName"}>{level.levelName}</span>
-                  <div className={"makerName"}>
-                    <span
-                      className={`nationality flag-icon flag-icon-${lowerCase(
-                        level.nationality
-                      )}`}
-                    />
-                    <span className="name">{level.makerName}</span>
-                  </div>
+                  <span className={"levelName"}>{level.levelName.name}</span>
+                  <MakerName nationality={level.nationality} makerName={level.makerName.name} />
                 </div>
                 <div className="levelInfo">
                   <div className={"tags"}>
-                    {(tags?.find(v => !!v) ? tags : [level.genre || 'bonus']).map((tag) => (
-                      <span className={`tag ${snakeCase(tag)}`} key={`${level.batchIndex}${tag}`}>
+                    {(level.tags.find(v => !!v) ? level.tags : [level.genre || 'bonus']).map((tag) => (
+                      <span className={`tag ${snakeCase(tag)}`} key={snakeCase(tag)}>
                         {tag}
                       </span>
                     ))}
                   </div>
-
-                  <Difficulty level={level} />
+                  <Difficulty {...level} />
                 </div>
               </div>
               <Seo
-                description={`Week ${batchNumber} of ${caps} has started! In this week's trailer we show off ${convertNumberToWord(batchLevels.length)} new levels: ${levelNames}. Celebrating ${writtenOut}! Week ${batchNumber} released at ${releaseDay.toDateString()}.`}
+                description={`Week ${batchNumber} of ${caps} has started! In this week's trailer we show off ${convertNumberToWord(levels.length)} new levels: ${humanReadableArray(levels.map(({ levelName: { name } }) => name))}. Celebrating ${writtenOut}! Week ${batchNumber} released at ${releaseDate.formatted}.`}
                 title={`${caps} | Week ${batchNumber}`}
               />
             </Card>
@@ -81,5 +63,3 @@ const Batch = () => {
     </>
   );
 };
-export { Batch };
-export default Batch;

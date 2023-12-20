@@ -5,7 +5,7 @@
   color: var(--text-color);
   font: var(--app-font);
 
-  --side-space: 0;
+  --side-space: 1px;
   --full: minmax(var(--side-space), 1fr);
   --content: min(var(--max-content-width), 100% - var(--side-space) * 2);
 

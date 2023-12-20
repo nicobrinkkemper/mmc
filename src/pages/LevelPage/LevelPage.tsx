@@ -1,7 +1,7 @@
 import { AboutButton } from "../../about/AboutButton";
-import { BackButton } from "../../BackButton";
-import Level from "./Level";
-import { Logo } from "../../Logo";
+import { BackButton } from "../../components/BackButton";
+import { Level } from "./Level";
+import { Logo } from "../../layout/Logo";
 
 export function LevelPage() {
     return (

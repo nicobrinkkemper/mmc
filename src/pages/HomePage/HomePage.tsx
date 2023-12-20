@@ -1,6 +1,6 @@
 import { AboutButton } from "../../about/AboutButton";
-import { Logo } from "../../Logo";
-import Seo from "../../Seo";
+import { Logo } from "../../layout/Logo";
+import Seo from "../../components/Seo";
 import { DEFAULT_DESCRIPTION } from "../../constants";
 import { useTheme } from "../../theme/useTheme";
 import { useContent } from "../../content/useContent";

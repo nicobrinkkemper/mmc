@@ -17,10 +17,9 @@
     "react:test": "react-scripts test",
     "react:build": "export NODE_ENV=production; react-scripts build",
     "react:start": "react-scripts start",
-    "startup": "run-p lint startup:*",
+    "startup": "run-s lint startup:*",
     "startup:compile": "tsc --project tsconfig.node.json",
-    "startup:resize": "node ./startup_es/startup.mjs",
-    "startup:csv": "node ./scripts/csvToJson.mjs"
+    "startup:run": "export NODE_OPTIONS=--enable-source-maps; node ./startup/dist/startup.mjs"
   },
   "engines": {
     "node": ">=18"

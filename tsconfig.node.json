@@ -12,9 +12,11 @@
     "noFallthroughCasesInSwitch": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "declaration": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "outDir": "startup_es",
+    "sourceMap": true,
+    "outDir": "startup/dist",
     "jsx": "react-jsx"
   },
   "include": ["startup"]

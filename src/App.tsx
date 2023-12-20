@@ -8,7 +8,7 @@ import { LevelBatchPage } from "./pages/LevelBatchPage/LevelBatchPage";
 import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
 import { BatchesPage } from "./pages/LevelBatchesPage/LevelBatchesPage";
 import { LevelPage } from "./pages/LevelPage/LevelPage";
-import { Footer } from "./Footer";
+import { Footer } from "./layout/Footer";
 import classNames from "classnames";
 
 

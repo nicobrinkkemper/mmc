@@ -3,13 +3,24 @@
   gap: 1rem;
 }
 
-.Level .levelImg {
+.Level picture {
   max-width: 100%;
+}
+
+@media only screen and (max-width: 700px) {
+  .Level .Card {
+    padding: 1rem .5rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .Level .Card {
+    padding: 1rem 0;
+  }
 }
 
 .Level .info {
   display: grid;
-  width: 580px;
 }
 
 .Level .info.maker {
@@ -57,13 +68,11 @@
 
 .Level .makerName {
   display: grid;
-  width: 180px;
-
+  justify-items: center;
   grid-template-rows:
     [maker] max-content [makerId] 24px;
-  grid-template-columns:
-    [full-start] 1.3rem [content-start] 1fr [content-end] 1.3rem [full-end];
-  padding-top: 2rem;
+  width: max-content;
+  padding-top: 1rem;
 }
 
 .Level .makerName,
@@ -79,7 +88,7 @@
 
 .Level .nationality {
   grid-area: maker / full-start;
-  filter: brightness(.96);
+  margin-right: .2em;
 }
 
 .Level .makerId {
@@ -107,14 +116,12 @@
 }
 
 .Level .tags {
-  display: grid;
+  display: flex;
   align-self: flex-end;
   padding-top: 0.2rem;
   padding-right: 0.2rem;
   flex: 1 0 0;
-  grid-template-columns: max-content max-content;
-  grid-template-rows: max-content;
-  grid-gap: 0.3rem;
+  flex-wrap: wrap;
 }
 
 .Level .description {

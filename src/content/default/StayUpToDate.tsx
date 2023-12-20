@@ -1,5 +1,5 @@
-import Button from "../../Button";
-import { Card } from "../../Card";
+import Button from "../../components/Button";
+import { Card } from "../../components/Card";
 
 export const StayUpToDate = () => <Card heading={<h1>Stay up to date!</h1>}>
     <p>

@@ -1,8 +1,8 @@
-import { CardProps } from "../../Card"
+import { CardProps } from "../../components/Card"
 import { DefaultCreditsContent } from "../default/DefaultCreditsContent"
 
 export const CreditsContent = ({ children, ...props }: CardProps) => (
-    <DefaultCreditsContent subHeading={<h2>Project Organization</h2>} {...props}>
+    <DefaultCreditsContent {...props}>
         <dl>
             <dt>Judges</dt>
             <dd>B0X_Gaming</dd>

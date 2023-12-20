@@ -1,4 +1,4 @@
-import { ResizeGetInfoFn, ResizeUserInfo } from "./types.mjs";
+import { ResizeGetInfoFn, ResizeUserInfo } from "./resize/types.mjs";
 
 const resizeX = (width: number) => (divider: number, index: number) => ({
   fileName: `[snakecase]-${index + 1}x.webp`,
@@ -125,6 +125,11 @@ const webp: ResizeUserInfo[] = [
   },
 ];
 
+/**
+ * Basically this function is responsible for determining what to do with each image.
+ * It has all the information to determine what to do with each image.
+ *
+ */
 export const resizeJobs: ResizeGetInfoFn = ({
   name,
   ext,

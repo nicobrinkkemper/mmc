@@ -16,7 +16,7 @@
     --box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
     --button-color: white;
-    --button-padding: 1em 2em;
+    --button-padding: .6em 1em;
     --button-font: normal 1em/1.2em var(--font-primary);
     --button-background: #d30561;
     --button-border: none;

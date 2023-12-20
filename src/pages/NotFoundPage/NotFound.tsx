@@ -1,9 +1,9 @@
 import "./NotFound.css";
-import Button from "../../Button";
-import { Card } from "../../Card";
-import Seo from "../../Seo";
+import Button from "../../components/Button";
+import { Card } from "../../components/Card";
+import Seo from "../../components/Seo";
 import { useTheme } from "../../theme/useTheme";
-import { ToTheLevels } from "../../ToTheLevels";
+import { ToTheLevels } from "../../components/ToTheLevels";
 
 const NotFound = ({ error }: { error?: string }) => {
   const { themeSlug, info: { caps } } = useTheme();

@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState, useMemo, useCallback, useEffect } from 'react';
+import { PropsWithChildren, useState, useMemo, useCallback } from 'react';
 import { Theme, ThemeContext, createThemeContext, nextTheme, prevTheme, themeKeys } from './ThemeContext';
 
 const defaultTheme = '8mmc';
@@ -12,14 +12,15 @@ export function ThemeProvider({ children, theme: themeParam }: Readonly<PropsWit
     const themeDown = useCallback(() => {
         setTheme(prevTheme(theme));
     }, [theme, setTheme]);
-    useEffect(() => {
-        if (hasValidParam(themeParam) && themeParam !== theme) {
-            setTheme(themeParam);
-        } else if (theme !== defaultThemeFromParam) {
-            setTheme(defaultThemeFromParam);
-        }
-    }, [theme, themeParam, defaultThemeFromParam]);
-    if (theme !== '8mmc' && theme !== '7mmc') console.error('Invalid theme', theme);
+
+    if (hasValidParam(themeParam)) {
+        if (themeParam !== theme) setTheme(themeParam);
+    } else if (theme !== defaultThemeFromParam) {
+        setTheme(defaultThemeFromParam);
+    }
+
+    if (!themeKeys.includes(theme)) console.error('Invalid theme', theme);
+
     const contextValue = useMemo(() => createThemeContext({
         theme,
         setTheme,
