@@ -1,38 +1,25 @@
 import { createContext } from 'react';
-import base from "./base.module.css";
-import mmc7 from "./7mmc.module.css";
-import mmc8 from "./8mmc.module.css";
-import Credits from "./Credits.module.css";
 import { convertNumberToWord } from './convertNumberToWord';
 import { capitalize, snakeCase } from 'lodash';
+import themes from "../data/themes.json";
 
-export const themesCss = {
-    '7mmc': { ...base, ...mmc7 },
-    '8mmc': { ...base, ...mmc8 },
-} satisfies {
-        // this ensures themes have the same keys
-        [key in '7mmc' | '8mmc']: typeof mmc7 & typeof mmc8 & typeof base
-    };
 
-export const themeKeys = Object.keys(themesCss) as Theme[];
+export const themeKeys = Object.keys(themes) as (keyof typeof themes)[];
 export const themesTotal = themeKeys.length
-
-export type ThemeCSS = typeof themesCss
-export type Theme = keyof ThemeCSS;
+export type Theme = typeof themeKeys[number];
 
 export type ThemeContextType = {
     theme: Theme;
     setTheme: (theme: Theme) => void;
-    classes: ThemeCSS[Theme];
-    Credits: typeof Credits;
     themeUp: () => void;
     themeDown: () => void;
     info: ThemeInfo
     themeSlug: string;
+    data: typeof themes[Theme];
 }
 
 
-const getThemeInfo = (theme: Theme) => {
+const getThemeInfo = (theme: Theme, pathname: string) => {
     const caps = theme.toUpperCase();
     const snake = snakeCase(theme);
     const ordinalString = snake.split('_')[0];
@@ -40,6 +27,7 @@ const getThemeInfo = (theme: Theme) => {
     const themeYear = convertNumberToWord(ordinal, 'english');
     const writtenOutOrdinal = convertNumberToWord(ordinal, 'englishOrdinal');
     const writtenOut = capitalize(writtenOutOrdinal) + ' Mario Maker Celebration';
+    const pathnameFromTheme = pathname.replace(`${theme}/`, '');
     return {
         caps,
         snake,
@@ -48,19 +36,20 @@ const getThemeInfo = (theme: Theme) => {
         writtenOutOrdinal,
         writtenOut,
         mainTheme: '8mmc',
+        currentThemeUrl: `${theme}${pathnameFromTheme}`,
+        nextThemeUrl: `${nextTheme(theme)}${pathnameFromTheme}`,
+        prevThemeUrl: `${nextTheme(theme)}${pathnameFromTheme}`,
         nextTheme: nextTheme(theme),
         prevTheme: prevTheme(theme),
     }
 }
 type ThemeInfo = ReturnType<typeof getThemeInfo>;
 
-export const createThemeContext = (context: Omit<ThemeContextType, 'classes' | 'Credits' | 'info'>): ThemeContextType => {
-
+export const createThemeContext = (context: Omit<ThemeContextType, 'info' | 'data'>, pathname: string): ThemeContextType => {
     return ({
         ...context,
-        classes: themesCss[context.theme],
-        Credits,
-        info: getThemeInfo(context.theme)
+        data: themes[context.theme],
+        info: getThemeInfo(context.theme, pathname)
     })
 };
 
@@ -68,11 +57,15 @@ export const ThemeContext = createContext<ThemeContextType>({} as ThemeContextTy
 
 export const nextTheme = (current: Theme) => {
     const currentIndex = themeKeys.indexOf(current);
-    if (currentIndex === themesTotal - 1) return themeKeys[0];
+    if (currentIndex === (themesTotal - 1)) {
+        return themeKeys[0];
+    }
     return themeKeys[currentIndex + 1];
 }
 export const prevTheme = (current: Theme) => {
     const currentIndex = themeKeys.indexOf(current);
-    if (currentIndex === 0) return themeKeys[themesTotal - 1];
+    if (currentIndex === 0) {
+        return themeKeys[themesTotal - 1];
+    }
     return themeKeys[currentIndex - 1];
 }

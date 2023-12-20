@@ -1,38 +1,44 @@
 .App {
-  width: 100%;
-  gap: 1rem;
-  display: flex;
-  align-items: center;
-  -ms-align-items: column;
-  justify-content: center;
-  -ms-justify-content: column;
-  flex-direction: column;
-  -ms-flex-direction: column;
-  min-height: 100vh;
+  display: grid;
+  min-height: var(--app-min-height);
   background: var(--app-background);
   color: var(--text-color);
   font: var(--app-font);
+
+  --side-space: 1px;
+  --full: minmax(var(--side-space), 1fr);
+  --content: min(var(--max-content-width), 100% - var(--side-space) * 2);
+
+  grid-template-rows:
+    [header] max-content [body] minmax(min-content, auto) [footer] 3rem;
+  grid-template-columns:
+    [full-start] var(--full) [content-start] var(--content) [content-end] var(--full) [full-end];
+  gap: 2rem 0;
+  padding-top: 1rem
 }
 
-.App-header,
-.App-body {
-  width: calc(100vw - 2rem);
-  max-width: 34rem;
+@media (min-width: 320px) {
+  .App {
+    --side-space: 6px;
+  }
 }
 
+@media (min-width: 520px) {
+  .App {
+    --side-space: clamp(1rem, 6vw, 3rem);
+  }
+}
 
 .App-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-  gap: 1rem;
+  grid-area: header / content;
+  display: grid;
+  gap: 2rem;
 }
 
 .App-body {
-  display: flex;
-  flex: 1 0 0;
+  grid-area: body / content;
+  display: grid;
+  gap: 1em;
 }
 
 .App-link {
@@ -40,17 +46,20 @@
 }
 
 .App-footer {
-  display: flex;
-  background: var(--app-footer-background, inherit);
-  padding: 1rem 0;
-  margin-top: 2rem;
+  grid-area: footer / full;
+  display: grid;
   justify-content: center;
-  width: 100%;
+  align-content: center;
+  grid-template-columns: repeat(3, max-content);
+  background: var(--footer-background, inherit);
+  padding: 1rem 0;
 }
 
 .App-footer a {
-  font-size: .875rem;
-  color: var(--app-footer-color, inherit);
+  display: flex;
+  align-items: center;
+  font: var(--footer-font);
+  color: var(--footer-color, inherit);
   text-decoration: none;
   padding-right: 1rem;
 }
@@ -61,27 +70,5 @@
 
 .App-footer a+a {
   padding-left: 1rem;
-  border-left: 1px solid var(--app-footer-color, #111);
-}
-
-
-.youtubeFlexDisable {
-  display: block;
-  width: 100%;
-}
-
-.youtubeContainer {
-  position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
-  overflow: hidden;
-}
-
-.youtubeContainer iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: none;
+  border-left: 1px solid var(--footer-color, #111);
 }

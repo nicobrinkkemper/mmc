@@ -1,0 +1,91 @@
+.Batch {
+  display: grid;
+  gap: .875rem;
+}
+
+.Card.BatchLevel {
+  grid-template-columns: 110px auto;
+  padding: .5rem;
+}
+
+.BatchLevel .info.level .name {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 900;
+}
+
+.BatchLevel .info {
+  padding: 0.5rem 0;
+  display: grid;
+}
+
+.BatchLevel .levelInfo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+.BatchLevel .info .code {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.BatchLevel .makerInfo {
+  display: flex;
+  flex: 1 0 0;
+  text-align: left;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.BatchLevel .makerName {
+  display: grid;
+  line-height: 150%;
+  font-size: 0.7rem;
+  align-items: flex-start;
+}
+
+.BatchLevel .nationality {
+  margin-right: 0.4em;
+}
+
+.level_thumbnailPicture {
+  min-width: 110px;
+  min-height: 110px;
+}
+
+.Batch .Card picture img {
+  border-radius: 0.01rem;
+}
+
+
+.BatchLevel .difficulty {
+  font-size: 0.75rem;
+  align-self: flex-end;
+  justify-self: flex-end;
+  justify-content: flex-end;
+  margin-left: auto;
+  min-width: 9rem;
+  display: grid;
+  grid-template-columns: min-content min-content;
+
+}
+
+.BatchLevel .tags {
+  display: flex;
+  align-self: flex-end;
+  padding-top: 0.2rem;
+  padding-right: 0.2rem;
+  flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 420px) {
+  .Batch .Card picture {
+    display: none;
+  }
+
+  .level .info {
+    display: flex;
+    flex-flow: column;
+  }
+}

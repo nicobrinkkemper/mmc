@@ -1,0 +1,63 @@
+.Teaser {
+  width: var(--card-width);
+  max-width: 35rem;
+  display: flex;
+  flex-basis: 100%;
+  flex-flow: column;
+}
+
+.Teaser .Logo {
+  height: 40vmin;
+  pointer-events: none;
+  padding-bottom: 2em;
+}
+
+.Teaser header {
+  max-width: 100%;
+}
+
+.Teaser .youtubeWrapper {
+  flex: 1;
+  background: rgba(0, 0, 0, .3);
+  margin-bottom: 1em;
+}
+
+@media only screen and (min-width: 1024px) {
+  .Teaser .youtubeWrapper {
+    width: 120%;
+    margin-left: -10%;
+  }
+}
+
+.Teaser .youtubeWrapper iframe,
+.youtubeWrapper object,
+.youtubeWrapper embed {
+  width: 100%;
+  height: 100%;
+}
+
+.Teaser .countdown {
+  line-break: loose;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  column-gap: .75rem;
+  color: var(--text-color);
+  font-size: .75em;
+}
+
+@media only screen and (max-width: 450px) {
+  .Teaser .countdown {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media only screen and (max-width: 160px) {
+  .Teaser .countdown {
+    grid-template-columns: 1fr;
+  }
+}
+
+.Teaser .copy {
+  padding: 1.75rem 0;
+}

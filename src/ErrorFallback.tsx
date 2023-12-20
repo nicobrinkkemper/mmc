@@ -1,4 +1,4 @@
-import { NotFound } from "./NotFound";
+import { NotFound } from "./pages/NotFoundPage/NotFound";
 
 function ErrorFallback({
   error,

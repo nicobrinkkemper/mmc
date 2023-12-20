@@ -1,0 +1,84 @@
+.Theme {
+    --font-monospace: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    --font-primary: 'Courier New', Courier, monospace;
+    --font-secondary: 'HeaderMarker', sans-serif;
+    --font-tertiary: "BordersDivideButHeartsShallConquer", sans-serif;
+    --h1-font: bolder 1.7rem/2rem var(--font-secondary);
+    --h2-font: bolder 1rem/1.2rem var(--font-primary);
+
+    --background: #000;
+    --text-color: #111;
+    --text-mix-blend-mode: mix-blend-mode: multiply;
+    --link-color: #61dafb;
+    --text-shadow: 0 -1px #d8d8d8;
+    --letter-spacing: 0;
+    --link-color-active: #2c001f;
+    --card-texture: url('../assets/7mmc/card_texture.webp');
+
+    --button-font: 400 1.4em/1.125em var(--font-tertiary);
+    --button-background: var(--card-texture) 100%/100%;
+    --button-padding: .6em 1em;
+    --button-after-background: #6dd7fe;
+    --button-after-border: 1px solid rgba(0, 0, 0, .5);
+    --button-after-box-shadow: var(--box-shadow);
+    --button-after-content: '';
+    --button-after-mix-blend-mode: color-burn;
+
+    --box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    --app-font: normal 1rem/1.2rem var(--font-primary);
+    --app-background: 512px/512px #FFF url("../assets/7mmc/gridpaper_special-3x.webp") repeat;
+
+    --modal-inner-color: var(--text-color);
+    --modal-outer-background: rgba(205, 205, 205, 0.4);
+    --modal-inner-background: var(--card-texture) repeat;
+    --modal-inner-box-shadow: 0px 0.25rem 0.25rem rgba(46, 47, 48, 0.1);
+
+    --batch-number-background: #FACD00;
+    --batch-number-border: 1px solid rgba(0, 0, 0, .3);
+    --batch-number-color: #111;
+    --batch-number-font: 400 2rem/2rem var(--font-secondary);
+    --batch-number-mix-blend-mode: color-burn;
+
+    --navigation-button-color: #ef25d8;
+    --app-header-button-color: #6dd7fe;
+
+    --card-button-color: #111;
+    --card-button-border: 1px solid rgba(0, 0, 0, .5);
+    --card-button-border-radius: 0;
+    --card-button-box-shadow: var(----box-shadow);
+    --card-button-after-background: #facd00;
+    --card-background: var(--card-texture) repeat;
+    --card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
+
+    --tag-min-width: 100px;
+    --tag-before-content: '';
+    --tag-text-align: center;
+    --tag-before-background: no-repeat url('../assets/7mmc/highlight_yellow.svg');
+    --tag-before-new-background: no-repeat url('../assets/7mmc/highlight_magenta.svg');
+    --tag-before-other-background: no-repeat url('../assets/7mmc/highlight_cyan.svg');
+    --tag-before-mix-blend-mode: multiply;
+    --tag-before-transform: scale(1, 1);
+    --tag-before-top: 0;
+    --tag-before-left: 0;
+    --tag-before-right: 0;
+    --tag-before-bottom: 0;
+    --tag-before-color: #111;
+
+    --maker-info-mix-blend-mode: multiply;
+    --level-code-mix-blend-mode: color-burn;
+    --level-code-filter: invert(100%);
+    /* --level-code-color will be inverted to black via color-burn */
+    --level-code-color: white;
+    --level-code-background: rgb(255 0 229 / 30%);
+    --level-code-font: 900 1.5rem/3rem var(--font-primary);
+
+    --max-content-width: 617px;
+    --app-min-height: 100svh;
+    --app-min-width: 32rem;
+    --card-width: 100%;
+
+    --footer-font: .875rem/.875rem var(--font-primary);
+    --footer-color: var(--text-color);
+    --footer-background: var(--card-texture) repeat;
+}

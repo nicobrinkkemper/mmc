@@ -2,23 +2,24 @@
   "name": "ymm",
   "version": "1.0.0",
   "private": true,
-  "homepage": "/",
+  "type": "module",
   "scripts": {
     "start": "run-s startup react:start",
     "lint": "eslint ./src --fix",
-    "serve": "serve build",
-    "build": "run-s startup react:build",
-    "build-gh": "export PUBLIC_URL='/7mmc'; export ABSOLUTE_URL='https://nicobrinkkemper.github.io/7mmc'; npm run build",
-    "postbuild": "react-snap",
+    "serve": "serve build/",
+    "build": "export BASE_URL='https://mmcelebration.com' && react-scripts build",
+    "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/7mmc' && react-scripts build",
+    "postbuild": "export BASE_URL='https://mmcelebration.com' && react-snap",
+    "postbuild-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/7mmc' && react-snap",
     "predeploy": "npm run build-gh",
     "deploy": "gh-pages -d build",
     "test": "run-s startup react:testing",
     "react:test": "react-scripts test",
-    "react:build": "export NODE_ENV=production; react-scripts build",
+    "react:build": "react-scripts build",
     "react:start": "react-scripts start",
-    "startup": "run-p lint startup:*",
-    "startup:resize": "node ./scripts/resize.mjs",
-    "startup:csv": "node ./scripts/csvToJson.mjs"
+    "startup": "run-s lint startup:*",
+    "startup:compile": "tsc --project tsconfig.node.json",
+    "startup:run": "export NODE_OPTIONS=--enable-source-maps; node ./startup/dist/startup.mjs"
   },
   "engines": {
     "node": ">=18"
@@ -51,6 +52,7 @@
   },
   "reactSnap": {
     "inlineCss": true,
+    "concurrent": 10,
     "puppeteerArgs": [
       "--no-sandbox",
       "--disable-setuid-sandbox"
@@ -107,7 +109,7 @@
     "responsive-loader": "^3.1.2",
     "serve": "^14.2.1",
     "sharp": "^0.33.0",
-    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
     "type-guard-helpers": "^1.1.21",
     "typescript": "^5.3.3",
     "typescript-plugin-css-modules": "^5.0.2",
