@@ -1,6 +1,9 @@
+type themeConfigDefinition = {
+  [key: string]: { gid: number; weektrailers: string[] };
+};
 // to add a new theme to the website, add a new key-value pair to the themeConfig object
 // if the theme starts with a number or special character, use the _ prefix (it will be ignored)
-// the only thing that currently matters is the gid, which is a reference to the TAB in the spreadsheet
+// The gid, which is a reference to the TAB in the spreadsheet
 export const themeConfig = {
   _7mmc: {
     gid: 0,
@@ -17,4 +20,4 @@ export const themeConfig = {
     gid: 1776023134,
     weektrailers: ["X7502D3SSy4"],
   },
-};
+} satisfies themeConfigDefinition;

@@ -15,7 +15,7 @@
     "postbuild-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/7mmc' && react-snap",
     "predeploy": "npm run build-gh",
     "deploy": "gh-pages -d build",
-    "test": "run-s startup react:testing",
+    "test": "run-s startup react:test",
     "react:test": "react-scripts test",
     "react:build": "react-scripts build",
     "react:start": "react-scripts start",
