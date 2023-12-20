@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useTheme } from "../theme/useTheme";
 import classNames from "classnames";
 import { PublicImage } from "../components/PublicImage";
-import { BASE_URL } from "../constants";
 
 type logoImageTypes = 'logo' | 'logo_simple' | 'logo_special' | 'logo_small';
 
@@ -33,19 +32,8 @@ export const Logo = ({ logo = "logo", small = false }: LogoProps) => {
   const endsWithSmall = logo.endsWith('_small')
   if (small && !endsWithSmall) logo = logo + '_small'
   if (endsWithSmall) small = true
-
-  const { theme, themeSlug, data, info: { nextTheme, prevTheme, caps } } = useTheme();
-
-  let stripBase = window.location.pathname;
-  if (stripBase.startsWith(BASE_URL)) stripBase = stripBase.slice(BASE_URL.length);
-  if (stripBase.startsWith('/')) stripBase = stripBase.slice(1);
-  if (stripBase.startsWith(theme)) stripBase = stripBase.slice(theme.length);
-  if (stripBase.startsWith('/')) stripBase = stripBase.slice(1);
-
-  const nextThemeUrl = nextTheme + '/' + stripBase;
-  const prevThemeUrl = prevTheme + '/' + stripBase;
+  const { themeSlug, data, info: { nextThemeUrl, prevThemeUrl, caps } } = useTheme();
   const fallbackType = ((logo in data) ? logo : 'logo' + (small ? '_small' : '')) as 'logo'
-
   return (
     <>
       {!small ? <Link to={`/${prevThemeUrl}`}><ArrowLeft /></Link> : null}

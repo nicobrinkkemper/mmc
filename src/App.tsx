@@ -10,6 +10,8 @@ import { BatchesPage } from "./pages/LevelBatchesPage/LevelBatchesPage";
 import { LevelPage } from "./pages/LevelPage/LevelPage";
 import { Footer } from "./layout/Footer";
 import classNames from "classnames";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "./ErrorFallback";
 
 
 const AppRoutes = () => {
@@ -19,6 +21,7 @@ const AppRoutes = () => {
       <Route path={`/levels/:batchNumber`} element={<LevelBatchPage />} />
       <Route path={`/levels`} element={<BatchesPage />} />
       <Route path={`/credits`} element={<CreditPage />} />
+      <Route path={`/404.html`} element={<NotFoundPage />} />
       <Route path={`/`} index element={<HomePage />} />
       <Route path={`*`} element={<NotFoundPage />} />
     </Routes>
@@ -34,7 +37,9 @@ export const App = () => {
     : {};
   return (
     <div className={classNames("App", Theme)} style={style}>
-      <AppRoutes />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <AppRoutes />
+      </ErrorBoundary>
       <About />
       <Footer />
     </div>

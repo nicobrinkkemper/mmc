@@ -1,12 +1,11 @@
 import { Helmet } from "react-helmet-async";
-import { ABSOLUTE_BASE_URL, DEFAULT_DESCRIPTION } from "../constants";
+import { BASE_URL, DEFAULT_DESCRIPTION } from "../constants";
 import { useTheme } from "../theme/useTheme";
 
 export const absoluteUrl = (path: string = '') => {
   if (path.startsWith('http')) return path;
-  if (path.startsWith('/')) path = path.slice(1);
-  if (ABSOLUTE_BASE_URL === '/') return `${ABSOLUTE_BASE_URL}${path}`;
-  return `${ABSOLUTE_BASE_URL}/${path}`
+  if (path.startsWith('/')) return `${BASE_URL}${path}`
+  return `${BASE_URL}/${path}`
 }
 
 type getMetaTagsProps = {
@@ -38,14 +37,14 @@ const getMetaTags = ({
     { itemprop: "description", content: description },
     { name: "viewport", content: `width=device-width,initial-scale=1` },
     { name: "description", content: description },
-    { name: "twitter:title", content: `${title} | ${ABSOLUTE_BASE_URL}` },
+    { name: "twitter:title", content: `${title} | ${BASE_URL}` },
     { name: "twitter:description", content: description },
     { name: "twitter:creator", content: "@bbmariomaker2" },
-    { name: "og:title", content: `${title} | ${ABSOLUTE_BASE_URL}` },
+    { name: "og:title", content: `${title} | ${BASE_URL}` },
     { name: "og:type", content: contentType },
     { name: "og:url", content: url },
     { name: "og:description", content: description },
-    { name: "og:site_name", content: `${ABSOLUTE_BASE_URL}` },
+    { name: "og:site_name", content: `${BASE_URL}` },
     { name: "og:locale", content: "en_EN" },
   ];
 

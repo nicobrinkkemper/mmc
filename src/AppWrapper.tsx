@@ -3,10 +3,7 @@ import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-d
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "./theme/ThemeProvider";
 import { themeKeys } from "./theme/ThemeContext";
-import { ErrorBoundary } from "react-error-boundary";
-import { ErrorFallback } from "./ErrorFallback";
-import { BASE_URL } from "./constants";
-
+import { PUBLIC_URL } from "./constants";
 
 const router = createBrowserRouter([{
   path: '*',
@@ -15,27 +12,24 @@ const router = createBrowserRouter([{
     <App />
   </ThemeProvider >
   ),
-}, ...themeKeys.map((theme): RouteObject => (
+}, ...themeKeys.flatMap((theme): [RouteObject] => [
   {
     path: `${theme}/*`,
     element: (<ThemeProvider theme={theme}>
       <App />
     </ThemeProvider >
     ),
-  }
-))], {
-  basename: BASE_URL
+  }]
+)], {
+  basename: PUBLIC_URL
 });
 
 export function AppWrapper() {
   return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-    >
-      <HelmetProvider>
-        <RouterProvider router={router} />
-      </HelmetProvider >
-    </ErrorBoundary>
+
+    <HelmetProvider>
+      <RouterProvider router={router} />
+    </HelmetProvider >
   )
 }
 

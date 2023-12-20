@@ -5,8 +5,8 @@ export function NotFoundPage() {
     return (
         <>
             <header className="App-header">
-                <div className="toolbar big">
-                    <Logo />
+                <div className="toolbar small">
+                    <Logo logo="logo_simple" small />
                 </div>
             </header>
             <article className="App-body notFoundPage">

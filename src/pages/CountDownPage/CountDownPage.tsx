@@ -15,7 +15,7 @@ export function CountdownPage() {
         <>
             <header className="App-header">
                 <div className="toolbar small">
-                    <Logo small logo="logo" />
+                    <Logo small logo="logo_simple" />
                     <AboutButton />
                 </div>
             </header>

@@ -19,7 +19,7 @@ export type ThemeContextType = {
 }
 
 
-const getThemeInfo = (theme: Theme) => {
+const getThemeInfo = (theme: Theme, pathname: string) => {
     const caps = theme.toUpperCase();
     const snake = snakeCase(theme);
     const ordinalString = snake.split('_')[0];
@@ -27,6 +27,7 @@ const getThemeInfo = (theme: Theme) => {
     const themeYear = convertNumberToWord(ordinal, 'english');
     const writtenOutOrdinal = convertNumberToWord(ordinal, 'englishOrdinal');
     const writtenOut = capitalize(writtenOutOrdinal) + ' Mario Maker Celebration';
+    const pathnameFromTheme = pathname.replace(`${theme}/`, '');
     return {
         caps,
         snake,
@@ -35,17 +36,20 @@ const getThemeInfo = (theme: Theme) => {
         writtenOutOrdinal,
         writtenOut,
         mainTheme: '8mmc',
+        currentThemeUrl: `${theme}${pathnameFromTheme}`,
+        nextThemeUrl: `${nextTheme(theme)}${pathnameFromTheme}`,
+        prevThemeUrl: `${nextTheme(theme)}${pathnameFromTheme}`,
         nextTheme: nextTheme(theme),
         prevTheme: prevTheme(theme),
     }
 }
 type ThemeInfo = ReturnType<typeof getThemeInfo>;
 
-export const createThemeContext = (context: Omit<ThemeContextType, 'info' | 'data'>): ThemeContextType => {
+export const createThemeContext = (context: Omit<ThemeContextType, 'info' | 'data'>, pathname: string): ThemeContextType => {
     return ({
         ...context,
         data: themes[context.theme],
-        info: getThemeInfo(context.theme)
+        info: getThemeInfo(context.theme, pathname)
     })
 };
 
@@ -53,11 +57,15 @@ export const ThemeContext = createContext<ThemeContextType>({} as ThemeContextTy
 
 export const nextTheme = (current: Theme) => {
     const currentIndex = themeKeys.indexOf(current);
-    if (currentIndex === themesTotal - 1) return themeKeys[0];
+    if (currentIndex === (themesTotal - 1)) {
+        return themeKeys[0];
+    }
     return themeKeys[currentIndex + 1];
 }
 export const prevTheme = (current: Theme) => {
     const currentIndex = themeKeys.indexOf(current);
-    if (currentIndex === 0) return themeKeys[themesTotal - 1];
+    if (currentIndex === 0) {
+        return themeKeys[themesTotal - 1];
+    }
     return themeKeys[currentIndex - 1];
 }
