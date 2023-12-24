@@ -23,8 +23,6 @@ export function ThemeProvider({ children, theme: themeParam }: Readonly<PropsWit
         setTheme(defaultThemeFromParam);
     }
 
-    if (!themeKeys.includes(theme)) console.error('Invalid theme', theme);
-
     const contextValue = useMemo(() => createThemeContext({
         theme,
         setTheme,
@@ -37,6 +35,8 @@ export function ThemeProvider({ children, theme: themeParam }: Readonly<PropsWit
         themeDown,
         themeUp
     ]);
+
+    if (!themeKeys.includes(theme)) console.error('Invalid theme', theme);
     return (
         <ThemeContext.Provider value={contextValue}>
             {children}

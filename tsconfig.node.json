@@ -19,5 +19,5 @@
     "outDir": "startup/dist",
     "jsx": "react-jsx"
   },
-  "include": ["startup"]
+  "include": ["startup/src"]
 }

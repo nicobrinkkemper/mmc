@@ -32,10 +32,10 @@ export function Batch() {
 
         {levels.map((level) => {
           const to = `/${themeSlug}level/${batchNumber}/${level.order}/`
-          if (!level.levelThumbnail) console.log('not found', level.levelName.slug)
+          if (!level.images.levelThumbnail) console.log('not found', level.levelName.slug)
           return (
             <Card key={to} to={to} className={'BatchLevel'}>
-              <PublicImage alt={level.levelName.name} {...level.levelThumbnail} />
+              <PublicImage alt={level.levelName.name} {...level.images.levelThumbnail} />
               <div className="info">
                 <div className="makerInfo">
                   <span className={"levelName"}>{level.levelName.name}</span>
