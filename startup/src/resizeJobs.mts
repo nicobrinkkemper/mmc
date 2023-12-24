@@ -1,4 +1,4 @@
-import { ResizeGetInfoFn, ResizeUserInfo } from "./resize/types.mjs";
+import type { ResizeGetInfoFn, ResizeUserInfo } from "./resize/types.mjs";
 
 const resizeX = (width: number) => (divider: number, index: number) => ({
   fileName: `[snakecase]-${index + 1}x.webp`,

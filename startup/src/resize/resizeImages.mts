@@ -18,6 +18,20 @@ import { readDirectory } from "../file/readDirectory.mjs";
  */
 async function toPlaceholderBase64(job: ResizeJob, instance: sharp.Sharp) {
   try {
+    if (
+      !(job.output.reference && job.userInfo.placeholder && job.userInfo.resize)
+    ) {
+      if (job.userInfo.placeholder) {
+        throw new Error(
+          `A placeholder was requested, but reference: "${
+            job.output.reference
+          }" and/or ResizeOptions: "${JSON.stringify(
+            job.userInfo.resize
+          )}" were not provided.`
+        );
+      }
+      return;
+    }
     if (!job.original.originalSize.width) throw new Error("no original width");
     if (!job.original.originalSize.height)
       throw new Error("no original height");
@@ -129,7 +143,16 @@ async function createSharpInstance(job: ResizeJob) {
   const imageBuffer = await fs
     .readFile(job.original.inputPath)
     .catch((e) => console.trace(e));
-  if (Buffer.isBuffer(imageBuffer)) return sharp(imageBuffer);
+  if (!Buffer.isBuffer(imageBuffer))
+    throw new Error(
+      `Could not create image buffer at ${job.original.inputPath}`
+    );
+  const instance = sharp(imageBuffer);
+  if (!instance)
+    throw new Error(
+      `Could not create sharp instance at ${job.original.inputPath}`
+    );
+  return instance;
 }
 
 const mapImagesToResizeJobs = (images: string[], props: ResizeImagesProps) =>
@@ -157,29 +180,8 @@ export async function resizeImages(props: ResizeImagesProps) {
         job.output.isReplaced = job.output.exists && job.output.shouldOutput;
         job.output.copy = await outputCopyImage(job);
         const instance = await createSharpInstance(job);
-        if (instance === undefined) continue;
         job.output.sharpOutputInfo = await outputResizedImage(job, instance);
-
-        if (
-          !(
-            job.output.reference &&
-            job.userInfo.placeholder &&
-            job.userInfo.resize
-          )
-        ) {
-          if (job.userInfo.placeholder) {
-            throw new Error(
-              `A placeholder was requested, but reference: "${
-                job.output.reference
-              }" and/or ResizeOptions: "${JSON.stringify(
-                job.userInfo.resize
-              )}" were not provided.`
-            );
-          }
-          continue;
-        }
         job.output.placeholder = await toPlaceholderBase64(job, instance);
-        if (!job.output.placeholder) throw new Error("no placeholder");
       }
       const data = resizeJobGroupToData(jobGroup);
       resizeInfo[group] = resizeInfo[group]

@@ -5,10 +5,8 @@ import { useTheme } from "../../theme/useTheme";
 import classNames from "classnames";
 
 type Batch = ReturnType<typeof useTheme>['data']['batches'][0];
-function BatchesCard({ batch, batchIndex, totalBatches }: {
+function BatchesCard({ batch }: {
   readonly batch: Batch;
-  readonly batchIndex: number;
-  readonly totalBatches: number;
 }) {
   const { themeSlug } = useTheme();
   const classes = ["BatchCard"];
@@ -19,7 +17,7 @@ function BatchesCard({ batch, batchIndex, totalBatches }: {
       <div className="releaseInfo">
         <span className="releaseDay">{batch.releaseDate.formatted}</span>
         <span className="batchLevelAmount">
-          {totalBatches} levels
+          {batch.levels.length} levels
         </span>
       </div>
       <div className="tags">
@@ -28,24 +26,19 @@ function BatchesCard({ batch, batchIndex, totalBatches }: {
   );
 }
 
-function mapReleaseDays(batch: Batch, batchIndex: number, batches: Batch[]) {
-  return <BatchesCard key={batch.releaseDate.date} batch={batch} batchIndex={batchIndex} totalBatches={batches.length} />
+function mapReleaseDays(batch: Batch) {
+  return <BatchesCard key={batch.releaseDate.date} batch={batch} />
 }
 
-function BatchesCards() {
-  return useTheme().data.batches.map(mapReleaseDays)
-}
-
-function Batches() {
-  const { info: { caps }, data } = useTheme();
+export function Batches() {
+  const { info: { caps }, data: { batches } } = useTheme();
   return (
     <>
-      <BatchesCards />
+      {batches.map(mapReleaseDays)}
       <Seo
-        description={`Week overview of ${caps}. ${data.batches.length} weeks released so far!`}
+        description={`Week overview of ${caps}. ${batches.length} weeks released so far!`}
         title={`${caps} | Week overview`}
       />
     </ >
   );
 }
-export { Batches };

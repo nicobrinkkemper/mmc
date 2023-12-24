@@ -31,7 +31,7 @@ export const Card = ({ children, illustration, disabled = false, to, className, 
       {heading ?? null}
       <ContainerInner {...ContainerInnerProps}>
         {illustration && <span className={classnames("Illustration", illustration)}>
-          <PublicImage alt={'illustration'} {...data.illustration} />
+          <PublicImage alt={'illustration'} {...data.images.illustration} />
         </span>}
         {subHeading ?? null}
         {children}

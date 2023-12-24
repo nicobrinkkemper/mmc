@@ -40,7 +40,7 @@ export const Logo = ({ logo = "logo", small = false }: LogoProps) => {
       <div className={classNames('Logo', small ? 'small' : 'normal')}>
         <Link to={`/${themeSlug}`}>
           <span className={logo}>
-            <PublicImage alt={`${caps} Logo`} {...data[fallbackType]} />
+            <PublicImage alt={`${caps} Logo`} {...data.images[fallbackType]} />
           </span>
         </Link>
       </div>

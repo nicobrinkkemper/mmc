@@ -45,7 +45,7 @@ export function Level() {
       <Card>
         <div className="info level">
           <h2 className={"levelName"}>{level.levelName.name}</h2>
-          <PublicImage alt={level.levelName.name} {...level.level} />
+          <PublicImage alt={level.levelName.name} {...level.images.level} />
           <div className="levelCode">
             {level.levelCode || "Code coming soon"}
           </div>
@@ -65,7 +65,7 @@ export function Level() {
       </Card>
       <Card>
         <div className="info maker">
-          <PublicImage alt={level.makerName.name} {...level.maker} />
+          <PublicImage alt={level.makerName.name} {...level.images.maker} />
           <div className={"makerName"}>
             <span className="name">
               <span
@@ -97,7 +97,7 @@ export function Level() {
       <Seo
         description={`${caps} level by ${level.makerName.name}: ${level.levelName.name} - ${level.levelCode}`}
         title={`${level.levelName.name} | ${level.levelCode} | ${caps}`}
-        image={level.level[580][0]}
+        image={level.images.level[580][0]}
         twitter="summary_large_image"
       />
     </div>

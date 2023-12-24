@@ -109,7 +109,7 @@ const Seo = ({
 }: SeoProps) => {
   const { data, themeSlug } = useTheme();
   const published = data.batches[0].releaseDate.formatted
-  if (image === '') image = data.favicon["512_512"][0];
+  if (image === '') image = data.images.favicon["512_512"][0];
   if (title === '') title = data.caps
   tags.push(data.caps);
   return (
@@ -119,15 +119,15 @@ const Seo = ({
       })}
       title={title}
       link={[
-        { rel: "icon", href: absoluteUrl(data.favicon['versions'][0]) },
+        { rel: "icon", href: absoluteUrl(data.images.favicon['versions'][0]) },
         {
           rel: "icon",
           sizes: "64_64",
-          href: absoluteUrl(data.favicon['64_64'][0]),
+          href: absoluteUrl(data.images.favicon['64_64'][0]),
         }, {
           rel: "icon",
           sizes: "192x192",
-          href: absoluteUrl(data.favicon['192_192'][0]),
+          href: absoluteUrl(data.images.favicon['192_192'][0]),
         },
       ]}
       meta={getMetaTags({
