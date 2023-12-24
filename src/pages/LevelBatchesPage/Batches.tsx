@@ -28,7 +28,7 @@ function BatchesCard({ batch, batchIndex, totalBatches }: {
   );
 }
 
-function mapReleaseDays(batch: Batch, batchIndex: number, batches: Batch[]) {
+function mapReleaseDays(batch: Batch, batchIndex: number) {
   return <BatchesCard key={batch.releaseDate.date} batch={batch} batchIndex={batchIndex} totalBatches={batch.levels.length} />
 }
 
