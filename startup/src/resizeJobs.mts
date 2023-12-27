@@ -1,4 +1,4 @@
-import type { ResizeGetInfoFn, ResizeUserInfo } from "./resize/types.mjs";
+import type { ResizeJobsFn, ResizeUserInfo } from "./resize/types.mjs";
 
 const resizeX = (width: number) => (divider: number, index: number) => ({
   fileName: `[snakecase]-${index + 1}x.webp`,
@@ -15,7 +15,7 @@ const resizeLevel: ResizeUserInfo[] = [
   {
     fileName: "[snakecase]-[width].webp",
     resize: { width: 580, height: 326 },
-    placeholder: true,
+    main: true,
   },
   {
     fileName: "[snakecase]-[width].webp",
@@ -24,7 +24,7 @@ const resizeLevel: ResizeUserInfo[] = [
   {
     fileName: "[snakecase]-[width].webp",
     resize: { width: 110, height: 110 },
-    placeholder: true,
+    main: true,
     reference: "_thumbnail",
   },
   {
@@ -38,7 +38,7 @@ const resizeMaker: ResizeUserInfo[] = [
   {
     fileName: "[snakecase]-[width].webp",
     resize: { width: 180, height: 180 },
-    placeholder: true,
+    main: true,
   },
   {
     fileName: "[snakecase]-[width].webp",
@@ -49,7 +49,7 @@ const resizeIllustration: ResizeUserInfo[] = [
   {
     fileName: "[snakecase]-[width].webp",
     resize: { width: 220 },
-    placeholder: true,
+    main: true,
   },
   {
     fileName: "[snakecase]-[width].webp",
@@ -61,7 +61,7 @@ const resizeLogoSpecial: ResizeUserInfo[] = [
   {
     fileName: "[snakecase]-[height].webp",
     resize: { height: 200 },
-    placeholder: true,
+    main: true,
   },
   {
     fileName: "[snakecase]-[height].webp",
@@ -74,7 +74,7 @@ const resizeMainLogo: ResizeUserInfo[] = [
     fileName: "[snakecase]-[height].webp",
     resize: { height: 60 },
     reference: "_small",
-    placeholder: true,
+    main: true,
   },
   {
     fileName: "[snakecase]-[height].webp",
@@ -84,7 +84,7 @@ const resizeMainLogo: ResizeUserInfo[] = [
   {
     fileName: "[snakecase]-[height].webp",
     resize: { height: 200 },
-    placeholder: true,
+    main: true,
   },
   {
     fileName: "[snakecase]-[height].webp",
@@ -126,16 +126,14 @@ const webp: ResizeUserInfo[] = [
 ];
 
 /**
- * Basically this function is responsible for determining what to do with each image.
- * It has all the information to determine what to do with each image.
- *
+ * Determine what resize jobs to do with each image.
  */
-export const resizeJobs: ResizeGetInfoFn = ({
+export const resizeJobs: ResizeJobsFn = ({
   name,
   ext,
   originalSize,
   relativeInputPath,
-}): ResizeUserInfo[] => {
+}) => {
   if (name === "favicon") return resizeFavicon;
   if (name === "illustration") return resizeIllustration;
   if (name === "logo") return resizeMainLogo;
@@ -144,10 +142,7 @@ export const resizeJobs: ResizeGetInfoFn = ({
   if (ext === ".svg") return copySvg;
   if (relativeInputPath.includes("level")) return resizeLevel;
   if (relativeInputPath.includes("maker")) return resizeMaker;
-  if (typeof originalSize.width === "number" && originalSize.width < 500)
-    return webp;
-  if (typeof originalSize.width === "number")
-    return [3, 2, 1].map(resizeX(originalSize.width));
+  if (originalSize.width < 500) return webp;
 
-  throw new Error(`no original size for ${name} ${ext}`);
+  return [3, 2, 1].map(resizeX(originalSize.width));
 };

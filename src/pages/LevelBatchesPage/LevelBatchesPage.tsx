@@ -1,21 +1,17 @@
-import { AboutButton } from "../../about/AboutButton";
-import { BackButton } from "../../components/BackButton";
 import { Batches } from "./Batches";
-import { Logo } from "../../layout/Logo";
+import { Layout } from "../../layout/Layout";
+import { useTheme } from "../../theme/useTheme";
 
 export function BatchesPage() {
+    const { info: { caps }, data: { batches } } = useTheme();
     return (
-        <>
-            <header className="App-header">
-                <div className="toolbar big">
-                    <Logo logo="logo" />
-                    <AboutButton />
-                </div>
-                <BackButton />
-            </header>
-            <article className="App-body Batches">
-                <Batches />
-            </article>
-        </>
+        <Layout seo={
+            {
+                description: `Week overview of ${caps}. ${batches.length} weeks released so far!`,
+                title: `${caps} | Week overview`
+            }}
+        >
+            <Batches />
+        </Layout>
     )
 }

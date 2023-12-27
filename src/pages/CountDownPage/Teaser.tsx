@@ -4,6 +4,7 @@ import { YouTubeIframe } from "../LevelBatchPage/WeekTrailer/YoutubeIframe";
 import { Card } from "../../components/Card";
 import { ToTheLevels } from "../../components/ToTheLevels";
 import { SNAP } from "../../constants";
+import { useTheme } from "../../theme/useTheme";
 
 const trailerYtId = "3FtgBWY0XVY";
 const Completionist = () => {
@@ -51,7 +52,7 @@ const renderer = ({
 
 const Teaser = () => {
   // not needed for now
-  const startDate = new Date('tomorrow');
+  const { startDate } = useTheme();
   return (
     <div className="Teaser">
       <div className="youtubeWrapper">

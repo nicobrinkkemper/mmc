@@ -1,25 +1,19 @@
-import { AboutButton } from "../../about/AboutButton";
-import { Logo } from "../../layout/Logo";
-import Seo from "../../components/Seo";
 import { DEFAULT_DESCRIPTION } from "../../constants";
 import { useTheme } from "../../theme/useTheme";
 import { useContent } from "../../content/useContent";
+import { Layout } from "../../layout/Layout";
 
 export function HomePage() {
     const { info: { caps } } = useTheme();
     const WelcomeContent = useContent('WelcomeContent');
     return (
-        <>
-            <header className="App-header">
-                <div className="toolbar big">
-                    <Logo logo="logo_special" />
-                    <AboutButton />
-                </div>
-            </header>
-            <article className="App-body homePage">
-                <WelcomeContent />
-            </article>
-            <Seo title={`${caps} | ${DEFAULT_DESCRIPTION}`} />
-        </>
+        <Layout type="special" seo={
+            {
+                description: `Welcome to ${caps}! ${DEFAULT_DESCRIPTION}`,
+                title: `${caps} | Welcome`
+            }
+        }>
+            <WelcomeContent />
+        </Layout>
     )
 }

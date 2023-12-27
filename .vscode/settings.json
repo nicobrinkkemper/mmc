@@ -6,6 +6,11 @@
     "./package-lock.json"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
+  // format on save
+  "editor.formatOnSaveMode": "modifications",
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },

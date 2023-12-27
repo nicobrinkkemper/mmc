@@ -1,10 +1,12 @@
-import { ResizeJob } from "./types.mjs";
+import { ResizeJobDone } from "./types.mjs";
 
 export type ImageJsonStructure = Record<
   string,
   {
     width?: number;
     height?: number;
+    aspectRatio?: string;
+    srcSet?: string;
     placeholder?: string;
   }
 >;
@@ -30,15 +32,13 @@ type ImageJsonItem = ImageJsonStructure[string];
  */
 function reduceResizeJobGroupToData(
   data: ImageJsonStructure,
-  job: ResizeJob
+  job: ResizeJobDone
   // index: number,
 ): ImageJsonStructure {
   const {
-    userInfo: {
-      placeholder: userRequestedPlaceholder,
-      main: userRequestedMain = !!userRequestedPlaceholder, // indicating a placeholder is the same as indicating the main image
-    },
-    output: { reference, placeholder, href, version },
+    userInfo: { main: userRequestedMain },
+    output: { reference, href, version },
+    resized: { width, height, aspectRatio, placeholder },
   } = job;
   const hasReference = data && reference in data;
   const fallbackVersion = version || "versions";
@@ -48,10 +48,12 @@ function reduceResizeJobGroupToData(
     typeof dataAtReference === "object" &&
     dataAtReference != null &&
     fallbackVersion in dataAtReference;
-  if (job.userInfo?.resize?.height === 1) console.log("Warning height 1");
-  const outputConditional: ImageJsonItem = {
+  const prevSrcset = dataAtReference?.srcSet;
+  const srcSet = buildSrcsetString(prevSrcset, { width, href });
+  const outputConditional = {
     ...(hasReference && dataAtReference),
     ...(placeholder && { placeholder }),
+    ...(srcSet && { srcSet }),
     ...(hasVersion
       ? {
           [fallbackVersion]: [
@@ -61,7 +63,12 @@ function reduceResizeJobGroupToData(
         }
       : {
           [fallbackVersion]: [href],
-          ...(userRequestedMain && job.userInfo.resize), // the resize info is only added to the main image
+          ...(userRequestedMain && {
+            width,
+            height,
+            aspectRatio,
+            src: href,
+          }), // the resize info is only added to the main image
         }),
   };
   return {
@@ -70,6 +77,20 @@ function reduceResizeJobGroupToData(
   };
 }
 
-export function resizeJobGroupToData(jobGroup: ResizeJob[]) {
+function toSrcsetString({ width, href }: { width: number; href: string }) {
+  return `${href} ${width}w`;
+}
+
+function buildSrcsetString(
+  prevSrcset: unknown,
+  { width, href }: { width: number; href: string }
+) {
+  const srcSet = toSrcsetString({ width, href });
+  return typeof prevSrcset === "string" && prevSrcset !== ""
+    ? `${prevSrcset}, ${srcSet}`
+    : srcSet;
+}
+
+export function resizeJobGroupToData(jobGroup: ResizeJobDone[]) {
   return jobGroup.reduce<ImageJsonStructure>(reduceResizeJobGroupToData, {});
 }

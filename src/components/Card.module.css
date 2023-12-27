@@ -1,0 +1,75 @@
+.Card {
+    display: grid;
+    grid-template-columns: [content-start] 1fr [content-end];
+    box-shadow: var(--box-shadow);
+    position: relative;
+    padding: var(--card-padding, 1em);
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    gap: var(--card-gap, 1em);
+    height: max-content;
+}
+
+.CardOuter {
+    display: grid;
+}
+
+.CardDisabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.IsClickableCard {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.IsClickableCard:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.HasCardIllustration {
+    position: relative;
+}
+
+.HasSpecialCardIllustration {
+    position: relative;
+    grid-template-columns: [content-start] 1fr [ content-end] 1fr [full];
+    grid-template-rows: [full-start] 1fr [full-end];
+}
+
+.HasSpecialCardIllustration>* {
+    grid-column: content / full;
+}
+
+.SpecialCardIllustration {
+    grid-area: full / full;
+    height: 0;
+}
+
+.CardIllustration picture {
+    display: flex;
+}
+
+.CardIllustration {
+    position: absolute;
+    bottom: -6px;
+    right: 0;
+    transform: rotate(4deg) translate(2rem, 2rem);
+    box-shadow: var(--illustration-box-shadow, var(--box-shadow));
+    max-width: 220px;
+    margin-left: 180px;
+}
+
+@media only screen and (max-width: 560px) {
+
+    .SpecialCardIllustration,
+    .CardIllustration {
+        display: none;
+    }
+}

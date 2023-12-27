@@ -1,17 +1,13 @@
-import { Logo } from "../../layout/Logo";
+import { Layout } from "../../layout/Layout";
 import { NotFound } from "./NotFound";
 
-export function NotFoundPage() {
+export function NotFoundPage({ error }: Readonly<{ error?: string }>) {
     return (
-        <>
-            <header className="App-header">
-                <div className="toolbar small">
-                    <Logo logo="logo_simple" small />
-                </div>
-            </header>
-            <article className="App-body notFoundPage">
-                <NotFound />
-            </article>
-        </>
+        <Layout type="simple" small seo={{
+            description: "Page not found",
+            title: "404 | Page not found"
+        }}>
+            <NotFound error={error} />
+        </Layout>
     )
 }

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["node", "webpack-env", "image-size/dist/index"],
+    "types": ["node", "webpack-env"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,5 +19,6 @@
     "outDir": "startup/dist",
     "jsx": "react-jsx"
   },
-  "include": ["startup/src"]
+  "include": ["startup/src"],
+  "exclude": ["node_modules", "build", "dist", "coverage"]
 }

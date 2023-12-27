@@ -3,24 +3,25 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "homepage": "https://mmcelebration.com",
   "scripts": {
-    "start": "run-s startup react:start",
+    "start": "run-s react:start",
     "lint": "eslint ./src --fix",
     "serve": "serve build/",
     "prebuild": "npm run startup",
     "build": "export BASE_URL='https://mmcelebration.com' && react-scripts build",
     "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/7mmc' && react-scripts build",
     "postbuild": "export BASE_URL='https://mmcelebration.com' && react-snap",
-    "prebuild-gh": "npm run startup",
-    "postbuild-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/7mmc' && react-snap",
+    "prebuild-gh": "npm run startup-gh",
+    "postbuild-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && react-snap",
     "predeploy": "npm run build-gh",
     "deploy": "gh-pages -d build",
     "test": "run-s startup react:test",
     "react:test": "react-scripts test",
     "react:build": "react-scripts build",
     "react:start": "react-scripts start",
+    "startup-gh": "export PUBLIC_URL='/mmc' && run-s startup:*",
     "startup": "run-s startup:*",
-    "startup:lint": "eslint ./startup/src --fix",
     "startup:compile": "tsc --project tsconfig.node.json",
     "startup:run": "export NODE_OPTIONS=--enable-source-maps; node ./startup/dist/startup.mjs"
   },
@@ -35,8 +36,8 @@
     "overrides": [
       {
         "files": [
-          "**/*.ts?(x)",
-          "**/*.mts?(x)"
+          "src/**/*.ts?(x)",
+          "startup/src/**/*.mts?(x)"
         ],
         "rules": {}
       }

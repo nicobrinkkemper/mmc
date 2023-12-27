@@ -1,0 +1,66 @@
+.Theme {
+    --font-monospace: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    --font-primary: "SuperMarioMakerExtended", sans-serif;
+    --font-secondary: 'SuperMarioMakerExtended', sans-serif;
+    --font-tertiary: "SuperMario", sans-serif;
+    --h1-font: bolder 1.5rem/3rem var(--font-secondary);
+    --h2-font: bolder 1rem/1.2rem var(--font-primary);
+
+    --background: #facd00;
+    --text-color: #111;
+    --text-mix-blend-mode: none;
+    --link-color: #111;
+    --text-shadow: none;
+    --letter-spacing: -.03rem;
+    --link-color-active: #2c001f;
+    --box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    --button-color: white;
+    --button-padding: .6em 1em;
+    --button-font: normal 1em/1.2em var(--font-primary);
+    --button-background: #c60034;
+    --button-border: none;
+    --button-border-radius: 0.25em;
+    --button-after-background: none;
+    --button-after-border: none;
+    --button-after-box-shadow: none;
+
+    --app-background: #facd00 repeat 512px 512px url(../assets/4ymm/bg-3x.webp);
+
+    --app-font: normal 1rem/1.2rem var(--font-primary);
+    --about-button-after-background: none;
+
+    --modal-inner-color: var(--text-color);
+    --modal-outer-background: rgba(0, 0, 0, 0.4);
+    --modal-inner-background: var(--card-background);
+    --modal-inner-box-shadow: 0px 0.25rem 0.25rem rgba(46, 47, 48, 0.1);
+
+    --batch-number-background: #facd00;
+    --batch-number-font: 400 2rem/1.125rem var(--font-tertiary);
+    --batch-number-color: white;
+
+    --navigation-button-after-background: #c60034;
+
+    --card-background: #ffefad;
+    --card-border-radius: .3rem;
+    --card-padding: 1rem;
+
+    --tag-before-content: '';
+    --tag-text-align: center;
+    --tag-before-background: #facd00;
+    --tag-before-border-radius: 0.25em;
+
+    --level-code-color: white;
+    --level-code-background: #d30561;
+    --level-code-font: 900 1.5rem/3rem var(--font-primary);
+
+    --max-content-width: 617px;
+    --app-min-height: 100svh;
+    --app-min-width: 32rem;
+    --card-width: 100%;
+
+    --footer-font: .875rem/.875rem var(--font-primary);
+    --footer-color: #FFF;
+    --footer-background: #333;
+    --illustration-box-shadow: none;
+}

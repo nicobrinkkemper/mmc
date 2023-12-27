@@ -81,4 +81,5 @@
     --footer-font: .875rem/.875rem var(--font-primary);
     --footer-color: var(--text-color);
     --footer-background: var(--card-texture) repeat;
+    --maker-card-img-blend-mode: multiply;
 }

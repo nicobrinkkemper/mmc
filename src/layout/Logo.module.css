@@ -1,0 +1,23 @@
+.Logo {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+.Logo.small {
+    justify-content: left;
+}
+
+.Logo.small .Logo-img {
+    width: 9rem;
+    height: 3rem;
+    object-fit: contain;
+    object-position: 0 50%;
+}
+
+.Logo.normal .Logo-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    object-position: 50% 50%;
+}

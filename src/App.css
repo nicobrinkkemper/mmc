@@ -1,5 +1,7 @@
 .App {
   display: grid;
+  overflow-y: scroll;
+  max-height: 100svh;
   min-height: var(--app-min-height);
   background: var(--app-background);
   color: var(--text-color);
@@ -29,46 +31,10 @@
   }
 }
 
-.App-header {
-  grid-area: header / content;
-  display: grid;
-  gap: 2rem;
-}
 
-.App-body {
+
+.App>article {
   grid-area: body / content;
   display: grid;
   gap: 1em;
-}
-
-.App-link {
-  color: var(--link-color);
-}
-
-.App-footer {
-  grid-area: footer / full;
-  display: grid;
-  justify-content: center;
-  align-content: center;
-  grid-template-columns: repeat(3, max-content);
-  background: var(--footer-background, inherit);
-  padding: 1rem 0;
-}
-
-.App-footer a {
-  display: flex;
-  align-items: center;
-  font: var(--footer-font);
-  color: var(--footer-color, inherit);
-  text-decoration: none;
-  padding-right: 1rem;
-}
-
-.App-footer a:last-child {
-  padding-right: 0;
-}
-
-.App-footer a+a {
-  padding-left: 1rem;
-  border-left: 1px solid var(--footer-color, #111);
 }

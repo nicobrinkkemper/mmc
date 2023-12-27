@@ -1,5 +1,6 @@
 import { readdir, stat } from "fs/promises";
 import { join, extname } from "path";
+import { FileReference } from "./types.mjs";
 
 export async function readDirectory(
   path: string,
@@ -8,7 +9,10 @@ export async function readDirectory(
 ) {
   try {
     const fileNames = await readdir(path);
-    let result = { folders: [] as string[], images: [] as string[] };
+    let result = {
+      folders: [] as string[],
+      images: [] as FileReference[],
+    };
 
     for (const fileName of fileNames) {
       const itemPath = join(path, fileName);
@@ -32,7 +36,10 @@ export async function readDirectory(
         stats.isFile() &&
         allowedExtensions.includes(extname(fileName).toLowerCase())
       ) {
-        result.images.push(relativePath);
+        result.images.push({
+          path: relativePath,
+          size: stats.size,
+        });
       }
     }
 

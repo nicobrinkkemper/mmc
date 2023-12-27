@@ -21,54 +21,6 @@ picture img {
   object-fit: cover;
 }
 
-.Logo .image {
-  object-fit: contain;
-}
-
-.tags>span,
-.highlight {
-  position: relative;
-  min-width: var(--tag-min-width, inherit);
-  text-align: var(--tag-text-align, inherit);
-  color: var(--tag-color, var(--text-color, inherit));
-}
-
-.tags span:before,
-.highlight:before {
-  overflow: visible;
-  position: absolute;
-  content: var(--tag-before-content, none);
-  top: var(--tag-before-top, 0);
-  left: var(--tag-before-left, 0);
-  right: var(--tag-before-right, 0);
-  bottom: var(--tag-before-bottom, 0);
-  background: var(--tag-before-background, none);
-  transform: var(--tag-before-transform, none);
-  mix-blend-mode: var(--tag-before-mix-blend-mode, darken);
-}
-
-.tags span.new:before,
-.tags span.precision:before,
-.tags span.unreleased:before {
-  background: var(--tag-before-new-background);
-}
-
-.tags span.new:before,
-.tags span.gimmick:before,
-.tags span.puzzle:before,
-.tags span.music:before {
-  background: var(--tag-before-other-background);
-}
-
-.tags span.troll:after {
-  content: '';
-  margin-top: -.2em;
-  bottom: .2em;
-  width: 1.5em;
-  height: 1.5em;
-  background-size: 100% 100%;
-  background-image: url('./assets/7mmc/troll_kiavik.webp');
-}
 
 h1 {
   text-align: left;
@@ -104,47 +56,7 @@ code {
 }
 
 
-.Logo {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
 
-.Logo.small {
-  justify-content: left;
-}
-
-.Logo.small .Logo-img {
-  width: 9rem;
-  height: 3rem;
-  object-fit: contain;
-  object-position: 0 50%;
-}
-
-.Logo.normal .Logo-img {
-  width: 100%;
-  height: 200px;
-  object-fit: contain;
-  object-position: 50% 50%;
-}
-
-.toolbar {
-  display: grid;
-  grid-template-columns: min-content 1fr min-content;
-  grid-template-rows: 1fr;
-  position: relative;
-  flex-direction: row;
-  align-items: center;
-}
-
-.toolbar.small {
-  display: flex;
-  flex: 1 0 0;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
 
 .AboutBtn.Button {
   display: block;
@@ -164,55 +76,6 @@ code {
   box-shadow: var(--box-shadow);
 }
 
-.Card {
-  display: grid;
-  box-shadow: var(--box-shadow);
-  position: relative;
-  padding: 1rem;
-  border-radius: var(--card-border-radius);
-  background: var(--card-background);
-  gap: 1em;
-  height: max-content;
-}
-
-.Card-content {
-  display: grid;
-  gap: 1rem;
-}
-
-.Card.Clickable {
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.Card.Clickable:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.Card .Illustration-picture {
-  display: flex;
-}
-
-.Card.hasIllustration .Illustration {
-  position: absolute;
-  bottom: -6px;
-  right: 0;
-  transform: rotate(4deg) translate(2rem, 2rem);
-  box-shadow: var(--box-shadow);
-  max-width: 220px;
-  margin-left: 180px;
-}
-
-@media only screen and (max-width: 560px) {
-  .Card.hasIllustration .Illustration {
-    display: none;
-  }
-}
 
 .Button {
   font: var(--button-font);
@@ -229,6 +92,7 @@ code {
 
 .Button-inner {
   display: grid;
+  width: max-content;
   grid-template-columns: 1fr 24px;
   position: relative;
   border: none;
@@ -294,22 +158,6 @@ body {
   body {
     font-size: 18px;
   }
-}
-
-.tag {
-  padding: 0.3rem;
-  font-size: 0.75rem;
-  line-height: 0.8125rem;
-}
-
-.stars {
-  width: 3.27rem;
-  display: inline-block;
-}
-
-.star svg {
-  width: 0.8125rem;
-  height: 0.75rem;
 }
 
 @font-face {
