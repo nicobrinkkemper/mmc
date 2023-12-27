@@ -7,15 +7,17 @@ import { About } from "../about/About";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "../ErrorFallback";
 
-export function Layout({ children, className, type = 'normal', small = false, seo }: PropsWithChildren<{
+export function Layout({ children, className, type = 'normal', small = false, seo, header }: PropsWithChildren<{
     className?: string
     type?: 'special' | 'simple' | 'normal'
     small?: boolean
     seo: ComponentProps<typeof Seo>
+    header?: Omit<ComponentProps<typeof Header>, 'small' | 'type'>
 }>) {
+    const { children: headerChildren = null, ...headerProps } = header ?? {};
     return (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Header type={type} small={small} />
+            <Header type={type} small={small} {...headerProps}>{headerChildren}</Header>
             <article className={classNames('App-body', className)}>
                 {children}
             </article>
