@@ -1,0 +1,24 @@
+.Navigation {
+    display: flex;
+    flex-flow: row;
+}
+
+.Navigation.hasNextLevel {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.Navigation.hasNextLevel.hasPreviousLevel {
+    display: flex;
+    justify-content: space-between;
+}
+
+.NextLevel {
+    max-width: 5.125rem;
+    margin-right: 0;
+}
+
+.PreviousLevel {
+    max-width: 5.125rem;
+    margin-right: 0;
+}

@@ -1,4 +1,4 @@
-import { NotFound } from "./pages/NotFoundPage/NotFound";
+import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
 
 function ErrorFallback({
   error,
@@ -6,7 +6,7 @@ function ErrorFallback({
   readonly error: Error;
 }) {
   return (
-    <NotFound error={error.message} />
+    <NotFoundPage error={error.message} />
   );
 }
 

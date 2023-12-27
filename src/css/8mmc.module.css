@@ -4,7 +4,7 @@
     --font-secondary: 'SuperMarioMakerExtended', sans-serif;
     --font-tertiary: "SuperMario", sans-serif;
     --h1-font: bolder 1.5rem/3rem var(--font-secondary);
-    --h2-font: bolder 1rem/2rem var(--font-primary);
+    --h2-font: bolder 1rem/1.2rem var(--font-primary);
 
     --background: #facd00;
     --text-color: #fff;

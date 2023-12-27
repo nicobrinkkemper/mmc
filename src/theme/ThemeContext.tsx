@@ -11,8 +11,7 @@ export type Theme = typeof themeKeys[number];
 export type ThemeContextType = {
     theme: Theme;
     setTheme: (theme: Theme) => void;
-    themeUp: () => void;
-    themeDown: () => void;
+    startDate: Date;
     info: ThemeInfo
     themeSlug: string;
     data: typeof themes[Theme];
@@ -36,19 +35,21 @@ const getThemeInfo = (theme: Theme, pathname: string) => {
         writtenOutOrdinal,
         writtenOut,
         mainTheme: '8mmc',
+        isHome: !pathnameFromTheme || pathnameFromTheme === '/',
         currentThemeUrl: `${theme}${pathnameFromTheme}`,
         nextThemeUrl: `${nextTheme(theme)}${pathnameFromTheme}`,
-        prevThemeUrl: `${nextTheme(theme)}${pathnameFromTheme}`,
+        prevThemeUrl: `${prevTheme(theme)}${pathnameFromTheme}`,
         nextTheme: nextTheme(theme),
         prevTheme: prevTheme(theme),
     }
 }
 type ThemeInfo = ReturnType<typeof getThemeInfo>;
 
-export const createThemeContext = (context: Omit<ThemeContextType, 'info' | 'data'>, pathname: string): ThemeContextType => {
+export const createThemeContext = (context: Omit<ThemeContextType, 'info' | 'data' | 'startDate'>, pathname: string): ThemeContextType => {
     return ({
         ...context,
         data: themes[context.theme],
+        startDate: new Date(themes[context.theme].batches[0].releaseDate.date),
         info: getThemeInfo(context.theme, pathname)
     })
 };
@@ -57,15 +58,15 @@ export const ThemeContext = createContext<ThemeContextType>({} as ThemeContextTy
 
 export const nextTheme = (current: Theme) => {
     const currentIndex = themeKeys.indexOf(current);
-    if (currentIndex === (themesTotal - 1)) {
-        return themeKeys[0];
+    if (currentIndex + 1 === themeKeys.length) {
+        return;
     }
     return themeKeys[currentIndex + 1];
 }
 export const prevTheme = (current: Theme) => {
     const currentIndex = themeKeys.indexOf(current);
     if (currentIndex === 0) {
-        return themeKeys[themesTotal - 1];
+        return;
     }
     return themeKeys[currentIndex - 1];
 }

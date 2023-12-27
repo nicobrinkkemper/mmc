@@ -1,13 +1,15 @@
+// export
 module.exports = {
   extends: ["react-app"],
-  overrides: [
-    {
-      files: ["**/*.ts?(x)", "**/*.mts?(x)"],
-      rules: {
-        "no-unused-vars": "off",
-        "no-undef": "off",
-        "no-restricted-globals": "off",
+  rules: {
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        extensions: [".jsx", ".tsx"],
       },
-    },
-  ],
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+  },
 };

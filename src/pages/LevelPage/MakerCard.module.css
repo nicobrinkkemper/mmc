@@ -1,0 +1,17 @@
+.MakerCard {
+    display: grid;
+    justify-items: center;
+    flex: 1 0 0;
+    text-align: left;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.Description {
+    white-space: pre-line;
+}
+
+.MakerCard img {
+    mix-blend-mode: var(--maker-card-img-blend-mode, normal);
+}

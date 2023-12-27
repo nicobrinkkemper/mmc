@@ -1,26 +1,21 @@
-import "./Batches.css";
+import styles from "./Batches.module.css";
 import { Card } from "../../components/Card";
-import Seo from "../../components/Seo";
 import { useTheme } from "../../theme/useTheme";
-import classNames from "classnames";
 
 type Batch = ReturnType<typeof useTheme>['data']['batches'][0];
 function BatchesCard({ batch }: {
   readonly batch: Batch;
 }) {
   const { themeSlug } = useTheme();
-  const classes = ["BatchCard"];
-
+  const amountOfLevels = batch.levels.length;
   return (
-    <Card className={classNames(classes)} to={`/${themeSlug}levels/${batch.batchNumber}/`}>
-      <span className="batchNumber">{batch.batchNumber}</span>
-      <div className="releaseInfo">
-        <span className="releaseDay">{batch.releaseDate.formatted}</span>
-        <span className="batchLevelAmount">
-          {batch.levels.length} levels
+    <Card className={styles.BatchCard} to={`/${themeSlug}levels/${batch.batchNumber}/`}>
+      <span className={styles.BatchNumber}>{batch.batchNumber}</span>
+      <div className={styles.BatchInfo}>
+        <span className={styles.BatchReleaseDay}>{batch.releaseDate.formatted}</span>
+        <span className={styles.BatchLevelAmount}>
+          {amountOfLevels} levels
         </span>
-      </div>
-      <div className="tags">
       </div>
     </Card>
   );
@@ -31,14 +26,10 @@ function mapReleaseDays(batch: Batch) {
 }
 
 export function Batches() {
-  const { info: { caps }, data: { batches } } = useTheme();
+  const { data: { batches } } = useTheme();
   return (
-    <>
+    <div className={styles.Batches}>
       {batches.map(mapReleaseDays)}
-      <Seo
-        description={`Week overview of ${caps}. ${batches.length} weeks released so far!`}
-        title={`${caps} | Week overview`}
-      />
-    </ >
+    </div>
   );
 }

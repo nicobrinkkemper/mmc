@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "../theme/useTheme";
+import styles from "./Footer.module.css";
 
 export function Footer() {
     const { themeSlug } = useTheme();
     return (
-        <footer className="App-footer">
+        <footer className={styles.footer}>
             <a
                 href="https://discord.gg/8mnW3XfZq9"
                 rel="noopener noreferrer"

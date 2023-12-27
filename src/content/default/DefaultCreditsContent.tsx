@@ -6,8 +6,8 @@ export const DefaultCreditsContent = (props: CardProps) => {
     return (
         <>
             <Card subHeading={<h2>Project Organization</h2>} heading={<h1>Credits</h1>}{...props} />
-            <CreditsWebsite />
-            <CreditsTrailer />
+            <CreditsWebsite {...props} />
+            <CreditsTrailer {...props} />
         </>
     )
 }

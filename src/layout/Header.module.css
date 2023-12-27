@@ -1,0 +1,32 @@
+.Header {
+    grid-area: header / content;
+    display: grid;
+    gap: 2rem;
+}
+
+.Toolbar {
+    display: grid;
+    grid-template-rows: 1fr;
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Toolbar.small {
+    display: flex;
+    flex: 1 0 0;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Toolbar.big {
+    display: flex;
+    grid-template-columns: min-content 1fr min-content;
+    flex: 1 0 0;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

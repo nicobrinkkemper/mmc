@@ -1,0 +1,24 @@
+.Batch {
+  grid-template-columns: 110px auto;
+  padding: .5rem;
+}
+
+.Info {
+  display: grid;
+}
+
+.LevelInfo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+@media only screen and (max-width: 420px) {
+  .Batch picture {
+    display: none;
+  }
+
+  .Batch {
+    grid-template-columns: auto;
+  }
+
+}

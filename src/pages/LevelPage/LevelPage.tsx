@@ -1,21 +1,21 @@
-import { AboutButton } from "../../about/AboutButton";
-import { BackButton } from "../../components/BackButton";
 import { Level } from "./Level";
-import { Logo } from "../../layout/Logo";
+import { Layout } from "../../layout/Layout";
+import { useTheme } from "../../theme/useTheme";
+import { useLevel } from "../../theme/useLevel";
 
 export function LevelPage() {
+    const { info: { caps } } = useTheme();
+    const { level } = useLevel();
     return (
-        <>
-            <header className="App-header">
-                <div className="toolbar small">
-                    <Logo small logo="logo_simple" />
-                    <AboutButton />
-                </div>
-                <BackButton />
-            </header>
-            <article className="App-body levelPage">
-                <Level />
-            </article>
-        </>
+        <Layout small type="simple" seo={
+            {
+                description: `${caps} level by ${level.makerName.name}: ${level.levelName.name} - ${level.levelCode}`,
+                title: `${level.levelName.name} | ${level.levelCode} | ${caps}`,
+                image: level.images.level[580][0],
+                twitter: "summary_large_image"
+            }
+        }>
+            <Level />
+        </Layout>
     )
 }

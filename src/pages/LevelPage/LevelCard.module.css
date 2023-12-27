@@ -1,0 +1,16 @@
+.TagsAndDifficulty {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.LevelCode {
+  border-radius: 0px 0px 0.25rem 0.25rem;
+  padding-left: 1rem;
+  font: var(--level-code-font, 'inherit');
+  background: var(--level-code-background, #111);
+  mix-blend-mode: var(--level-code-mix-blend-mode, none);
+  filter: var(--level-code-filter, none);
+  color: var(--level-code-color, #111);
+}

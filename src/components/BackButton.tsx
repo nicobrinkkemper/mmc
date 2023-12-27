@@ -1,36 +1,45 @@
 import Button from "./Button";
 import { useTheme } from "../theme/useTheme";
-import { useParams } from "react-router-dom";
+import { useLevel } from "../theme/useLevel";
+import { useThemeLevelData } from "../theme/useThemeLevelData";
 
-const BackButton = () => {
-    const { themeSlug, data } = useTheme();
-    const { batchNumber, order } =
-        useParams<{ batchNumber: string; order: string }>();
 
-    if (typeof batchNumber === "string" && typeof order === "string")
-        return (
-            <Button
-                icon="arrow-left-inverted"
-                iconPosition="left"
-                to={`/${themeSlug}levels/${batchNumber}/`}
-                inverted={true}
-                classList={['backTo']}
-            >
-                Back to {data.batches[Number(batchNumber) - 1].releaseDate.formatted}
-            </Button>
-        );
-    else if (typeof batchNumber === "string")
-        return (
-            <Button
-                icon="arrow-left-inverted"
-                iconPosition="left"
-                to={`/${themeSlug}levels/`}
-                inverted={true}
-                classList={['backTo']}
-            >
-                Back to Weeks
-            </Button>
-        );
+function BackToBatch() {
+    const { themeSlug } = useTheme();
+    const { batchNumber, batch } = useLevel();
+
+    return (
+        <Button
+            icon="arrow-left-inverted"
+            iconPosition="left"
+            to={`/${themeSlug}levels/${batchNumber}/`}
+            inverted={true}
+            classList={['backTo']}
+        >
+            Back to {batch.releaseDate.formatted}
+        </Button>
+    );
+}
+
+function BackToWeeks() {
+    const { themeSlug } = useTheme();
+
+    return (
+        <Button
+            icon="arrow-left-inverted"
+            iconPosition="left"
+            to={`/${themeSlug}levels/`}
+            inverted={true}
+            classList={['backTo']}
+        >
+            Back to Weeks
+        </Button>
+    );
+}
+
+function BackToWelcome() {
+    const { themeSlug } = useTheme();
+
     return (
         <Button
             icon="arrow-left-inverted"
@@ -42,6 +51,19 @@ const BackButton = () => {
             Back to Welcome
         </Button>
     );
+}
+
+
+const BackButton = () => {
+    const { hasBatch, hasLevel } = useThemeLevelData();
+    const { info: { isHome } } = useTheme();
+    if (hasBatch && hasLevel)
+        return <BackToBatch />
+    else if (hasBatch)
+        return <BackToWeeks />
+    if (isHome)
+        return null;
+    return <BackToWelcome />
 };
 
 export { BackButton }

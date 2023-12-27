@@ -1,11 +1,8 @@
-import type { OutputInfo, ResizeOptions } from "sharp";
+import type { ResizeOptions } from "sharp";
 interface Size {
   width: number;
   height: number;
   type: string;
-}
-interface SizeCalculationResult extends Size {
-  images: Size[];
 }
 export type ResizeJob = {
   original: {
@@ -18,6 +15,7 @@ export type ResizeJob = {
     ext: string;
     originalSize: SizeCalculationResult;
     relativeInputPath: string;
+    originalFileSize: number;
     outputFolder: string;
   };
   userInfo: {
@@ -29,6 +27,7 @@ export type ResizeJob = {
     placeholder?: boolean;
     copy?: boolean;
     main?: boolean;
+    strict?: boolean;
   };
   output: {
     fileName: string;
@@ -37,12 +36,12 @@ export type ResizeJob = {
     reference: string;
     href: string;
     version: string | number;
-    exists?: boolean;
-    sharpOutputInfo?: OutputInfo;
-    copy?: string;
-    shouldOutput?: boolean;
-    isReplaced?: boolean;
-    strict?: boolean;
+    exists: boolean;
+    folderExists: boolean;
+    copy: boolean;
+    shouldOutput: boolean;
+    isReplaced: boolean;
+    strict: boolean;
     changes: {
       snakecase?: string;
       name?: string;
@@ -50,6 +49,15 @@ export type ResizeJob = {
       width?: number;
       height?: number;
     };
+  };
+};
+
+export type ResizeJobDone = ResizeJob & {
+  resized: {
+    width: number;
+    height: number;
+    aspectRatio: string;
+    fileSize: number;
     placeholder?: string;
   };
 };
@@ -58,12 +66,10 @@ export type ResizeJobInput = Omit<ResizeJob, "output">;
 export type ResizeOriginal = ResizeJob["original"];
 export type ResizeUserInfo = ResizeJob["userInfo"];
 
-export type ResizeGetInfoFn = (original: ResizeOriginal) => ResizeUserInfo[];
+export type ResizeJobsFn = (original: ResizeOriginal) => ResizeUserInfo[];
 export type ResizeImagesProps = {
   inputPath: string;
   outputDir: string;
-  resizeJobs: ResizeGetInfoFn;
-  images?: string[];
 };
 
 export type ResizeTemplateParser = (
