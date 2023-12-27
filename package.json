@@ -10,7 +10,7 @@
     "serve": "serve build/",
     "prebuild": "npm run startup",
     "build": "export BASE_URL='https://mmcelebration.com' && react-scripts build",
-    "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/7mmc' && react-scripts build",
+    "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && react-scripts build",
     "postbuild": "export BASE_URL='https://mmcelebration.com' && react-snap",
     "prebuild-gh": "npm run startup-gh",
     "postbuild-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && react-snap",
