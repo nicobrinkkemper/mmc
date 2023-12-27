@@ -22,6 +22,10 @@ export const themeConfig = {
   },
   _5ymm: {
     gid: 588603541,
+    weektrailers: ["b26QvbP4MUI", "-f83uRDCZpA", "ouKbaTu5YKc", "13Sb6V8ydPM"],
+  },
+  _6ymm: {
+    gid: 1708788134,
     weektrailers: [
       "G4mhHeXk3k0",
       "lANqCC2xPoo",
@@ -29,10 +33,6 @@ export const themeConfig = {
       "oR_7lE_Zx2c",
       "VLiyJwx5T3E",
     ],
-  },
-  _6ymm: {
-    gid: 1708788134,
-    weektrailers: ["b26QvbP4MUI", "-f83uRDCZpA", "ouKbaTu5YKc", "13Sb6V8ydPM"],
   },
   _7mmc: {
     gid: 0,
