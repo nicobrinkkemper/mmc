@@ -45,12 +45,13 @@ export async function createResizeJobOutput(
     : applyChangesToFileName(changes, job.userInfo.fileName);
 
   const file = path.join(job.original.outputFolder, outputFileName);
-
+  const PUBLIC_URL = process.env.PUBLIC_URL ?? "";
+  const REPLACE_PUBLIC_URL = PUBLIC_URL.endsWith("/")
+    ? PUBLIC_URL
+    : PUBLIC_URL + `/`;
   const href =
     (job.userInfo.href ?? "") +
-    path.join(
-      file.replace("public" + path.sep, `${process.env.PUBLIC_URL ?? ""}/`)
-    ); // the file without the public folder is the href
+    path.join(file.replace("public" + path.sep, REPLACE_PUBLIC_URL)); // the path without the public folder is the href
   const version = job.userInfo.version ?? versionFromChanges(changes);
 
   const reference = job.userInfo.reference
