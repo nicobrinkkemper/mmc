@@ -1,10 +1,5 @@
 {
-  "cSpell.ignorePaths": [
-    "./src/data/7mmc.json",
-    "./src/data/7mmc.csv",
-    "./package.json",
-    "./package-lock.json"
-  ],
+  "cSpell.ignorePaths": ["./package.json", "./package-lock.json"],
   "typescript.tsdk": "node_modules/typescript/lib",
   // format on save
   "editor.formatOnSaveMode": "modifications",
