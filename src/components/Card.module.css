@@ -63,6 +63,9 @@
 
 @media only screen and (max-width: 560px) {
 
+    .HasSpecialCardIllustration {
+        padding-right: 0;
+    }
     .SpecialCardIllustration,
     .CardIllustration {
         display: none;
