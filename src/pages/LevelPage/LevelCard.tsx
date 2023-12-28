@@ -14,7 +14,7 @@ export function LevelCard({ level }: Readonly<LevelCardProps>) {
       <Card className={styles.LevelCard}>
         <div
           style={{
-            width: level.images.level.width + "px",
+            maxWidth: level.images.level.width + "px",
             justifySelf: "center",
           }}
         >

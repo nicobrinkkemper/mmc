@@ -28,18 +28,27 @@ export const Logo = ({
   const size = small ? "small" : "big";
   return (
     <>
-      <div className={classNames(className, styles.Logo, styles[size])}>
-        <Link to={`/${themeSlug}`}
-          className={styles[logo]}>
-          <ThemeLogo
-            small={small}
-            logo={logo}
-            theme={theme}
-          />
+      <Link
+        to={`/${themeSlug}`}
+        className={classNames(
+          className,
+          styles.Logo,
+          styles[size],
+          styles[logo]
+        )}
+      >
+        <ThemeLogo small={small} logo={logo} theme={theme} />
+      </Link>
+      {hasPrev && (
+        <Link className={styles.PrevTheme} to={`/${prevThemeUrl}`}>
+          <ThemeLogo theme={prevTheme} small logo="logo_simple" />
         </Link>
-      </div>
-      {hasPrev && <Link className={styles.PrevTheme} to={`/${prevThemeUrl}`}><ThemeLogo theme={prevTheme} small logo="logo_simple" /></Link>}
-      {hasNext && <Link className={styles.NextTheme} to={`/${nextThemeUrl}`}><ThemeLogo theme={nextTheme} small logo="logo_simple" /></Link>}
+      )}
+      {hasNext && (
+        <Link className={styles.NextTheme} to={`/${nextThemeUrl}`}>
+          <ThemeLogo theme={nextTheme} small logo="logo_simple" />
+        </Link>
+      )}
     </>
   );
 };

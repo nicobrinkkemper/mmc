@@ -9,6 +9,9 @@
     background: none;
 }
 
+.Button.info-inverted {
+    color: var(--button-info-inverted-color, inherit);
+}
 .ButtonInner {
     display: grid;
     grid-template-columns: 1fr 24px;

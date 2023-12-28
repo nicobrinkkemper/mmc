@@ -124,7 +124,7 @@ const Button = ({
   id,
 }: ButtonProps) => {
   const Icon = <span className={classNames(styles.ButtonIcon, styles[icon])}>{icons[icon]}</span>;
-  const classes = [styles.Button, icon, ...classList];
+  const classes = [styles.Button, ...classList];
   if (primary) classes.push(styles.primary);
   if (inverted) classes.push(styles.inverted);
   if (typeof icons[icon] === "string") classes.push(styles.hasIcon);
