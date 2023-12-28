@@ -1,6 +1,6 @@
-import { Card } from "../../components/Card"
+import { Card } from "../../../components/Card"
 
-export const CreditsTrailer = (props: React.ComponentProps<typeof Card>) => {
+export const Mm8CreditsTrailerCard = (props: React.ComponentProps<typeof Card>) => {
     return (
         <Card {...props}>
             <h2>Trailers</h2>

@@ -26,6 +26,7 @@ const getThemeInfo = (theme: Theme, pathname: string) => {
     const themeYear = convertNumberToWord(ordinal, 'english');
     const writtenOutOrdinal = convertNumberToWord(ordinal, 'englishOrdinal');
     const writtenOut = capitalize(writtenOutOrdinal) + ' Mario Maker Celebration';
+    const writtenOutYmm = capitalize(themeYear) + ' Years of Mario Maker';
     const pathnameFromTheme = pathname.replace(`${theme}/`, '');
     return {
         caps,
@@ -34,7 +35,7 @@ const getThemeInfo = (theme: Theme, pathname: string) => {
         themeYear,
         writtenOutOrdinal,
         writtenOut,
-        mainTheme: '8mmc',
+        writtenOutYmm,
         isHome: !pathnameFromTheme || pathnameFromTheme === '/',
         currentThemeUrl: `${theme}${pathnameFromTheme}`,
         nextThemeUrl: `${nextTheme(theme)}${pathnameFromTheme}`,

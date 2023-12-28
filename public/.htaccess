@@ -8,5 +8,5 @@
 </ifModule>
 ErrorDocument 404 /404.html
 <FilesMatch ".(jpg|png|gif|webp)$">
-    ErrorDocument 404 "/404.png"
+    ErrorDocument 404 "/404.webp"
 </FilesMatch>

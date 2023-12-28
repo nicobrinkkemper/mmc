@@ -103,6 +103,10 @@ const resizeFavicon: ResizeUserInfo[] = [
   },
   {
     fileName: "favicon-[width]x[height].ico",
+    resize: { width: 150, height: 150 },
+  },
+  {
+    fileName: "favicon-[width]x[height].ico",
     resize: { width: 192, height: 192 },
   },
   {
@@ -125,6 +129,15 @@ const webp: ResizeUserInfo[] = [
   },
 ];
 
+const _404: ResizeUserInfo[] = [
+  {
+    fileName: `[snakecase].webp`,
+    resize: {
+      width: 420,
+    },
+  },
+];
+
 /**
  * Determine what resize jobs to do with each image.
  */
@@ -135,6 +148,7 @@ export const resizeJobs: ResizeJobsFn = ({
   relativeInputPath,
 }) => {
   if (name === "favicon") return resizeFavicon;
+  if (name === "404") return _404;
   if (name === "illustration") return resizeIllustration;
   if (name === "logo") return resizeMainLogo;
   if (name === "logo_simple") return resizeMainLogo;

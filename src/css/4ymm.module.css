@@ -44,11 +44,16 @@
     --card-background: #ffefad;
     --card-border-radius: .3rem;
     --card-padding: 1rem;
-
-    --tag-before-content: '';
+    
+    --tag-color: black;
     --tag-text-align: center;
-    --tag-before-background: #facd00;
-    --tag-before-border-radius: 0.25em;
+    --tag-mix-blend-mode: none;
+        --tag-border-radius: 0.25em;
+        --tag-background: #facd00;
+        --tag-new-background: #c60034;
+        --tag-other-background: #c60034;
+        --tag-other-color: white;
+        --tag-new-color: white;
 
     --level-code-color: white;
     --level-code-background: #d30561;

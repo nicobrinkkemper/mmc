@@ -1,5 +1,6 @@
 import { Card, CardProps } from "../../components/Card"
 import { CreditsWebsite } from "../default/CreditsWebsite"
+import { Ymm4CreditsTrailerCard } from "./cards/Ymm4CreditsTrailersCard"
 
 export const CreditsContent = ({ children, ...props }: CardProps) => (
     <>
@@ -21,27 +22,6 @@ export const CreditsContent = ({ children, ...props }: CardProps) => (
             </dl>
         </Card>
         <CreditsWebsite {...props} />
-        <Card {...props}>
-            <h2>Trailers</h2>
-            <dl>
-                <dt>Script, visuals & edit</dt>
-                <dd>Lektor</dd>
-
-                <dt>Visual concepts</dt>
-                <dd>Paxsman</dd>
-
-                <dt>Voice & script</dt>
-                <dd>DuffyWeber</dd>
-
-                <dt>Video capture</dt>
-                <dd>DanTheVP</dd>
-                <dd>Paxsman</dd>
-
-                <dt>Music</dt>
-                <dd>Qumu</dd>
-                <dd>T.L.B. Orchestration</dd>
-            </dl>
-            <p>Special thanks to Kiavik and Lektor Jr. (a.k.a. Liam)</p>
-        </Card>
+        <Ymm4CreditsTrailerCard {...props} />
     </>
 )
