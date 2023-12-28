@@ -1,5 +1,7 @@
 import { PropsWithChildren } from "react";
 import { Link, LinkProps } from "react-router-dom";
+import styles from "./Button.module.css";
+import classNames from "classnames";
 const icons = {
   "arrow-right": (
     <svg
@@ -82,9 +84,6 @@ const icons = {
   ),
 };
 
-const createIcon = (icon: keyof typeof icons) => {
-  return () => <span className={["Icon", icon].join(" ")}>{icons[icon]}</span>;
-};
 
 export type ButtonProps = PropsWithChildren<{
   primary?: boolean;
@@ -124,24 +123,24 @@ const Button = ({
   classList = [],
   id,
 }: ButtonProps) => {
-  const Icon = createIcon(icon);
-  const classes = ["Button", icon, ...classList];
-  if (primary) classes.push("primary");
-  if (inverted) classes.push("inverted");
-  if (typeof icons[icon] === "string") classes.push("hasIcon");
-  if (iconPosition === "left") classes.push("iconIsLeft");
+  const Icon = <span className={classNames(styles.ButtonIcon, styles[icon])}>{icons[icon]}</span>;
+  const classes = [styles.Button, icon, ...classList];
+  if (primary) classes.push(styles.primary);
+  if (inverted) classes.push(styles.inverted);
+  if (typeof icons[icon] === "string") classes.push(styles.hasIcon);
+  if (iconPosition === "left") classes.push(styles.iconIsLeft);
   const props = {
     ...(typeof id === "string" ? { id } : {}),
     to,
-    className: classes.join(" "),
+    className: classNames(classes),
   };
 
   return (
     <LinkOrAnchor {...props}>
-      <div className="Button-inner">
-        {iconPosition === "left" ? <Icon /> : null}
-        <span>{children}</span>
-        {iconPosition !== "left" ? <Icon /> : null}
+      <div className={styles.ButtonInner}>
+        {iconPosition === "left" ? Icon : null}
+        <span className={styles.ButtonLabel}>{children}</span>
+        {iconPosition !== "left" ? Icon : null}
       </div>
     </LinkOrAnchor>
   );

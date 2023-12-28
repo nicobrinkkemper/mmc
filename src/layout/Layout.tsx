@@ -1,24 +1,25 @@
 import { ComponentProps, PropsWithChildren } from "react";
-import { Header } from "./Header";
-import classNames from "classnames";
-import Seo from "../components/Seo";
+import { Seo } from "../components/Seo";
 import { Footer } from "./Footer";
 import { About } from "../about/About";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "../ErrorFallback";
+import { BackButton } from "../components/BackButton";
+import { AboutButton } from "../about/AboutButton";
+import { Logo } from "./Logo";
 
-export function Layout({ children, className, type = 'normal', small = false, seo, header }: PropsWithChildren<{
+export function Layout({ children, className, type = 'normal', small = false, seo }: PropsWithChildren<{
     className?: string
     type?: 'special' | 'simple' | 'normal'
     small?: boolean
     seo: ComponentProps<typeof Seo>
-    header?: Omit<ComponentProps<typeof Header>, 'small' | 'type'>
 }>) {
-    const { children: headerChildren = null, ...headerProps } = header ?? {};
     return (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Header type={type} small={small} {...headerProps}>{headerChildren}</Header>
-            <article className={classNames('App-body', className)}>
+            <AboutButton />
+            <Logo small={small} logo={type === 'normal' ? 'logo' : `logo_${type}`} />
+            <article className={className}>
+                <BackButton />
                 {children}
             </article>
             <About />

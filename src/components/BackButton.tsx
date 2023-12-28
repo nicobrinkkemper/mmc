@@ -2,7 +2,7 @@ import Button from "./Button";
 import { useTheme } from "../theme/useTheme";
 import { useLevel } from "../theme/useLevel";
 import { useThemeLevelData } from "../theme/useThemeLevelData";
-
+import styles from "./BackButton.module.css";
 
 function BackToBatch() {
     const { themeSlug } = useTheme();
@@ -14,7 +14,7 @@ function BackToBatch() {
             iconPosition="left"
             to={`/${themeSlug}levels/${batchNumber}/`}
             inverted={true}
-            classList={['backTo']}
+            classList={[styles.BackButton]}
         >
             Back to {batch.releaseDate.formatted}
         </Button>
@@ -30,7 +30,7 @@ function BackToWeeks() {
             iconPosition="left"
             to={`/${themeSlug}levels/`}
             inverted={true}
-            classList={['backTo']}
+            classList={[styles.BackButton]}
         >
             Back to Weeks
         </Button>
@@ -46,7 +46,7 @@ function BackToWelcome() {
             iconPosition="left"
             to={`/${themeSlug}`}
             inverted={true}
-            classList={['backTo']}
+            classList={[styles.BackButton]}
         >
             Back to Welcome
         </Button>

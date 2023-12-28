@@ -10,17 +10,14 @@ a:active {
   color: var(--text-color);
 }
 
-
 picture {
-  display: grid;
+  display: flex;
 }
-
 picture img {
   max-width: 100%;
-  color: transparent;
   object-fit: cover;
+  color: transparent;
 }
-
 
 h1 {
   text-align: left;
@@ -56,85 +53,6 @@ code {
 }
 
 
-
-
-.AboutBtn.Button {
-  display: block;
-  position: absolute;
-  height: auto;
-  width: auto;
-  right: 0;
-  font-size: .8rem;
-  transform-origin: top right;
-}
-
-.AboutBtn .Button-inner:after {
-  background: var(--about-button-after-background, var(--button-after-background, inherit));
-}
-
-.youtubeWrapper {
-  box-shadow: var(--box-shadow);
-}
-
-
-.Button {
-  font: var(--button-font);
-  justify-self: flex-start;
-  align-self: flex-start;
-  height: inherit;
-  align-items: center;
-  width: auto;
-  cursor: pointer;
-  border: none;
-  text-decoration: none;
-  background: none;
-}
-
-.Button-inner {
-  display: grid;
-  width: max-content;
-  grid-template-columns: 1fr 24px;
-  position: relative;
-  border: none;
-  gap: .5em;
-  align-items: center;
-  padding: var(--button-padding, 1em);
-  color: var(--button-color, inherit);
-  background: var(--button-background);
-  border-radius: var(--button-border-radius);
-}
-
-.iconIsLeft .Button-inner {
-  grid-template-columns: 24px 1fr;
-  justify-items: center;
-}
-
-.Button-inner:after {
-  content: var(--button-after-content, none);
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: var(--button-after-background, inherit);
-  mix-blend-mode: var(--button-after-mix-blend-mode, none);
-  box-shadow: var(--button-after-box-shadow, none);
-}
-
-
-
-.Card .Button-inner:after {
-  background: var(--card-button-after-background, var(--button-after-background, inherit));
-  border: var(--card-button-after-border, inherit);
-}
-
-.Button-inner .Icon svg {
-  height: 100%;
-  width: 100%;
-}
-
-
-
 /* TYPOGRAPHY */
 body {
   font-family: var(--font-primary);
@@ -145,15 +63,6 @@ body {
 }
 
 @media only screen and (min-width: 620px) {
-
-  html,
-  body {
-    font-size: 18px;
-  }
-}
-
-@media only screen and (min-width: 1024px) {
-
   html,
   body {
     font-size: 18px;

@@ -1,5 +1,4 @@
 .Difficulty {
-    --_difficulty-label-font: var(--difficulty-label-font, normal 0.75rem/0.75rem var(--font-primary));
     align-self: flex-end;
     justify-self: flex-end;
     justify-content: flex-end;
@@ -10,10 +9,9 @@
 }
 
 .Label {
-    font: var(--_difficulty-label-font);
+    font: var(--difficulty-label-font, normal 0.75rem/0.75rem var(--font-primary));
 }
 
-.Indicator {
+.Stars {
     width: 3.27rem;
-    display: inline-block;
 }

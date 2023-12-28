@@ -16,8 +16,8 @@ export function PublicImage({
     <picture
       className={className}
       style={{
-        width: `${width}px`,
-        height: `${height}px`,
+        maxWidth: `${width}px`,
+        maxHeight: `${height}px`,
       }}
     >
       <img
