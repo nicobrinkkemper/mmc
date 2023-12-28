@@ -1,4 +1,4 @@
-.footer {
+.Footer {
     grid-area: footer / full;
     display: grid;
     justify-content: center;
@@ -8,7 +8,7 @@
     padding: 1rem 0;
 }
 
-.footer a {
+.Footer a {
     display: flex;
     align-items: center;
     font: var(--footer-font);
@@ -17,11 +17,11 @@
     padding-right: 1rem;
 }
 
-.footer a:last-child {
+.Footer a:last-child {
     padding-right: 0;
 }
 
-.footer a+a {
+.Footer a+a {
     padding-left: 1rem;
     border-left: 1px solid var(--footer-color, #111);
 }

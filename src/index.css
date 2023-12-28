@@ -16,9 +16,6 @@ picture {
 picture img {
   max-width: 100%;
   object-fit: cover;
-}
-
-picture img {
   color: transparent;
 }
 
@@ -56,12 +53,6 @@ code {
 }
 
 
-.youtubeWrapper {
-  box-shadow: var(--box-shadow);
-}
-
-
-
 /* TYPOGRAPHY */
 body {
   font-family: var(--font-primary);
@@ -72,7 +63,6 @@ body {
 }
 
 @media only screen and (min-width: 620px) {
-
   html,
   body {
     font-size: 18px;

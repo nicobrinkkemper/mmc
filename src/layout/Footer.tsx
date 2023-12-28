@@ -5,7 +5,7 @@ import styles from "./Footer.module.css";
 export function Footer() {
     const { themeSlug } = useTheme();
     return (
-        <footer className={styles.footer}>
+        <footer className={styles.Footer}>
             <a
                 href="https://discord.gg/8mnW3XfZq9"
                 rel="noopener noreferrer"

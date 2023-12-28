@@ -13,13 +13,9 @@ const Star = ({ value }: { value: number }) => {
     return <span><svg viewBox="0 0 13 12" width={13} height={12} fill="currentColor" xmlns="http://www.w3.org/2000/svg"><StarPath /></svg></span>
 }
 
-const Stars = ({ value = 0 }: { value?: keyof typeof stars }) => {
+const star1to4 = Array(4).fill(0).map((_, i) => `star-${i + 1}`)
+
+export function Stars({ value = 0 }: Readonly<{ value?: keyof typeof stars }>) {
     const castValue = Number(value)
-    const starsArr = []
-    for (let i = 0; i < 4; i++) {
-        starsArr.push(<Star key={'star-' + i.toString()} value={Math.min(2, Math.max(0, castValue - (i * 2)))} />)
-    }
-    return starsArr;
+    return star1to4.map((key, i) => <Star key={key} value={Math.min(2, Math.max(0, castValue - (i * 2)))} />)
 }
-export { Stars }
-export default Stars

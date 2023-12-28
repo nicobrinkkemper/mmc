@@ -16,6 +16,7 @@ export const Logo = ({
   small = false,
   className,
 }: LogoProps) => {
+
   const {
     theme,
     themeSlug,

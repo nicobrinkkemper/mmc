@@ -1,5 +1,5 @@
 import { ComponentProps, PropsWithChildren } from "react";
-import Seo from "../components/Seo";
+import { Seo } from "../components/Seo";
 import { Footer } from "./Footer";
 import { About } from "../about/About";
 import { ErrorBoundary } from "react-error-boundary";

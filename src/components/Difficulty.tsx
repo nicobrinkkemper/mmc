@@ -1,4 +1,4 @@
-import Stars from "./Stars"
+import { Stars } from "./Stars"
 import styles from "./Difficulty.module.css"
 
 export const Difficulty = ({ difficulty, difficultyName }: { difficulty: number, difficultyName: string }) => {

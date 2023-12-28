@@ -96,7 +96,7 @@ type SeoProps = {
   image?: string;
 };
 
-const Seo = ({
+export function Seo({
   schema,
   title = '',
   description = DEFAULT_DESCRIPTION,
@@ -106,7 +106,7 @@ const Seo = ({
   tags = ["Mario Maker 2"],
   twitter = "summary",
   image = '',
-}: SeoProps) => {
+}: SeoProps) {
   const { data, themeSlug } = useTheme();
   const published = data.batches[0].releaseDate.formatted
   if (image === '') image = data.images.favicon["512_512"][0];
@@ -145,6 +145,3 @@ const Seo = ({
     />
   )
 };
-
-export { Seo };
-export default Seo;
