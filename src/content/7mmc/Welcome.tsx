@@ -5,7 +5,7 @@ import { Mm7ArtWorkCard } from "./cards/Mm7ArtworkCard";
 import { MM7ContentCreatorCard } from "./cards/Mm7ContentCreatorCard";
 
 
-export const WelcomeContent = () => (
+export const Welcome = () => (
     <>
         <Card illustration heading={<h1>The seventh yearly Mario Maker celebration</h1>} subHeading={<h2>Mario Maker turns seven!</h2>}>
             <p>

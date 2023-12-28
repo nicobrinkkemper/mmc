@@ -9,7 +9,7 @@ import { QuestionWhatKindOfLevels } from "../default/QuestionWhatKindOfLevels";
 import { QuestionGetInTouch } from "../default/QuestionGetInTouch";
 
 
-const AboutContent = () => {
+export const About = () => {
   const { info: { caps, snake, writtenOut }
   } = useTheme();
   return (
@@ -28,5 +28,3 @@ const AboutContent = () => {
     </Accordion>
   )
 }
-
-export { AboutContent }

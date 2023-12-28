@@ -1,2 +1,2 @@
-export { CreditsContent } from "./CreditsContent";
-export { AboutContent } from "./AboutContent";
+export { Credits } from "./Credits";
+export { About } from "./About";

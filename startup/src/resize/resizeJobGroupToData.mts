@@ -3,11 +3,12 @@ import { ResizeJobDone } from "./types.mjs";
 export type ImageJsonStructure = Record<
   string,
   {
-    width?: number;
-    height?: number;
-    aspectRatio?: string;
-    srcSet?: string;
-    placeholder?: string;
+    width: number;
+    height: number;
+    aspectRatio: string;
+    srcSet: string;
+    placeholder: string;
+    src: string;
   }
 >;
 type ImageJsonItem = ImageJsonStructure[string];
@@ -36,44 +37,41 @@ function reduceResizeJobGroupToData(
   // index: number,
 ): ImageJsonStructure {
   const {
-    userInfo: { main: userRequestedMain },
+    userInfo: { main },
     output: { reference, href, version },
     resized: { width, height, aspectRatio, placeholder },
   } = job;
   const hasReference = data && reference in data;
   const fallbackVersion = version || "versions";
-  const dataAtReference = data[reference];
+  const prev = data[reference];
   const hasVersion =
     hasReference &&
-    typeof dataAtReference === "object" &&
-    dataAtReference != null &&
-    fallbackVersion in dataAtReference;
-  const prevSrcset = dataAtReference?.srcSet;
+    typeof prev === "object" &&
+    prev != null &&
+    fallbackVersion in prev;
+  const prevSrcset = prev?.srcSet;
   const srcSet = buildSrcsetString(prevSrcset, { width, href });
-  const outputConditional = {
-    ...(hasReference && dataAtReference),
-    ...(placeholder && { placeholder }),
-    ...(srcSet && { srcSet }),
-    ...(hasVersion
-      ? {
-          [fallbackVersion]: [
-            ...(dataAtReference[fallbackVersion as never] as string[]),
-            href,
-          ],
-        }
-      : {
-          [fallbackVersion]: [href],
-          ...(userRequestedMain && {
-            width,
-            height,
-            aspectRatio,
-            src: href,
-          }), // the resize info is only added to the main image
-        }),
-  };
+
   return {
     ...data,
-    [reference]: outputConditional,
+    [reference]: {
+      ...(hasReference && prev),
+      ...(placeholder && { placeholder }),
+      ...(srcSet && { srcSet }),
+      ...((hasVersion
+        ? {
+            [fallbackVersion]: [
+              ...(prev[fallbackVersion as never] as string[]),
+            ],
+          }
+        : {
+            [fallbackVersion]: [href],
+            ...((!prev?.width || main) && { width }),
+            ...((!prev?.height || main) && { height }),
+            ...((!prev?.aspectRatio || main) && { aspectRatio }),
+            ...((!prev?.src || main) && { src: href }),
+          }) as ImageJsonItem),
+    },
   };
 }
 

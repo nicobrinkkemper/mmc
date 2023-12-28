@@ -13,21 +13,13 @@ export function PublicImage({
   src: string;
 }>) {
   return (
-    <picture
+    <img
       className={className}
-      style={{
-        maxWidth: `${width}px`,
-        maxHeight: `${height}px`,
-      }}
-    >
-      <img
-        className={"image"}
-        src={props.src}
-        srcSet={props.srcSet}
-        alt={alt}
-        width={width}
-        height={height}
-      />
-    </picture>
+      src={props.src}
+      srcSet={props.srcSet}
+      alt={alt}
+      width={width}
+      height={height}
+    />
   );
 }

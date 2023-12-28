@@ -3,7 +3,7 @@ import { ToTheLevels } from "../../components/ToTheLevels";
 import { StayUpToDate } from "../default/StayUpToDate";
 import { MM4ContentCreatorCard } from "./cards/Mm4ContentCreatorCard";
 
-export const WelcomeContent = () => (
+export const Welcome = () => (
     <>
         <Card illustration type={'special'} heading={<h1>Welcome</h1>} subHeading={<h2>Come join us celebrate the anniversary of Super Mario Maker 2!</h2>}>
             <p>
