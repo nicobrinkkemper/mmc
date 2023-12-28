@@ -98,19 +98,18 @@ type SeoProps = {
 
 export function Seo({
   schema,
-  title = '',
+  title = "",
   description = DEFAULT_DESCRIPTION,
   contentType = "image/png",
   updated = new Date(Date.now()).toDateString(),
   category = "gaming",
-  tags = ["Mario Maker 2"],
+  tags = ["Mario Maker 2", "Mario Maker Community Levels", "Mario Anniversary"],
   twitter = "summary",
-  image = '',
-}: SeoProps) {
+  image = "",
+}: Readonly<SeoProps>) {
   const { data, themeSlug } = useTheme();
-  const published = data.batches[0].releaseDate.formatted
-  if (image === '') image = data.images.favicon["512_512"][0];
-  if (title === '') title = data.caps
+  const published = data.batches[0].releaseDate.formatted;
+  if (title === "") title = data.caps;
   tags.push(data.caps);
   return (
     <Helmet
@@ -119,15 +118,16 @@ export function Seo({
       })}
       title={title}
       link={[
-        { rel: "icon", href: absoluteUrl(data.images.favicon['versions'][0]) },
+        { rel: "icon", href: absoluteUrl(data.images.favicon.src) },
         {
           rel: "icon",
           sizes: "64_64",
-          href: absoluteUrl(data.images.favicon['64_64'][0]),
-        }, {
+          href: absoluteUrl(data.images.favicon_512x512.src),
+        },
+        {
           rel: "icon",
           sizes: "192x192",
-          href: absoluteUrl(data.images.favicon['192_192'][0]),
+          href: absoluteUrl(data.images.favicon_192x192.src),
         },
       ]}
       meta={getMetaTags({
@@ -140,8 +140,10 @@ export function Seo({
         category,
         tags,
         twitter,
-        image: absoluteUrl(image),
+        image: absoluteUrl(
+          image !== "" ? image : data.images.favicon_512x512.src
+        ),
       })}
     />
-  )
+  );
 };

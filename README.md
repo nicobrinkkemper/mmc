@@ -90,13 +90,14 @@ export * as _7mmc from "./7mmc";
 export * as _8mmc from "./8mmc";
 export * as _default from "./default";
 ```
-The welcome, about and credit contents are exported here.
+The welcome, about and credit contents are exported here. Use it like so:
 ```tsx
-const WelcomeContent = useContent('WelcomeContent');
-// later
-<WelcomeContent />
+<Content.About />
+<Content.Welcome />
+<Content.Credits />
 ```
-`useContent` will use the default folder if no component is available for the current theme, which should be enough in most cases.
+Using these components will automatically load the right content for the theme, based on what is available. Any props given to the component
+will be given to the final component as well.
 
 ## startup/src/themeConfig.ts
 ```ts
@@ -107,7 +108,7 @@ _5ymm: {
 }
 ```
 This is the entry point for all themes. There's a few requirements:
-- There's a GID for the spreadsheet
-- There's a weektrailer for each batch in the spreadsheet
-- There's a maker image, screenshot and thumbnail image in `/resizeImages/[theme]/public`
+- GID for the spreadsheet
+- Weektrailer for each batch in the spreadsheet
+- Resized maker image, screenshot and thumbnail image in `/public`
 

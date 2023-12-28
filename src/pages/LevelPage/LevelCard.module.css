@@ -14,3 +14,6 @@
   filter: var(--level-code-filter, none);
   color: var(--level-code-color, #111);
 }
+img.LevelImage {
+  display: flex;
+}

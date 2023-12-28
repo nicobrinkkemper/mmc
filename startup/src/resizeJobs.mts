@@ -96,22 +96,27 @@ const resizeFavicon: ResizeUserInfo[] = [
   {
     fileName: "favicon.ico",
     resize: { width: 32, height: 32 },
+    main: true,
   },
   {
     fileName: "favicon-[width]x[height].ico",
     resize: { width: 64, height: 64 },
+    reference: "_64x64",
   },
   {
-    fileName: "favicon-[width]x[height].ico",
+    fileName: "mstile-[width]x[height].ico",
     resize: { width: 150, height: 150 },
+    reference: "_150x150",
   },
   {
     fileName: "favicon-[width]x[height].ico",
     resize: { width: 192, height: 192 },
+    reference: "_192x192",
   },
   {
     fileName: "favicon-[width]x[height].ico",
     resize: { width: 512, height: 512 },
+    reference: "_512x512",
   },
 ];
 

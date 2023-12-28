@@ -1,6 +1,5 @@
 .Card {
     display: grid;
-    grid-template-columns: [content-start] 1fr [content-end];
     box-shadow: var(--box-shadow);
     position: relative;
     padding: var(--card-padding, 1em);
@@ -8,6 +7,7 @@
     background: var(--card-background);
     gap: var(--card-gap, .5em);
     height: max-content;
+    text-decoration: none;
 }
 
 .CardOuter {
@@ -38,18 +38,13 @@
 }
 
 .HasSpecialCardIllustration {
-    position: relative;
-    grid-template-columns: [content-start] 1fr [ content-end] 1fr [full];
-    grid-template-rows: [full-start] 1fr [full-end];
-}
-
-.HasSpecialCardIllustration>* {
-    grid-column: content / full;
+    padding-right: 13em;
 }
 
 .SpecialCardIllustration {
-    grid-area: full / full;
-    height: 0;
+    position: absolute;
+        right: 5px;
+        bottom: 5px;
 }
 
 .CardIllustration picture {

@@ -1,3 +1,3 @@
-export {AboutContent} from "./AboutContent"
-export {CreditsContent} from "./CreditsContent"
-export {WelcomeContent} from "./WelcomeContent"
+export { About } from "./About";
+export { Credits } from "./Credits";
+export { Welcome } from "./Welcome";
