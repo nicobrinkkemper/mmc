@@ -27,6 +27,12 @@
 
     --app-background: #01346d radial-gradient(circle at 50% 0%, rgba(49, 78, 137, 1) 0%, rgba(2, 53, 112, 1) 35%, rgba(0, 43, 92, 1) 50%);
 
+        --tag-color: white;
+            --tag-new-color: white;
+            --tag-other-color: white;
+            --tag-background: #050159;
+            --tag-new-background: #21016d;
+            --tag-other-background: #01346d;
     --app-font: normal 1rem/1.2rem var(--font-primary);
     --about-button-after-background: none;
 

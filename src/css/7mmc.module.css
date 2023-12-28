@@ -54,10 +54,10 @@
     --tag-min-width: 100px;
     --tag-before-content: '';
     --tag-text-align: center;
+    --tag-before-mix-blend-mode: darken;
     --tag-before-background: no-repeat url('../assets/7mmc/highlight_yellow.svg');
-    --tag-before-new-background: no-repeat url('../assets/7mmc/highlight_magenta.svg');
-    --tag-before-other-background: no-repeat url('../assets/7mmc/highlight_cyan.svg');
-    --tag-before-mix-blend-mode: multiply;
+    --tag-new-background: no-repeat url('../assets/7mmc/highlight_magenta.svg');
+        --tag-other-background: no-repeat url('../assets/7mmc/highlight_cyan.svg');
     --tag-before-transform: scale(1, 1);
     --tag-before-top: 0;
     --tag-before-left: 0;

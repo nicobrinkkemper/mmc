@@ -1,6 +1,6 @@
-import { Card } from "../../components/Card"
+import { Card } from "../../../components/Card"
 
-export const Ymm5CreditsTrailer = (props: React.ComponentProps<typeof Card>) => {
+export const Ymm4CreditsTrailerCard = (props: React.ComponentProps<typeof Card>) => {
     return (
         <Card {...props}>
             <h2>Trailers</h2>
@@ -8,18 +8,19 @@ export const Ymm5CreditsTrailer = (props: React.ComponentProps<typeof Card>) => 
                 <dt>Script, visuals & edit</dt>
                 <dd>Lektor</dd>
 
+                <dt>Visual concepts</dt>
+                <dd>Paxsman</dd>
+
                 <dt>Voice & script</dt>
                 <dd>DuffyWeber</dd>
 
                 <dt>Video capture</dt>
-                <dd>DTSpies</dd>
-                <dd>Kiavik</dd>
-
-                <dt>Stills capture & cool ideas</dt>
+                <dd>DanTheVP</dd>
                 <dd>Paxsman</dd>
 
                 <dt>Music</dt>
                 <dd>Qumu</dd>
+                <dd>T.L.B. Orchestration</dd>
             </dl>
             <p>Special thanks to Kiavik and Lektor Jr. (a.k.a. Liam)</p>
         </Card>

@@ -1,8 +1,8 @@
 import { Card, CardProps } from "../../components/Card"
 import { CreditsWebsite } from "../default/CreditsWebsite"
-import { Ymm5CreditsTrailer } from "./Ymm5CreditsTrailer"
+import { Ymm5CreditsTrailerCard } from "./cards/Ymm5CreditsTrailerCard"
 
-export const Ymm5CreditsContent = ({ children, ...props }: CardProps) => (
+export const CreditsContent = ({ children, ...props }: CardProps) => (
     <>
         <Card subHeading={<h2>Project Organization</h2>} heading={<h1>Credits</h1>}{...props}>
             <dl>
@@ -26,9 +26,8 @@ export const Ymm5CreditsContent = ({ children, ...props }: CardProps) => (
 
 
             </dl>
-
         </Card>
         <CreditsWebsite {...props} />
-        <Ymm5CreditsTrailer />
+        <Ymm5CreditsTrailerCard {...props} />
     </>
 )

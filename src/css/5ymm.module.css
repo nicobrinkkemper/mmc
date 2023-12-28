@@ -45,10 +45,12 @@
     --card-border-radius: .3rem;
     --card-padding: 1rem;
 
-    --tag-before-content: '';
     --tag-text-align: center;
-    --tag-before-background: #facd00;
-    --tag-before-border-radius: 0.25em;
+        --tag-background: #256aa8;
+            --tag-other-background: #179d8d;
+            --tag-new-background: #680c8a;
+            --tag-color: white;
+            --tag-border-radius: 0.25em;
 
     --level-code-color: white;
     --level-code-background: #d30561;

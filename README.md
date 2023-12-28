@@ -6,11 +6,11 @@ The best Mario Makers from around the world showcase their style.
 
 [Github hosted (latest)](https://nicobrinkkemper.github.io/mmc)
 
-- [/4ymm](https://mmcelebration.com/4ymm)
-- [/5ymm](https://mmcelebration.com/5ymm)
-- [/6ymm](https://mmcelebration.com/6ymm)
-- [/7mmc](https://mmcelebration.com/7mmc)
-- [/8mmc](https://mmcelebration.com/8mmc)
+- [4YMM](https://mmcelebration.com/4ymm)
+- [5YMM](https://mmcelebration.com/5ymm)
+- [6YMM](https://mmcelebration.com/6ymm)
+- [7MMC](https://mmcelebration.com/7mmc)
+- [8MMC](https://mmcelebration.com/8mmc)
 
 
 ### `npm run startup`
@@ -85,7 +85,7 @@ This applies the current theme's css variables to the website.
 ```ts
 export * as _4ymm from "./4ymm";
 export * as _5ymm from "./5ymm";
-export * as _6ymm from "./6ymm";
+export * as _6ymm from "./5ymm"; // same as 5ymm
 export * as _7mmc from "./7mmc";
 export * as _8mmc from "./8mmc";
 export * as _default from "./default";
@@ -96,3 +96,18 @@ const WelcomeContent = useContent('WelcomeContent');
 // later
 <WelcomeContent />
 ```
+`useContent` will use the default folder if no component is available for the current theme, which should be enough in most cases.
+
+## startup/src/themeConfig.ts
+```ts
+...
+_5ymm: {
+    gid: 588603541,
+    weektrailers: ["b26QvbP4MUI", "-f83uRDCZpA", "ouKbaTu5YKc", "13Sb6V8ydPM"],
+}
+```
+This is the entry point for all themes. There's a few requirements:
+- There's a GID for the spreadsheet
+- There's a weektrailer for each batch in the spreadsheet
+- There's a maker image, screenshot and thumbnail image in `/resizeImages/[theme]/public`
+
