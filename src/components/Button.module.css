@@ -1,0 +1,58 @@
+.Button {
+    font: var(--button-font);
+    height: inherit;
+    align-items: center;
+    width: max-content;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    background: none;
+}
+
+.ButtonInner {
+    display: grid;
+    grid-template-columns: 1fr 24px;
+    position: relative;
+    border: none;
+    gap: .5em;
+    align-items: center;
+    padding: var(--button-padding, 1em);
+    color: var(--button-color, inherit);
+    background: var(--button-background);
+    border-radius: var(--button-border-radius);
+}
+
+.iconIsLeft .ButtonInner {
+    grid-template-columns: 24px 1fr;
+    justify-items: center;
+}
+
+.ButtonLabel {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ButtonInner:after {
+    content: var(--button-after-content, none);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--button-after-background, inherit);
+    mix-blend-mode: var(--button-after-mix-blend-mode, none);
+    box-shadow: var(--button-after-box-shadow, none);
+}
+
+.ButtonIcon {
+    height: 1.1em;
+    width: 1.1em;
+}
+
+.ButtonIcon svg {
+    height: 100%;
+    width: 100%;
+}

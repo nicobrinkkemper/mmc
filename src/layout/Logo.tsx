@@ -16,9 +16,6 @@ export const Logo = ({
   small = false,
   className,
 }: LogoProps) => {
-  const endsWithSmall = logo.endsWith("_small");
-  if (small && !endsWithSmall) logo = logo + "_small";
-  if (endsWithSmall) small = true;
   const {
     theme,
     themeSlug,
@@ -30,18 +27,18 @@ export const Logo = ({
   const size = small ? "small" : "big";
   return (
     <>
-      {hasPrev && <Link to={`/${prevThemeUrl}`}><ThemeLogo theme={prevTheme} small logo="logo_simple" /></Link>}
       <div className={classNames(className, styles.Logo, styles[size])}>
-        <Link to={`/${themeSlug}`}>
+        <Link to={`/${themeSlug}`}
+          className={styles[logo]}>
           <ThemeLogo
             small={small}
             logo={logo}
-            className={styles[logo]}
             theme={theme}
           />
         </Link>
       </div>
-      {hasNext && <Link to={`/${nextThemeUrl}`}><ThemeLogo theme={nextTheme} small logo="logo_simple" /></Link>}
+      {hasPrev && <Link className={styles.PrevTheme} to={`/${prevThemeUrl}`}><ThemeLogo theme={prevTheme} small logo="logo_simple" /></Link>}
+      {hasNext && <Link className={styles.NextTheme} to={`/${nextThemeUrl}`}><ThemeLogo theme={nextTheme} small logo="logo_simple" /></Link>}
     </>
   );
 };

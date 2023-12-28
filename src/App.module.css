@@ -1,7 +1,9 @@
 .App {
   display: grid;
   overflow-y: scroll;
-  max-height: 100svh;
+  overflow-x: hidden;
+  max-height: 100vh;
+  max-width: 100svw;
   min-height: var(--app-min-height);
   background: var(--app-background);
   color: var(--text-color);
@@ -12,7 +14,7 @@
   --content: min(var(--max-content-width), 100% - var(--side-space) * 2);
 
   grid-template-rows:
-    [header] max-content [body] minmax(min-content, auto) [footer] 3rem;
+    [header-start] max-content [header-end body-start] minmax(min-content, auto) [body-end footer-start] 3rem [footer-end];
   grid-template-columns:
     [full-start] var(--full) [content-start] var(--content) [content-end] var(--full) [full-end];
   gap: 2rem 0;
@@ -31,10 +33,17 @@
   }
 }
 
+@media (min-width: 720px) {
+  .App {
+    --side-space: clamp(1rem, 6vw, 3rem);
+  }
+}
+
 
 
 .App>article {
   grid-area: body / content;
-  display: grid;
-  gap: 1em;
+  display: flex;
+  flex-flow: column;
+  gap: .5rem;
 }

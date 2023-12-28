@@ -6,7 +6,7 @@
     padding: var(--card-padding, 1em);
     border-radius: var(--card-border-radius);
     background: var(--card-background);
-    gap: var(--card-gap, 1em);
+    gap: var(--card-gap, .5em);
     height: max-content;
 }
 

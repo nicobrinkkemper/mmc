@@ -1,4 +1,4 @@
-import "./App.css";
+import styles from "./App.module.css";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { CreditPage } from "./pages/CreditsPage/CreditsPage";
 import { HomePage } from "./pages/HomePage/HomePage";
@@ -27,7 +27,7 @@ export const App = () => {
     : ({ overflowY: "scroll" } as const);
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <div className={classNames("App", Theme)} ref={ref} style={style}>
+      <div className={classNames(styles.App, Theme)} ref={ref} style={style}>
         <Routes>
           <Route path={`/level/:batchNumber/:order`} element={<LevelPage />} />
           <Route path={`/levels/:batchNumber`} element={<LevelBatchPage />} />

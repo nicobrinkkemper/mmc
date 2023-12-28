@@ -1,0 +1,9 @@
+.AboutButton {
+    grid-area: header / content;
+    justify-self: flex-end;
+    height: min-content;
+}
+
+.AboutButton .Button-inner:after {
+    background: var(--about-button-after-background, var(--button-after-background, inherit));
+}
