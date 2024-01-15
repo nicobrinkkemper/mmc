@@ -1,35 +1,29 @@
-import { PropsWithChildren, useState, useMemo, } from 'react';
-import { Theme, ThemeContext, createThemeContext, themeKeys } from './ThemeContext';
-import { useLocation } from 'react-router-dom';
+import { PropsWithChildren, useMemo, useRef } from "react";
+import { ThemeContext, getThemeInfo, getThemePathInfo } from "./ThemeContext";
+import { useLocation } from "react-router-dom";
+import { Theme } from "../data/types";
+import { useThemeData } from "../data/useThemeData";
 
-const defaultTheme = '8mmc';
-const hasValidParam = (themeParam: string): themeParam is Theme => themeKeys.includes(themeParam as Theme)
-export function ThemeProvider({ children, theme: themeParam }: Readonly<PropsWithChildren<{ theme: string }>>) {
-    const validTheme = hasValidParam(themeParam);
-    const defaultThemeFromParam = validTheme ? themeParam : defaultTheme
+export function ThemeProvider({
+  children,
+  theme,
+}: Readonly<PropsWithChildren<{ theme: Theme }>>) {
+  const { pathname } = useLocation();
+  const { themes } = useThemeData();
+  const themesRef = useRef(themes);
 
-    const [theme, setTheme] = useState<Theme>(defaultThemeFromParam);
-    const pathname = useLocation().pathname;
+  const context = useMemo(
+    () => ({
+      theme: theme,
+      themeSlug: theme + "/",
+      startDate: new Date(themesRef.current[theme].batches[0].releaseDate.date),
+      data: themesRef.current[theme],
+      info: { ...getThemePathInfo(theme, pathname), ...getThemeInfo(theme) },
+    }),
+    [theme, pathname]
+  );
 
-    if (validTheme) {
-        if (themeParam !== theme) setTheme(themeParam);
-    } else if (theme !== defaultThemeFromParam) {
-        setTheme(defaultThemeFromParam);
-    }
-
-    const contextValue = useMemo(() => createThemeContext({
-        theme,
-        setTheme,
-        themeSlug: `${theme}/`,
-    }, pathname), [
-        pathname,
-        theme,
-    ]);
-
-    if (!hasValidParam(theme)) console.error('Invalid theme', theme);
-    return (
-        <ThemeContext.Provider value={contextValue}>
-            {children}
-        </ThemeContext.Provider>
-    );
+  return (
+    <ThemeContext.Provider value={context}>{children}</ThemeContext.Provider>
+  );
 }

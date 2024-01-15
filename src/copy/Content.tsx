@@ -13,6 +13,7 @@ function ContentAt<
     const Component: ContentComponent<ContentKey> = useContent(at);
     return <Component {...(props ?? {})} />;
 }
+
 export const Content = Object.fromEntries(
     contentsKeys.map((at) => [
         at,

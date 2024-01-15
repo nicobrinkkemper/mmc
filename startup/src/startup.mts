@@ -16,6 +16,7 @@ try {
 
   await writeJson(json, "src/data/themes.json");
   const keys = Object.keys(json) as (keyof typeof json)[];
+  await writeJson(keys, "src/data/themesKeys.json");
   console.log("", keys.join("\n "));
 } catch (e) {
   console.trace(e);

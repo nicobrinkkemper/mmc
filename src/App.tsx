@@ -1,12 +1,12 @@
 import styles from "./App.module.css";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { CreditPage } from "./pages/CreditsPage/CreditsPage";
-import { HomePage } from "./pages/HomePage/HomePage";
+import { CreditPage } from "./page/CreditsPage/CreditsPage";
+import { HomePage } from "./page/HomePage/HomePage";
 import { useCss } from "./css/useCss";
-import { LevelBatchPage } from "./pages/LevelBatchPage/LevelBatchPage";
-import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
-import { BatchesPage } from "./pages/LevelBatchesPage/LevelBatchesPage";
-import { LevelPage } from "./pages/LevelPage/LevelPage";
+import { LevelBatchPage } from "./page/LevelBatchPage/LevelBatchPage";
+import { NotFoundPage } from "./page/NotFoundPage/NotFoundPage";
+import { BatchesPage } from "./page/LevelBatchesPage/LevelBatchesPage";
+import { LevelPage } from "./page/LevelPage/LevelPage";
 import classNames from "classnames";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "./ErrorFallback";

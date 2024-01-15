@@ -5,5 +5,7 @@ import * as themesCss from "./index";
 export function useCss<ClassName extends ThemeCssClassName>(
   className: ClassName
 ) {
-  return themesCss[`_${useTheme().theme}`][className];
+  const key = `_${useTheme().theme}`;
+  const fallback = (key in themesCss ? key : "_8mmc") as keyof typeof themesCss;
+  return themesCss[fallback][className];
 }

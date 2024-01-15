@@ -13,9 +13,10 @@ const Star = ({ value }: { value: number }) => {
     return <span><svg viewBox="0 0 13 12" width={13} height={12} fill="currentColor" xmlns="http://www.w3.org/2000/svg"><StarPath /></svg></span>
 }
 
-const star1to4 = Array(4).fill(0).map((_, i) => `star-${i + 1}`)
 
 export function Stars({ value = 0 }: Readonly<{ value?: keyof typeof stars }>) {
-    const castValue = Number(value)
-    return star1to4.map((key, i) => <Star key={key} value={Math.min(2, Math.max(0, castValue - (i * 2)))} />)
+  const castValue = Number(value);
+  return ["s1", "s2", "s3", "s4"].map((key, i) => (
+    <Star key={key} value={Math.min(2, Math.max(0, castValue - i * 2))} />
+  ));
 }
