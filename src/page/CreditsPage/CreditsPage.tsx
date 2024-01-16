@@ -2,7 +2,7 @@ import { DEFAULT_DESCRIPTION } from "../../constants";
 import { useTheme } from "../../theme/useTheme";
 import styles from "./Credits.module.css";
 import { Layout } from "../../layout/Layout";
-import { Content } from "../../content/Content";
+import { Content } from "../../copy/Content";
 
 export function CreditPage() {
     const { info: { caps } } = useTheme();

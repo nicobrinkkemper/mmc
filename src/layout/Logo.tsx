@@ -39,14 +39,15 @@ export const Logo = ({
       >
         <ThemeLogo small={small} logo={logo} theme={theme} />
       </Link>
+
       {hasPrev && (
-        <Link className={styles.PrevTheme} to={`/${prevThemeUrl}`}>
-          <ThemeLogo theme={prevTheme} small logo="logo_simple" />
+        <Link className={styles.PrevTheme} to={`/${prevThemeUrl ?? ""}`}>
+          <ThemeLogo theme={prevTheme ?? "8mmc"} small logo="logo_simple" />
         </Link>
       )}
       {hasNext && (
-        <Link className={styles.NextTheme} to={`/${nextThemeUrl}`}>
-          <ThemeLogo theme={nextTheme} small logo="logo_simple" />
+        <Link className={styles.NextTheme} to={`/${nextThemeUrl ?? ""}`}>
+          <ThemeLogo theme={nextTheme ?? "8mmc"} small logo="logo_simple" />
         </Link>
       )}
     </>

@@ -2,7 +2,7 @@
 import { default as classes } from './About.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CloseSvg } from './CloseSvg';
-import { Content } from '../content/Content';
+import { Content } from "../copy/Content";
 
 export const About = () => {
     const location = useLocation()
