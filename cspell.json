@@ -3,7 +3,12 @@
   "ignorePaths": [],
   "dictionaryDefinitions": [],
   "dictionaries": [],
-  "words": [],
-  "ignoreWords": ["transform"],
+  "words": [
+    "iefix",
+    "latoregular"
+  ],
+  "ignoreWords": [
+    "transform"
+  ],
   "import": []
 }

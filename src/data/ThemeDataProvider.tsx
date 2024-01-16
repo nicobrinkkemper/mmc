@@ -1,4 +1,4 @@
-import { type PropsWithChildren, useRef, use, useMemo } from "react";
+import { type PropsWithChildren, useRef, useMemo } from "react";
 import { getThemeJson } from "./getThemeJson";
 import {
   ThemeDataContext,

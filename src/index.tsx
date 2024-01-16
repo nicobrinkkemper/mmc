@@ -1,8 +1,7 @@
 import ReactDOM, { hydrateRoot } from "react-dom/client";
 import { AppWrapper } from "./AppWrapper";
 import "./index.css";
-import { SNAP } from "./constants";
-import { loadComponents, getState } from "loadable-components";
+import { getState } from "loadable-components";
 
 declare global {
   interface Window {

@@ -3,6 +3,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  min-width: 0;
 }
 
 a,
@@ -75,7 +76,6 @@ body {
   font-weight: 400;
   font-display: swap;
   src: url("./fonts/SuperMarioMakerExtended.eot");
-  /* IE9 Compat Modes */
   src: local("Super-Mario-Maker-Extended"), local("SuperMarioMakerExtended"),
     url("./fonts/SuperMarioMakerExtended.eot?#iefix") format("embedded-opentype"),
     /* IE6-IE8 */
@@ -95,7 +95,6 @@ body {
   font-weight: 400;
   font-display: swap;
   src: url("./fonts/SuperMario.eot");
-  /* IE9 Compat Modes */
   src: local("Super-Mario"), local("SuperMario"),
     url("./fonts/SuperMario.eot?#iefix") format("embedded-opentype"),
     /* IE6-IE8 */

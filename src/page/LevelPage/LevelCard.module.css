@@ -23,6 +23,3 @@ img.LevelImage {
   display:grid;
   gap: 1rem;
 }
-.Description > p {
-  white-space: pre-wrap;
-}

@@ -4,7 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "./theme/ThemeProvider";
 import { PUBLIC_URL } from "./constants";
 import { themeKeys } from "./data/themeKeys";
-import { StrictMode, Suspense } from "react";
+import { StrictMode } from "react";
 import ThemeDataProvider from "./data/ThemeDataProvider";
 
 const router = createBrowserRouter(
@@ -38,11 +38,9 @@ export function AppWrapper() {
   return (
     <StrictMode>
       <HelmetProvider>
-        <Suspense fallback={null}>
-          <ThemeDataProvider>
-            <RouterProvider router={router} />
-          </ThemeDataProvider>
-        </Suspense>
+        <ThemeDataProvider>
+          <RouterProvider router={router} />
+        </ThemeDataProvider>
       </HelmetProvider>
     </StrictMode>
   );
