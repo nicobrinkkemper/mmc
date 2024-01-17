@@ -1,6 +1,6 @@
-import React, { PropsWithChildren } from "react";
-import { Link, To } from "react-router-dom";
 import classnames from "classnames";
+import { PropsWithChildren } from "react";
+import { Link, To } from "react-router-dom";
 import styles from "./Card.module.css";
 import { Image } from "./Image";
 
@@ -9,22 +9,10 @@ export type CardProps = PropsWithChildren<{
   disabled?: boolean;
   to?: To;
   className?: string;
-  heading?: React.ReactNode | string;
-  subHeading?: React.ReactNode | string;
+  heading?: string;
+  subHeading?: string;
   type?: "special" | "simple";
 }>;
-
-function H({
-  children,
-  sub = false,
-}: Readonly<{ children: CardProps["heading"]; sub?: boolean }>) {
-  if (!children) return null;
-  if (typeof children === "string") {
-    const Element = sub ? "h2" : "h1";
-    return <Element>{children}</Element>;
-  }
-  return <>{children}</>;
-}
 
 function CardOuter({
   children,
@@ -33,7 +21,7 @@ function CardOuter({
   if (!heading) return <>{children}</>;
   return (
     <div className={classnames(styles.CardOuter)}>
-      <H>{heading}</H>
+      <h1>{heading}</h1>
       {children}
     </div>
   );
@@ -94,7 +82,7 @@ export const Card = ({
     <CardOuter heading={heading}>
       <CardClickable to={to} disabled={disabled} className={names}>
         <CardIllustration illustration={illustration} type={type} />
-        <H sub={true}>{subHeading}</H>
+        <h2>{subHeading}</h2>
         {children}
       </CardClickable>
     </CardOuter>

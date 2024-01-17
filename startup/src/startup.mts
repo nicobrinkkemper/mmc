@@ -1,6 +1,6 @@
-import { resizeFolders } from "./resize/resizeFolders.mjs";
 import { createThemes } from "./data/createThemes.mjs";
 import { writeJson } from "./file/writeJson.mjs";
+import { resizeFolders } from "./resize/resizeFolders.mjs";
 
 /**
  * Throw any image into the "resizeImages" folder at the corresponding folder you want it to resize to.

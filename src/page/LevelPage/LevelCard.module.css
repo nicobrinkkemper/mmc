@@ -2,7 +2,7 @@
   display: flex;
   flex-flow: row;
   flex-wrap: wrap;
-  gap: .5rem;
+  gap: var(--gap, .5rem);
 }
 
 .LevelCode {
@@ -21,5 +21,8 @@ img.LevelImage {
 }
 .Description {
   display:grid;
-  gap: 1rem;
+  gap: var(--gap, .5rem);
+}
+.Description > p {
+  white-space: pre-wrap;
 }

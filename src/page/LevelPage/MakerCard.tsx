@@ -1,7 +1,7 @@
+import { CompileJSX } from "../../CompileJSX";
 import { Card } from "../../components/Card";
 import { MakerName } from "../../components/MakerName";
 import { PublicImage } from "../../components/PublicImage";
-import { Markdown } from "../../Markdown";
 import { useLevel } from "../../theme/useLevel";
 import styles from "./MakerCard.module.css";
 
@@ -17,7 +17,7 @@ export function MakerCard({ level }: Readonly<MakerCardProps>) {
         makerId={level.makerId}
       />
       <div className={styles.Description}>
-        <Markdown>{level.makerDescription}</Markdown>
+        <CompileJSX>{level.makerDescription}</CompileJSX>
       </div>
     </Card>
   );

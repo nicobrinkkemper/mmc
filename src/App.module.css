@@ -43,5 +43,5 @@
   grid-area: body / content;
   display: flex;
   flex-flow: column;
-  gap: .5rem;
+  gap: var(--gap, .5rem);
 }

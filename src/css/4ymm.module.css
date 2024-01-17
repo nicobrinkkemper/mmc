@@ -6,6 +6,7 @@
   --font-tertiary: "SuperMario", sans-serif;
   --h1-font: bolder 1.5rem/3rem var(--font-secondary);
   --h2-font: bolder 1rem/1.2rem var(--font-primary);
+  --gap: .5rem;
 
   --background: #facd00;
   --text-color: #111;

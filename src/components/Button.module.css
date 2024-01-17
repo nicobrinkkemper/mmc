@@ -17,7 +17,7 @@
     grid-template-columns: 1fr 24px;
     position: relative;
     border: none;
-    gap: .5em;
+    gap: var(--gap, .5rem);
     align-items: center;
     padding: var(--button-padding, 1em);
     color: var(--button-color, inherit);
@@ -58,4 +58,8 @@
 .ButtonIcon svg {
     height: 100%;
     width: 100%;
+}
+
+.hidden {
+    display: none;
 }

@@ -9,7 +9,7 @@
     "lint": "eslint ./src --fix",
     "serve": "serve build/",
     "prebuild": "npm run startup",
-    "build": "export BASE_URL='https://mmcelebration.com' && react-scripts build",
+    "build": "export BASE_URL='https://mmcelebration.com' && react-scripts build --development",
     "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && react-scripts build",
     "postbuild": "export BASE_URL='https://mmcelebration.com' && react-snap",
     "prebuild-gh": "npm run startup-gh",
@@ -64,7 +64,7 @@
     ]
   },
   "devDependencies": {
-    "loadable-components": "^2.2.3",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.1",
@@ -82,8 +82,10 @@
     "gh-pages": "^6.1.0",
     "htmdx": "^0.3.7",
     "image-size": "^1.0.2",
+    "loadable-components": "^2.2.3",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
+    "markdown-to-jsx": "^7.4.0",
     "npm-check-updates": "^16.14.11",
     "npm-run-all": "^4.1.5",
     "papaparse": "^5.4.1",

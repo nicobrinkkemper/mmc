@@ -5,8 +5,8 @@ import { useTheme } from '../../theme/useTheme';
 import { AboutItem } from "../default/AboutItem";
 import { AboutItemHeading } from "../default/AboutItemHeading";
 import { AboutPanel } from "../default/AboutPanel";
-import { QuestionWhatKindOfLevels } from "../default/QuestionWhatKindOfLevels";
 import { QuestionGetInTouch } from "../default/QuestionGetInTouch";
+import { QuestionWhatKindOfLevels } from "../default/QuestionWhatKindOfLevels";
 
 
 export const About = () => {

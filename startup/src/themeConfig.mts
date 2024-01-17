@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 type themeConfigDefinition = {
   [key: string]: { gid: number; weektrailers: string[] };
 };

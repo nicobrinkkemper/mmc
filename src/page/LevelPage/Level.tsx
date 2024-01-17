@@ -1,34 +1,45 @@
-import { Button } from "../../components/Button";
 import classNames from "classnames";
+import { Button } from "../../components/Button";
 import { useLevel } from "../../theme/useLevel";
-import { LevelCard } from "./LevelCard";
 import styles from "./Level.module.css";
+import { LevelCard } from "./LevelCard";
 import { MakerCard } from "./MakerCard";
 
 export function Level() {
-  const { level, hasPreviousLevel, hasNextLevel, prevLevelSlug, nextLevelSlug } = useLevel();
-
-  const classes = [styles.Navigation];
-  if (hasPreviousLevel) classes.push(styles.hasPreviousLevel);
-  if (hasNextLevel) classes.push(styles.hasNextLevel);
+  const {
+    level,
+    hasPreviousLevel,
+    hasNextLevel,
+    prevLevelSlug,
+    nextLevelSlug,
+  } = useLevel();
 
   return (
     <>
       <LevelCard level={level} />
       <MakerCard level={level} />
-      <div className={classNames(classes)}>
-        {prevLevelSlug ? (
-          <Button
-            icon="arrow-left"
-            iconPosition="left"
-            to={prevLevelSlug}
-          ></Button>
-        ) : null}
-        {nextLevelSlug ? (
-          <Button icon="arrow-right" to={nextLevelSlug}>
-            Next level
-          </Button>
-        ) : null}
+      <div
+        className={classNames(
+          styles.Navigation,
+          hasNextLevel && styles.hasNextLevel,
+          hasPreviousLevel && styles.hasPreviousLevel
+        )}
+      >
+        <Button
+          icon="arrow-left"
+          iconPosition="left"
+          to={prevLevelSlug ?? "#"}
+          hidden={!prevLevelSlug}
+        >
+          <span className={styles.hidden}>Previous</span>
+        </Button>
+        <Button
+          icon="arrow-right"
+          to={nextLevelSlug ?? "#"}
+          hidden={!nextLevelSlug}
+        >
+          Next level
+        </Button>
       </div>
     </>
   );

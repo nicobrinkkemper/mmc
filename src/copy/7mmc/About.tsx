@@ -5,26 +5,29 @@ import { useTheme } from '../../theme/useTheme';
 import { AboutItem } from "../default/AboutItem";
 import { AboutItemHeading } from "../default/AboutItemHeading";
 import { AboutPanel } from "../default/AboutPanel";
-import { QuestionWhatKindOfLevels } from "../default/QuestionWhatKindOfLevels";
 import { QuestionGetInTouch } from "../default/QuestionGetInTouch";
-
+import { QuestionWhatKindOfLevels } from "../default/QuestionWhatKindOfLevels";
 
 export const About = () => {
-  const { info: { caps, snake, writtenOut }
+  const {
+    info: { caps, snake, writtenOut },
   } = useTheme();
   return (
     <Accordion preExpanded={["what_is_" + snake]}>
       <h1>About {caps}</h1>
       <AboutItem>
-        <AboutItemHeading>
-          What is {caps}?
-        </AboutItemHeading>
+        <AboutItemHeading>What is {caps}?</AboutItemHeading>
         <AboutPanel>
-          {caps} is the {writtenOut} and the follow-up to the YMM project. After the original organizers retired from running the anniversary project, it was decided it was time for a rebranding and a reassessment of what the project should be about. But the main focus is still to celebrate the birthday of Mario Maker by getting together to create levels that demonstrate just what the game is capable of.
+          {caps} is the {writtenOut} and the follow-up to the YMM project. After
+          the original organizers retired from running the anniversary project,
+          it was decided it was time for a rebranding and a reassessment of what
+          the project should be about. But the main focus is still to celebrate
+          the birthday of Mario Maker by getting together to create levels that
+          demonstrate just what the game is capable of.
         </AboutPanel>
       </AboutItem>
       <QuestionWhatKindOfLevels />
       <QuestionGetInTouch />
     </Accordion>
-  )
-}
+  );
+};

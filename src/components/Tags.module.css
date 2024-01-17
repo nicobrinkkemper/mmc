@@ -2,7 +2,7 @@
     --_tag-font: var(--tag-font, normal 0.75rem/0.75rem var(--font-primary));
     display: flex;
     flex-wrap: wrap;
-    gap: .5em;
+    gap: var(--gap, .5rem);
     align-content: center;
 }
 

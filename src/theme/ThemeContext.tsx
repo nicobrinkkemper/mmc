@@ -1,8 +1,8 @@
-import { createContext } from 'react';
-import { convertNumberToWord } from './convertNumberToWord';
 import { capitalize, snakeCase } from "lodash";
-import { Theme, Themes } from "../data/types";
+import { createContext } from "react";
 import { themeKeys } from "../data/themeKeys";
+import { Theme, Themes } from "../data/types";
+import { convertNumberToWord } from "./convertNumberToWord";
 
 export type ThemeContextData = Themes[Theme];
 export type ThemeContextImages = ThemeContextData["images"];
@@ -13,6 +13,10 @@ export type ThemeContextType = {
   themeSlug: string;
   data: ThemeContextData;
 };
+
+export type ThemeMarkdown =
+  | ThemeContextData["batches"][number]["levels"][number]["description"]
+  | ThemeContextData["batches"][number]["levels"][number]["makerDescription"];
 
 export const getThemeInfo = (theme: Theme) => {
   const caps = theme.toUpperCase();
