@@ -9,9 +9,9 @@ export function transformCsv(val: string, header: CsvHeaders) {
         .split(",")
         .map((v) => v.trim())
         .map((v) => {
-          if (!v) return;
+          if (!v) return undefined;
           const cased = safeSnakecase(v);
-          if (!cased) return;
+          if (!cased) return undefined;
           return [safeSnakecase(v), v];
         })
         .filter((v): v is [string, string] => v !== undefined && v !== null)

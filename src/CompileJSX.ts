@@ -11,19 +11,11 @@ type NestedJsxType =
     };
 
 /**
- * The MarkdownProps["children"] is inferred from the JSX Markdown output
+ * It recursively creates React elements from "precompiled" JSX
  **/
-type createElementsRecursiveFn = (
+export const createElementsRecursive = (
   el: NestedJsxType | NestedJsxType[]
-) => ReactNode[] | ReactNode;
-
-/**
- * We used to have a markdown compiler which also worked fine, but since the Markdown is so important level page I
- *
- * So either rethink the whole thing or use this function to convert the JSX to React elements.
- *
- **/
-export const createElementsRecursive: createElementsRecursiveFn = (el) => {
+): ReactNode | ReactNode[] => {
   if (typeof el === "string") return el;
 
   if (Array.isArray(el)) return el.map((el) => createElementsRecursive(el));
