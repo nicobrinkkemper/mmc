@@ -30,6 +30,6 @@ export function transformCsv(val: string, header: CsvHeaders) {
   if (header === "levelName" || header === "makerName")
     return { name: val, slug: safeSnakecase(val) };
   if (header === "makerDescription" || header === "description")
-    return compiler(val, { wrapper: null }); // precompiled markdown JSX https://github.com/quantizor/markdown-to-jsx
+    return compiler(val); // precompiled markdown JSX https://github.com/quantizor/markdown-to-jsx
   return val;
 }

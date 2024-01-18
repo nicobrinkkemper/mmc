@@ -19,10 +19,13 @@ img.LevelImage {
   max-width: 100%;
   object-fit: cover;
 }
-.Description {
+.Description > div {
   display:grid;
   gap: var(--gap, .5rem);
 }
-.Description > p {
+.Description > span {
+  white-space: pre-wrap;
+}
+.Description > div > p {
   white-space: pre-wrap;
 }
