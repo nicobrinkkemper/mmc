@@ -1,9 +1,9 @@
-import { CompileJSX } from "../../CompileJSX";
 import { Card } from "../../components/Card";
 import { Difficulty } from "../../components/Difficulty";
 import { PublicImage } from "../../components/PublicImage";
 import { Tags } from "../../components/Tags";
 import { useLevel } from "../../theme/useLevel";
+import { CompileJSX } from "../../CompileJSX";
 import styles from "./LevelCard.module.css";
 
 type LevelCardProps = Pick<ReturnType<typeof useLevel>, "level">;

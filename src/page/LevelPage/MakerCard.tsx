@@ -1,8 +1,8 @@
-import { CompileJSX } from "../../CompileJSX";
 import { Card } from "../../components/Card";
 import { MakerName } from "../../components/MakerName";
 import { PublicImage } from "../../components/PublicImage";
 import { useLevel } from "../../theme/useLevel";
+import { CompileJSX } from "../../CompileJSX";
 import styles from "./MakerCard.module.css";
 
 type MakerCardProps = Pick<ReturnType<typeof useLevel>, "level">;

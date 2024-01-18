@@ -1,4 +1,4 @@
-import { ReactNode, createElement } from "react";
+import { Fragment, ReactNode, createElement } from "react";
 
 type NestedJsxType =
   | string
@@ -14,11 +14,16 @@ type NestedJsxType =
  * It recursively creates React elements from "precompiled" JSX
  **/
 export const createElementsRecursive = (
-  el: NestedJsxType | NestedJsxType[]
+  el: NestedJsxType | NestedJsxType[],
+  fallbackKey = "0"
 ): ReactNode | ReactNode[] => {
-  if (typeof el === "string") return el;
+  if (typeof el === "string")
+    return createElement(Fragment, { key: fallbackKey }, el);
 
-  if (Array.isArray(el)) return el.map((el) => createElementsRecursive(el));
+  if (Array.isArray(el))
+    return el.map((el, i) =>
+      createElementsRecursive(el, fallbackKey + i.toString())
+    );
 
   const {
     type,
@@ -27,8 +32,8 @@ export const createElementsRecursive = (
   } = el;
   return createElement(
     type,
-    key ? { key, ...restProps } : restProps,
-    createElementsRecursive(children)
+    { key, ...restProps },
+    createElementsRecursive(children, `${key ?? fallbackKey}_`)
   );
 };
 
