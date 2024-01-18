@@ -22,3 +22,7 @@
     max-width: 5.125rem;
     margin-right: 0;
 }
+
+.hidden {
+    display: none;
+}

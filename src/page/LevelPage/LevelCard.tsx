@@ -1,8 +1,8 @@
+import { CompileJSX } from "../../CompileJSX";
 import { Card } from "../../components/Card";
 import { Difficulty } from "../../components/Difficulty";
 import { PublicImage } from "../../components/PublicImage";
 import { Tags } from "../../components/Tags";
-import { Markdown } from "../../Markdown";
 import { useLevel } from "../../theme/useLevel";
 import styles from "./LevelCard.module.css";
 
@@ -19,8 +19,15 @@ export function LevelCard({ level }: Readonly<LevelCardProps>) {
       >
         <h2>{level.levelName.name}</h2>
         <PublicImage
-          alt={level.levelName.name}
-          {...level.images.level}
+          alt={
+            level.makerName.name +
+            "'s level screenshot " +
+            level.images.level.aspectRatio
+          }
+          src={level.images.level.src}
+          srcSet={level.images.level.srcSet}
+          width={level.images.level.width}
+          height={level.images.level.height}
           className={styles.LevelImage}
         />
         <h3 className={styles.LevelCode}>
@@ -29,10 +36,13 @@ export function LevelCard({ level }: Readonly<LevelCardProps>) {
       </div>
       <div className={styles.TagsAndDifficulty}>
         <Tags tags={level.tags} />
-        <Difficulty {...level} />
+        <Difficulty
+          difficulty={level.difficulty}
+          difficultyName={level.difficultyName}
+        />
       </div>
       <div className={styles.Description}>
-        <Markdown>{level.description}</Markdown>
+        <CompileJSX>{level.description}</CompileJSX>
       </div>
     </Card>
   );

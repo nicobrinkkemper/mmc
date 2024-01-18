@@ -5,6 +5,7 @@
     --font-tertiary: "BordersDivideButHeartsShallConquer", sans-serif;
     --h1-font: bolder 1.6rem/2rem var(--font-secondary);
     --h2-font: bolder 1rem/1.2rem var(--font-primary);
+  --gap: .5rem;
 
     --background: #000;
     --text-color: #111;

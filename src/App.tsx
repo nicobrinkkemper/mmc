@@ -1,16 +1,16 @@
-import styles from "./App.module.css";
+import classNames from "classnames";
+import { useEffect, useRef } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { Route, Routes, useLocation } from "react-router-dom";
+import styles from "./App.module.css";
+import { ErrorFallback } from "./ErrorFallback";
+import { useCss } from "./css/useCss";
 import { CreditPage } from "./page/CreditsPage/CreditsPage";
 import { HomePage } from "./page/HomePage/HomePage";
-import { useCss } from "./css/useCss";
 import { LevelBatchPage } from "./page/LevelBatchPage/LevelBatchPage";
-import { NotFoundPage } from "./page/NotFoundPage/NotFoundPage";
 import { BatchesPage } from "./page/LevelBatchesPage/LevelBatchesPage";
 import { LevelPage } from "./page/LevelPage/LevelPage";
-import classNames from "classnames";
-import { ErrorBoundary } from "react-error-boundary";
-import { ErrorFallback } from "./ErrorFallback";
-import { useEffect, useRef } from "react";
+import { NotFoundPage } from "./page/NotFoundPage/NotFoundPage";
 
 export const App = () => {
   const location = useLocation();

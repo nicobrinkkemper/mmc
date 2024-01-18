@@ -1,11 +1,15 @@
-import { App } from "./App";
-import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
-import { ThemeProvider } from "./theme/ThemeProvider";
-import { PUBLIC_URL } from "./constants";
-import { themeKeys } from "./data/themeKeys";
 import { StrictMode } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import {
+  createBrowserRouter,
+  RouteObject,
+  RouterProvider,
+} from "react-router-dom";
+import { App } from "./App";
+import { PUBLIC_URL } from "./constants";
 import ThemeDataProvider from "./data/ThemeDataProvider";
+import { themeKeys } from "./data/themeKeys";
+import { ThemeProvider } from "./theme/ThemeProvider";
 
 const router = createBrowserRouter(
   [
@@ -30,6 +34,7 @@ const router = createBrowserRouter(
     ]),
   ],
   {
+    // this is important for GitHub Pages
     basename: PUBLIC_URL,
   }
 );
@@ -45,4 +50,3 @@ export function AppWrapper() {
     </StrictMode>
   );
 }
-

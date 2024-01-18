@@ -1,5 +1,5 @@
 .Batches {
-    gap: .5rem;
+    gap: var(--gap, .5rem);
     display: grid;
     align-content: baseline;
 }

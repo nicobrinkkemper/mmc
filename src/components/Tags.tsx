@@ -1,20 +1,18 @@
-import { snakeCase } from "lodash";
-import styles from "./Tags.module.css";
 import classNames from "classnames";
+import styles from "./Tags.module.css";
 
-const safeSnakecase = (str: string) => snakeCase(str).replace(/[^a-z0-9-]/g, '');
-
-export function Tags({ tags }: Readonly<{ tags: string[] }>) {
-    return (
-        <div className={styles.Tags}>
-            {tags.map((tag) => {
-                const tagSnake = safeSnakecase(tag) as keyof typeof styles;
-                return (
-                    <span className={classNames(styles.Tag, styles[tagSnake])} key={tagSnake}>
-                        {tag}
-                    </span>
-                )
-            })}
-        </div>
-    );
+export function Tags({
+  tags,
+}: Readonly<{ tags: Record<string, string | undefined> }>) {
+  return (
+    <div className={styles.Tags}>
+      {Object.entries(tags).map(([key, tag]) => {
+        return (
+          <span className={classNames(styles.Tag, styles[key])} key={key}>
+            {tag}
+          </span>
+        );
+      })}
+    </div>
+  );
 }

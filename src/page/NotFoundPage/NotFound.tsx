@@ -1,26 +1,24 @@
-import "./NotFound.css";
 import Button from "../../components/Button";
 import { Card } from "../../components/Card";
-import { useTheme } from "../../theme/useTheme";
 import { ToTheLevels } from "../../components/ToTheLevels";
+import { useTheme } from "../../theme/useTheme";
+import styles from "./NotFound.module.css";
 
 const NotFound = ({ error }: { error?: string }) => {
   const { themeSlug } = useTheme();
   return (
-    <div className="NotFound">
-      <Card>
+    <>
+      <Card className={styles.Card}>
         <p>This page was not found, sorry! Jank can happen sometimes.</p>
         {error ? <p>The error message for the web developer: {error}</p> : null}
-        <p>
-          <ToTheLevels />
-        </p>
-        <p>
-          <Button icon="arrow-right" to={`/${themeSlug}`}>
-            To homepage
-          </Button>
-        </p>
       </Card>
-    </div >
+      <div className={styles.Buttons}>
+        <ToTheLevels />
+        <Button icon="arrow-right" to={`/${themeSlug}`}>
+          To homepage
+        </Button>
+      </div>
+    </>
   );
 };
 

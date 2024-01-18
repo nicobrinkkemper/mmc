@@ -1,7 +1,7 @@
+import classNames from "classnames";
 import { PropsWithChildren } from "react";
 import { Link, LinkProps } from "react-router-dom";
 import styles from "./Button.module.css";
-import classNames from "classnames";
 const icons = {
   "arrow-right": (
     <svg
@@ -84,7 +84,6 @@ const icons = {
   ),
 };
 
-
 export type ButtonProps = PropsWithChildren<{
   primary?: boolean;
   inverted?: boolean;
@@ -92,26 +91,32 @@ export type ButtonProps = PropsWithChildren<{
   id?: string;
   icon: keyof typeof icons;
   iconPosition?: "left" | "right";
-  classList?: string[]
+  className?: string;
+  hidden?: boolean;
 }>;
+
 function LinkOrAnchor(
   props: React.PropsWithoutRef<LinkProps> &
     React.RefAttributes<HTMLAnchorElement>
 ): ReturnType<typeof Link> {
+  const { to, children, ...restProps } = props;
   if (
-    typeof props.to === "string" &&
-    (props.to.startsWith("http://") ||
-      props.to.startsWith("https://") ||
-      props.to.startsWith("//"))
+    typeof to === "string" &&
+    (to.startsWith("http://") ||
+      to.startsWith("https://") ||
+      to.startsWith("//"))
   ) {
-    const { to: href, children, ...restProps } = props;
     return (
-      <a href={href} {...restProps} target="_blank" rel="noopener noreferrer">
+      <a href={to} {...restProps} target="_blank" rel="noopener noreferrer">
         {children}
       </a>
     );
   }
-  return <Link {...props} />;
+  return (
+    <Link {...restProps} to={to}>
+      {children}
+    </Link>
+  );
 }
 const Button = ({
   children,
@@ -119,20 +124,28 @@ const Button = ({
   icon,
   to,
   inverted = false,
+  hidden = false,
   iconPosition = "right",
-  classList = [],
+  className,
   id,
 }: ButtonProps) => {
-  const Icon = <span className={classNames(styles.ButtonIcon, styles[icon])}>{icons[icon]}</span>;
-  const classes = [styles.Button, ...classList];
-  if (primary) classes.push(styles.primary);
-  if (inverted) classes.push(styles.inverted);
-  if (typeof icons[icon] === "string") classes.push(styles.hasIcon);
-  if (iconPosition === "left") classes.push(styles.iconIsLeft);
+  const Icon = (
+    <span className={classNames(styles.ButtonIcon, styles[icon])}>
+      {icons[icon]}
+    </span>
+  );
   const props = {
     ...(typeof id === "string" ? { id } : {}),
     to,
-    className: classNames(classes),
+    className: classNames(
+      className,
+      styles.Button,
+      primary && styles.primary,
+      inverted && styles.inverted,
+      typeof icons[icon] === "string" && styles.hasIcon,
+      iconPosition === "left" && styles.iconIsLeft,
+      hidden && styles.hidden
+    ),
   };
 
   return (

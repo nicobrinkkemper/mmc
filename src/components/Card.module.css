@@ -9,6 +9,9 @@
     height: max-content;
     text-decoration: none;
 }
+.CardOuter h1:empty, .Card h2:empty, .Card p:empty {
+  display: none;
+}
 
 .CardOuter {
     display: grid;
