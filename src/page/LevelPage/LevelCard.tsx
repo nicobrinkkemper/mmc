@@ -1,9 +1,9 @@
+import { CompileJSX } from "../../CompileJSX";
 import { Card } from "../../components/Card";
 import { Difficulty } from "../../components/Difficulty";
 import { PublicImage } from "../../components/PublicImage";
 import { Tags } from "../../components/Tags";
 import { useLevel } from "../../theme/useLevel";
-import { CompileJSX } from "../../CompileJSX";
 import styles from "./LevelCard.module.css";
 
 type LevelCardProps = Pick<ReturnType<typeof useLevel>, "level">;
@@ -19,11 +19,7 @@ export function LevelCard({ level }: Readonly<LevelCardProps>) {
       >
         <h2>{level.levelName.name}</h2>
         <PublicImage
-          alt={
-            level.makerName.name +
-            "'s level screenshot " +
-            level.images.level.aspectRatio
-          }
+          alt={`Screenshot: ${level.makerName.name}`}
           src={level.images.level.src}
           srcSet={level.images.level.srcSet}
           width={level.images.level.width}
@@ -31,7 +27,7 @@ export function LevelCard({ level }: Readonly<LevelCardProps>) {
           className={styles.LevelImage}
         />
         <h3 className={styles.LevelCode}>
-          {level.levelCode || "Code coming soon"}
+          {level.levelCode ?? "Code coming soon"}
         </h3>
       </div>
       <div className={styles.TagsAndDifficulty}>
