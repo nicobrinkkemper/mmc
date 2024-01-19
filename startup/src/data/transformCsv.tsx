@@ -26,10 +26,13 @@ export function transformCsv(val: string, header: CsvHeaders) {
     return tags;
   }
   if (header === "releaseDate")
-    return { date: val, formatted: formatDate(new Date(val)) };
+    return { date: val.trim(), formatted: formatDate(new Date(val)) };
   if (header === "levelName" || header === "makerName")
-    return { name: val, slug: safeSnakecase(val) };
-  if (header === "makerDescription" || header === "description")
-    return compiler(val); // precompiled markdown JSX https://github.com/quantizor/markdown-to-jsx
+    return { name: val.trim(), slug: safeSnakecase(val.trim()) };
+  if (header === "makerDescription" || header === "description") {
+    // precompiled markdown JSX https://github.com/quantizor/markdown-to-jsx
+    // trim is important because spaces at the end cause hydration mismatches
+    return compiler(val.trim());
+  }
   return val;
 }
