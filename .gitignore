@@ -34,3 +34,4 @@ src/assets/**/*
 scripts/data/*
 
 startup/dist/**/*
+server/dist/**/*

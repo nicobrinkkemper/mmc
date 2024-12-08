@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["node", "webpack-env", "@types/react/canary"],
+    "types": [
+      "node",
+      "webpack-env",
+      "@types/canary"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -18,5 +22,12 @@
     "jsx": "react-jsx",
     "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
-  "include": ["src", "startup/src", "src/**/*.css"]
+  "include": [
+    "src",
+    "startup/src",
+    "src/**/*.css"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

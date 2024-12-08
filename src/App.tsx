@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useEffect, useRef } from "react";
+import { CSSProperties, useEffect, useRef } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Route, Routes, useLocation } from "react-router-dom";
 import styles from "./App.module.css";
@@ -12,19 +12,25 @@ import { BatchesPage } from "./page/LevelBatchesPage/LevelBatchesPage";
 import { LevelPage } from "./page/LevelPage/LevelPage";
 import { NotFoundPage } from "./page/NotFoundPage/NotFoundPage";
 
+const isServer = typeof window === 'undefined';
+
 export const App = () => {
   const location = useLocation();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    ref.current?.scrollTo(0, 0);
+    // Skip scroll behavior during SSR
+    if (!isServer) {
+      ref.current?.scrollTo(0, 0);
+    }
   }, [location.pathname]);
 
   const Theme = useCss("Theme");
   const showAbout = location.hash === "#!/about";
-  const style = showAbout
-    ? ({ overflowY: "hidden" } as const)
-    : ({ overflowY: "scroll" } as const);
+  const style: CSSProperties = !isServer ? (
+    showAbout ? { overflowY: "hidden" } : { overflowY: "scroll" }
+  ) : {};
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div className={classNames(styles.App, Theme)} ref={ref} style={style}>
