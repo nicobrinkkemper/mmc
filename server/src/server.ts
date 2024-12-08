@@ -76,10 +76,13 @@ async function main() {
       const paths = await getAllPaths();
       console.log(`🗺️  Found ${paths.length} paths to crawl`);
 
-      await Promise.all(paths.map(path =>
-        crawl(path, outputDir, port, snapshotDelay)
-          .catch(err => console.error(`Failed to crawl ${path}:`, err))
-      ));
+      for (const path of paths) {
+        try {
+          await crawl(path, outputDir, port, snapshotDelay);
+        } catch (err) {
+          console.error(`Failed to crawl ${path}:`, err);
+        }
+      }
 
       console.log(`✨ Crawled ${paths.length} pages`);
     } finally {
