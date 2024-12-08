@@ -112,3 +112,12 @@ This is the entry point for all themes. There's a few requirements:
 - Weektrailer for each batch in the spreadsheet
 - Resized maker image, screenshot and thumbnail image in `/public`
 
+
+# Adding new theme
+
+Add to 
+
+- src/copy/index.ts
+- src/css/index.ts
+- startup/src/themeConfig.mts
+- resizeImages/public/

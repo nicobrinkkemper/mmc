@@ -47,4 +47,15 @@ export const themeConfig = {
     gid: 1776023134,
     weektrailers: ["X7502D3SSy4"],
   },
+  _9mmc: {
+    gid: 614218153, // 614218153 (empty)
+    weektrailers: [
+      "PbKK8_liEqA",
+      "s5QguY9AAig",
+      "ZE8hAA6mi2Y",
+      "Ju_XQ1RKnU8",
+      "dn3EvFPRsls",
+      "DXE5-MfeGAs",
+    ],
+  },
 } satisfies themeConfigDefinition;
