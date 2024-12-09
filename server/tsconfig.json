@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "dist"
+  },
+  "files": [
+    "src/server.ts",
+    "src/crawler.ts",
+    "src/snapshot.ts",
+    "src/themes.json",
+    "src/themesKeys.json"
+  ],
 }

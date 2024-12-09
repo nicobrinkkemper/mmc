@@ -47,4 +47,10 @@ export const themeConfig = {
     gid: 1776023134,
     weektrailers: ["X7502D3SSy4"],
   },
+  _9mmc: {
+    gid: 614218153, // 9mmc tab in spreadsheet 
+    weektrailers: [
+      "",  // if no trailer, leave empty 
+    ],
+  },
 } satisfies themeConfigDefinition;

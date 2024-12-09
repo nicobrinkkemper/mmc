@@ -112,3 +112,21 @@ This is the entry point for all themes. There's a few requirements:
 - Weektrailer for each batch in the spreadsheet
 - Resized maker image, screenshot and thumbnail image in `/public`
 
+
+# Adding new theme
+
+Add to 
+
+- src/copy/index.ts
+- src/css/index.ts
+- startup/src/themeConfig.mts
+- resizeImages/public/
+
+If everything went well, you can now run `npm run startup` to generate the images, themes.json and themeKeys.json.
+
+If that went well, try `npm run build`, this will do the following:
+- generate the `themes.json` and `themeKeys.json` in `server/src/` and `src/data/`
+- generate the simple react client in `build/`
+- generate a optimized version of the website by running the server's crawl command: `npm run crawl`
+- Now you can look at the build folder to see the final product
+- If you want to test out the final product, run `npm run serve` and click through the website in the browser, this is what the users will see once uploaded to mmcelebration.com, you can view the page source and see that the html is generated for each page.

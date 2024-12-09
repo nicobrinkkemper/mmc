@@ -23,7 +23,7 @@ const YouTubeIframe = ({ videoId }: Props): JSX.Element => {
         `https://www.youtube.com/embed/${videoId}?modestbranding=1&enablejsapi=1&controls=1&rel=0&loop=1&listType=playlist`
       );
   }, [videoId]);
-
+  if (!videoId) return <></>;
   return (
     <div className={styles.Youtube}>
       <iframe

@@ -1,28 +1,19 @@
-import ReactDOM, { hydrateRoot } from "react-dom/client";
+import { createRoot } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
 import { AppWrapper } from "./AppWrapper";
 import "./index.css";
 
-// JSDOM Polyfill
-const w = window as any;
-if (w.reactSnapshotRender) {
-  if (typeof window !== 'undefined') {
-    if (!window.requestAnimationFrame) window.requestAnimationFrame = cb => setTimeout(cb, 0);
-    if (!window.scrollTo) window.scrollTo = function () { };
-  }
-  if (typeof HTMLElement !== 'undefined') {
-    if (!HTMLElement.prototype.scrollTo) HTMLElement.prototype.scrollTo = function () { };
-  }
-  console.log(`ℹ️ User Agent: ${navigator.userAgent}`)
+const domNode = document.getElementById("root");
+
+if (!domNode) {
+  throw new Error("Failed to find root element");
 }
 
-const domNode = document.getElementById("root") as HTMLElement;
-
-if (domNode.hasChildNodes() && !w.reactSnapshotRender) {
-  hydrateRoot(domNode, <AppWrapper />);
+if (typeof window !== 'undefined' && (window as any).reactSnapshotRender) {
+  const html = renderToString(<AppWrapper />);
+  domNode.innerHTML = html;
+  (window as any).reactSnapshotRender();
 } else {
-  const root = ReactDOM.createRoot(domNode);
+  const root = createRoot(domNode);
   root.render(<AppWrapper />);
-  if (w.reactSnapshotRender) {
-    w.reactSnapshotRender(root, domNode);
-  }
 }

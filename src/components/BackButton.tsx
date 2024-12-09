@@ -32,7 +32,7 @@ function BackToWeeks() {
       inverted={true}
       className={styles.BackButton}
     >
-      Back to Weeks
+      Back to Overview
     </Button>
   );
 }
