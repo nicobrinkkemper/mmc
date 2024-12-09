@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { JSDOM } from 'jsdom';
 import { join } from 'path';
+import { ensureDoctype } from './utils.js';
 
 const PUBLIC_URL = process.env.PUBLIC_URL || '';
 
@@ -33,7 +34,7 @@ class MessageChannelPolyfill {
 }
 
 export default (protocol: string, host: string, path: string, delay: number = 0, port: number) =>
-    new Promise((resolve, reject) => {
+    new Promise<string>((resolve, reject) => {
         const refs = {
             dom: null as any,
             document: null as any
@@ -54,9 +55,9 @@ export default (protocol: string, host: string, path: string, delay: number = 0,
                     window.reactSnapshotRender = () => {
                         try {
                             refs.document = refs.dom.window.document;
-                            const documentToReturn = refs.document;
+                            const html = ensureDoctype(refs.dom.serialize());
                             refs.dom.window.close();
-                            resolve(documentToReturn);
+                            resolve(html);
                         } catch (err) {
                             reject(err);
                         }

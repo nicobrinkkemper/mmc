@@ -2,7 +2,6 @@ import { mkdir, writeFile } from 'fs/promises';
 import { dirname, join } from 'path';
 import { parentPort, workerData } from 'worker_threads';
 import snapshot from './snapshot.js';
-import { assertIsDocument } from './utils.js';
 
 const { paths, port, outputDir, workerId } = workerData;
 
@@ -16,9 +15,7 @@ async function processPath(path: string, index: number) {
             status: 'active'
         });
 
-        const document = await snapshot('http', 'localhost', path, 0, port);
-        assertIsDocument(document);
-        const html = document.documentElement.outerHTML;
+        const html = await snapshot('http', 'localhost', path, 0, port);
         const outputPath = join(outputDir, path.replace(/^\//, ''), 'index.html');
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, html);
