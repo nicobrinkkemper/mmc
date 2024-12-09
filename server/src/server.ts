@@ -1,14 +1,17 @@
+import historyApiFallback from 'connect-history-api-fallback';
+import express from 'express';
 import { mkdirSync } from 'fs';
 import type { Server } from 'http';
 import yargs from 'yargs';
-import { crawl, getAllPaths } from "./crawler";
-import express = require('express');
-import historyApiFallback = require('connect-history-api-fallback');
+import { getAllPaths, processInBatches } from "./crawler.js";
 
-const args = yargs(process.argv.slice(2))
-  .command('crawl', 'Crawl the site and exit')
-  .option('domain', {
-    default: 'localhost'
+const args = await yargs(process.argv.slice(2))
+  .command('crawl [args..]', 'Crawl the site and exit', (yargs) => {
+    return yargs.positional('args', {
+      describe: 'Arguments to pass to crawler',
+      type: 'string',
+      array: true
+    });
   })
   .option('build-dir', {
     default: 'build'
@@ -17,46 +20,29 @@ const args = yargs(process.argv.slice(2))
     default: 'build'
   })
   .option('port', {
-    default: 0
+    type: 'number'
   })
-  .option('base-path', {
-    default: '/'
-  })
-  .option('include', {
-    type: 'array',
-    default: []
-  })
-  .option('exclude', {
-    type: 'array',
-    default: []
-  })
-  .option('snapshot-delay', {
-    type: 'number',
-    default: 50
-  })
-  .parseSync();
+  .parse();
 
 const {
-  domain,
-  buildDir,
-  outputDir,
+  'build-dir': buildDir,
+  'output-dir': outputDir,
   port: defaultPort,
-  basePath,
-  include,
-  exclude,
-  snapshotDelay,
-  _: commands
+  basePath = '',
+  _: commands,
+  args: crawlArgs = []
 } = args;
 
 async function main() {
-  console.log(`Starting server with domain ${domain} and buildDir ${buildDir}`);
+  const startTime = Date.now();
+  console.log(`Starting server with buildDir ${buildDir} and basePath ${basePath || '/'}`);
 
   mkdirSync(outputDir, { recursive: true });
 
   const app = express();
-  app.use(express.static(buildDir));
+  app.use((basePath || '/') as string, express.static(buildDir));
   app.use(historyApiFallback());
-  app.use(express.static(buildDir));
+  app.use((basePath || '/') as string, express.static(buildDir));
 
   const server = await new Promise<Server>((resolve) => {
     const s = app.listen(defaultPort, () => resolve(s));
@@ -72,22 +58,31 @@ async function main() {
   console.log(`Server started on port ${port}`);
 
   if (commands.includes('crawl')) {
+    let crawlError: Error | null = null;
     try {
       const paths = await getAllPaths();
       console.log(`🗺️  Found ${paths.length} paths to crawl`);
 
-      for (const path of paths) {
-        try {
-          await crawl(path, outputDir, port, snapshotDelay);
-        } catch (err) {
-          console.error(`Failed to crawl ${path}:`, err);
-        }
-      }
+      await processInBatches(paths, port, outputDir);
 
-      console.log(`✨ Crawled ${paths.length} pages`);
+      const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
+      console.log(`✨ Crawled ${paths.length} pages in ${totalTime}s (avg ${(Number(totalTime) / paths.length * 1000).toFixed(1)}ms per page)`);
+    } catch (err) {
+      crawlError = err as Error;
+      console.error('Crawl failed:', err);
     } finally {
-      await new Promise<void>((resolve) => server.close(() => resolve()));
-      console.log('🏁 Server closed');
+      // Ensure server closes properly
+      await new Promise<void>((resolve) => {
+        server.close(() => {
+          console.log('🏁 Server closed');
+          resolve();
+        });
+      });
+
+      // Exit with error if crawl failed
+      if (crawlError) {
+        process.exit(1);
+      }
       process.exit(0);
     }
     return;

@@ -1,10 +1,16 @@
-import { mkdirSync, writeFileSync } from 'fs';
-import { join } from 'path';
-import snapshot from './snapshot';
-import * as themes from './themes.json';
-import * as themeKeys from './themesKeys.json';
+import { mkdir, writeFile } from 'fs/promises';
+import os from 'os';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import { Worker } from 'worker_threads';
+import snapshot from './snapshot.js';
+import themes from './themes.json' assert { type: 'json' };
+import themeKeys from './themesKeys.json' assert { type: 'json' };
+import { assertIsDocument, formatProgress } from './utils.js';
 
-const visited = new Set<string>();
+// Fix for ESM __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 async function getAllPaths(): Promise<string[]> {
     const paths: string[] = ['/'];
@@ -30,38 +36,74 @@ async function getAllPaths(): Promise<string[]> {
 /**
  * Processes an array of items with a concurrency limit
  */
-async function processInBatches<T>(items: T[], processor: (item: T) => Promise<void>, concurrency = 5) {
-    const chunks: T[][] = [];
-    for (let i = 0; i < items.length; i += concurrency) {
-        chunks.push(items.slice(i, i + concurrency));
-    }
+async function processInBatches(
+    items: string[],
+    port: number,
+    outputDir: string
+) {
+    const uniquePaths = Array.from(new Set(items));
+    const workersCount = Math.max(1, os.cpus().length - 1);
 
-    for (const chunk of chunks) {
-        await Promise.all(chunk.map(processor));
-    }
+    console.log(`\nProcessing ${uniquePaths.length} pages...`);
+    const workerProgress = Array(workersCount).fill(null).map(() => ({
+        current: 0,
+        total: 0,
+        currentPath: '',
+        status: 'active',
+        errors: 0
+    }));
+
+    const itemsPerWorker = Math.ceil(uniquePaths.length / workersCount);
+    const workers = Array(workersCount).fill(null).map((_, index) => {
+        const start = index * itemsPerWorker;
+        const end = Math.min(start + itemsPerWorker, uniquePaths.length);
+        const workerPaths = uniquePaths.slice(start, end);
+        workerProgress[index].total = workerPaths.length;
+
+        return new Promise((resolve, reject) => {
+            const worker = new Worker(join(__dirname, 'worker.js'), {
+                workerData: { paths: workerPaths, port, outputDir }
+            });
+
+            worker.on('message', (msg) => {
+                workerProgress[index].current = msg.index;
+                workerProgress[index].currentPath = msg.path;
+                workerProgress[index].status = msg.status;
+                if (msg.error) workerProgress[index].errors++;
+
+                process.stdout.write(`\x1B[${workersCount + 1}A`);
+                console.log('Processing pages...');
+                workerProgress.forEach(p => {
+                    if (p.total > 0) {
+                        const progress = formatProgress(p.current, p.total, p.errors, p.status);
+                        process.stdout.write('\x1B[2K');
+                        console.log(`${progress} ${p.currentPath}`);
+                    }
+                });
+            });
+
+            worker.on('error', reject);
+            worker.on('exit', (code) => code === 0 ? resolve(null) : reject(new Error(`Worker exited with code ${code}`)));
+        });
+    });
+
+    await Promise.all(workers);
+    process.stdout.write('\n');
 }
 
-async function crawl(url: string, buildDir: string, port: number, delay: number = 1000): Promise<void> {
-    if (visited.has(url)) {
-        console.log('👍 Already scraped:', url);
-        return;
-    }
-
+async function crawl(path: string, outputDir: string, port: number, delay: number, retries = 3) {
     try {
-        console.log('🕷️  Crawling:', url);
-        const window = await snapshot('http:', 'localhost', url, delay, port) as Window;
-
-        const fileName = url === '/' ? 'index.html' : `${url}/index.html`;
-        const filePath = join(buildDir, fileName);
-
-        mkdirSync(join(buildDir, url), { recursive: true });
-        writeFileSync(filePath, window.document.documentElement.outerHTML);
-        console.log('✅ Saved:', fileName);
-
-        visited.add(url);
-    } catch (error) {
-        console.error('❌ Error crawling', url, error);
+        const document = await snapshot('http', 'localhost', path, delay, port);
+        assertIsDocument(document);
+        const html = document.documentElement.outerHTML;
+        const outputPath = join(outputDir, path.replace(/^\//, ''), 'index.html');
+        await mkdir(dirname(outputPath), { recursive: true });
+        await writeFile(outputPath, html);
+    } catch (err) {
+        console.error(`❌ Error crawling ${path}:`, err);
     }
 }
+
+
 
 export { crawl, getAllPaths, processInBatches };

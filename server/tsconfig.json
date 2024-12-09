@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "outDir": "dist"
   },
@@ -8,6 +10,8 @@
     "src/server.ts",
     "src/crawler.ts",
     "src/snapshot.ts",
+    "src/worker.ts",
+    "src/utils.ts",
     "src/themes.json",
     "src/themesKeys.json"
   ],
