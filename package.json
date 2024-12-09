@@ -26,7 +26,7 @@
     "react:build": "react-scripts build",
     "react:start": "react-scripts start",
     "startup-gh": "export PUBLIC_URL='/mmc' && run-s startup:*",
-    "startup": "run-s startup:*",
+    "startup": "export PUBLIC_URL='/' && run-s startup:*",
     "startup:compile": "tsc --project tsconfig.node.json",
     "startup:run": "export NODE_OPTIONS=--enable-source-maps; node ./startup/dist/startup.mjs",
     "resize-original-images": "node ./startup/dist/resizeOriginalImages.mjs"
