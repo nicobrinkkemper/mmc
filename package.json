@@ -8,7 +8,6 @@
     "start": "run-s react:start",
     "lint": "eslint ./src --fix",
     "serve": "serve -l 3000 build/",
-    "serve-gh": "serve -l 3000 build/ --config serve.gh.json",
     "build": "export BASE_URL='https://mmcelebration.com' && react-scripts build",
     "server:build": "cd server && rm -rf dist && tsc --build --force",
     "server:run": "node server/dist/server.js",
