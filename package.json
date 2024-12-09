@@ -17,7 +17,7 @@
     "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && react-scripts build",
     "postbuild": "export BASE_URL='https://mmcelebration.com'",
     "prebuild-gh": "npm run startup-gh",
-    "postbuild-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && react-snap",
+    "postbuild-gh": "run-s server:build server:crawl",
     "postinstall": "cd server && npm install",
     "predeploy": "npm run build-gh",
     "deploy": "gh-pages -d build",

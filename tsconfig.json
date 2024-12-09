@@ -5,7 +5,6 @@
     "types": [
       "node",
       "webpack-env",
-      "@types/canary"
     ],
     "allowJs": true,
     "skipLibCheck": true,
