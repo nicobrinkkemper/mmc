@@ -15,16 +15,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Handle SPA routing first
-app.use(historyApiFallback({
-    index: '/index.html',
-    rewrites: [{
-        from: new RegExp(`^${basePath}/?.*`),
-        to: '/index.html'
-    }]
-}));
-
-// Then serve static files with explicit MIME types
+// Serve static files first
 app.use('/static', express.static(path.join(buildDir, 'static'), {
     setHeaders: (res, filePath) => {
         if (filePath.endsWith('.js')) {
@@ -36,6 +27,12 @@ app.use('/static', express.static(path.join(buildDir, 'static'), {
         }
     }
 }));
+
+// Handle SPA routing
+app.use(historyApiFallback());
+
+// Serve index.html and other root files
+app.use(express.static(buildDir));
 
 const startServer = (port: number) => {
     return new Promise((resolve, reject) => {
@@ -54,10 +51,9 @@ const startServer = (port: number) => {
 };
 
 const tryAlternatePorts = async () => {
-    let inUse = [initialPort];
+    let inUse = [];
     for (let port = initialPort; port < 3002; port++) {
         try {
-            console.log(`Ports in use: ${inUse.join(', ')} so we are trying ${port}`);
             await startServer(port);
             return;
         } catch (err) {
@@ -66,6 +62,7 @@ const tryAlternatePorts = async () => {
             }
         }
     }
+    console.error('No available ports found, tried:', inUse.join(', '));
 };
 
 tryAlternatePorts();

@@ -53,6 +53,9 @@ async function processInBatches(
         errors: 0
     }));
 
+    // Clear the initial progress display
+    console.log('\n'.repeat(workersCount));
+
     const itemsPerWorker = Math.ceil(uniquePaths.length / workersCount);
     const workers = Array(workersCount).fill(null).map((_, index) => {
         const start = index * itemsPerWorker;
@@ -62,7 +65,7 @@ async function processInBatches(
 
         return new Promise((resolve, reject) => {
             const worker = new Worker(join(__dirname, 'worker.js'), {
-                workerData: { paths: workerPaths, port, outputDir }
+                workerData: { paths: workerPaths, port, outputDir, workerId: index }
             });
 
             worker.on('message', (msg) => {
@@ -95,7 +98,8 @@ async function crawl(path: string, outputDir: string, port: number, delay: numbe
     try {
         const document = await snapshot('http', 'localhost', path, delay, port);
         assertIsDocument(document);
-        const html = document.documentElement.outerHTML;
+        const doctype = '<!DOCTYPE html>';
+        const html = doctype + document.documentElement.outerHTML;
         const outputPath = join(outputDir, path.replace(/^\//, ''), 'index.html');
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, html);
