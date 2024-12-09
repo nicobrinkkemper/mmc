@@ -21,3 +21,11 @@ export function formatProgress(current: number, total: number, errors: number = 
     const errorText = errors > 0 ? ` (${errors} failed)` : '';
     return `${statusSymbol} [${bar}] ${current}/${total}${errorText}`;
 }
+
+/** Ensure HTML document has DOCTYPE declaration */
+export function ensureDoctype(html: string): string {
+    if (!html.trim().startsWith('<!DOCTYPE')) {
+        return '<!DOCTYPE html>\n' + html;
+    }
+    return html;
+}
