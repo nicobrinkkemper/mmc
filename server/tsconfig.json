@@ -10,6 +10,7 @@
     "src/server.ts",
     "src/crawler.ts",
     "src/snapshot.ts",
+    "src/dev-server.ts",
     "src/worker.ts",
     "src/utils.ts",
     "src/themes.json",

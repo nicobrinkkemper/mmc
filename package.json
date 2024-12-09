@@ -7,7 +7,8 @@
   "scripts": {
     "start": "run-s react:start",
     "lint": "eslint ./src --fix",
-    "serve": "serve -l 3000 build/",
+    "serve": "node server/dist/dev-server.js",
+    "serve-gh": "PUBLIC_URL=/mmc node server/dist/dev-server.js",
     "build": "export BASE_URL='https://mmcelebration.com' && react-scripts build",
     "server:build": "cd server && rm -rf dist && tsc --build --force",
     "server:run": "node server/dist/server.js",
@@ -96,7 +97,6 @@
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.20.1",
     "react-scripts": "^5.0.1",
-    "serve": "^14.2.1",
     "sharp": "^0.33.0",
     "type-guard-helpers": "^1.1.21",
     "typescript": "^5.3.3",
