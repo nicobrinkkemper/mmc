@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import { rename } from 'fs/promises';
 import path from 'path';
 import { createFolder } from './file/createFolder.mjs';
 import { readDirectory } from './file/readDirectory.mjs';
@@ -7,7 +7,12 @@ import { resizeConfig } from './resizeConfig.mjs';
 
 const MAX_WIDTH = 2048;
 const QUALITY = 90;
-
+/**
+ * Resize image to a maximum width of 2048px, while maintaining the original format.
+ * This will ensure that our repo size will not grow too much.
+ * We do not need to run this often, you can run `npm run resize-original-images` to resize all images, and automatically commit the changes later.
+ * The idea is that we will only touch the files that are arguably too big but keep the original format as much as possible.
+ */
 async function processImage(filePath: string) {
     try {
         const instance = await createSharpInstance(filePath);
@@ -31,12 +36,14 @@ async function processImage(filePath: string) {
                     withoutEnlargement: true,
                     fit: 'inside'
                 })
-                // Maintain original format but with high quality
+                // Keep format-specific settings
                 .jpeg({ quality: QUALITY, progressive: true })
+                .png({ quality: QUALITY, progressive: true })
+                .webp({ quality: QUALITY, alphaQuality: QUALITY })
                 .toFile(outputPath + '.tmp');
 
             // Replace original with resized version
-            await fs.rename(outputPath + '.tmp', outputPath);
+            await rename(outputPath + '.tmp', outputPath);
 
             console.log(`Resized: ${path.basename(filePath)} (${metadata.width}px -> ${MAX_WIDTH}px)`);
         } else {
