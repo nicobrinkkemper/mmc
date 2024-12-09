@@ -71,7 +71,7 @@ export default (protocol: string, host: string, path: string, delay: number = 0,
             refs.dom.window.document.head.appendChild(style);
 
             const script = refs.dom.window.document.createElement('script');
-            script.textContent = readFileSync(join(process.cwd(), 'build', scriptPath.replace(/^\//, '')), 'utf8');
+            script.src = `${PUBLIC_URL}${scriptPath}`;
             refs.dom.window.document.head.appendChild(script);
 
             setTimeout(() => {

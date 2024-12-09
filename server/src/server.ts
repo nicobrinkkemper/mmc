@@ -24,25 +24,28 @@ const args = await yargs(process.argv.slice(2))
   })
   .parse();
 
+const getBasePath = () => process.env.PUBLIC_URL || '';
+const basePath = getBasePath();
+
 const {
   'build-dir': buildDir,
   'output-dir': outputDir,
   port: defaultPort,
-  basePath = '',
   _: commands,
   args: crawlArgs = []
 } = args;
 
 async function main() {
   const startTime = Date.now();
-  console.log(`Starting server with buildDir ${buildDir} and basePath ${basePath || '/'}`);
 
   mkdirSync(outputDir, { recursive: true });
 
   const app = express();
-  app.use((basePath || '/') as string, express.static(buildDir));
+
+  console.log(`Starting server with buildDir ${buildDir} and basePath ${basePath || '/'}`);
+  app.use(basePath, express.static(buildDir));
   app.use(historyApiFallback());
-  app.use((basePath || '/') as string, express.static(buildDir));
+  app.use(basePath, express.static(buildDir));
 
   const server = await new Promise<Server>((resolve) => {
     const s = app.listen(defaultPort, () => resolve(s));
