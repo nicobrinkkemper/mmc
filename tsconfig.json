@@ -4,7 +4,8 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "types": [
       "node",
-      "webpack-env",
+      "vite/client",
+      "@types/react/canary"
     ],
     "allowJs": true,
     "skipLibCheck": true,

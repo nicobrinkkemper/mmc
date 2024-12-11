@@ -1,7 +1,7 @@
 import path from "path";
+import { fileStat, folderStat } from "../file/stat.mjs";
 import { resizeTemplateParsers } from "./resizeTemplateParsers.mjs";
 import { ResizeJob, ResizeJobInput } from "./types.mjs";
-import { fileStat, folderStat } from "../file/stat.mjs";
 
 const jobParsers = Object.entries(resizeTemplateParsers);
 
@@ -60,8 +60,14 @@ export async function createResizeJobOutput(
   const folder = path.parse(file).dir;
   const folderExists = await folderStat(folder);
   const exists = await fileStat(file);
-  const shouldOutput = (!exists || job.userInfo.strict) ?? false;
 
+  const shouldOutput =
+    (file.includes("9mmc") || !exists || job.userInfo.strict) ?? false;
+  if (file.includes("9mmc")) {
+    console.log("file", file);
+    console.log("exists", exists);
+    console.log("shouldOutput", shouldOutput);
+  }
   return {
     fileName: outputFileName,
     folder,

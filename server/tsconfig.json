@@ -1,19 +1,37 @@
 {
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "jsxFactory": "React.createElement",
+    "jsxFragmentFactory": "React.Fragment",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "module": "nodenext",
+    "moduleDetection": "force",
     "moduleResolution": "nodenext",
-    "allowSyntheticDefaultImports": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "resolveJsonModule": true,
-    "outDir": "dist"
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext",
+    "types": [
+      "node",
+      "@types/react/canary"
+    ],
+    "verbatimModuleSyntax": true,
   },
-  "files": [
-    "src/server.ts",
-    "src/crawler.ts",
-    "src/snapshot.ts",
-    "src/dev-server.ts",
-    "src/worker.ts",
-    "src/utils.ts",
-    "src/themes.json",
-    "src/themesKeys.json"
+  "include": [
+    "src/**/*",
   ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

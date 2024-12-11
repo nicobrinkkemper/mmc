@@ -2,15 +2,15 @@ import classNames from "classnames";
 import { CSSProperties, useEffect, useRef } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { ErrorFallback } from "./ErrorFallback.js";
 import styles from "./App.module.css";
-import { ErrorFallback } from "./ErrorFallback";
-import { useCss } from "./css/useCss";
-import { CreditPage } from "./page/CreditsPage/CreditsPage";
-import { HomePage } from "./page/HomePage/HomePage";
-import { LevelBatchPage } from "./page/LevelBatchPage/LevelBatchPage";
-import { BatchesPage } from "./page/LevelBatchesPage/LevelBatchesPage";
-import { LevelPage } from "./page/LevelPage/LevelPage";
-import { NotFoundPage } from "./page/NotFoundPage/NotFoundPage";
+import { useCss } from "./css/useCss.js";
+import { CreditPage } from "./page/CreditsPage/CreditsPage.js";
+import { HomePage } from "./page/HomePage/HomePage.js";
+import { LevelBatchPage } from "./page/LevelBatchPage/LevelBatchPage.js";
+import { BatchesPage } from "./page/LevelBatchesPage/LevelBatchesPage.js";
+import { LevelPage } from "./page/LevelPage/LevelPage.js";
+import { NotFoundPage } from "./page/NotFoundPage/NotFoundPage.js";
 
 const isServer = typeof window === 'undefined';
 

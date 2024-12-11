@@ -1,10 +1,10 @@
 import path from "node:path";
-import type { ResizeJob } from "./types.mjs";
 import { FileReference } from "../file/types.mjs";
-import { createResizeJobOutput } from "./createResizeJobOutput.mjs";
-import { resizeJobs } from "../resizeJobs.mjs";
 import { resizeConfig } from "../resizeConfig.mjs";
+import { resizeJobs } from "../resizeJobs.mjs";
+import { createResizeJobOutput } from "./createResizeJobOutput.mjs";
 import { sizeOf } from "./sizeOf.mjs";
+import type { ResizeJob } from "./types.mjs";
 
 // ISize,ISizeCalculationResult are copied over from imageSize to avoid importing it
 
@@ -39,6 +39,7 @@ export function createResizeJobs(
   };
 
   const userInfos = resizeJobs(original);
+
   if (!Array.isArray(userInfos)) {
     throw new Error(`resizeJobs must return an array of jobs`);
   }
