@@ -33,7 +33,7 @@ That's why, just making the contraption is not enough and we can do better helpi
 
 ## Disclaimer
 
-This is a personal project. Even though I'm trying to say it's a "complete" system, it's not. It's a work in progress.
+This is a personal project. Even though I'm trying to say it's a "good" system, it's not. It's a work in progress.
 A system like this is perfect if you want to learn about React, TypeScript, ESModules and or you want to host your own event website using the template.
 
 # Architecture Goal
@@ -75,12 +75,13 @@ By using a component language like React, developers can create components that 
 )
  ```
 
-Typescript transpiles using the tsconfig.node.json project.
-The output in the /dist/ folder will be called by nodejs to run the server and startup scripts, and those scripts can savely reference files from the source folder which is intended for cross-environment code.
+Typescript transpiles using the tsconfig.node.json project. By using the transpiled code directly with node, we avoid any build step complexity and chicken and egg problems. We can look at the code and debug it, and by using source maps and declaration maps we can link them back to our source files.
 
-Vite compiles the app and development server. The `npm run start` command will run default vite development server to work on the website. This will just straight up show you the typescript code in the browser, directly from the source files. If you run `npm run build`, it will make a very basic build of the react app similar to the old `create-react-app` setup, using a single index.html with a empty `<div id="root"></div>`.
+The output in the /dist/ folder will be called by nodejs to run the server and startup scripts, and those scripts may reference files from the source folder which is intended for cross-environment code.
 
-Then we can run `npm run server:start`, once it starts it will generate all the individual html files and prerender the html in a way that's hydratable on the client. Once it's done, the static folder is the portable end-product. You can close the server, but you can also keep it running and visit it using htpp://localhost:3001. This is where it gets interesting, because the server will serve our experimental ssr/rsc client in the `ssr.tsx` file.
+Vite compiles the app and development server. The `npm run start` command will run default vite development server to work on the website. This will just straight up show you the typescript code in the browser, directly from the source files. If you run `npm run build`, it will make a very basic build of the react app similar to the old `create-react-app` setup, using a single index.html with a empty `<div id="root"></div>`. The entry for this is the `index.html` in the root folder, which imports `/src/index.tsx`
+
+Then we can run `npm run server:start`, once it starts it will generate all the individual html files and prerender the html in a way that's hydratable on the client. Once it's done, the static folder is the portable end-product. You can close the server, but you can also keep it running and visit it using htpp://localhost:3001. This is where it gets interesting, because the server will serve our experimental ssr/rsc entry in `src/ssr.tsx`.
 
 
 
