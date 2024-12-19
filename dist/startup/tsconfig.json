@@ -1,9 +1,0 @@
-{
-    // this file is here to let vscode know that this folder is intended to be run using our node config
-    "extends": "../tsconfig.node.json",
-    "references": [
-        {
-            "path": "../tsconfig.node.json"
-        }
-    ]
-}

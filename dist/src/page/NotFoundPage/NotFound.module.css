@@ -1,9 +1,0 @@
-.Card {
-  background-color: var(--button-background);
-}
-
-.Buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--gap, .5rem);
-}

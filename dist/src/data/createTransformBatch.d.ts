@@ -1,2 +1,0 @@
-export declare const createTransformBatch: (pathInfo: ThemePathInfo, weektrailers: string[]) => (batch: Batch, index: number) => Omit<ThemeBatch, "nextAndPrev">;
-//# sourceMappingURL=createTransformBatch.d.ts.map
