@@ -1,17 +1,18 @@
 declare global {
   type logoImageTypes = "logo" | "logo_simple" | "logo_special" | "logo_small";
 
-  type ImageJsonStructure = Record<
-    string,
-    {
-      width: number;
-      height: number;
-      aspectRatio: string;
-      srcSet: string;
-      placeholder: string;
-      src: string;
-    }
-  >;
+  type ImageStructure = {
+    width: number;
+    height: number;
+    aspectRatio: string;
+    srcSet: string;
+    placeholder?: string;
+    src: string;
+    alt?: string;
+    className?: string;
+  };
+
+  type ImageJsonStructure = Record<string, ImageStructure>;
   type ImageJsonItem = ImageJsonStructure[string];
 
   type BasicThemeImages = {
@@ -30,3 +31,4 @@ declare global {
     : never;
 }
 export {};
+

@@ -84,7 +84,7 @@ export function Html({
     tags,
     twitter,
     image: absoluteUrl(
-      image !== "" ? image : images?.favicon_512x512.src ?? ""
+      image !== "" ? image : images?.["favicon_512x512"].src ?? ""
     ),
   });
 
@@ -97,16 +97,16 @@ export function Html({
           const attrs = { ...tag };
           return <meta key={`meta-${index}`} {...attrs} />;
         })}
-        <link rel="icon" href={absoluteUrl(images?.favicon.src ?? "")} />
+        <link rel="icon" href={absoluteUrl(images?.["favicon"].src ?? "")} />
         <link
           rel="icon"
           sizes="64x64"
-          href={absoluteUrl(images?.favicon_512x512.src ?? "")}
+          href={absoluteUrl(images?.["favicon_512x512"].src ?? "")}
         />
         <link
           rel="icon"
           sizes="192x192"
-          href={absoluteUrl(images?.favicon_192x192.src ?? "")}
+          href={absoluteUrl(images?.["favicon_192x192"].src ?? "")}
         />
         <link
           rel="stylesheet"

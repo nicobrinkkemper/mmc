@@ -11,7 +11,10 @@ export const getStaticData = (theme: Theme, path: string) => {
     throw new Error(`Invalid theme: ${theme}`);
   }
   const pathInfo = getThemePathInfo(theme, path);
-  const { images, batches: batchesJson } = getTheme(theme);
+  const themeData = getTheme(theme);
+  const batchesJson =
+    "batches" in themeData ? themeData.batches : ({} as never);
+  const images = "images" in themeData ? themeData.images : ({} as never);
   const info = getThemeInfo(theme);
   const weektrailers = getWeekTrailers(theme);
   const { batches, isUnreleased, startDate } = getThemeBatches({

@@ -6,7 +6,7 @@ import { LayoutStatic } from "../../layout/Layout.js";
 
 export type StaticHomePageProps = {
   theme: Theme;
-  images: Themes[Theme]["images"];
+  images: ThemeImages;
   info: ThemeInfo;
   pathInfo: ThemePathInfo;
   nextAndPrevTheme: ThemePropsNextAndPrev;

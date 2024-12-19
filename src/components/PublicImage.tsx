@@ -6,14 +6,12 @@ export function PublicImage({
   height,
   className,
   ...props
-}: Readonly<{
-  alt: string;
-  className?: string;
-  width: number;
-  height: number;
-  srcSet: string;
-  src: string;
-}>) {
+}: Readonly<
+  Pick<
+    ImageStructure,
+    "alt" | "className" | "width" | "height" | "src" | "srcSet"
+  >
+>) {
   return (
     <img
       className={className}

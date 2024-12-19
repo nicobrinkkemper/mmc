@@ -8,7 +8,7 @@ import styles from "./Credits.module.css";
 
 export type CreditPageProps = {
   theme: Theme;
-  images: Themes[Theme]["images"];
+  images: ThemeImages;
   pathInfo: ThemePathInfo;
   nextAndPrevTheme: ThemePropsNextAndPrev;
 } & Clickable;

@@ -1,7 +1,7 @@
 import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import * as React from "react";
 import { mainTheme } from "../config/constants.js";
-import { getThemeProps } from "../data/getThemeProps.js";
+import { getStaticData } from "../data/getStaticData.js";
 import { NotFoundPageStatic } from "../page/NotFoundPage/NotFoundPage.js";
 
 export const rootRoute = createRootRoute({
@@ -10,13 +10,8 @@ export const rootRoute = createRootRoute({
   },
   notFoundComponent: () => (
     <NotFoundPageStatic
+      {...getStaticData(mainTheme, "/404")}
       clickable={Link}
-      {...getThemeProps(mainTheme, {
-        pathInfo: "/404",
-        info: true,
-        images: true,
-        withLevelData: true,
-      })}
     />
   ),
 });
