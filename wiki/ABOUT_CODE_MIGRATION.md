@@ -38,20 +38,17 @@ To render on the server, we need to think about our structure differently than f
 Before
 ```tsx
 import { Link, type LinkProps } from "react-router-dom";
-const MarqueeButton = (props: { children: React.ReactNode } & LinkProps) => {
+const SomeButtomIdk = (props: { children: React.ReactNode } & LinkProps) => {
   return <marquee><Link {...props}>{props.children}</Link></marquee>;
 };
 ```
 
 After
 ```tsx
-const MarqueeButton = ({ as: Component, ...props }: { as: React.ElementType }) => {
+const SomeButtomIdk = ({ as: Component, ...props }: { as: React.ElementType }) => {
   return <marquee><Component {...props}>{props.children}</Component></marquee>;
 };
 ```
-
-To keep everything working, I had to convention to create a `.static.tsx` file for each component that used hooks. What I mean with static is that it will work on both server and client.
-It also meant that I had to remove some of the component that used hooks, for example all of the `<Content.Welcome/Credits/About />` components are now static by default.
 
 # RSC setup
 
@@ -59,9 +56,6 @@ RSC is still experimental, and ESM support is not fully there yet. To achieve fu
 
 It may happen that you need to run `npm run postinstall` after installing a package, since it does not run the postinstall script.
 
-# RSC
-
-RSC (React server side components) is still experimental, and ESM support is not fully there yet. In our case, we are only using it to completely over-engineer the static site generation and make it super fast. To achieve full support, I had to build the entire React github repository from source and then copy the `oss-experimental` files from the build folder into the `node_modules` folder. To save you from doing this I have included the files in the root of this repository and the script should install copy them after running `npm install`. In the future, these files should come directly from the official react npm packages.
 
 For example when you see:
 ```
@@ -76,4 +70,25 @@ Note: `npm install some-package-name` will NOT run the postinstall script, so `p
 
 The startup folder has always been written using esmodules and typescript, but create-react-app required CommonJS. When I was implementing features for the startup folder, I was thinking
 it would be nice to reuse some of the code for computed properties that I didn't need to store in the `themes.json` file. When we moved to vite it opened up the oppurtunity to do this.
-This is also around the time Wizulu's server-side rendering PR was merged, and it meant we now had to think about three different packages inside the same repository. By using esmodules, each file can run independently and in each environment.
+This is also around the time Wizulu's server-side rendering PR was merged, and it meant we now had to think about three different packages inside the same repository. By using esmodules, each file can run independently and in each environment. You don't have to know multiple file formats, everything is using the same syntax and you can just import them relatively.
+
+NOTE: It might be tempting to try to avoid `../../` by using Typescript's path aliases. Personally I think it's better to use the relative path. This advice goes back to the "transpilation only" philosophy, Typescript WILL NOT change the imports, so unless you use something like `tsc-alias` the code becomes less portable.
+
+## .js, .mjs, .tsx, which to use?
+
+Following the "transpilation only" philosophy, we should write .js in our imports.
+General rule of thumb:
+
+Does it use JSX? Use .tsx and import with .js.
+Does it use JS? Use .ts and import with .js.
+Is it a portable esmodule program? Use .mts and import using .mjs.
+
+Since we are using module:true in our package.json, we can use .js and .mjs interchangeably.
+mjs/cjs is useful for node.js only, though browsers can use it too. It's useful to let nodejs know it's definetly a module file, it makes the program more portable. Browser really don't care, but *actually* the react esmodule source code does use it for browser code too:
+```tsx
+/* esm.sh - react@19.0.0 */
+export * from "/stable/react@19.0.0/es2022/react.development.mjs";
+export { default } from "/stable/react@19.0.0/es2022/react.development.mjs";
+```
+
+This is why I think it'll become more common in the future to name files like .mts, though a compiler can also automatically add that bit and make two seperate versions. It's all a matter of taste in the end.

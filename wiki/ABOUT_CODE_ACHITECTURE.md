@@ -63,21 +63,7 @@ By using a component language like React, developers can create components that 
 
 ## What would bbmariomaker2 do?
 
-What's a nice feeling is when you come up with a solution that says "yes" to all the problems you've been trying to solve for ages.
-Here's the plan:
-- No more extra build tooling
-- No more extra configuration
-- No more extra dependencies
-
-The project consists of five important parts:
-
-- Transpile
-  - Startup
-    - Compile
-      - Server
-        - App
-
-Each of these is a part in the equation: ```
+```
  transpile(
     startup(
         compile(
@@ -88,112 +74,15 @@ Each of these is a part in the equation: ```
     )
 )
  ```
-As you'd see a mathematician do in a movie, you want to be able to cross out any part of the equation as you go along.
 
-1.
-Once you run the transpile command (tsc), you can cross out the transpile part. The type information is stripped from the code and the files are now just regular ESModules. We now have our distilled code. By default, typescript puts these files right next to the source files. I've seen many people keep it like this and simply never think about it, or maybe they haven't figured out a way to remove all these files easily. Like, how do you select all of them when they the important source files are right next to them? That's why we use a dist folder, which is configured through the (outDir).
+Typescript transpiles using the tsconfig.node.json project.
+The output in the /dist/ folder will be called by nodejs to run the server and startup scripts, and those scripts can savely reference files from the source folder which is intended for cross-environment code.
 
-The caveat with using the `outDir` in a `tsconfig.json` file is that we need to reason our files as operating from a different folder (the dist folder) instead of our source folder. There's two ways of managing this:
-- put the dist folder directly next to the source folder. Since the folders are right next to each other, we can assume all the paths like `../` are still relative and valid.
-- use something like monorepo and completely make a seperate config for each package, through the use of another package that'd merge different configs.
-- use micro services and start a new repository for each package.
-- Use typescript references to reference the files in the dist folder.
+Vite compiles the app and development server. The `npm run start` command will run default vite development server to work on the website. This will just straight up show you the typescript code in the browser, directly from the source files. If you run `npm run build`, it will make a very basic build of the react app similar to the old `create-react-app` setup, using a single index.html with a empty `<div id="root"></div>`.
 
-
-
- and we can run any file there using Node.js. One thing we can now run is the startup script, which is the next and most opiniated step I will explain. Before we'll go over that I wanted to exaplain why Typescript always needs to be transpiled. Often times this is part of the compilation step. I wanted to explain why it should be seen as a seperate step in the equation.
-
-The TypeScript team is very strict on this matter and for good reason. However it also makes their hands tied when it comes to delivering certain features. By comitting to the "transpilation only" philosophy, we can be sure that whatever TypeScript outputs is exactly like how we wrote it. However, it also means that they can't simply go and change certain aspects of the code. That's where the compile step comes in, and it's why people often see transpilation and compilation as the same step. When using something like Bun, this is indeed true and Typescript runs natively. (by doing all of this under the hood)
-
-However, if we start using Bun we vendor lock ourselves into using Bun and can't be portable to other languages without that very same compiler. That's why, in this project we're not beating around the bush and just use tsconfig.node.json that includes every typescript file in the project. We simply transpile this codebase to dist, and all the files will be exactly like how we wrote them except without the types.
-
-We can still configure vscode to understand that the startup and server folders are node only and not browser, by adding a tsconfig.json file to those folders. The tsconfig file is the same for every folder and all it does is tell vscode that we are using the node.tsconfig.json here and that we want to be able to reference any files in the project.
-
-What we end up with is this:
-The main tsconfig.json file:
-```json
-{
-  "compilerOptions": {
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
-    "jsxFactory": "React.createElement",
-    "jsxFragmentFactory": "React.Fragment",
-    "lib": [
-      "ESNext",
-      "es2023",
-      "dom.iterable",
-      "DOM"
-    ],
-    "module": "nodenext",
-    "moduleDetection": "force",
-    "moduleResolution": "nodenext",
-    "noEmit": false,
-    "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "ESNext",
-    "rootDirs": [
-      "src",
-      "startup/src",
-      "server"
-    ],
-    "outDir": "dist",
-    "types": [
-      "vite/client",
-      "@types/react/experimental",
-      "react/experimental"
-    ],
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
-      }
-    ]
-  },
-  "include": [
-    "src/**/*",
-    "src/**/*.json",
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
-}
-```
-
-Node only folders:
-```json
-{
-    "extends": "../tsconfig.node.json",
-    "include": [
-        "src/**/*"
-    ],
-    "compilerOptions": {
-        "outDir": "./dist"
-    },
-    "references": [
-        {
-            "path": "../tsconfig.node.json"
-        }
-    ]
-}
-```
-
-2. Once you run the compile command, you can cross out the compile part. The code is now compiled to a format that can be run in the browser or server. At one point we needed the compile step to make sure the bundles were neatly organized and minified.
-3. 
+Then we can run `npm run server:start`, once it starts it will generate all the individual html files and prerender the html in a way that's hydratable on the client. Once it's done, the static folder is the portable end-product. You can close the server, but you can also keep it running and visit it using htpp://localhost:3001. This is where it gets interesting, because the server will serve our experimental ssr/rsc client in the `ssr.tsx` file.
 
 
 
 
-Can compile be crossed out? Yes, it can. ESModules support is there for browsers and servers given the right configuration.
 
-Can startup be crossed out? Yes, it can. By hosting a server we can stay connected to our CSV file and keep it in sync with the website - we do not have to run the startup script manually.
-Can server be crossed out? Yes, it can. We can statically generate the website and host it on any server hosting platform available - including ghpages - and manually trigger a rebuild to update the website.
-Can client be crossed out? Yes, it can. .
-
-
-RCS server: serves RSC components. Run it with `npm run server:rsc`.
