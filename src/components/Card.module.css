@@ -8,6 +8,7 @@
     gap: var(--card-gap, .5em);
     height: max-content;
     text-decoration: none;
+    font-weight: var(--font-weight);
 }
 .CardOuter h1:empty, .Card h2:empty, .Card p:empty {
   display: none;
