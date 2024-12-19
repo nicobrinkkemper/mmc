@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { Images, ThemeCsvParseResultData } from "./types.mjs";
 import { Theme } from "./themes.mjs";
+import { Images, ThemeCsvParseResultData } from "./types.mjs";
 
 function addImages({
   maker: makerImages,

@@ -8,6 +8,7 @@
     gap: var(--card-gap, .5em);
     height: max-content;
     text-decoration: none;
+    font-weight: var(--font-weight);
 }
 .CardOuter h1:empty, .Card h2:empty, .Card p:empty {
   display: none;
@@ -58,7 +59,7 @@
     position: absolute;
     bottom: -6px;
     right: 0;
-    transform: rotate(4deg) translate(2rem, 2rem);
+    transform: var(--card-illustration-transform, rotate(4deg) translate(2em, 2rem));
     box-shadow: var(--illustration-box-shadow, var(--box-shadow));
     max-width: 220px;
     margin-left: 180px;
