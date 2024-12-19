@@ -1,25 +1,38 @@
-import { Layout } from "../../layout/Layout";
-import { useLevel } from "../../theme/useLevel";
-import { useTheme } from "../../theme/useTheme";
-import { Level } from "./Level";
+import * as React from "react";
+import { AppStatic } from "../../App.static.js";
+import { BackToBatch } from "../../components/BackButton.js";
+import { LayoutStatic } from "../../layout/Layout.js";
+import { LevelStatic } from "./Level.js";
 
-export function LevelPage() {
-  const {
-    info: { caps },
-  } = useTheme();
-  const { level } = useLevel();
+export type LevelPageStaticProps = Pick<
+  ThemeStaticData,
+  "theme" | "images" | "pathInfo" | "clickable"
+> & {
+  level: ThemeLevel;
+  batch: ThemeBatch;
+};
+
+export function LevelPageStatic({
+  theme,
+  images,
+  level,
+  batch,
+  pathInfo,
+  clickable,
+}: LevelPageStaticProps) {
   return (
-    <Layout
-      small
-      type="simple"
-      seo={{
-        description: `${caps} level by ${level.makerName.name}: ${level.levelName.name} - ${level.levelCode}`,
-        title: `${level.levelName.name} | ${level.levelCode} | ${caps}`,
-        image: level.images.level[580][0],
-        twitter: "summary_large_image",
-      }}
-    >
-      <Level />
-    </Layout>
+    <AppStatic theme={theme}>
+      <LayoutStatic
+        small
+        type="simple"
+        theme={theme}
+        images={images}
+        pathInfo={pathInfo}
+        clickable={clickable}
+      >
+        <BackToBatch batch={batch} clickable={clickable} />
+        <LevelStatic level={level} clickable={clickable} />
+      </LayoutStatic>
+    </AppStatic>
   );
 }

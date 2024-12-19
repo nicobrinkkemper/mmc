@@ -1,0 +1,1 @@
+{"version":3,"file":"createThemeDataGetter.d.ts","sourceRoot":"","sources":["../../../src/data/createThemeDataGetter.ts"],"names":[],"mappings":"AAAA,eAAO,MAAM,qBAAqB,GAC/B,CAAC,SAAS,MAAM,gBAAgB,OAAO,CAAC,gBAAgB,MAAM,YAEvD,gBAAgB,cACV,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,KAC9B,GAAG,CAAC,IAAI,CAAC,CAAC,CAAC,EAAE,GAAG,GAAE,GAAG;IAAE,KAAK,EAAE,MAAM,CAAA;CAAE,GAAG,IAS3C,CAAC"}

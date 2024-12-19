@@ -1,0 +1,1 @@
+{"version":3,"file":"render-rsc.d.ts","sourceRoot":"","sources":["../../server/render-rsc.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAK/B,wBAAgB,SAAS,CAAC,EACxB,UAAU,EACV,SAAS,EAAE,SAAS,GACrB,EAAE;IACD,IAAI,EAAE,MAAM,CAAC;IACb,SAAS,EAAE,KAAK,CAAC,aAAa,CAAC;IAC/B,UAAU,EAAE,IAAI,CAAC,SAAS,EAAE,UAAU,CAAC,CAAC;CACzC,qBAEA"}

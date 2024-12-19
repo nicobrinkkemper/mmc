@@ -1,0 +1,2 @@
+export declare const createGetLevelInfo: (pathInfo: Pick<ThemePathInfo, "themeSlug">) => (level: ThemeLevel | Level, i: number, levels: (ThemeLevel | Level)[]) => ThemeLevel;
+//# sourceMappingURL=createGetLevelInfo.d.ts.map

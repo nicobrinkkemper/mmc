@@ -1,9 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { AppWrapper } from '../../AppWrapper';
-
-test('renders Trailers SECTION', () => {
-  render(<AppWrapper />);
+import { fireEvent, render, screen } from "@testing-library/react";
+import * as React from "react";
+import { expect, test } from "vitest";
+import { AppClient } from "../../AppClient.js";
+test("renders Trailers SECTION", () => {
+  render(<AppClient />);
   fireEvent.click(screen.getByText(/Credits/i));
   const linkElement = screen.getByText(/Trailers/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(linkElement).toBeDefined();
 });

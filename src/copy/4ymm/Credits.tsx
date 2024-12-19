@@ -1,8 +1,11 @@
-import { Card, CardProps } from "../../components/Card";
-import { CreditsWebsite } from "../default/CreditsWebsite";
-import { Ymm4CreditsTrailerCard } from "./cards/Ymm4CreditsTrailersCard";
+import * as React from "react";
+import { Card, CardProps } from "../../components/Card.js";
+import { CreditsWebsite } from "../default/CreditsWebsite.js";
+import { Ymm4CreditsTrailerCard } from "./cards/Ymm4CreditsTrailersCard.js";
 
-export const Credits = ({ children, ...props }: CardProps) => (
+export const Credits4YMM = (
+  props: Omit<CardProps, "subHeading" | "subHeading" | "children">
+) => (
   <>
     <Card heading={`Credits`} subHeading={`Project Organization`} {...props}>
       <dl>

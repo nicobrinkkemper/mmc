@@ -1,0 +1,2 @@
+export declare function getLevelPathInfo(pathInfo: Pick<ThemePathInfo, "themeSlug">, level: Pick<ThemeLevel | Level, "order" | "batchNumber">): ThemeLevelPathInfo;
+//# sourceMappingURL=getLevelPathInfo.d.ts.map

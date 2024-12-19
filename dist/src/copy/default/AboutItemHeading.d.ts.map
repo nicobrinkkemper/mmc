@@ -1,0 +1,1 @@
+{"version":3,"file":"AboutItemHeading.d.ts","sourceRoot":"","sources":["../../../../src/copy/default/AboutItemHeading.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAG/B,MAAM,MAAM,qBAAqB,GAAG,KAAK,CAAC,iBAAiB,CAAC;IAC1D,oBAAoB,EAAE,KAAK,CAAC,WAAW,CAAC;IACxC,mBAAmB,EAAE,KAAK,CAAC,WAAW,CAAC;CACxC,CAAC,CAAC;AAEH,eAAO,MAAM,gBAAgB,wGAI1B,qBAAqB,sBAMvB,CAAC"}

@@ -1,0 +1,58 @@
+.PrevTheme,
+.NextTheme {
+    max-width: min-content;
+    align-self: flex-end;
+    margin-top: 13em;
+}
+
+.NextTheme {
+    grid-area: header / content;
+    justify-self: flex-end;
+    max-width: min-content;
+}
+
+.PrevTheme {
+    grid-area: header / content;
+}
+
+.PrevTheme img,
+.NextTheme img,
+.Logo img {
+    object-fit: contain;
+    max-width: 320px;
+}
+
+.Logo.big {
+    justify-content: center;
+}
+
+.Logo.small {
+    justify-content: left;
+}
+
+.Logo.small .Logo-img {
+    width: 9rem;
+    height: 3rem;
+    object-fit: contain;
+    object-position: 0 50%;
+}
+
+.Logo.normal .Logo-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    object-position: 50% 50%;
+}
+@media screen and (min-width: 700px) {
+
+    .PrevTheme,
+    .NextTheme {
+        align-self: center;
+        margin-top: 0;
+    }
+}
+
+.Logo {
+    display: grid;
+    grid-area: header / content;
+}

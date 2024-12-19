@@ -1,3 +1,3 @@
-export { DefaultAboutContent as About } from "./DefaultAboutContent";
-export { DefaultCreditsContent as Credits } from "./DefaultCreditsContent";
-export { DefaultWelcomeContent as Welcome } from "./DefaultWelcomeContent";
+export { DefaultAboutContentStatic as About } from "./DefaultAboutContent.js";
+export { DefaultCreditsContent as Credits } from "./DefaultCreditsContent.js";
+export { DefaultWelcomeContent as Welcome } from "./DefaultWelcomeContent.js";

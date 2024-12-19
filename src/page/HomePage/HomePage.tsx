@@ -1,18 +1,24 @@
-import { DEFAULT_DESCRIPTION } from "../../constants";
-import { useTheme } from "../../theme/useTheme";
-import { Layout } from "../../layout/Layout";
-import { Content } from "../../copy/Content";
+"use client";
+import { Link, useLocation } from "@tanstack/react-router";
+import * as React from "react";
+import { useTheme } from "../../hooks/useTheme.js";
+import { HomePageStatic } from "./HomePage.static.js";
 
 export function HomePage() {
-    const { info: { caps, writtenOut } } = useTheme();
-    return (
-        <Layout type="special" seo={
-            {
-                description: `Welcome to ${caps}! ${DEFAULT_DESCRIPTION}`,
-                title: `${writtenOut} | Welcome`
-            }
-        }>
-            <Content.Welcome />
-        </Layout>
-    )
+  const { theme, images, pathInfo, nextAndPrevTheme, info } = useTheme({
+    pathInfo: useLocation().pathname,
+    nextAndPrevTheme: true,
+    info: true,
+    images: true,
+  });
+  return (
+    <HomePageStatic
+      theme={theme}
+      images={images}
+      info={info}
+      pathInfo={pathInfo}
+      nextAndPrevTheme={nextAndPrevTheme}
+      clickable={Link}
+    />
+  );
 }

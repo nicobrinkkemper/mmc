@@ -1,13 +1,38 @@
-import { Layout } from "../../layout/Layout";
-import { NotFound } from "./NotFound";
+import * as React from "react";
+import { AppStatic } from "../../App.static.js";
+import { LayoutStatic } from "../../layout/Layout.js";
+import { NotFoundStatic } from "./NotFound.js";
 
-export function NotFoundPage({ error }: Readonly<{ error?: string }>) {
-    return (
-        <Layout type="simple" small seo={{
-            description: "Page not found",
-            title: "404 | Page not found"
-        }}>
-            <NotFound error={error} />
-        </Layout>
-    )
+type NotFoundPageProps = Pick<
+  ThemeStaticData,
+  "theme" | "images" | "pathInfo"
+> & {
+  error?: string;
+} & Clickable;
+
+export function NotFoundPageStatic({
+  error,
+  theme,
+  images,
+  pathInfo,
+  clickable,
+}: NotFoundPageProps) {
+  return (
+    <AppStatic theme={theme}>
+      <LayoutStatic
+        type="simple"
+        small
+        theme={theme}
+        images={images}
+        pathInfo={pathInfo}
+        clickable={clickable}
+      >
+        <NotFoundStatic
+          error={error}
+          pathInfo={pathInfo}
+          clickable={clickable}
+        />
+      </LayoutStatic>
+    </AppStatic>
+  );
 }

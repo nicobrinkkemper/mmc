@@ -1,17 +1,38 @@
-import { DEFAULT_DESCRIPTION } from "../../constants";
-import { useTheme } from "../../theme/useTheme";
+import * as React from "react";
+import { AppStatic } from "../../App.static.js";
+import { BackToWelcome } from "../../components/BackButton.js";
+import { mainTheme } from "../../config/constants.js";
+import { Content } from "../../copy/Content.js";
+import { LayoutStatic } from "../../layout/Layout.js";
 import styles from "./Credits.module.css";
-import { Layout } from "../../layout/Layout";
-import { Content } from "../../copy/Content";
 
-export function CreditPage() {
-    const { info: { caps } } = useTheme();
-    return (
-        <Layout type="special" seo={{
-            description: `Special thanks to all contributors! ${DEFAULT_DESCRIPTION}`,
-            title: `${caps} | Credits | Site by General BB`
-        }}>
-            <Content.Credits className={styles.CreditsCard} />
-        </Layout>
-    );
+export type CreditPageProps = {
+  theme: Theme;
+  images: Themes[Theme]["images"];
+  pathInfo: ThemePathInfo;
+  nextAndPrevTheme: ThemePropsNextAndPrev;
+} & Clickable;
+
+export function CreditsPageStatic({
+  theme = mainTheme,
+  images,
+  pathInfo,
+  nextAndPrevTheme,
+  clickable,
+}: CreditPageProps) {
+  return (
+    <AppStatic theme={theme}>
+      <LayoutStatic
+        type="special"
+        theme={theme}
+        images={images}
+        pathInfo={pathInfo}
+        nextAndPrevTheme={nextAndPrevTheme}
+        clickable={clickable}
+      >
+        <BackToWelcome themeSlug={pathInfo.themeSlug} clickable={clickable} />
+        <Content.Credits className={styles["CreditsCard"]} theme={theme} />
+      </LayoutStatic>
+    </AppStatic>
+  );
 }

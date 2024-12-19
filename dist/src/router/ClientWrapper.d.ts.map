@@ -1,0 +1,1 @@
+{"version":3,"file":"ClientWrapper.d.ts","sourceRoot":"","sources":["../../../src/router/ClientWrapper.tsx"],"names":[],"mappings":"AACA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAE/B,wBAAgB,aAAa,CAAC,EAC5B,SAAS,EACT,IAAI,GACL,EAAE;IACD,SAAS,EAAE,KAAK,CAAC,aAAa,CAAC,GAAG,CAAC,CAAC;IACpC,IAAI,EAAE,GAAG,CAAC;CACX,qBAEA"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"NotFound.d.ts","sourceRoot":"","sources":["../../../../src/page/NotFoundPage/NotFound.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAM/B,QAAA,MAAM,cAAc,oCAIjB;IACD,KAAK,CAAC,EAAE,MAAM,CAAC;IACf,QAAQ,EAAE,IAAI,CAAC,aAAa,EAAE,UAAU,GAAG,IAAI,CAAC,CAAC;CAClD,GAAG,SAAS,sBAkBZ,CAAC;AAEF,OAAO,EAAE,cAAc,EAAE,CAAC"}

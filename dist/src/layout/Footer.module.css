@@ -1,0 +1,27 @@
+.Footer {
+    grid-area: footer / full;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(3, max-content);
+    background: var(--footer-background, inherit);
+    padding: 1rem 0;
+}
+
+.Footer a {
+    display: flex;
+    align-items: center;
+    font: var(--footer-font);
+    color: var(--footer-color, inherit);
+    text-decoration: none;
+    padding-right: 1rem;
+}
+
+.Footer a:last-child {
+    padding-right: 0;
+}
+
+.Footer a+a {
+    padding-left: 1rem;
+    border-left: 1px solid var(--footer-color, #111);
+}

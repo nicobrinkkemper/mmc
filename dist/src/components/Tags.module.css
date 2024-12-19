@@ -1,0 +1,65 @@
+.Tags {
+    --_tag-font: var(--tag-font, normal 0.75rem/0.75rem var(--font-primary));
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap, .5rem);
+    align-content: center;
+}
+
+.Tag {
+    position: relative;
+    padding: var(--tag-padding, .5em);
+    font: var(--_tag-font, inherit);
+    min-width: var(--tag-min-width, inherit);
+    text-align: var(--tag-text-align, inherit);
+    color: var(--tag-color, black);
+        background: var(--tag-background, none);
+        border-radius: var(--tag-border-radius, 0);
+}
+
+.Tag:before {
+    overflow: visible;
+    position: absolute;
+    content: var(--tag-before-content, none);
+    top: var(--tag-before-top, 0);
+    left: var(--tag-before-left, 0);
+    right: var(--tag-before-right, 0);
+    bottom: var(--tag-before-bottom, 0);
+    background: var(--tag-before-background, none);
+    transform: var(--tag-before-transform, none);
+    mix-blend-mode: var(--tag-before-mix-blend-mode, none);
+    border-radius: var(--tag-before-border-radius, 0);
+}
+.new,
+.precision,
+.unreleased {
+    color: var(--tag-new-color);
+    background: var(--tag-new-background, none);
+}
+.new:before,
+.precision:before,
+.unreleased:before {
+    background: var(--tag-before-new-background);
+}
+
+.gimmick,
+.puzzle,
+.music {
+    color: var(--tag-other-color);
+    background: var(--tag-other-background, none);
+}
+.gimmick:before,
+.puzzle:before,
+.music:before {
+    background: var(--tag-before-other-background);
+}
+
+.troll:after {
+    content: '';
+    position: absolute;
+    top: .2rem;
+    width: 1.5em;
+    height: 1.5em;
+    background-size: 100% 100%;
+    background-image: url('../assets/7mmc/troll_kiavik.webp');
+}

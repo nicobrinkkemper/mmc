@@ -1,37 +1,9 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "types": [
-      "node",
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "declaration": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "sourceMap": true,
-    "outDir": "./dist",
-    "jsx": "react-jsx"
-  },
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "dist",
-    "coverage"
-  ]
+    // this file is here to let vscode know that this folder is intended to be run using our node config
+    "extends": "../tsconfig.node.json",
+    "references": [
+        {
+            "path": "../tsconfig.node.json"
+        }
+    ]
 }

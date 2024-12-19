@@ -1,8 +1,12 @@
-import { MarioTurnsXth } from "./MarioTurnsXth";
-import { StayUpToDate } from "./StayUpToDate";
+import * as React from "react";
+import { MarioTurnsXthStatic } from "./MarioTurnsXth.js";
+import { StayUpToDate } from "./StayUpToDate.js";
 
-export const DefaultWelcomeContent = () => <>
-    <MarioTurnsXth />
-    <StayUpToDate />
-</>
-
+export const DefaultWelcomeContent = (props: MarioTurnsXthStaticProps) => {
+  return (
+    <>
+      <MarioTurnsXthStatic {...props} />
+      <StayUpToDate />
+    </>
+  );
+};

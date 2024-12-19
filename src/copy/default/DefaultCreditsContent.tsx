@@ -1,8 +1,11 @@
-import { Card, CardProps } from "../../components/Card";
-import { CreditsTrailer } from "./CreditsTrailer";
-import { CreditsWebsite } from "./CreditsWebsite";
+import * as React from "react";
+import { Card, type CardProps } from "../../components/Card.js";
+import { CreditsTrailer } from "./CreditsTrailer.js";
+import { CreditsWebsite } from "./CreditsWebsite.js";
 
-export const DefaultCreditsContent = (props: CardProps) => {
+export const DefaultCreditsContent = (
+  props: Omit<CardProps, "subHeading" | "heading">
+) => {
   return (
     <>
       <Card

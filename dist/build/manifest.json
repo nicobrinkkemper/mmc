@@ -1,0 +1,146 @@
+{
+    "_data-vendor-BJ8uS0eK.js": {
+        "file": "assets/data-vendor-BJ8uS0eK.js",
+        "name": "data-vendor"
+    },
+    "_react-vendor-Cg0sTGaC.js": {
+        "file": "assets/react-vendor-Cg0sTGaC.js",
+        "name": "react-vendor",
+        "imports": [
+            "_vendor-DYsoeDPq.js"
+        ]
+    },
+    "_vendor-DYsoeDPq.js": {
+        "file": "assets/vendor-DYsoeDPq.js",
+        "name": "vendor",
+        "imports": [
+            "_react-vendor-Cg0sTGaC.js"
+        ]
+    },
+    "index.html": {
+        "file": "assets/main-C3vycawP.js",
+        "name": "main",
+        "src": "index.html",
+        "isEntry": true,
+        "imports": [
+            "_react-vendor-Cg0sTGaC.js",
+            "_vendor-DYsoeDPq.js",
+            "_data-vendor-BJ8uS0eK.js"
+        ],
+        "css": [
+            "assets/main-CgVSPlix.css"
+        ],
+        "assets": [
+            "assets/bg-3x-Be092dxy.webp",
+            "assets/card_texture-BVYPP4bN.webp",
+            "assets/gridpaper_special-3x-D1J-33gb.webp",
+            "assets/highlight_yellow-BIw5NdYb.svg",
+            "assets/highlight_magenta-CHKRVhsR.svg",
+            "assets/highlight_cyan-BMpuQIeA.svg",
+            "assets/SuperMarioMakerExtended-B_LIlWuF.eot",
+            "assets/SuperMarioMakerExtended-BHFK0cfl.woff2",
+            "assets/SuperMarioMakerExtended-H0ExuRDg.woff",
+            "assets/SuperMarioMakerExtended-BK4vk1Yu.ttf",
+            "assets/SuperMarioMakerExtended-CiVDaniA.svg",
+            "assets/SuperMario-Cpe__gpc.eot",
+            "assets/SuperMario-rkVzkPXN.woff2",
+            "assets/SuperMario-DBeCj4_X.woff",
+            "assets/SuperMario-BNNPWYfJ.ttf",
+            "assets/SuperMario-CJD3i2NC.svg",
+            "assets/lato-regular-ZbeSjacr.woff2",
+            "assets/lato-regular-DLJN0-tP.woff",
+            "assets/HeaderMarker-B9YNvnaj.otf",
+            "assets/HeartWarming-Csf0h0hP.otf",
+            "assets/HeartWarmingExtra-CyRXUooR.otf",
+            "assets/BordersDivideButHeartsShallConquer-sssZTwWY.otf"
+        ]
+    },
+    "src/assets/4ymm/bg-3x.webp": {
+        "file": "assets/bg-3x-Be092dxy.webp",
+        "src": "src/assets/4ymm/bg-3x.webp"
+    },
+    "src/assets/7mmc/card_texture.webp": {
+        "file": "assets/card_texture-BVYPP4bN.webp",
+        "src": "src/assets/7mmc/card_texture.webp"
+    },
+    "src/assets/7mmc/gridpaper_special-3x.webp": {
+        "file": "assets/gridpaper_special-3x-D1J-33gb.webp",
+        "src": "src/assets/7mmc/gridpaper_special-3x.webp"
+    },
+    "src/assets/7mmc/highlight_cyan.svg": {
+        "file": "assets/highlight_cyan-BMpuQIeA.svg",
+        "src": "src/assets/7mmc/highlight_cyan.svg"
+    },
+    "src/assets/7mmc/highlight_magenta.svg": {
+        "file": "assets/highlight_magenta-CHKRVhsR.svg",
+        "src": "src/assets/7mmc/highlight_magenta.svg"
+    },
+    "src/assets/7mmc/highlight_yellow.svg": {
+        "file": "assets/highlight_yellow-BIw5NdYb.svg",
+        "src": "src/assets/7mmc/highlight_yellow.svg"
+    },
+    "src/fonts/BordersDivideButHeartsShallConquer.otf": {
+        "file": "assets/BordersDivideButHeartsShallConquer-sssZTwWY.otf",
+        "src": "src/fonts/BordersDivideButHeartsShallConquer.otf"
+    },
+    "src/fonts/HeaderMarker.otf": {
+        "file": "assets/HeaderMarker-B9YNvnaj.otf",
+        "src": "src/fonts/HeaderMarker.otf"
+    },
+    "src/fonts/HeartWarming.otf": {
+        "file": "assets/HeartWarming-Csf0h0hP.otf",
+        "src": "src/fonts/HeartWarming.otf"
+    },
+    "src/fonts/HeartWarmingExtra.otf": {
+        "file": "assets/HeartWarmingExtra-CyRXUooR.otf",
+        "src": "src/fonts/HeartWarmingExtra.otf"
+    },
+    "src/fonts/SuperMario.eot": {
+        "file": "assets/SuperMario-Cpe__gpc.eot",
+        "src": "src/fonts/SuperMario.eot"
+    },
+    "src/fonts/SuperMario.svg": {
+        "file": "assets/SuperMario-CJD3i2NC.svg",
+        "src": "src/fonts/SuperMario.svg"
+    },
+    "src/fonts/SuperMario.ttf": {
+        "file": "assets/SuperMario-BNNPWYfJ.ttf",
+        "src": "src/fonts/SuperMario.ttf"
+    },
+    "src/fonts/SuperMario.woff": {
+        "file": "assets/SuperMario-DBeCj4_X.woff",
+        "src": "src/fonts/SuperMario.woff"
+    },
+    "src/fonts/SuperMario.woff2": {
+        "file": "assets/SuperMario-rkVzkPXN.woff2",
+        "src": "src/fonts/SuperMario.woff2"
+    },
+    "src/fonts/SuperMarioMakerExtended.eot": {
+        "file": "assets/SuperMarioMakerExtended-B_LIlWuF.eot",
+        "src": "src/fonts/SuperMarioMakerExtended.eot"
+    },
+    "src/fonts/SuperMarioMakerExtended.svg": {
+        "file": "assets/SuperMarioMakerExtended-CiVDaniA.svg",
+        "src": "src/fonts/SuperMarioMakerExtended.svg"
+    },
+    "src/fonts/SuperMarioMakerExtended.ttf": {
+        "file": "assets/SuperMarioMakerExtended-BK4vk1Yu.ttf",
+        "src": "src/fonts/SuperMarioMakerExtended.ttf"
+    },
+    "src/fonts/SuperMarioMakerExtended.woff": {
+        "file": "assets/SuperMarioMakerExtended-H0ExuRDg.woff",
+        "src": "src/fonts/SuperMarioMakerExtended.woff"
+    },
+    "src/fonts/SuperMarioMakerExtended.woff2": {
+        "file": "assets/SuperMarioMakerExtended-BHFK0cfl.woff2",
+        "src": "src/fonts/SuperMarioMakerExtended.woff2"
+    },
+    "src/fonts/lato-regular.woff": {
+        "file": "assets/lato-regular-DLJN0-tP.woff",
+        "src": "src/fonts/lato-regular.woff"
+    },
+    "src/fonts/lato-regular.woff2": {
+        "file": "assets/lato-regular-ZbeSjacr.woff2",
+        "src": "src/fonts/lato-regular.woff2"
+    }
+}

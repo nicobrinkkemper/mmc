@@ -1,9 +1,0 @@
-{
-    "name": "startup",
-    "type": "module",
-    "scripts": {
-        "build": "tsc",
-        "resize-the-wrong-images": "node ./dist/resizeOriginalImages.mjs",
-        "start": "export NODE_OPTIONS=--enable-source-maps; node ./dist/startup.mjs"
-    }
-}

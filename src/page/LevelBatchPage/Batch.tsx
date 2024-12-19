@@ -1,44 +1,39 @@
-import { Card } from "../../components/Card";
-import { Difficulty } from "../../components/Difficulty";
-import { MakerName } from "../../components/MakerName";
-import { PublicImage } from "../../components/PublicImage";
-import { Tags } from "../../components/Tags";
-import { useBatch } from "../../theme/useBatch";
-import { useTheme } from "../../theme/useTheme";
+import * as React from "react";
+import { Card } from "../../components/Card.js";
+import { Difficulty } from "../../components/Difficulty.js";
+import { MakerName } from "../../components/MakerName.js";
+import { PublicImage } from "../../components/PublicImage.js";
+import { Tags } from "../../components/Tags.js";
 import styles from "./Batch.module.css";
-
-type BatchLevel = ReturnType<typeof useBatch>["batch"]["levels"][number];
 
 function BatchLevelCard({
   level,
-  levelNumber,
+  levelIndex,
+  clickable: Clickable,
 }: Readonly<{
-  level: BatchLevel;
-  levelNumber: number;
+  level: ThemeLevel;
+  levelIndex: number;
+  clickable: React.ElementType;
 }>) {
-  const {
-    batch: { releaseDate, batchNumber },
-  } = useBatch();
-  const { themeSlug } = useTheme();
-  const slug = `${batchNumber}/${levelNumber}`;
   return (
     <Card
-      heading={levelNumber === 1 ? releaseDate.formatted : undefined}
-      key={slug}
-      to={`/${themeSlug}level/${slug}/`}
-      className={styles.Batch}
+      heading={levelIndex === 0 ? level.releaseDate.formatted : undefined}
+      key={level.levelName.slug}
+      href={level.pathInfo.to}
+      className={styles["Batch"]}
+      clickable={Clickable}
     >
       <PublicImage
         alt={level.levelName.name}
         {...level.images.levelThumbnail}
       />
-      <div className={styles.Info}>
+      <div className={styles["Info"]}>
         <h2>{level.levelName.name}</h2>
         <MakerName
           nationality={level.nationality}
           makerName={level.makerName.name}
         />
-        <div className={styles.LevelInfo}>
+        <div className={styles["LevelInfo"]}>
           <Tags tags={level.tags} />
           <Difficulty {...level} />
         </div>
@@ -47,20 +42,22 @@ function BatchLevelCard({
   );
 }
 
-function mapLevels(level: BatchLevel, i: number) {
-  return (
-    <BatchLevelCard
-      key={level.levelName.name}
-      level={level}
-      levelNumber={i + 1}
-    />
-  );
-}
+const createMapLevels = (clickable: React.ElementType = "a") =>
+  function mapLevels(level: ThemeLevel, orderIndex: number) {
+    return (
+      <BatchLevelCard
+        key={level.levelName.name}
+        level={level}
+        levelIndex={orderIndex}
+        clickable={clickable}
+      />
+    );
+  };
 
-export function Batch() {
-  const {
-    batch: { levels },
-  } = useBatch();
-
-  return levels.map(mapLevels);
+export function BatchStatic({
+  batch,
+  clickable,
+}: { batch: ThemeBatch } & Clickable) {
+  const mapper = createMapLevels(clickable);
+  return <>{batch.levels.map(mapper)}</>;
 }

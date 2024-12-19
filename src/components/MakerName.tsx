@@ -1,3 +1,4 @@
+import * as React from "react";
 import styles from "./MakerName.module.css";
 
 export function MakerName({ makerName, nationality, makerId }: Readonly<{
@@ -5,15 +6,15 @@ export function MakerName({ makerName, nationality, makerId }: Readonly<{
     makerName: string;
     makerId?: string;
 }>) {
-    return <div className={styles.MakerName}>
+    return <div className={styles['MakerName']}>
         <span
-            className={`${styles.Nationality} flag-icon flag-icon-${nationality.toLowerCase()}`}
+            className={`${styles['Nationality']} flag-icon flag-icon-${nationality.toLowerCase()}`}
         />
-        <span className={styles.Name}>
+        <span className={styles['Name']}>
             {makerName}
         </span>
         {
-            makerId ? <span className={styles.MakerId}>{makerId}</span> : null
+            makerId ? <span className={styles['MakerId']}>{makerId}</span> : null
         }
     </div>
 }

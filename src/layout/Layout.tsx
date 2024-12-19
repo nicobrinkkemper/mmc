@@ -1,34 +1,37 @@
-import { ComponentProps, PropsWithChildren } from "react";
-import { About } from "../about/About";
-import { AboutButton } from "../about/AboutButton";
-import { BackButton } from "../components/BackButton";
-import { Seo } from "../components/Seo";
-import { Footer } from "./Footer";
-import { Logo } from "./Logo";
+import * as React from "react";
+import { FooterStatic } from "./Footer.js";
+import { LogoStatic, LogoStaticProps } from "./Logo.js";
 
-export function Layout({
+export type LayoutProps = React.PropsWithChildren<{
+  className?: string;
+  type?: "special" | "simple" | "normal";
+}> &
+  Omit<LogoStaticProps, "logo">;
+
+export function LayoutStatic({
   children,
   className,
   type = "normal",
   small = false,
-  seo,
-}: PropsWithChildren<{
-  className?: string;
-  type?: "special" | "simple" | "normal";
-  small?: boolean;
-  seo: ComponentProps<typeof Seo>;
-}>) {
+  theme,
+  images,
+  pathInfo,
+  nextAndPrevTheme,
+  clickable,
+}: LayoutProps) {
   return (
     <>
-      <AboutButton />
-      <Logo small={small} logo={type === "normal" ? "logo" : `logo_${type}`} />
-      <article className={className}>
-        <BackButton />
-        {children}
-      </article>
-      <About />
-      <Footer />
-      <Seo {...seo} />
+      <LogoStatic
+        small={small}
+        logo={type === "normal" ? "logo" : `logo_${type}`}
+        theme={theme}
+        pathInfo={pathInfo}
+        images={images}
+        nextAndPrevTheme={nextAndPrevTheme}
+        clickable={clickable}
+      />
+      <article className={className}>{children}</article>
+      <FooterStatic pathInfo={pathInfo} clickable={clickable} />
     </>
   );
 }

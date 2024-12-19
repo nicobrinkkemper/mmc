@@ -1,37 +1,9 @@
 {
-  "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
-    "jsxFactory": "React.createElement",
-    "jsxFragmentFactory": "React.Fragment",
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
-    "module": "nodenext",
-    "moduleDetection": "force",
-    "moduleResolution": "nodenext",
-    "noEmit": false,
-    "outDir": "./dist",
-    "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "ESNext",
-    "types": [
-      "node",
-      "@types/react/canary"
-    ],
-    "verbatimModuleSyntax": true,
-  },
-  "include": [
-    "src/**/*",
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+        // this file is here to let vscode know that this folder is intended to be run using our node config
+        "extends": "../tsconfig.node.json",
+        "references": [
+            {
+                "path": "../tsconfig.node.json"
+            }
+        ]
 }
