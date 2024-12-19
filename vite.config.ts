@@ -29,30 +29,32 @@ export default defineConfig({
       output: {
         format: "es",
         manualChunks: (id) => {
-          // React vendor bundle including Canary and RSC
+          // React and core dependencies
           if (
             id.includes("node_modules/react") ||
             id.includes("node_modules/react-dom") ||
-            id.includes("node_modules/react-server-dom-esm")
+            id.includes("node_modules/react-server-dom-esm") ||
+            id.includes("node_modules/scheduler") || // Add scheduler
+            id.includes("node_modules/use-sync-external-store") // Add use-sync-external-store
           ) {
             return "react-vendor";
           }
 
-          // Utils vendor bundle
+          // Router and React-dependent libraries
           if (id.includes("node_modules")) {
-            return "vendor";
+            return "node-modules";
+          }
+          // per-page data bundle
+          if (id.includes("src/data")) {
+            return id.replace("Page", "").toLocaleLowerCase();
           }
 
           // Static/computed data
-          if (
-            id.includes("src/data/themes.json") ||
-            id.includes("src/data/themesKeys.json") ||
-            id.includes("src/routes/")
-          ) {
+          if (id.includes("src/data")) {
             return "data-vendor";
           }
 
-          return null; // Let Vite handle other chunks
+          return null;
         },
       },
     },
