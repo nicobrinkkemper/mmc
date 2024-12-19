@@ -1,8 +1,6 @@
 # Contribute
 
-These people have contributed to this project through PR's, thank you! 
+Please see the [credits page](https://mmcelebration.com/9mmc/credits) for the people who have contributed to this project through-out the years.
+Feel free to add yourself to the credit page.
 
-- Wizulu
-- Mr. Games All Day (AGAD)
-
-If you want to contribute, please open a PR and or hop in the [discord](https://discord.gg/R8aYkzzH) and we can discuss it.
+If you want to contribute, please open a PR and or hop in the [Geitje's discord](https://discord.gg/R8aYkzzH) or the [official MMC discord](https://discord.gg/r8HEphnR)
