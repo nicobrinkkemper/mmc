@@ -1,19 +1,9 @@
 {
-  "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "outDir": "dist"
-  },
-  "files": [
-    "src/server.ts",
-    "src/crawler.ts",
-    "src/snapshot.ts",
-    "src/dev-server.ts",
-    "src/worker.ts",
-    "src/utils.ts",
-    "src/themes.json",
-    "src/themesKeys.json"
-  ],
+        // this file is here to let vscode know that this folder is intended to be run using our node config
+        "extends": "../tsconfig.node.json",
+        "references": [
+            {
+                "path": "../tsconfig.node.json"
+            }
+        ]
 }

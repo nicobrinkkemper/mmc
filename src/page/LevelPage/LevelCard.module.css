@@ -29,3 +29,6 @@ img.LevelImage {
 .Description > div > p {
   white-space: pre-wrap;
 }
+.LevelCard {
+  position: relative;
+}

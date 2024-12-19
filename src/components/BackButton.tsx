@@ -1,67 +1,59 @@
-import { useLevel } from "../theme/useLevel";
-import { useTheme } from "../theme/useTheme";
-import { useThemeLevelData } from "../theme/useThemeLevelData";
+import * as React from "react";
 import styles from "./BackButton.module.css";
-import Button from "./Button";
+import { Button } from "./Button.js";
 
-function BackToBatch() {
-  const { themeSlug } = useTheme();
-  const { batchNumber, batch } = useLevel();
-
+export function BackToBatch({
+  batch,
+  clickable,
+}: {
+  batch: Pick<ThemeBatch, "pathInfo" | "releaseDate">;
+} & Clickable) {
   return (
     <Button
       icon="arrow-left-inverted"
       iconPosition="left"
-      to={`/${themeSlug}levels/${batchNumber}/`}
+      href={batch.pathInfo.to}
       inverted={true}
-      className={styles.BackButton}
+      className={styles["BackButton"]}
+      clickable={clickable}
     >
       {`Back to ${batch.releaseDate.formatted}`}
     </Button>
   );
 }
 
-function BackToWeeks() {
-  const { themeSlug } = useTheme();
-
+export function BackToWeeks({
+  toLevels,
+  clickable,
+}: Pick<ThemePathInfo, "toLevels"> & Clickable) {
   return (
     <Button
       icon="arrow-left-inverted"
       iconPosition="left"
-      to={`/${themeSlug}levels/`}
+      href={toLevels}
       inverted={true}
-      className={styles.BackButton}
+      className={styles["BackButton"]}
+      clickable={clickable}
     >
       Back to Overview
     </Button>
   );
 }
 
-function BackToWelcome() {
-  const { themeSlug } = useTheme();
-
+export function BackToWelcome({
+  themeSlug,
+  clickable,
+}: Pick<ThemePathInfo, "themeSlug"> & Clickable) {
   return (
     <Button
       icon="arrow-left-inverted"
       iconPosition="left"
-      to={`/${themeSlug}`}
+      href={themeSlug}
       inverted={true}
-      className={styles.BackButton}
+      className={styles["BackButton"]}
+      clickable={clickable}
     >
       Back to Welcome
     </Button>
   );
 }
-
-const BackButton = () => {
-  const { hasBatch, hasLevel } = useThemeLevelData();
-  const {
-    info: { isHome },
-  } = useTheme();
-  if (hasBatch && hasLevel) return <BackToBatch />;
-  else if (hasBatch) return <BackToWeeks />;
-  if (isHome) return null;
-  return <BackToWelcome />;
-};
-
-export { BackButton };

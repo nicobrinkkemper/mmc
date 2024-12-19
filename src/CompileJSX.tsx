@@ -1,4 +1,4 @@
-import { ReactNode, createElement } from "react";
+import * as React from "react";
 
 type NestedJsxType =
   | string
@@ -16,7 +16,7 @@ type NestedJsxType =
  **/
 export const createElementsRecursive = (
   el: NestedJsxType | NestedJsxType[]
-): ReactNode | ReactNode[] => {
+): React.ReactNode | React.ReactNode[] => {
   if (typeof el === "string" || el === null) return el;
 
   if (Array.isArray(el)) return el.map(createElementsRecursive);
@@ -26,7 +26,7 @@ export const createElementsRecursive = (
     key,
     props: { children = null, ...restProps },
   } = el;
-  return createElement(
+  return React.createElement(
     type,
     key ? { key: `${key}`, ...restProps } : restProps,
     createElementsRecursive(children)
@@ -40,4 +40,4 @@ export const CompileJSX = ({
   children,
 }: {
   children: NestedJsxType | NestedJsxType[];
-}) => createElementsRecursive(children);
+}) => createElementsRecursive(children) as React.JSX.Element;

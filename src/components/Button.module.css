@@ -63,3 +63,24 @@
 .hidden {
     display: none;
 }
+
+.primary {
+    background: var(--button-primary-background);
+}
+
+.secondary {
+    background: var(--button-secondary-background);
+}
+
+.tertiary {
+    background: var(--button-tertiary-background);
+}
+
+.inverted {
+    background: var(--button-inverted-background);
+}
+
+.hasIcon {
+    grid-template-columns: 24px 1fr;
+    justify-items: center;
+}

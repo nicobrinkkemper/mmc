@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { SNAP } from "../../../constants";
+import * as React from "react";
 import styles from "./YoutubeIframe.module.css";
 
 export enum Commands {
@@ -12,29 +11,21 @@ export enum Commands {
 
 type Props = {
   videoId: string;
+  src: string;
 };
 
-const YouTubeIframe = ({ videoId }: Props): JSX.Element => {
-  const [src, setSrc] = useState<string>("about:blank");
-  useEffect(() => {
-    // this is to not mess up puppeteer
-    SNAP &&
-      setSrc(
-        `https://www.youtube.com/embed/${videoId}?modestbranding=1&enablejsapi=1&controls=1&rel=0&loop=1&listType=playlist`
-      );
-  }, [videoId]);
-  if (!videoId) return <></>;
+const YouTubeIframeStatic = ({ videoId, src }: Props): React.JSX.Element => {
   return (
-    <div className={styles.Youtube}>
+    <div className={styles["Youtube"]}>
       <iframe
-        className={styles.Iframe}
+        className={styles["Iframe"]}
         title={videoId}
         allowFullScreen={true}
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        src={src}
+        src={src ?? "about:blank"}
       />
     </div>
   );
 };
 
-export { YouTubeIframe };
+export { YouTubeIframeStatic };

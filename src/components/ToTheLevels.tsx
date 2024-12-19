@@ -1,15 +1,20 @@
-import { useTheme } from "../theme/useTheme";
-import Button, { ButtonProps } from "./Button";
+import * as React from "react";
+import type { ButtonProps } from "./Button.js";
+import { Button } from "./Button.js";
 
-export const ToTheLevels = (
-  props: Omit<ButtonProps, "icon" | "primary" | "to">
-) => {
-  const { themeSlug } = useTheme();
+export type ToTheLevelsStaticProps = {
+  pathInfo: Pick<ThemePathInfo, "toLevels">;
+} & Omit<ButtonProps, "icon" | "primary" | "to">;
+
+export const ToTheLevelsStatic = ({
+  pathInfo,
+  ...props
+}: ToTheLevelsStaticProps) => {
   return (
     <Button
       primary={true}
       icon="arrow-right"
-      to={`/${themeSlug}levels/`}
+      href={pathInfo.toLevels}
       {...props}
     >
       To the levels

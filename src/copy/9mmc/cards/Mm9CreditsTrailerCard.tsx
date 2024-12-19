@@ -1,6 +1,7 @@
-import { Card } from "../../../components/Card";
+import * as React from "react";
+import { Card, CardProps } from "../../../components/Card.js";
 
-export const Mm9CreditsTrailerCard = (props: React.ComponentProps<typeof Card>) => {
+export const Mm9CreditsTrailerCard = (props: Omit<CardProps, "subHeading">) => {
   return (
     <Card subHeading={`Trailers`} {...props}>
       <h2>Trailers</h2>

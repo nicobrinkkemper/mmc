@@ -1,11 +1,9 @@
-import { useTheme } from "../theme/useTheme";
-import type { ThemeCssClassName } from "./types";
-import * as themesCss from "./index";
+import { useTheme } from "../hooks/useTheme.js";
+import { getCss } from "./getCss.js";
+import * as themesCss from "./index.js";
 
-export function useCss<ClassName extends ThemeCssClassName>(
-  className: ClassName
-) {
-  const key = `_${useTheme().theme}`;
-  const fallback = (key in themesCss ? key : "_8mmc") as keyof typeof themesCss;
-  return themesCss[fallback][className];
+export function useCss<
+  K extends keyof (typeof themesCss)[keyof typeof themesCss]
+>(className: K): string {
+  return getCss(useTheme().theme, className);
 }
