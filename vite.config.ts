@@ -34,8 +34,8 @@ export default defineConfig({
             id.includes("node_modules/react") ||
             id.includes("node_modules/react-dom") ||
             id.includes("node_modules/react-server-dom-esm") ||
-            id.includes("node_modules/scheduler") || // Add scheduler
-            id.includes("node_modules/use-sync-external-store") // Add use-sync-external-store
+            id.includes("node_modules/scheduler") ||
+            id.includes("node_modules/use-sync-external-store")
           ) {
             return "react-vendor";
           }
@@ -44,9 +44,13 @@ export default defineConfig({
           if (id.includes("node_modules")) {
             return "node-modules";
           }
-          // per-page data bundle
-          if (id.includes("src/data")) {
-            return id.replace("Page", "").toLocaleLowerCase();
+
+          // Specific JSON files
+          if (id.includes("manifest.json")) {
+            return "manifest-data";
+          }
+          if (id.includes("theme.json")) {
+            return "theme-data";
           }
 
           // Static/computed data

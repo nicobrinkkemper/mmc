@@ -1,5 +1,6 @@
 declare global {
   type Themes = typeof import("../src/data/themes.json");
+  // generally prefer the config keys, as those are the ones used before this is generated
   type ThemeKeys = (keyof Themes)[];
   type Theme = ThemeKeys[number];
 

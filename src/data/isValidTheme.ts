@@ -1,7 +1,5 @@
-import themeKeys from "./themesKeys.json" with { type: "json" };
+import { themeKeysNoPrefix } from "../config/config.js";
 
-export const isValidTheme = (
-  _theme: unknown
-): _theme is ThemeConfigTheme => {
-  return themeKeys.includes(_theme as never);
+export const isValidTheme = (_theme: unknown): _theme is ThemeConfigTheme => {
+  return themeKeysNoPrefix.includes(_theme as never);
 };

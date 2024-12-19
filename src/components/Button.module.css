@@ -7,6 +7,8 @@
     border: none;
     text-decoration: none;
     background: none;
+    outline: var(--button-outline, none);
+    font-weight: var(--button-font-weight, 400);
 }
 
 .Button.info-inverted {
@@ -23,11 +25,13 @@
     color: var(--button-color, inherit);
     background: var(--button-background);
     border-radius: var(--button-border-radius);
+    box-shadow: var(--button-box-shadow, none);
 }
 
 .iconIsLeft .ButtonInner {
     grid-template-columns: 24px 1fr;
     justify-items: center;
+    filter: var(--button-shadow, none);
 }
 
 .ButtonLabel {

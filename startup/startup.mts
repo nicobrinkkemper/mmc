@@ -16,7 +16,6 @@ try {
 
   // Write complete themes data
   await writeJson(themeData, "src/data/themes.json");
-  await writeJson(Object.keys(themeData), "src/data/themesKeys.json");
 
   console.log("Themes processed:", Object.keys(themeData).join("\n "));
 } catch (e) {
