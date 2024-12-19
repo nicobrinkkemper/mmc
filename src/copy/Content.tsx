@@ -1,24 +1,23 @@
-import { ComponentProps } from "react";
-import {
-    type ContentComponent,
-    type ContentKey,
-    contentsKeys,
-} from "./contents";
-import { useContent } from "./useContent";
+import * as React from "react";
+import { contentsKeys } from "./contents.js";
+import { getContent } from "./getContent.js";
 
 function ContentAt<
-    Key extends ContentKey,
-    P extends ComponentProps<ContentComponent<Key>>,
->({ at, ...props }: Readonly<{ at: Key } & P>) {
-    const Component: ContentComponent<ContentKey> = useContent(at);
-    return <Component {...(props ?? {})} />;
+  Key extends ContentKey,
+  P extends ContentComponentWithThemeProps<Key>
+>({ at, theme, ...props }: Readonly<{ at: Key; theme: Theme } & P>) {
+  if (!theme) {
+    throw new Error("Theme is required for a Content component");
+  }
+  const Component = getContent(theme, at);
+  return <Component {...((props ?? {}) as any)} />;
 }
 
 export const Content = Object.fromEntries(
-    contentsKeys.map((at) => [
-        at,
-        (props) => <ContentAt at={at} {...(props ?? {})} />
-    ])
+  contentsKeys.map((at) => [
+    at,
+    (props: any) => <ContentAt at={at} {...(props ?? {})} />,
+  ])
 ) as {
-        [Key in ContentKey]: ContentComponent<Key>;
-    };
+  [Key in ContentKey]: ContentComponentWithTheme<Key>;
+};

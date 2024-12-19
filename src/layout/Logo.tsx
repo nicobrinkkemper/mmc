@@ -1,55 +1,86 @@
-import { PropsWithChildren } from "react";
-import { Link } from "react-router-dom";
-import { useTheme } from "../theme/useTheme";
 import classNames from "classnames";
+import * as React from "react";
 import styles from "./Logo.module.css";
-import { ThemeLogo } from "./ThemeLogo";
-type logoImageTypes = "logo" | "logo_simple" | "logo_special" | "logo_small";
+import { ThemeLogoStatic } from "./ThemeLogo.js";
 
-export type LogoProps = PropsWithChildren<{
+export type LogoStaticProps = React.PropsWithChildren<{
   logo?: logoImageTypes;
   small?: boolean;
   className?: string;
+  theme: Theme;
+  images: ThemeImages;
+  pathInfo: ThemePathInfo;
+  nextAndPrevTheme?: ThemePropsNextAndPrev;
+  clickable: React.ElementType;
 }>;
-export const Logo = ({
+export const LogoStatic = ({
   logo = "logo",
   small = false,
   className,
-}: LogoProps) => {
-
-  const {
-    theme,
-    themeSlug,
-    info: { nextThemeUrl, prevThemeUrl, nextTheme, prevTheme },
-  } = useTheme();
-
-  const hasPrev = !small && prevTheme;
-  const hasNext = !small && nextTheme;
+  theme,
+  images,
+  pathInfo,
+  nextAndPrevTheme,
+  clickable: Clickable = "a",
+}: LogoStaticProps) => {
   const size = small ? "small" : "big";
   return (
     <>
-      <Link
-        to={`/${themeSlug}`}
+      <Clickable
+        href={pathInfo.themeSlug}
         className={classNames(
           className,
-          styles.Logo,
+          styles["Logo"],
           styles[size],
-          styles[logo]
+          styles[logo as keyof typeof styles]
         )}
       >
-        <ThemeLogo small={small} logo={logo} theme={theme} />
-      </Link>
+        <ThemeLogoStatic
+          small={small}
+          logo={logo}
+          theme={theme}
+          images={images}
+        />
+      </Clickable>
 
-      {hasPrev && (
-        <Link className={styles.PrevTheme} to={`/${prevThemeUrl ?? ""}`}>
-          <ThemeLogo theme={prevTheme ?? "8mmc"} small logo="logo_simple" />
-        </Link>
-      )}
-      {hasNext && (
-        <Link className={styles.NextTheme} to={`/${nextThemeUrl ?? ""}`}>
-          <ThemeLogo theme={nextTheme ?? "8mmc"} small logo="logo_simple" />
-        </Link>
-      )}
+      {nextAndPrevTheme?.prevTheme.exists === true ? (
+        <Clickable
+          className={styles["PrevTheme"]}
+          href={
+            pathInfo.isCredits
+              ? nextAndPrevTheme.prevTheme.theme.pathInfo.toCredits
+              : pathInfo.isBatches
+              ? nextAndPrevTheme.prevTheme.theme.pathInfo.toLevels
+              : nextAndPrevTheme.prevTheme.theme.pathInfo.themeSlug
+          }
+        >
+          <ThemeLogoStatic
+            theme={nextAndPrevTheme.prevTheme.theme.theme}
+            small
+            logo="logo_simple"
+            images={nextAndPrevTheme.prevTheme.theme.images}
+          />
+        </Clickable>
+      ) : null}
+      {nextAndPrevTheme?.nextTheme.exists === true ? (
+        <Clickable
+          className={styles["NextTheme"]}
+          href={
+            pathInfo.isCredits
+              ? nextAndPrevTheme.nextTheme.theme.pathInfo.toCredits
+              : pathInfo.isBatches
+              ? nextAndPrevTheme.nextTheme.theme.pathInfo.toLevels
+              : nextAndPrevTheme.nextTheme.theme.pathInfo.themeSlug
+          }
+        >
+          <ThemeLogoStatic
+            theme={nextAndPrevTheme.nextTheme.theme.theme}
+            small
+            logo="logo_simple"
+            images={nextAndPrevTheme.nextTheme.theme.images}
+          />
+        </Clickable>
+      ) : null}
     </>
   );
 };

@@ -1,17 +1,19 @@
 import classnames from "classnames";
+import * as React from "react";
 import { PropsWithChildren } from "react";
-import { Link, To } from "react-router-dom";
 import styles from "./Card.module.css";
-import { Image } from "./Image";
+import { Image } from "./Image.js";
 
 export type CardProps = PropsWithChildren<{
   illustration?: boolean;
   disabled?: boolean;
-  to?: To;
+  href?: string;
   className?: string;
   heading?: string;
   subHeading?: string;
   type?: "special" | "simple";
+  images?: Record<string, any>;
+  clickable?: React.ElementType;
 }>;
 
 function CardOuter({
@@ -20,71 +22,95 @@ function CardOuter({
 }: Readonly<Pick<CardProps, "heading" | "children">>) {
   if (!heading) return <>{children}</>;
   return (
-    <div className={classnames(styles.CardOuter)}>
+    <div className={classnames(styles["CardOuter"])}>
       <h1>{heading}</h1>
       {children}
     </div>
   );
 }
 
-function CardClickable({
+function CardInner({
+  clickable: Clickable = "a",
   children,
-  to,
+  href,
   disabled,
   className,
-}: Readonly<Pick<CardProps, "to" | "children" | "disabled" | "className">>) {
-  const names = classnames(styles.CardInner, className);
-  if (!to) return <div className={names}>{children}</div>;
+}: Readonly<
+  Pick<CardProps, "href" | "children" | "disabled" | "className" | "clickable">
+>) {
+  const names = classnames(styles["CardInner"], className);
+  if (!href) return <div className={names}>{children}</div>;
   return (
-    <Link to={to} aria-disabled={disabled} className={names}>
+    <Clickable href={href} to={href} aria-disabled={disabled} className={names}>
       {children}
-    </Link>
+    </Clickable>
   );
 }
 
 function CardIllustration({
   illustration,
   type,
-}: Readonly<Pick<CardProps, "illustration" | "type">>) {
+  images,
+}: Readonly<Pick<CardProps, "illustration" | "type" | "images">>) {
   if (!illustration) return null;
   const names = classnames(
     type === "special"
-      ? styles.SpecialCardIllustration
-      : styles.CardIllustration,
+      ? styles["SpecialCardIllustration"]
+      : styles["CardIllustration"],
     illustration
   );
-  return <Image alt={"illustration"} name="illustration" className={names} />;
+  return (
+    <Image
+      alt={"illustration"}
+      name="illustration"
+      className={names}
+      images={images!}
+    />
+  );
 }
 
 export const Card = ({
   children,
   illustration,
   disabled = false,
-  to,
+  href,
   type = "simple",
   className,
   heading,
   subHeading,
+  images,
+  clickable: Clickable,
 }: CardProps) => {
   const names = classnames(
     illustration,
-    styles.Card,
+    styles["Card"],
     illustration,
     className,
-    disabled && styles.CardDisabled,
-    !!to && styles.CardClickable,
+    disabled && styles["IsCardDisabled"],
+    !!href && styles["IsClickableCard"],
     illustration &&
       (type === "special"
-        ? styles.HasSpecialCardIllustration
-        : styles.HasCardIllustration)
+        ? styles["HasSpecialCardIllustration"]
+        : styles["HasCardIllustration"])
   );
   return (
     <CardOuter heading={heading}>
-      <CardClickable to={to} disabled={disabled} className={names}>
-        <CardIllustration illustration={illustration} type={type} />
+      <CardInner
+        href={href}
+        disabled={disabled}
+        className={names}
+        clickable={Clickable}
+      >
+        {images ? (
+          <CardIllustration
+            illustration={illustration}
+            type={type}
+            images={images}
+          />
+        ) : null}
         <h2>{subHeading}</h2>
         {children}
-      </CardClickable>
+      </CardInner>
     </CardOuter>
   );
 };

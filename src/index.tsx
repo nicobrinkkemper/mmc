@@ -1,27 +1,23 @@
-import { createRoot } from 'react-dom/client';
-import { renderToString } from 'react-dom/server';
-import { AppWrapper } from "./AppWrapper";
+import * as React from "react";
+import { createRoot, hydrateRoot } from "react-dom/client";
+import { App } from "./App.js";
 import "./index.css";
 
-const init = () => {
-  const domNode = document.getElementById("root");
+const domNode = document.getElementById("root");
 
-  if (!domNode) {
-    throw new Error("Failed to find root element");
-  }
+if (!domNode) {
+  throw new Error("Failed to find root element");
+}
 
-  if (typeof window !== 'undefined' && (window as any).reactSnapshotRender) {
-    const html = renderToString(<AppWrapper />);
-    domNode.innerHTML = html;
-    (window as any).reactSnapshotRender();
-  } else {
-    const root = createRoot(domNode);
-    root.render(<AppWrapper />);
-  }
-};
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+// hydrate if root has already been rendered
+if (domNode.hasChildNodes() && !import.meta.env.DEV) {
+  hydrateRoot(domNode, <App />);
 } else {
-  init();
+  const root = createRoot(domNode);
+  root.render(<App />);
+}
+
+// For Vite HMR
+if (import.meta.hot) {
+  import.meta.hot.accept();
 }

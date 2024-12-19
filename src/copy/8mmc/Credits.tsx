@@ -1,8 +1,11 @@
-import { Card, CardProps } from "../../components/Card";
-import { CreditsWebsite } from "../default/CreditsWebsite";
-import { Mm8CreditsTrailerCard } from "./cards/Mm8CreditsTrailerCard";
+import * as React from "react";
+import { Card, CardProps } from "../../components/Card.js";
+import { CreditsWebsite } from "../default/CreditsWebsite.js";
+import { Mm8CreditsTrailerCard } from "./cards/Mm8CreditsTrailerCard.js";
 
-export const Credits = (props: CardProps) => (
+export const Credits8MMC = (
+  props: Omit<CardProps, "heading" | "subHeading" | "children">
+) => (
   <>
     <Card heading={`Credits`} subHeading={`Project Organization`} {...props}>
       <dl>

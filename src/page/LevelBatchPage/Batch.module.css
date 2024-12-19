@@ -22,3 +22,33 @@
   }
 
 }
+
+.Navigation {
+    padding-top: .5rem;
+    display: flex;
+    flex-flow: row;
+}
+
+.Navigation.hasNextBatch {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.Navigation.hasNextBatch.hasPreviousBatch {
+    display: flex;
+    justify-content: space-between;
+}
+
+.NextLevel {
+    max-width: 5.125rem;
+    margin-right: 0;
+}
+
+.PreviousBatch {
+    max-width: 5.125rem;
+    margin-right: 0;
+}
+
+.hidden {
+    display: none;
+}

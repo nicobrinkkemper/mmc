@@ -1,6 +1,8 @@
 /** the accordion css is under src/content/default/accordion.module.css */
-.outer {
+
+.outer:global(#\!\/about):target {
   position: fixed;
+  display: inherit;
   top: 0;
   left: 0;
   right: 0;
@@ -9,6 +11,9 @@
   width: 100%;
   background-color: var(--modal-outer-background);
   z-index: 2;
+}
+.outer {
+  display: none;
 }
 
 .main {
