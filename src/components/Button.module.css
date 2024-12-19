@@ -7,11 +7,14 @@
     border: none;
     text-decoration: none;
     background: none;
+    outline: var(--button-outline);
+        font-weight: var(--button-font-weight);
 }
 
 .Button.info-inverted {
     color: var(--button-info-inverted-color, inherit);
 }
+
 .ButtonInner {
     display: grid;
     grid-template-columns: 1fr 24px;
@@ -23,6 +26,7 @@
     color: var(--button-color, inherit);
     background: var(--button-background);
     border-radius: var(--button-border-radius);
+    box-shadow: var(--button-box-shadow);
 }
 
 .iconIsLeft .ButtonInner {
@@ -48,6 +52,7 @@
     background: var(--button-after-background, inherit);
     mix-blend-mode: var(--button-after-mix-blend-mode, none);
     box-shadow: var(--button-after-box-shadow, none);
+    filter: var(--button-shadow, none);
 }
 
 .ButtonIcon {
