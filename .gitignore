@@ -36,3 +36,6 @@ scripts/data/*
 
 startup/dist/**/*
 server/dist/**/*
+
+# WSL
+*.Zone.Identifier
