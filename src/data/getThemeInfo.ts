@@ -2,16 +2,21 @@ import { capitalize } from "lodash-es";
 import { convertNumberToWord } from "./convertNumberToWord.js";
 import { safeSnakecase } from "./safeSnakecase.mjs";
 
-export const getThemeInfo = (theme: Theme): ThemeInfo => {
+export const getThemeInfo = <T extends Theme = Theme>(
+  theme: T
+): ThemeInfo<T> => {
   if (!theme) {
     throw new Error("No theme defined");
   }
-  const caps = theme.toUpperCase();
+  const caps = theme.toUpperCase() as ThemeInfo<T>["caps"];
   const slug = theme;
   const snake = safeSnakecase(theme);
   const ordinalString = snake.split("_")[0];
   const ordinal = Number(ordinalString);
-  const themeYear = convertNumberToWord(ordinal, "english");
+  const themeYear = convertNumberToWord(
+    ordinal,
+    "english"
+  ) as ThemeInfo<T>["themeYear"];
   const writtenOutOrdinal = convertNumberToWord(ordinal, "englishOrdinal");
   const writtenOut = theme.endsWith("ymm")
     ? capitalize(themeYear) + " Years of Mario Maker"

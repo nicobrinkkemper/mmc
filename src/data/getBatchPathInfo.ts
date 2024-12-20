@@ -1,11 +1,18 @@
-export function getBatchPathInfo(
-  pathInfo: Pick<ThemePathInfo, "toLevels">,
-  batch: Pick<ThemeBatch | Batch, "batchNumber">
-): ThemeBatchPathInfo {
-  const pathname = `/${batch.batchNumber}`;
+export function getBatchPathInfo<
+  T extends Theme = Theme,
+  B extends NumberParam = NumberParam,
+  P extends `/${T}/levels/${B}` = `/${T}/levels/${B}`
+>(
+  pathInfo: Pick<ThemePathInfo<P>, "themeSlug">,
+  batch: Pick<ThemeBatch<T> | Batch<T>, "batchNumber">
+): ThemeBatchPathInfo<T, B, P> {
+  const pathname = `/levels/${batch.batchNumber}`;
+  const to = `${pathInfo.themeSlug}${pathname}`;
   return {
-    pathname: pathInfo.toLevels,
-    to: pathInfo.toLevels + pathname,
-    batchNumberParam: String(batch.batchNumber),
-  };
+    pathname: pathname,
+    to: to,
+    params: {
+      batchNumber: batch.batchNumber,
+    },
+  } as ThemeBatchPathInfo<T, B, P>;
 }

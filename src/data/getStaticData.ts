@@ -4,41 +4,47 @@ import { getThemeBatches } from "./getThemeBatches.js";
 import { getThemeInfo } from "./getThemeInfo.js";
 import { getThemePathInfo } from "./getThemePathInfo.js";
 import { getThemePropsNextAndPrev } from "./getThemePropsNextAndPrev.js";
-import { isValidTheme } from "./isValidTheme.js";
+import { isValidPath } from "./isValidPath.js";
 
-export const getStaticData = (theme: Theme, path: string) => {
-  if (!isValidTheme(theme)) {
-    throw new Error(`Invalid theme: ${theme}`);
-  }
-  const pathInfo = getThemePathInfo(theme, path);
+export const getStaticData = <P extends ValidPath = ValidPath>(
+  path: P | string = "/"
+): ThemeStaticData<P> => {
+  isValidPath(path);
+  const pathInfo = getThemePathInfo(path);
+  const theme = pathInfo.theme;
+
   const themeData = getTheme(theme);
   const batchesJson =
     "batches" in themeData ? themeData.batches : ({} as never);
   const images = "images" in themeData ? themeData.images : ({} as never);
   const info = getThemeInfo(theme);
   const weektrailers = getWeekTrailers(theme);
-  const { batches, isUnreleased, startDate } = getThemeBatches({
+  const batches = getThemeBatches({
     weektrailers: weektrailers,
     batches: batchesJson,
     pathInfo,
   });
   let clickable: React.ElementType | "a" | "button" = "a";
+  const batch =
+    typeof pathInfo.params.batchNumber === "number" && pathInfo.isBatch
+      ? batches.batches.find(
+          (batch) => batch.batchNumber === pathInfo.params.batchNumber
+        )
+      : undefined;
 
+  const level =
+    typeof pathInfo.params.order === "number" && pathInfo.isLevel && batch
+      ? batch.levels.find((level) => level.order === pathInfo.params.order)
+      : undefined;
   return {
-    theme,
+    theme: pathInfo.theme,
     pathInfo,
     info,
     images,
-    batches,
-    isUnreleased,
-    weektrailers,
-    startDate,
     nextAndPrevTheme: getThemePropsNextAndPrev(theme),
     clickable,
-  };
+    batch,
+    level,
+    ...batches,
+  } as unknown as ThemeStaticData<P>;
 };
-/**
- * The output of this is automatically used to create the ThemeStaticData
- * which is used to create the routes.
- */
-export type GetStaticDataReturn = ReturnType<typeof getStaticData>;

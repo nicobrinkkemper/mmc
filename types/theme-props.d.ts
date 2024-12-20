@@ -72,8 +72,8 @@ declare global {
           : K extends "level"
           ? { level: ThemeLevel; nextAndPrevLevel: ThemePropsNextAndPrevLevel }
           : K extends "pathInfo"
-          ? T[K] extends string
-            ? { pathInfo: ThemePathInfo<Theme, T[K]> }
+          ? T[K] extends ValidPath
+            ? { pathInfo: ThemePathInfo<T[K]> }
             : { pathInfo: ThemePathInfo }
           : K extends "nextAndPrevTheme"
           ? { nextAndPrevTheme: ThemePropsNextAndPrev }
@@ -116,3 +116,4 @@ declare global {
 }
 
 export {};
+

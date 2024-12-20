@@ -10,9 +10,9 @@ export const createGetLevelInfo = (
     i: number,
     levels: (ThemeLevel | Level)[]
   ): ThemeLevel {
-    let order = level.order;
+    let order = String(level.order);
     if (!isValidNumberParam(order, levels[0].order, levels.length)) {
-      order = levels[0].order;
+      order = String(levels[0].order);
     }
     const isUnreleased = new Date(level.releaseDate.date) > new Date();
 

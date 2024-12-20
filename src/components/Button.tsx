@@ -29,11 +29,36 @@ export const Button = ({
   id,
   clickable: Clickable = "a",
 }: ButtonProps) => {
+  /**
+   * Handle special cases for button content
+   * @remarks This ensures consistent rendering between server and client
+   */
+  const buttonChildren = React.isValidElement(children) ? (
+    children
+  ) : (
+    <span className={styles["ButtonLabel"]}>{children}</span>
+  );
+
+  /**
+   * Check if the link should open in a new tab
+   * @remarks Handles external links (http, https, or protocol-relative)
+   */
   const shouldForceBlank =
     typeof href === "string" &&
     (href.startsWith("http://") ||
       href.startsWith("https://") ||
       href.startsWith("//"));
+
+  /**
+   * Normalize paths to ensure consistency between server and client
+   * @remarks Handles both theme-specific and root paths
+   */
+  const normalizedHref = href?.startsWith("/")
+    ? href
+    : href?.includes("mmc")
+    ? `/${href}`
+    : href;
+
   const classN = classNames(
     className,
     styles["Button"],
@@ -43,7 +68,8 @@ export const Button = ({
     iconPosition === "left" && styles["iconIsLeft"],
     hidden && styles["hidden"]
   );
-  const Icon = (
+
+  const Icon = ButtonIcons[icon] && (
     <span
       className={classNames(
         styles["ButtonIcon"],
@@ -53,16 +79,17 @@ export const Button = ({
       {ButtonIcons[icon]}
     </span>
   );
+
   const blankProps = shouldForceBlank
     ? { target: "_blank", rel: "noopener noreferrer" }
     : {};
 
   return (
-    <Clickable href={href} id={id} className={classN} {...blankProps}>
+    <Clickable href={normalizedHref} id={id} className={classN} {...blankProps}>
       <div className={styles["ButtonInner"]}>
-        {iconPosition === "left" ? Icon : null}
-        <span className={styles["ButtonLabel"]}>{children}</span>
-        {iconPosition !== "left" ? Icon : null}
+        {iconPosition === "left" && Icon}
+        {buttonChildren}
+        {iconPosition !== "left" && Icon}
       </div>
     </Clickable>
   );

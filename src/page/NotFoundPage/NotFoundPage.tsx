@@ -1,24 +1,20 @@
 import * as React from "react";
-import { AppStatic } from "../../App.static.js";
+import { AppStatic } from "../../App.js";
 import { LayoutStatic } from "../../layout/Layout.js";
 import { NotFoundStatic } from "./NotFound.js";
 
-type NotFoundPageProps = Pick<
-  ThemeStaticData,
-  "theme" | "images" | "pathInfo"
-> & {
-  error?: string;
-} & Clickable;
+type NotFoundPageProps = ThemeStaticData<"/404"> &
+  Clickable & { error?: string };
 
 export function NotFoundPageStatic({
-  error,
   theme,
   images,
   pathInfo,
   clickable,
+  error,
 }: NotFoundPageProps) {
   return (
-    <AppStatic theme={theme}>
+    <AppStatic theme={theme} images={images}>
       <LayoutStatic
         type="simple"
         small

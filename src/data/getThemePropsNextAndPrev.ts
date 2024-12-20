@@ -18,7 +18,7 @@ const getThemeNavigation = (current: Theme, offset: number): ThemeExists => {
   const themeData = getTheme(targetTheme);
   const images = "images" in themeData ? themeData.images : ({} as never);
   const info = getThemeInfo(targetTheme);
-  const pathInfo = getThemePathInfo(targetTheme, `/${targetTheme}`);
+  const pathInfo = getThemePathInfo(`/${targetTheme}`);
 
   return {
     exists: true,

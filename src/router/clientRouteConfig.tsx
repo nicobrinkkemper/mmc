@@ -1,4 +1,4 @@
-import { createRoute, Link } from "@tanstack/react-router";
+import { createRoute } from "@tanstack/react-router";
 import * as React from "react";
 import { routes } from "../data/routes.js";
 import { rootRoute } from "./rootRoute.js";
@@ -11,7 +11,7 @@ export const clientRouteConfigs = routes.map((route) => {
     path,
     staticData,
     component: (props) => (
-      <Component {...staticData} {...props} clickable={Link} />
+      <Component {...staticData} {...props} clickable={"a"} />
     ),
   });
 });

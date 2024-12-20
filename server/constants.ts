@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 
-export const moduleBaseURL = "/dist/";
+export const moduleBaseURL = "/build/";
 export const ssr_port = 3001;
 export const rsc_port = 3002;
 export const build = resolve("build");

@@ -28,7 +28,7 @@ export function useSelectedLevelIndex() {
 export function useNextAndPrevLevel(levelOrder: ThemeLevel["order"]) {
   const batch = useBatch();
   const nextAndPrevLevel = useMemo(() => {
-    return getThemePropsNextAndPrevLevel(batch.levels, levelOrder);
+    return getThemePropsNextAndPrevLevel(batch.levels, batch.batchNumberIndex);
   }, [levelOrder, batch]);
   return nextAndPrevLevel;
 }

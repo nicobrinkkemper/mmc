@@ -1,11 +1,35 @@
-"use client";
-import { RouterProvider } from "@tanstack/react-router";
+import classNames from "classnames";
 import * as React from "react";
-import { createRouter } from "./router/createRouter.js";
+import styles from "./App.module.css";
+import { getCss } from "./css/getCss.js";
 
-// Map of paths to components
-const router = createRouter();
+type AppStaticProps = {
+  theme: Theme;
+  images: ThemeImages;
+  children: React.ReactNode;
+} & React.JSX.IntrinsicElements["div"];
 
-export const App = () => {
-  return <RouterProvider router={router} />;
+export const AppStatic = ({
+  theme,
+  children,
+  style,
+  images,
+  ...rest
+}: AppStaticProps) => {
+  const Theme = getCss(theme, "Theme");
+  const links = Object.entries(images).map(([key, { srcSet }]) => (
+    <link rel="preload" as="image" imageSrcSet={srcSet} key={key} />
+  ));
+  return (
+    <>
+      {links}
+      <div
+        className={classNames(styles["App"], Theme)}
+        style={style ? style : { overflowY: "scroll" }}
+        {...rest}
+      >
+        {children}
+      </div>
+    </>
+  );
 };

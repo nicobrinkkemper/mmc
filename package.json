@@ -10,7 +10,7 @@
     "serve": "node server/dist/dev-server.mjs",
     "serve-gh": "PUBLIC_URL=/mmc node server/dist/dev-server.mjs",
     "build": "export BASE_URL='https://mmcelebration.com' && vite build",
-    "server:build": "rm -rf dist && npx tsc --project tsconfig.node.json && cp --parents `find -name \"*.module.css\"` dist/",
+    "server:build": "rm -rf dist && npx tsc --project tsconfig.node.json && cp --parents `find -name \"*.css\"` dist/",
     "server:run": "run-p server:rsc:dev server:ssr:dev",
     "server:iterate": "npm run server:build && run-p server:start",
     "server:start": "NODE_OPTIONS='--experimental-json-modules' node ./dist/server/start.mjs",

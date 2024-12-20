@@ -23,7 +23,6 @@ export const getThemeProps = ((theme: Theme, options?: ThemeDataOptions) => {
     opts.pathInfo instanceof Object
       ? opts.pathInfo
       : getThemePathInfo(
-          theme,
           typeof opts.pathInfo === "string" ? opts.pathInfo : "/"
         );
 

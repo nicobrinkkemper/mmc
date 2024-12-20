@@ -6,8 +6,8 @@ declare global {
   type Constants = typeof import("../src/config/constants.ts");
   type MainTheme = Constants["mainTheme"];
   type ThemeCsv = {
-    order: number;
-    batchNumber: number;
+    order: string;
+    batchNumber: string;
     levelName: string;
     makerName: string;
     discordName: string;
@@ -69,3 +69,4 @@ declare global {
   type ThemeCsvLevel = ThemeCsvLevelParseResult["data"][number];
 }
 export {};
+

@@ -6,7 +6,7 @@ export const createTransformBatch =
   (batch: Batch, index: number): Omit<ThemeBatch, "nextAndPrev"> => ({
     ...batch,
     weekTrailer: weektrailers[index],
-    batchNumber: Number(batch.batchNumber),
+    batchNumber: batch.batchNumber,
     batchNumberIndex: index,
     levels: batch.levels.map(createGetLevelInfo(pathInfo)),
     pathInfo: getBatchPathInfo(pathInfo, batch),

@@ -1,16 +1,11 @@
 import * as React from "react";
-import { AppStatic } from "../../App.static.js";
+import { AppStatic } from "../../App.js";
 import { BackToBatch } from "../../components/BackButton.js";
 import { LayoutStatic } from "../../layout/Layout.js";
 import { LevelStatic } from "./Level.js";
 
-export type LevelPageStaticProps = Pick<
-  ThemeStaticData,
-  "theme" | "images" | "pathInfo" | "clickable"
-> & {
-  level: ThemeLevel;
-  batch: ThemeBatch;
-};
+export type LevelPageStaticProps =
+  ThemeStaticData<`/${Theme}/level/${string}/${string}`>;
 
 export function LevelPageStatic({
   theme,
@@ -21,7 +16,7 @@ export function LevelPageStatic({
   clickable,
 }: LevelPageStaticProps) {
   return (
-    <AppStatic theme={theme}>
+    <AppStatic theme={theme} images={images}>
       <LayoutStatic
         small
         type="simple"
@@ -30,7 +25,13 @@ export function LevelPageStatic({
         pathInfo={pathInfo}
         clickable={clickable}
       >
-        <BackToBatch batch={batch} clickable={clickable} />
+        <BackToBatch
+          batch={{
+            releaseDate: batch?.releaseDate,
+            pathInfo: batch?.pathInfo,
+          }}
+          clickable={clickable}
+        />
         <LevelStatic level={level} clickable={clickable} />
       </LayoutStatic>
     </AppStatic>

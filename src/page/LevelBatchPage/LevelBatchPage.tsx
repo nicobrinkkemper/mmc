@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import * as React from "react";
-import { AppStatic } from "../../App.static.js";
+import { AppStatic } from "../../App.js";
 import { BackToWeeks } from "../../components/BackButton.js";
 import { Button } from "../../components/Button.js";
 import { LayoutStatic } from "../../layout/Layout.js";
@@ -8,12 +8,8 @@ import { BatchStatic } from "./Batch.js";
 import styles from "./Batch.module.css";
 import { YouTubeIframeStatic } from "./Youtube/YoutubeIframe.js";
 
-export type LevelBatchPageStaticProps = Pick<
-  ThemeStaticData,
-  "theme" | "images" | "pathInfo"
-> & {
-  batch: ThemeBatch;
-} & Clickable;
+export type LevelBatchPageStaticProps =
+  ThemeStaticData<`/${Theme}/levels/${string}`>;
 
 export function LevelBatchPageStatic({
   theme,
@@ -23,7 +19,7 @@ export function LevelBatchPageStatic({
   clickable,
 }: LevelBatchPageStaticProps) {
   return (
-    <AppStatic theme={theme}>
+    <AppStatic theme={theme} images={images}>
       <LayoutStatic
         type="simple"
         small

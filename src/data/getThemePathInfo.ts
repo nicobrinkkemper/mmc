@@ -1,15 +1,16 @@
 import { analyzePath } from "./analysePath.js";
+import { isValidPath } from "./isValidPath.js";
 
-export const getThemePathInfo = <T extends Theme, Path extends string>(
-  theme: T,
-  path: Path
-): ThemePathInfo<T, Path> => {
-  const analysis = analyzePath(theme, path);
+export const getThemePathInfo = <Path extends ValidPath>(
+  path: Path | string
+): ThemePathInfo<Path> => {
+  isValidPath(path);
+  const analysis = analyzePath(path);
   return {
-    themeSlug: `/${theme}`,
-    toLevels: `/${theme}/levels`,
-    toCredits: `/${theme}/credits`,
-    path: analysis.to,
+    themeSlug: `/${analysis.theme}`,
+    toLevels: `/${analysis.theme}/levels`,
+    toCredits: `/${analysis.theme}/credits`,
+    path: path,
     ...analysis,
-  } as ThemePathInfo<T, Path>;
+  } as ThemePathInfo<Path>;
 };

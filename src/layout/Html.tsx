@@ -1,6 +1,5 @@
 import * as React from "react";
 import { BASE_URL, DEFAULT_DESCRIPTION } from "../config/constants.js";
-
 export const absoluteUrl = (path: string = "") => {
   if (path.startsWith("http")) return path;
   if (path.startsWith("/")) return `${BASE_URL}${path}`;
@@ -55,7 +54,6 @@ const getMetaTags = ({
 };
 
 export function Html({
-  children,
   title = "",
   description = DEFAULT_DESCRIPTION,
   contentType = "image/png",
@@ -68,6 +66,7 @@ export function Html({
   info,
   batches,
   images,
+  assets,
 }: Readonly<HtmlProps>) {
   const published = batches?.[0]?.releaseDate.formatted ?? "";
   if (title === "") title = info.caps;
@@ -89,46 +88,41 @@ export function Html({
   });
 
   return (
-    <html data-rh="lang" lang="en">
-      <head>
-        <meta html-charset="utf-8" />
-        <title>{title}</title>
-        {metaTags.map((tag, index) => {
-          const attrs = { ...tag };
-          return <meta key={`meta-${index}`} {...attrs} />;
-        })}
-        <link rel="icon" href={absoluteUrl(images?.["favicon"].src ?? "")} />
-        <link
-          rel="icon"
-          sizes="64x64"
-          href={absoluteUrl(images?.["favicon_512x512"].src ?? "")}
-        />
-        <link
-          rel="icon"
-          sizes="192x192"
-          href={absoluteUrl(images?.["favicon_192x192"].src ?? "")}
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
-        />
-        <style>{`body { -webkit - font - smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    <>
+      <meta html-charset="utf-8" />
+      <title>{title}</title>
+      {metaTags.map((tag, index) => {
+        const attrs = { ...tag };
+        return <meta key={`meta-${index}`} {...attrs} />;
+      })}
+      <link rel="icon" href={absoluteUrl(images?.["favicon"].src ?? "")} />
+      <link
+        rel="icon"
+        sizes="64x64"
+        href={absoluteUrl(images?.["favicon_512x512"].src ?? "")}
+      />
+      <link
+        rel="icon"
+        sizes="192x192"
+        href={absoluteUrl(images?.["favicon_192x192"].src ?? "")}
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
+      />
+      <style>{`body { -webkit - font - smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 * { padding: 0; margin: 0; min-width: 0; box-sizing: border-box; }
 img { max-width: 100%; object-fit: cover; color: transparent; }
 strong { font-weight: bold; }`}</style>
-        {/* {assets?.main && (
-          <script type="module" crossOrigin={""} src={assets.main} />
-        )}
-        {assets?.imports?.map((imp, i) => (
-          <link key={i} rel="modulepreload" crossOrigin={""} href={imp} />
-        ))}
-        {assets?.css?.map((css, i) => (
-          <link key={i} rel="stylesheet" crossOrigin={""} href={css} />
-        ))} */}
-      </head>
-      <body>
-        <div id="root">{children}</div>
-      </body>
-    </html>
+      {assets?.main && (
+        <script type="module" crossOrigin={""} src={assets.main} />
+      )}
+      {assets?.imports?.map((imp, i) => (
+        <link key={i} rel="modulepreload" crossOrigin={""} href={imp} />
+      ))}
+      {assets?.css?.map((css, i) => (
+        <link key={i} rel="stylesheet" crossOrigin={""} href={css} />
+      ))}
+    </>
   );
 }
