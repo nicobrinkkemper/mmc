@@ -9,7 +9,7 @@ export type CardProps = PropsWithChildren<{
   disabled?: boolean;
   to?: To;
   className?: string;
-  heading?: string;
+  heading?: string | JSX.Element;
   subHeading?: string;
   type?: "special" | "simple";
 }>;

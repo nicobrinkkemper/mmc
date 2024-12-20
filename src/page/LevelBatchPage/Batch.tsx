@@ -3,6 +3,7 @@ import { Difficulty } from "../../components/Difficulty";
 import { MakerName } from "../../components/MakerName";
 import { PublicImage } from "../../components/PublicImage";
 import { Tags } from "../../components/Tags";
+import { Content } from "../../copy/Content";
 import { useBatch } from "../../theme/useBatch";
 import { useTheme } from "../../theme/useTheme";
 import styles from "./Batch.module.css";
@@ -16,14 +17,15 @@ function BatchLevelCard({
   level: BatchLevel;
   levelNumber: number;
 }>) {
+  const batch = useBatch();
   const {
     batch: { releaseDate, batchNumber },
-  } = useBatch();
+  } = batch;
   const { themeSlug } = useTheme();
   const slug = `${batchNumber}/${levelNumber}`;
   return (
     <Card
-      heading={levelNumber === 1 ? releaseDate.formatted : undefined}
+      heading={levelNumber === 1 ? <Content.BatchHeader levelNumber={levelNumber} /> : undefined}
       key={slug}
       to={`/${themeSlug}level/${slug}/`}
       className={styles.Batch}

@@ -17,7 +17,7 @@ function ContentAt<
 export const Content = Object.fromEntries(
     contentsKeys.map((at) => [
         at,
-        (props) => <ContentAt at={at} {...(props ?? {})} />
+        (props: any) => <ContentAt at={at} {...(props ?? {})} />
     ])
 ) as {
         [Key in ContentKey]: ContentComponent<Key>;
