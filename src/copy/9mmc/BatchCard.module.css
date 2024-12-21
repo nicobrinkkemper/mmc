@@ -1,0 +1,41 @@
+.BatchCard,
+.BatchHeader {
+    --_batch-number-width: var(--batch-number-width, 64px);
+    grid-template-columns: var(--_batch-number-width) 1fr min-content;
+}
+
+.BatchHeader {
+    display: grid;
+    gap: var(--gap, .5rem);
+    margin: 16px 0 16px 0;
+}
+
+.BatchIcon img {
+    width: var(--_batch-number-width);
+    height: var(--_batch-number-width);
+}
+
+.BatchInfo {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    justify-content: center;
+    flex: 1 0 0;
+}
+
+.BatchTitle {
+    font-size: 1rem;
+    line-height: 1.125rem;
+    font-family: var(--font-secondary);
+}
+
+.BatchDescription {
+    font-size: .875rem;
+    line-height: 1rem;
+    font-family: var(--font-monospace);
+}
+
+.BatchLevelAmount {
+    font-size: .875rem;
+    line-height: 1rem;
+}
