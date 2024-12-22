@@ -1,9 +1,10 @@
-import { isValidTheme } from "./isValidTheme.js";
 import themes from "./themes.json" with { type: "json" };
 
-export function getTheme<S extends ThemeConfigTheme = ThemeConfigTheme>(theme: S | string): Themes[S] {
-  if (!isValidTheme(theme)) {
+export function getTheme<T extends Theme = Theme>(
+  theme: T | string
+): Themes[T] {
+  if (!themes || typeof themes !== "object" || !(theme in themes)) {
     throw new Error(`Invalid theme: ${theme}`);
   }
-  return themes[theme as S] as typeof themes[S] 
+  return themes[theme as keyof typeof themes]
 }

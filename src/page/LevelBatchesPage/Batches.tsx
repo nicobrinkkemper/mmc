@@ -5,7 +5,9 @@ import styles from "./Batches.module.css";
 function BatchesCard({
   batch,
   clickable,
-}: { readonly batch: ThemeBatch } & Clickable) {
+}: {
+  readonly batch: ThemeBatch<`/${Theme}/levels/${NumberParam}`>;
+} & Clickable) {
   const amountOfLevels = `${batch.levels.length} levels`;
   return (
     <Card
@@ -13,7 +15,9 @@ function BatchesCard({
       href={`${batch.pathInfo.to}`}
       clickable={clickable}
     >
-      <span className={styles["BatchNumber"]}>{batch.batchNumber}</span>
+      <span className={styles["BatchNumber"]}>
+        {batch.pathInfo.params.batchNumber}
+      </span>
       <div className={styles["BatchInfo"]}>
         <span className={styles["BatchReleaseDay"]}>
           {batch.releaseDate.formatted}
@@ -25,10 +29,12 @@ function BatchesCard({
 }
 
 const createMapReleaseDays = (clickable: React.ElementType) =>
-  function mapReleaseDays(batch: ThemeBatch) {
+  function mapReleaseDays(
+    batch: ThemeBatch<`/${Theme}/levels/${NumberParam}`>
+  ) {
     return (
       <BatchesCard
-        key={batch.batchNumber}
+        key={batch.pathInfo.params.batchNumber}
         batch={batch}
         clickable={clickable}
       />
@@ -36,7 +42,7 @@ const createMapReleaseDays = (clickable: React.ElementType) =>
   };
 
 export function BatchesStatic(
-  props: Pick<ThemeStaticData, "batches"> & Clickable
+  props: Pick<ThemeStaticData<`/${Theme}/levels`>, "batches"> & Clickable
 ) {
   if (!props.batches.length) {
     return <div className={styles["Batches"]}>No batches yet, stay tuned!</div>;

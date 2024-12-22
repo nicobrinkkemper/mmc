@@ -11,7 +11,7 @@ function BatchLevelCard({
   levelIndex,
   clickable: Clickable,
 }: Readonly<{
-  level: ThemeLevel;
+  level: ThemeLevel<`/${Theme}/level/${NumberParam}/${NumberParam}`>;
   levelIndex: number;
   clickable: React.ElementType;
 }>) {
@@ -43,7 +43,12 @@ function BatchLevelCard({
 }
 
 const createMapLevels = (clickable: React.ElementType = "a") =>
-  function mapLevels(level: ThemeLevel, orderIndex: number) {
+  function mapLevels<
+    P extends `/${T}/level/${B}/${O}`,
+    T extends Theme,
+    B extends NumberParam,
+    O extends NumberParam
+  >(level: ThemeLevel<P, T, B, O>, orderIndex: number) {
     return (
       <BatchLevelCard
         key={level.levelName.name}
@@ -57,7 +62,7 @@ const createMapLevels = (clickable: React.ElementType = "a") =>
 export function BatchStatic({
   batch,
   clickable,
-}: { batch: ThemeBatch } & Clickable) {
+}: { batch: ThemeBatch<`/${Theme}/levels/${NumberParam}`> } & Clickable) {
   const mapper = createMapLevels(clickable);
   return <>{batch.levels.map(mapper)}</>;
 }

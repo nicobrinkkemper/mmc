@@ -1,5 +1,5 @@
 import { themeKeysNoPrefix } from "../config/config.js";
-import { mainTheme } from "../config/constants.js";
+import { mainTheme } from "../config/themeConfig.js";
 
 /**
  * Type safe analysis of the path. This is a test aswell as a functional router that handles

@@ -7,7 +7,7 @@ import styles from "./MakerCard.module.css";
 
 type MakerCardProps = {
   level: Pick<
-    ThemeLevel,
+    ThemeLevel<`/${Theme}/level/${NumberParam}/${NumberParam}`>,
     "makerName" | "nationality" | "makerId" | "makerDescription" | "images"
   >;
 };

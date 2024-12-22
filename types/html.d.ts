@@ -20,7 +20,7 @@ declare global {
     assets?: HtmlAssets;
     children: ReactNode;
     info: ThemeInfo;
-    batches?: ThemeBatch[];
+    batches?: ThemeBatch<`/${Theme}/levels/${NumberParam}`>[];
     images?: ThemeImages;
   };
 
@@ -43,3 +43,4 @@ declare global {
 }
 
 export {};
+

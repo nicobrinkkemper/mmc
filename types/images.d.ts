@@ -20,7 +20,14 @@ declare global {
   };
 
   // these images might exists depending on the theme
-  type ThemeImageName = KeysOfIntersection<ThemeImages>;
+  type ThemeImageName = KeysOfIntersection<ThemeImages> extends
+    | string
+    | number
+    | symbol
+    ? // if we have no themes.json, this is the fallback type
+      "logo" | "illustration"
+    : // more accurate type derived from themes.json
+      KeysOfIntersection<ThemeImages>;
 
   // the most basic images are the ones that are always there
   type ThemeImageType = Exclude<ThemeImageName, `${string}_${string}`>;

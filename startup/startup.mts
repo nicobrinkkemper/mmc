@@ -1,4 +1,4 @@
-import { createThemesFromSpreadsheet } from "../src/data/createThemes.mjs";
+import { createThemesFromSpreadsheet } from "../src/data/createThemesFromSpreadsheet.mjs";
 import { writeJson } from "./file/writeJson.mjs";
 import { resizeFolders } from "./resize/resizeFolders.mjs";
 
@@ -10,8 +10,8 @@ try {
   const themeData = await createThemesFromSpreadsheet(resizedFolders["public"]);
 
   // Write individual theme data files
-  for (const [theme, data] of Object.entries(themeData)) {
-    await writeJson(data, `src/data/themes/${theme}/theme.json`);
+  for (const [key, data] of Object.entries(themeData)) {
+    await writeJson(data, `src/data/themes/${key}/${key}.json`);
   }
 
   // Write complete themes data

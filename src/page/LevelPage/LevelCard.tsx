@@ -8,7 +8,7 @@ import styles from "./LevelCard.module.css";
 
 type LevelCardProps = {
   level: Pick<
-    ThemeLevel,
+    ThemeStaticData<`/${Theme}/level/${NumberParam}/${NumberParam}`>["level"],
     | "makerName"
     | "levelName"
     | "images"

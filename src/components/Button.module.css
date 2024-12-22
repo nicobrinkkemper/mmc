@@ -25,13 +25,12 @@
     color: var(--button-color, inherit);
     background: var(--button-background);
     border-radius: var(--button-border-radius);
-    box-shadow: var(--button-box-shadow, none);
+    box-shadow: var(--button-box-shadow);
 }
 
 .iconIsLeft .ButtonInner {
     grid-template-columns: 24px 1fr;
     justify-items: center;
-    filter: var(--button-shadow, none);
 }
 
 .ButtonLabel {

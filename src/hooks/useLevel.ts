@@ -2,7 +2,9 @@ import { createContext, useContext, useMemo } from "react";
 import { getThemePropsNextAndPrevLevel } from "../data/getThemePropsNextAndPrevLevel.js";
 import { useBatch } from "./useBatch.js";
 
-export const LevelContext = createContext<ThemeLevel | undefined>(undefined);
+export const LevelContext = createContext<
+  ThemeLevel<`/${Theme}/level/${NumberParam}/${NumberParam}`> | undefined
+>(undefined);
 export const SelectedLevelIndexContext = createContext<number | undefined>(
   undefined
 );
@@ -25,10 +27,18 @@ export function useSelectedLevelIndex() {
   return levelIndex;
 }
 
-export function useNextAndPrevLevel(levelOrder: ThemeLevel["order"]) {
+export function useNextAndPrevLevel(
+  levelOrder: ThemeLevel<`/${Theme}/level/${NumberParam}/${NumberParam}`>
+) {
   const batch = useBatch();
   const nextAndPrevLevel = useMemo(() => {
-    return getThemePropsNextAndPrevLevel(batch.levels, batch.batchNumberIndex);
+    return getThemePropsNextAndPrevLevel(
+      batch.levels,
+      batch.levels.findIndex(
+        (level) =>
+          level.pathInfo.params.order === levelOrder.pathInfo.params.order
+      )
+    );
   }, [levelOrder, batch]);
   return nextAndPrevLevel;
 }

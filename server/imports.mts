@@ -39,7 +39,6 @@ export const ESM_IMPORTS: Record<string, string> = {
     PROJECT_ROOT,
     "node_modules/@testing-library/react/dist/index.js"
   ),
-  papaparse: path.resolve(PROJECT_ROOT, "node_modules/papaparse/papaparse.js"),
   cookie: path.resolve(PROJECT_ROOT, "node_modules/cookie/index.js"),
   "cookie-parser": path.resolve(
     PROJECT_ROOT,

@@ -1,6 +1,7 @@
 "use client";
 import { createRouter as createTanstackRouter } from "@tanstack/react-router";
-import { mainTheme, PUBLIC_URL } from "../config/constants.js";
+import { PUBLIC_URL } from "../config/constants.js";
+import { mainTheme } from "../config/themeConfig.js";
 import { routeTree } from "./routeTree.js";
 
 export function createRouter() {

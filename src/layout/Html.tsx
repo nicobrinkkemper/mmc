@@ -1,5 +1,6 @@
 import * as React from "react";
-import { BASE_URL, DEFAULT_DESCRIPTION } from "../config/constants.js";
+import { BASE_URL } from "../config/constants.js";
+import { siteName } from "../config/themeConfig.js";
 export const absoluteUrl = (path: string = "") => {
   if (path.startsWith("http")) return path;
   if (path.startsWith("/")) return `${BASE_URL}${path}`;
@@ -55,7 +56,7 @@ const getMetaTags = ({
 
 export function Html({
   title = "",
-  description = DEFAULT_DESCRIPTION,
+  description = siteName,
   contentType = "image/png",
   updated = new Date(Date.now()).toDateString(),
   category = "gaming",

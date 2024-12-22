@@ -17,9 +17,11 @@ export const AppStatic = ({
   ...rest
 }: AppStaticProps) => {
   const Theme = getCss(theme, "Theme");
-  const links = Object.entries(images).map(([key, { srcSet }]) => (
-    <link rel="preload" as="image" imageSrcSet={srcSet} key={key} />
-  ));
+  const links = Object.entries(images as Pick<ThemeImages, "srcSet">).map(
+    ([key, { srcSet }]) => (
+      <link rel="preload" as="image" imageSrcSet={srcSet} key={key} />
+    )
+  );
   return (
     <>
       {links}

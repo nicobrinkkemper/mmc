@@ -33,5 +33,14 @@ export function Image<
   const key =
     tryPreference in images ? (tryPreference as keyof typeof images) : name;
   const props = images[key];
-  return <PublicImage className={className} {...props} alt={alt ?? name} />;
+  return (
+    <PublicImage
+      className={className}
+      src={props.src}
+      srcSet={props.srcSet}
+      alt={alt ?? name}
+      width={props.width}
+      height={props.height}
+    />
+  );
 }

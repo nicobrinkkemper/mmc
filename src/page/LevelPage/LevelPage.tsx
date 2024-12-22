@@ -27,8 +27,8 @@ export function LevelPageStatic({
       >
         <BackToBatch
           batch={{
-            releaseDate: batch?.releaseDate,
-            pathInfo: batch?.pathInfo,
+            releaseDate: batch.releaseDate,
+            pathInfo: batch.pathInfo,
           }}
           clickable={clickable}
         />

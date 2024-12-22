@@ -17,7 +17,7 @@ const getNextAndPrev = createThemeDataGetter(
   "No navigation found for theme"
 );
 
-export const getThemeProps = ((theme: Theme, options?: ThemeDataOptions) => {
+export const getThemeProps = (theme: Theme, options?: ThemeDataOptions) => {
   const opts = options ?? {};
   const pathInfo =
     opts.pathInfo instanceof Object
@@ -49,4 +49,4 @@ export const getThemeProps = ((theme: Theme, options?: ThemeDataOptions) => {
     ...(getWeekTrailers(opts, matchingRoute.staticData) ?? {}),
     ...(getNextAndPrev(opts, matchingRoute.staticData) ?? {}),
   };
-}) as GetThemePropsFn;
+};

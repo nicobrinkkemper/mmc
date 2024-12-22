@@ -5,13 +5,26 @@ import styles from "./Level.module.css";
 import { LevelCard } from "./LevelCard.js";
 import { MakerCard } from "./MakerCard.js";
 
-export function LevelStatic({
-  level,
-  clickable,
-}: { level: ThemeLevel } & Clickable) {
+type LevelStaticProps = Pick<
+  ThemeStaticData<`/${Theme}/level/${NumberParam}/${NumberParam}`>,
+  "level" | "clickable"
+>;
+
+export function LevelStatic({ level, clickable }: LevelStaticProps) {
   return (
     <>
-      <LevelCard level={level} />
+      <LevelCard
+        level={{
+          images: level.images,
+          makerName: level.makerName,
+          levelName: level.levelName,
+          levelCode: level.levelCode,
+          description: level.description,
+          tags: level.tags,
+          difficulty: level.difficulty,
+          difficultyName: level.difficultyName,
+        }}
+      />
       <MakerCard level={level} />
       <div
         className={classNames(

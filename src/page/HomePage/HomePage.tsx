@@ -1,6 +1,6 @@
 import * as React from "react";
 import { AppStatic } from "../../App.js";
-import { mainTheme } from "../../config/constants.js";
+import { mainTheme } from "../../config/themeConfig.js";
 import { Content } from "../../copy/Content.js";
 import { LayoutStatic } from "../../layout/Layout.js";
 

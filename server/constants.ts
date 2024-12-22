@@ -8,3 +8,6 @@ export const assets = resolve(build, "assets");
 export const root = resolve(".");
 export const modules = resolve("dist/src");
 export const node_modules = resolve("node_modules");
+
+export const levels = "levels";
+export const level = "level";

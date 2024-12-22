@@ -1,20 +1,24 @@
 export function getLevelPathInfo<
   T extends Theme = Theme,
   B extends NumberParam = NumberParam,
-  O extends NumberParam = NumberParam,
-  P extends `/${T}/level/${B}/${O}` = `/${T}/level/${B}/${O}`
->(
-  pathInfo: Pick<ThemePathInfo<P>, "themeSlug">,
-  level: Pick<ThemeLevel<T> | Level<T>, "order" | "batchNumber">
-): ThemeLevelPathInfo<T, B, O, P> {
-  const pathname = `/level/${level.batchNumber}/${level.order}`;
-  const to = `${pathInfo.themeSlug}${pathname}`;
+  O extends NumberParam = NumberParam
+>(to: `/${T}/level/${B}/${O}`): ThemeLevelPathInfo<typeof to, T, B, O> {
+  const segments = to.split("/");
+  const theme = segments[1] as T;
+  const page = segments[2] as "level";
+  const batchNumber = segments[3] as B;
+  const order = segments[4] as O;
+  if (page !== "level") {
+    throw new Error("Invalid path");
+  }
   return {
-    pathname: pathname,
-    to: to,
+    isLevel: true,
+    path: [theme, "level", batchNumber, order] as [T, "level", B, O],
+    to,
+    themeSlug: `/${theme}` as `/${T}`,
     params: {
-      order: String(level.order) as B,
-      batchNumber: level.batchNumber as O,
+      batchNumber,
+      order,
     },
-  } as ThemeLevelPathInfo<T, B, O, P>;
+  };
 }

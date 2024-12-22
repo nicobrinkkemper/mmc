@@ -4,52 +4,82 @@ declare global {
   };
 
   type ThemeLevel<
+    P extends `/${T}/level/${B}/${O}`,
     T extends Theme = Theme,
     B extends NumberParam = NumberParam,
-    O extends NumberParam = NumberParam,
-    P extends `/${T}/level/${B}/${O}` = `/${T}/level/${B}/${O}`
+    O extends NumberParam = NumberParam
   > = Omit<Level, "order"> & {
-    order: string;
-    orderIndex: number;
-    isUnreleased: boolean;
-    pathInfo: ThemeLevelPathInfo<T, B, O, P>;
-    nextAndPrev: ThemePropsNextAndPrevLevel;
+    levelName: {
+      name: string;
+      slug: string;
+    };
+    makerName: {
+      name: string;
+      slug: string;
+    };
+    images: Record<"level" | "maker" | "levelThumbnail", ImageStructure>;
+    levelCode: string;
+    makerId: string;
+    nationality: string;
+    makerDescription: string;
+    description: string;
+    difficulty: number;
+    difficultyName: string;
+    tags: string[];
+    pathInfo: ThemeLevelPathInfo<P, T, B, O>;
+    nextAndPrev: ThemePropsNextAndPrevLevel<P, T, B, O>;
+    releaseDate: {
+      formatted: string;
+      date: Date;
+      isUnreleased: boolean;
+    };
   };
 
   type ThemeLevelPathInfo<
+    P extends `/${T}/level/${B}/${O}`,
     T extends Theme = Theme,
     B extends NumberParam = NumberParam,
-    O extends NumberParam = NumberParam,
-    P extends `/${T}/level/${B}/${O}` = `/${T}/level/${B}/${O}`
+    O extends NumberParam = NumberParam
   > = {
-    pathname: `/level/${B}/${O}`;
+    themeSlug: `/${T}`;
+    path: [T, "level", B, O];
     to: P;
     isLevel: true;
     params: {
-      order: B;
-      batchNumber: O;
+      order: O;
+      batchNumber: B;
     };
   };
 
   type ThemeBatch<
+    P extends `/${T}/levels/${B}`,
     T extends Theme = Theme,
-    B extends NumberParam = NumberParam,
-    P extends `/${T}/levels/${B}` = `/${T}/levels/${B}`
+    B extends NumberParam = NumberParam
   > = Omit<Batch, "levels" | "batchNumber"> & {
     weekTrailer: string;
-    batchNumber: Themes[Theme]["batches"][number]["batchNumber"];
-    batchNumberIndex: number;
-    levels: ThemeLevel<T, B>[];
-    pathInfo: ThemeBatchPathInfo<T, B, P>;
-    nextAndPrev: ThemePropsNextAndPrevBatch;
+    levels: ThemeLevel<`/${T}/level/${B}/${NumberParam}`>[];
+    pathInfo: ThemeBatchPathInfo<P, T, B>;
+    nextAndPrev: ThemePropsNextAndPrevBatch<T, B>;
+    tags: string[];
+    releaseDate: {
+      formatted: string;
+      date: Date;
+      isUnreleased: boolean;
+    };
   };
 
+  type BeforeNextAndPrevBatchIsAdded<
+    T extends Theme,
+    B extends NumberParam
+  > = Omit<ThemeBatch<`/${T}/levels/${B}`, T, B>, "nextAndPrev">;
+
   type ThemeBatchPathInfo<
+    P extends `/${T}/levels/${B}`,
     T extends Theme = Theme,
-    B extends NumberParam = NumberParam,
-    P extends `/${T}/levels/${B}` = `/${T}/levels/${B}`
+    B extends NumberParam = NumberParam
   > = {
-    pathname: `/levels/${B}`;
+    themeSlug: `/${T}`;
+    path: [T, "levels", B];
     to: P;
     isBatch: true;
     params: {
@@ -76,7 +106,7 @@ declare global {
   ) => ThemeBatchesPathInfo<P>;
 
   type ThemeBatches<T extends Theme = Theme> = {
-    batches: ThemeBatch<T>[];
+    batches: ThemeBatch<`/${T}/levels/${NumberParam}`>[];
     isUnreleased: boolean;
     startDate: Date;
   };
@@ -95,7 +125,7 @@ declare global {
   /**
    * Since the number param is always a string, we can use the string type to represent it.
    */
-  type NumberParam = string | number;
+  type NumberParam = string;
   /**
    * Pretty straight forward, though a little repetitive.
    * Simple definition of all possible paths.
@@ -129,13 +159,14 @@ declare global {
     | `/404`
     ? {
         theme: U extends Theme ? U : MainTheme;
-        isMainTheme: Path extends "/" | "/404"
-          ? true
-          : U extends MainTheme
+        isMainTheme: Path extends
+          | "/"
+          | "/404"
+          | `/${U extends Theme ? U : MainTheme}`
           ? true
           : U extends Theme
-          ? false
-          : boolean;
+          ? boolean
+          : false;
         isHome: Path extends `/` | `/${U}` ? true : false | undefined;
         isCredits: Path extends `/${U extends Theme ? U : MainTheme}/credits`
           ? true

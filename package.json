@@ -13,7 +13,7 @@
     "server:build": "rm -rf dist && npx tsc --project tsconfig.node.json && cp --parents `find -name \"*.css\"` dist/",
     "server:run": "run-p server:rsc:dev server:ssr:dev",
     "server:iterate": "npm run server:build && run-p server:start",
-    "server:start": "NODE_OPTIONS='--experimental-json-modules' node ./dist/server/start.mjs",
+    "server:start": "NODE_OPTIONS='--experimental-json-modules --enable-source-maps' node ./dist/server/start.mjs",
     "server:run:prod": "run-p server:rsc:prod server:ssr:prod",
     "server:rsc:dev": "NODE_OPTIONS='--conditions=react-server --enable-source-maps --experimental-json-modules --loader ./dist/server/moduleHook.dev.mjs' node ./dist/server/rsc-server.mjs",
     "server:rsc:prod": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules --loader ./dist/server/moduleHook.prod.mjs' node ./dist/server/rsc-server.mjs",
@@ -36,7 +36,7 @@
     "startup-gh": "export PUBLIC_URL='/mmc' && run-s startup:*",
     "startup": "export PUBLIC_URL='/' && run-s startup:*",
     "startup:compile": "npm run server:build",
-    "startup:run": "NODE_OPTIONS='--experimental-json-modules'; node ./dist/startup/startup.mjs",
+    "startup:run": "export NODE_OPTIONS='--experimental-json-modules --enable-source-maps'; node ./dist/startup/startup.mjs",
     "dev": "vite",
     "preview": "vite preview"
   },
@@ -79,7 +79,6 @@
     "@types/lodash": "^4.17.13",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.10.2",
-    "@types/papaparse": "^5.3.15",
     "@types/react": "^19.0.0-rc.1",
     "@types/react-dom": "^19.0.0-rc.1",
     "@vitejs/plugin-react": "^4.3.4",
@@ -98,7 +97,6 @@
     "lodash-es": "^4.17.21",
     "npm-check-updates": "^17.1.11",
     "npm-run-all": "^4.1.5",
-    "papaparse": "^5.4.1",
     "postcss-modules": "^6.0.1",
     "react": "^19.0.0-rc.1",
     "react-dom": "^19.0.0-rc.1",
@@ -111,5 +109,6 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "dependencies": {}
 }

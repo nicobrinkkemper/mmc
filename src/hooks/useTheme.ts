@@ -1,7 +1,8 @@
 "use client";
+import { useLocation } from "@tanstack/react-router";
 import { createContext, useContext, useMemo } from "react";
-import { mainTheme } from "../config/constants.js";
-import { getThemeProps } from "../data/getThemeProps.js";
+import { mainTheme } from "../config/themeConfig.js";
+import { getStaticData } from "../data/getStaticData.js";
 
 export const ThemeContext = createContext<ThemeBaseProps>({} as ThemeBaseProps);
 export const SelectedThemeContext = createContext<Theme>(mainTheme);
@@ -16,11 +17,8 @@ export function useSelectedTheme() {
   return theme;
 }
 
-export const useTheme = ((options) => {
-  const theme = useSelectedTheme();
-  if (!theme) {
-    throw new Error("useTheme must be used within a ThemeContext.Provider");
-  }
-  const props = useMemo(() => getThemeProps(theme, options), [theme, options]);
+export const useTheme = () => {
+  const pathname = useLocation().pathname;
+  const props = useMemo(() => getStaticData(pathname), [pathname]);
   return props;
-}) as UseThemeFn;
+};

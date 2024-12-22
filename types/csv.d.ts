@@ -3,7 +3,7 @@ declare global {
   // from a intersection of object types, get all the keys
   type KeysOfIntersection<T> = T extends T ? keyof T : never;
 
-  type Constants = typeof import("../src/config/constants.ts");
+  type Constants = typeof import("../src/config/themeConfig.ts");
   type MainTheme = Constants["mainTheme"];
   type ThemeCsv = {
     order: string;
@@ -24,12 +24,31 @@ declare global {
     averageClearTime: string;
     description: string;
     makerDescription: string;
-    difficulty: string;
-    tags: string;
+    difficulty: number;
+    tags: string[];
     nationality: string;
     levelCode: string;
     releaseDate: string;
   };
+
+  interface ThemeCsvParseResult<T> {
+    data: T[];
+    errors: ThemeCsvParseError[];
+    meta: ThemeCsvParseMeta;
+  }
+
+  type ThemeCsvLevelParseResult = ThemeCsvParseResult<
+    Omit<ThemeCsv, "levelName" | "makerName" | "tags"> & {
+      levelName: { slug: string; name: string };
+      makerName: { slug: string; name: string };
+      tags: string[];
+      image: string;
+    }
+  >;
+
+  // helpers
+  type ThemeCsvLevel = ThemeCsvLevelParseResult["data"][number];
+
   type ThemeCsvHeaders = keyof ThemeCsv;
   interface ThemeCsvParseMeta {
     delimiter: string;
@@ -51,22 +70,19 @@ declare global {
     row?: number | undefined;
     index?: number | undefined;
   }
-  interface ThemeCsvParseResult<T> {
-    data: T[];
-    errors: ThemeCsvParseError[];
-    meta: ThemeCsvParseMeta;
-  }
 
-  type ThemeCsvLevelParseResult = ThemeCsvParseResult<
-    Omit<ThemeCsv, "levelName" | "makerName" | "tags"> & {
-      levelName: { slug: string; name: string };
-      makerName: { slug: string; name: string };
-      tags: string[];
-      image: string;
-    }
-  >;
+  type CsvReviver<H = string, V = any> = (
+    value: string | number | boolean,
+    header?: H,
+    row?: number,
+    col?: number
+  ) => V;
 
-  type ThemeCsvLevel = ThemeCsvLevelParseResult["data"][number];
+  type CsvParseResult<
+    Skip extends boolean,
+    H = string,
+    V = any
+  > = Skip extends true ? V[][] : [H[], ...V[][]];
 }
 export {};
 

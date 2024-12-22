@@ -1,12 +1,11 @@
 import * as React from "react";
-import { themeKeysNoPrefix } from "../config/keys.js";
 import { CreditsPageStatic } from "../page/CreditsPage/CreditsPage.js";
 import { HomePageStatic } from "../page/HomePage/HomePage.js";
 import { LevelBatchesPageStatic } from "../page/LevelBatchesPage/LevelBatchesPage.static.js";
 import { LevelBatchPageStatic } from "../page/LevelBatchPage/LevelBatchPage.js";
 import { LevelPageStatic } from "../page/LevelPage/LevelPage.js";
 import { NotFoundPageStatic } from "../page/NotFoundPage/NotFoundPage.js";
-import { getStaticData } from "./getStaticData.js";
+import { getAllStaticThemePages, getStaticData } from "./getStaticData.js";
 
 const createRoute = <P extends ValidPath>(
   staticData: ThemeStaticData<P>,
@@ -17,13 +16,19 @@ const createRoute = <P extends ValidPath>(
   component: (props: Clickable) => <Component {...staticData} {...props} />,
 });
 
-const createLevelRoutes = (batch: ThemeBatch) =>
-  batch.levels.map((level: ThemeLevel) => {
-    const staticData = getStaticData(level.pathInfo.to);
-    return createRoute(staticData, LevelPageStatic);
-  });
+const createLevelRoutes = (
+  batch: ThemeBatch<`/${Theme}/levels/${NumberParam}`>
+) =>
+  batch.levels.map(
+    (level: ThemeLevel<`/${Theme}/level/${NumberParam}/${NumberParam}`>) => {
+      const staticData = getStaticData(level.pathInfo.to);
+      return createRoute(staticData, LevelPageStatic);
+    }
+  );
 
-const createBatchRoutes = (batch: ThemeBatch) => {
+const createBatchRoutes = (
+  batch: ThemeBatch<`/${Theme}/levels/${NumberParam}`>
+) => {
   const staticData = getStaticData(batch.pathInfo.to);
   return createRoute(staticData, LevelBatchPageStatic);
 };
@@ -42,18 +47,18 @@ const createCreditsRoute = (themeStaticData: ThemeStaticData) => {
   return createRoute(staticData, CreditsPageStatic);
 };
 
-const mapThemeBatchRoutes = (themeStaticData: ThemeStaticData<`/${Theme}`>) => {
+const mapThemeBatchRoutes = (themeStaticData: ThemeStaticData) => {
   return themeStaticData.batches.map((batch) => createBatchRoutes(batch)) ?? [];
 };
 
-const mapThemeLevelRoutes = (staticData: ThemeStaticData) => {
-  return staticData.batches?.flatMap((batch) => createLevelRoutes(batch)) ?? [];
+const mapThemeLevelRoutes = (themeStaticData: ThemeStaticData) => {
+  return (
+    themeStaticData.batches.flatMap((batch) => createLevelRoutes(batch)) ?? []
+  );
 };
 
 const getAllRoutes = () => {
-  const staticDatas = themeKeysNoPrefix.map((theme) =>
-    getStaticData(`/${theme}`)
-  );
+  const staticDatas = getAllStaticThemePages();
   return Object.freeze([
     createRoute(getStaticData("/"), HomePageStatic),
     ...staticDatas.flatMap((staticData) => {

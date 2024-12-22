@@ -1,44 +1,66 @@
 declare global {
   type WithOption<T> = T | true | undefined;
 
-  type ThemeExists =
+  type ThemeExists<T extends Theme = Theme> =
     | {
         exists: true;
-        theme: ThemePropsReturn<Theme, { pathInfo: true; images: true }>;
+        theme: ThemeStaticData<`/${T}`>;
       }
     | {
         exists: false;
         theme?: never;
       };
 
-  type LevelExists<L extends ThemeLevel | Level = ThemeLevel> =
+  type LevelExists<
+    P extends `/${T}/level/${B}/${O}`,
+    T extends Theme = Theme,
+    B extends NumberParam = NumberParam,
+    O extends NumberParam = NumberParam,
+    L extends ThemeLevel<P, T, B, O> = ThemeLevel<P, T, B, O>
+  > =
     | {
         exists: true;
-        level: L;
+        level: L extends ThemeLevel<P, T, B, O>
+          ? ThemeLevel<P, T, B, O>
+          : Level;
       }
     | {
         exists: false;
         level?: never;
       };
 
-  type BatchExists<B extends ThemeBatch | Batch = ThemeBatch> =
+  type BatchExists<
+    T extends Theme = Theme,
+    B extends NumberParam = NumberParam
+  > =
     | {
         exists: true;
-        batch: B;
+        batch: B extends ThemeBatch<`/${T}/levels/${B}`, T, B>
+          ? ThemeBatch<`/${T}/levels/${B}`, T, B>
+          : Batch;
       }
     | {
         exists: false;
         batch?: never;
       };
 
-  type ThemePropsNextAndPrevLevel = {
-    nextLevel: LevelExists;
-    prevLevel: LevelExists;
+  type ThemePropsNextAndPrevLevel<
+    P extends `/${T}/level/${B}/${O}`,
+    T extends Theme = Theme,
+    B extends NumberParam = NumberParam,
+    O extends NumberParam = NumberParam,
+    L extends ThemeLevel<P, T, B, O> = ThemeLevel<P, T, B, O>
+  > = {
+    nextLevel: LevelExists<P, T, B, O, L>;
+    prevLevel: LevelExists<P, T, B, O, L>;
   };
 
-  type ThemePropsNextAndPrevBatch = {
-    nextBatch: BatchExists;
-    prevBatch: BatchExists;
+  type ThemePropsNextAndPrevBatch<
+    T extends Theme = Theme,
+    B extends NumberParam = NumberParam
+  > = {
+    nextBatch: BatchExists<T, B>;
+    prevBatch: BatchExists<T, B>;
   };
 
   type ThemePropsNextAndPrev = {
@@ -46,73 +68,26 @@ declare global {
     prevTheme: ThemeExists;
   };
 
-  interface ThemeDataOptions {
+  interface ThemeDataOptions<
+    P extends ValidPath = ValidPath,
+    T extends Theme = Theme,
+    B extends NumberParam = NumberParam,
+    O extends NumberParam = NumberParam
+  > {
     batches?: WithOption<ThemeBatches>;
     pathInfo?: WithOption<ThemePathInfo> | string;
     info?: WithOption<ThemeInfo>;
     images?: WithOption<ThemeImages>;
     weekTrailers?: WithOption<string[]>;
     nextAndPrevTheme?: WithOption<ThemePropsNextAndPrev>;
-    batch?: WithOption<ThemeBatch> | number | string;
-    level?: WithOption<ThemeLevel> | number | string;
+    batch?: P extends `/${T}/levels/${B}`
+      ? WithOption<ThemeBatch<P, T, B>>
+      : never;
+    level?: P extends `/${T}/level/${B}/${O}`
+      ? WithOption<ThemeLevel<P, T, B, O>>
+      : never;
     error?: WithOption<Error> | string;
   }
-
-  type UnionToIntersection<U> = (
-    U extends any ? (k: U) => void : never
-  ) extends (k: infer I) => void
-    ? I
-    : never;
-
-  type ThemeProps<T extends ThemeDataOptions> = UnionToIntersection<
-    {
-      [K in keyof T]: T[K] extends true | string
-        ? K extends "batch"
-          ? { batch: ThemeBatch; nextAndPrevBatch: ThemePropsNextAndPrevBatch }
-          : K extends "level"
-          ? { level: ThemeLevel; nextAndPrevLevel: ThemePropsNextAndPrevLevel }
-          : K extends "pathInfo"
-          ? T[K] extends ValidPath
-            ? { pathInfo: ThemePathInfo<T[K]> }
-            : { pathInfo: ThemePathInfo }
-          : K extends "nextAndPrevTheme"
-          ? { nextAndPrevTheme: ThemePropsNextAndPrev }
-          : K extends "images"
-          ? { images: ThemeImages }
-          : K extends "batches"
-          ? { batches: ThemeBatch[] }
-          : K extends "weekTrailers"
-          ? { weekTrailers: string[] }
-          : K extends "info"
-          ? { info: ThemeInfo }
-          : K extends keyof ThemeDataOptions
-          ? NonNullable<ThemeDataOptions[K]>
-          : never
-        : never;
-    }[keyof T]
-  >;
-
-  type ThemePropsReturn<
-    T extends Theme = Theme,
-    Options extends ThemeDataOptions = {}
-  > = {
-    theme: T;
-  } & ThemeProps<Options>;
-
-  type GetThemePropsFn = <
-    T extends Theme = Theme,
-    Options extends ThemeDataOptions = {}
-  >(
-    theme: T,
-    options?: Options
-  ) => ThemePropsReturn<T, Options>;
-
-  type UseThemeFn = <
-    T extends Theme = Theme,
-    Options extends ThemeDataOptions = {}
-  >(
-    options?: Options
-  ) => ThemePropsReturn<T, Options>;
 }
 
 export {};

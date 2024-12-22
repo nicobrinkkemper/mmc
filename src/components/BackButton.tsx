@@ -6,7 +6,10 @@ export function BackToBatch({
   batch,
   clickable,
 }: {
-  batch: Pick<ThemeBatch, "pathInfo" | "releaseDate">;
+  batch: Pick<
+    ThemeBatch<`/${Theme}/levels/${NumberParam}`>,
+    "pathInfo" | "releaseDate"
+  >;
 } & Clickable) {
   return (
     <Button

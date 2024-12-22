@@ -1,4 +1,4 @@
-import { mainTheme } from "../config/constants.js";
+import { mainTheme } from "../config/themeConfig.js";
 import * as themesCss from "./index.js";
 
 export function getCss<

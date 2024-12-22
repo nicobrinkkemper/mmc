@@ -4,9 +4,9 @@
   // when we extend a tsconfig.json file, it will merge and override the compilerOptions but not the arrays like lib, rootDirs, etc.
   "compilerOptions": {
     // The very latest ES features
-    "target": "es2024",
+    "target": "es2023",
     "lib": [
-      "es2024",
+      "es2023",
       "dom",
       "dom.iterable",
     ],
@@ -18,6 +18,7 @@
     "declarationMap": true,
     // emit map.js files next to our .js files, allowing vscode to click-through to the type definition source code
     "sourceMap": true,
+    
     "typeRoots": [
       // for: node_modules/vite/client
       "./node_modules/@types",
@@ -41,7 +42,6 @@
     "startup/**/*.mts",
     "startup/**/*.ts",
     "startup/**/*.tsx",
-    "startup/**/*.json",
     "startup/**/*.css",
     "startup/**/*.module.css",
     "server/**/*.ts",
