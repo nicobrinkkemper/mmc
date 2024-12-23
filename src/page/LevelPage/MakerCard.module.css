@@ -3,9 +3,7 @@
     justify-items: center;
 }
 
-.MakerCard img {
-    mix-blend-mode: var(--maker-card-img-blend-mode, normal);
-}
+
 
 .MakerImage {
   object-fit: contain;

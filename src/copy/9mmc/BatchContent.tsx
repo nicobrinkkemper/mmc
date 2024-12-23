@@ -15,7 +15,7 @@ export const batchContent: BatchContent = {
     },
     '2': {
         icon: <Image name={'batch_2' as any} />,
-        title: 'The Orchestra',
+        title: 'The Showcase',
         description: 'The MMC levels you know and love.',
     }
 }
