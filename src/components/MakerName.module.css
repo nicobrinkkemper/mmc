@@ -1,26 +1,59 @@
 .MakerName {
-    display: inline-grid;
+    display: grid;
+        grid-template-columns: auto;
+        /* Single column for stacking */
+        grid-template-rows: auto auto auto;
+        /* Rows for images, flags, and name/ID */
     justify-items: center;
-    grid-template-columns:
-        [nationality-start makerId-start] 24px [nationality-end] 6px [maker-start] max-content [maker-end makerId-end];
-    grid-template-rows:
-        [maker] max-content [makerId] 24px;
+    /* Center-align everything */
+        gap: 8px;
+        /* Space between rows */
     width: max-content;
 }
 
+.MakerImages {
+    display: flex;
+    /* Flexbox for maker images */
+    gap: 8px;
+    /* Space between images */
+}
+
+.MakerImage {
+    width: 50px;
+    /* Set size for maker images */
+    height: 50px;
+    object-fit: cover;
+    /* Ensure images fit without distortion */
+    border-radius: 50%;
+    /* Optional: make images circular */
+}
+
+.Nationalities {
+    display: flex;
+    /* Flexbox for flags */
+    gap: 4px;
+    /* Add space between flags */
+}
 .Nationality {
-    grid-area: maker / nationality;
+    width: 20px;
+        /* Flag size */
+        height: 15px;
+        background-size: cover;
 }
 
 .Name {
-    grid-area: maker;
-    font-size: 0.7rem;
-    line-height: 150%;
-    align-self: flex-start;
+    font-size: 1rem;
+        /* Larger font size for name */
+        line-height: 1.5;
+        color: black;
+        font-weight: bold;
 }
 
 .MakerId {
-    grid-area: makerId;
-    font-size: 0.5rem;
-    display: block;
+    font-size: 0.9rem;
+        /* Larger font size for ID */
+        color: black;
+        /* Black text */
+        font-weight: bold;
+        text-align: center;
 }
