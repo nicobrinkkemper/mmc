@@ -1,114 +1,81 @@
 import classnames from "classnames";
 import * as React from "react";
-import { PropsWithChildren } from "react";
 import styles from "./Card.module.css";
-import { Image } from "./Image.js";
+import { PublicImage } from "./PublicImage.js";
 
-export type CardProps = PropsWithChildren<{
-  illustration?: boolean;
-  disabled?: boolean;
-  href?: string;
-  className?: string;
-  heading?: string;
-  subHeading?: string;
-  type?: "special" | "simple";
-  images?: Record<string, any>;
-  clickable?: React.ElementType;
-}>;
-
-function CardOuter({
-  children,
-  heading,
-}: Readonly<Pick<CardProps, "heading" | "children">>) {
+const CardOuter: ThemeComponent<{
+  heading: optional;
+}> = ({ heading, children }) => {
   if (!heading) return <>{children}</>;
   return (
     <div className={classnames(styles["CardOuter"])}>
-      <h1>{heading}</h1>
+      {typeof heading === "string" ? <h1>{heading}</h1> : heading}
       {children}
     </div>
   );
-}
+};
 
-function CardInner({
-  clickable: Clickable = "a",
-  children,
-  href,
-  disabled,
-  className,
-}: Readonly<
-  Pick<CardProps, "href" | "children" | "disabled" | "className" | "clickable">
->) {
+const CardInner: ThemeComponent<{
+  clickable: optional;
+}> = ({ clickable: Clickable, children, className }) => {
   const names = classnames(styles["CardInner"], className);
-  if (!href) return <div className={names}>{children}</div>;
   return (
-    <Clickable href={href} to={href} aria-disabled={disabled} className={names}>
-      {children}
-    </Clickable>
+    <div className={names}>
+      {Clickable ? (
+        <Clickable className={names}>{children}</Clickable>
+      ) : (
+        children
+      )}
+    </div>
   );
-}
+};
 
-function CardIllustration({
-  illustration,
-  type,
-  images,
-}: Readonly<Pick<CardProps, "illustration" | "type" | "images">>) {
-  if (!illustration) return null;
-  const names = classnames(
-    type === "special"
-      ? styles["SpecialCardIllustration"]
-      : styles["CardIllustration"],
-    illustration
-  );
-  return (
-    <Image
-      alt={"illustration"}
-      name="illustration"
-      className={names}
-      images={images!}
-    />
-  );
-}
-
-export const Card = ({
+export const Card: ThemeComponent<{
+  images: pickOptional<["illustration"]>;
+  type: required;
+  clickable: optional;
+  heading: optional;
+  subHeading: optional;
+}> = ({
   children,
-  illustration,
-  disabled = false,
-  href,
   type = "simple",
   className,
+  images,
+  clickable,
   heading,
   subHeading,
-  images,
-  clickable: Clickable,
-}: CardProps) => {
+}) => {
+  const cardIllustration =
+    "illustration" in images ? images["illustration"][0] : null;
   const names = classnames(
-    illustration,
     styles["Card"],
-    illustration,
     className,
-    disabled && styles["IsCardDisabled"],
-    !!href && styles["IsClickableCard"],
-    illustration &&
+    !clickable && styles["IsCardDisabled"],
+    !!clickable && styles["IsClickableCard"],
+    cardIllustration?.className,
+    cardIllustration?.className &&
       (type === "special"
         ? styles["HasSpecialCardIllustration"]
         : styles["HasCardIllustration"])
   );
   return (
     <CardOuter heading={heading}>
-      <CardInner
-        href={href}
-        disabled={disabled}
-        className={names}
-        clickable={Clickable}
-      >
-        {images ? (
-          <CardIllustration
-            illustration={illustration}
-            type={type}
-            images={images}
+      <CardInner className={names} clickable={clickable}>
+        {cardIllustration ? (
+          <PublicImage
+            className={classnames(
+              type === "special"
+                ? styles["SpecialCardIllustration"]
+                : styles["CardIllustration"],
+              cardIllustration.className
+            )}
+            src={cardIllustration.src}
+            srcSet={cardIllustration.srcSet}
+            width={cardIllustration.width}
+            height={cardIllustration.height}
           />
         ) : null}
-        <h2>{subHeading}</h2>
+        {typeof subHeading === "string" ? <h2>{subHeading}</h2> : subHeading}
         {children}
       </CardInner>
     </CardOuter>

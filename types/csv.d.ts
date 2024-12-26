@@ -1,75 +1,18 @@
+import { csvThemeMapper } from "../src/data/csvThemeMapper.ts";
+
 // before we define the config, we take the change to define the types we want from the csv and reuse elsewhere throughout the codebase
 declare global {
-  // from a intersection of object types, get all the keys
-  type KeysOfIntersection<T> = T extends T ? keyof T : never;
+  type ThemeCsvParseResult = ReturnType<typeof csvThemeMapper>;
 
-  type Constants = typeof import("../src/config/themeConfig.ts");
-  type MainTheme = Constants["mainTheme"];
-  type ThemeCsv = {
-    order: string;
-    batchNumber: string;
-    levelName: string;
-    makerName: string;
-    discordName: string;
-    makerId: string;
-    briefDescription: string;
-    progress: string;
-    difficultyName: string;
-    gameStyle: string;
-    genre: string;
-    isMusicLevel: string;
-    mainTheme: string;
-    subTheme: string;
-    clearCondition: string;
-    averageClearTime: string;
-    description: string;
-    makerDescription: string;
-    difficulty: number;
-    tags: string[];
-    nationality: string;
-    levelCode: string;
-    releaseDate: string;
+  type ThemeLevelData = Omit<ThemeCsvParseResult, "images" | "pathInfo"> & {
+    images: ReturnType<ThemeCsvParseResult["images"]>;
+    pathInfo: ReturnType<ThemeCsvParseResult["pathInfo"]>;
   };
 
-  interface ThemeCsvParseResult<T> {
-    data: T[];
-    errors: ThemeCsvParseError[];
-    meta: ThemeCsvParseMeta;
-  }
-
-  type ThemeCsvLevelParseResult = ThemeCsvParseResult<
-    Omit<ThemeCsv, "levelName" | "makerName" | "tags"> & {
-      levelName: { slug: string; name: string };
-      makerName: { slug: string; name: string };
-      tags: string[];
-      image: string;
-    }
-  >;
-
-  // helpers
-  type ThemeCsvLevel = ThemeCsvLevelParseResult["data"][number];
-
-  type ThemeCsvHeaders = keyof ThemeCsv;
-  interface ThemeCsvParseMeta {
-    delimiter: string;
-    linebreak: string;
-    aborted: boolean;
-    fields?: string[] | undefined;
-    truncated: boolean;
-    cursor: number;
-  }
-  interface ThemeCsvParseError {
-    type: "Quotes" | "Delimiter" | "FieldMismatch";
-    code:
-      | "MissingQuotes"
-      | "UndetectableDelimiter"
-      | "TooFewFields"
-      | "TooManyFields"
-      | "InvalidQuotes";
-    message: string;
-    row?: number | undefined;
-    index?: number | undefined;
-  }
+  type ThemeBatchProcessorFn = <T extends Theme = Theme>(
+    themeConfig: ThemeConfig<T>,
+    levelData: ThemeLevelData[]
+  ) => ThemeBatch[];
 
   type CsvReviver<H = string, V = any> = (
     value: string | number | boolean,
@@ -78,11 +21,37 @@ declare global {
     col?: number
   ) => V;
 
-  type CsvParseResult<
+  /*
+  export function csvParse<
+  const Skip extends boolean = false,
+  const RowMode extends boolean = false,
+  const Value extends RowMode extends true ? Record<string, unknown> : string = RowMode extends true ? Record<string, unknown> : string,
+  const Reviver extends RowMode extends true ? (row: Value) => any : (value: string) => any = RowMode extends true ? (row: Value) => Value : (value: string) => string
+>(
+  csv: string,
+  options?: { typed?: boolean; skipHeaders?: Skip; rowMode?: RowMode },
+  reviver: Reviver = ((value: Value) => value) as Reviver
+): Skip extends true 
+  ? ReturnType<Reviver>[] 
+  : [ReturnType<Reviver>[], ...ReturnType<Reviver>[]] {
+  const ctx = Object.create(null);
+    */
+  type ParseCsvFn = <
     Skip extends boolean,
-    H = string,
-    V = any
-  > = Skip extends true ? V[][] : [H[], ...V[][]];
+    RowMode extends boolean,
+    Typed extends boolean,
+    Value extends Typed extends true
+      ? RowMode extends true
+        ? Record<string | number, any>
+        : string | number
+      : RowMode extends true
+      ? Record<string, any>
+      : string,
+    Return
+  >(
+    csv: string,
+    options: { typed?: Typed; skipHeaders: Skip; rowMode: RowMode },
+    reviver: (row: Value) => Return
+  ) => Return[];
 }
 export {};
-

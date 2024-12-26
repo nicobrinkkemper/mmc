@@ -2,7 +2,9 @@ import { merge } from "lodash-es";
 import path from "node:path";
 import { resizeImages } from "./resizeImages.mjs";
 
-export async function resizeFolders() {
+
+
+export async function resizeFolders(): Promise<ResizeImageStructure> {
   try {
     const resizeInfo = await resizeImages();
     if (!resizeInfo) throw new Error("No resizeInfo");
@@ -20,12 +22,9 @@ export async function resizeFolders() {
         };
       }),
     ];
-    const resizedFolders = merge({}, ...directoryGrouping) as Record<
-      string,
-      Record<string, Record<string, ImageJsonStructure>>
-    >;
-    return resizedFolders;
+    return merge({}, ...directoryGrouping) as ResizeImageStructure;
   } catch (e) {
     console.trace(e);
+    throw e;
   }
 }

@@ -1,29 +1,36 @@
 import * as React from "react";
 import { Button } from "../../components/Button.js";
 import { Card } from "../../components/Card.js";
-import { ToTheLevelsStatic } from "../../components/ToTheLevels.js";
 import styles from "./NotFound.module.css";
 
-const NotFoundStatic = ({
-  error,
-  pathInfo,
-  clickable,
-}: {
-  error?: string;
-  pathInfo: Pick<ThemePathInfo, "toLevels" | "to">;
-} & Clickable) => {
+const NotFoundStatic: ThemePageComponent<
+  `/${MainTheme}`,
+  {
+    pathInfo: required;
+    clickable: required;
+  }
+> = ({ pathInfo, clickable }) => {
   return (
     <>
-      <Card className={styles["Card"]}>
+      <Card
+        className={styles["Card"]}
+        clickable={clickable}
+        heading="404 - Not Found!"
+        subHeading={undefined}
+        images={{}}
+      >
         <p>This page was not found, sorry! Jank can happen sometimes.</p>
-        {error ? <p>The error message for the web developer: {error}</p> : null}
       </Card>
       <div className={styles["Buttons"]}>
-        <ToTheLevelsStatic
-          pathInfo={{ toLevels: pathInfo.toLevels }}
+        <Button
+          primary={true}
+          icon="arrow-right"
+          href={pathInfo.toLevels}
           clickable={clickable}
-        />
-        <Button icon="arrow-right" href={pathInfo.to} clickable={clickable}>
+        >
+          To the levels
+        </Button>
+        <Button icon="arrow-right" href={pathInfo.toHome} clickable={clickable}>
           To homepage
         </Button>
       </div>

@@ -17,10 +17,10 @@
  * ```
  */
 function reduceResizeJobGroupToData(
-  data: ImageJsonStructure,
+  data: Record<string, Partial<ImageStructure>>,
   job: ResizeJobDone
   // index: number,
-): ImageJsonStructure {
+): Record<string, Partial<ImageStructure>> {
   const {
     userInfo: { main },
     output: { reference, href, version },
@@ -28,13 +28,13 @@ function reduceResizeJobGroupToData(
   } = job;
   const hasReference = data && reference in data;
   const fallbackVersion = version || "versions";
-  const prev = data[reference];
+  const prev = data[reference as keyof typeof data];
   const hasPrev = typeof prev === "object" && prev != null;
   const hasFallbackVersion = hasPrev && fallbackVersion in prev;
   const hasVersion = hasReference && hasFallbackVersion;
 
   const srcSet =
-    (!prev?.srcSet ? "" : prev.srcSet + ", ") + href + " " + width + "w";
+    (!prev?.["srcSet"] ? "" : prev["srcSet"] + ", ") + href + " " + width + "w";
 
   return {
     ...data,
@@ -44,21 +44,22 @@ function reduceResizeJobGroupToData(
       ...(srcSet && { srcSet }),
       ...((hasVersion
         ? {
-            [fallbackVersion]: [
-              ...(prev[fallbackVersion as never] as string[]),
-            ],
+            [fallbackVersion]: [...(prev[fallbackVersion as never] as any)],
           }
         : {
             [fallbackVersion]: [href],
-            ...((!prev?.width || main) && { width }),
-            ...((!prev?.height || main) && { height }),
-            ...((!prev?.aspectRatio || main) && { aspectRatio }),
-            ...((!prev?.src || main) && { src: href }),
+            ...((!prev?.["width"] || main) && { width }),
+            ...((!prev?.["height"] || main) && { height }),
+            ...((!prev?.["aspectRatio"] || main) && { aspectRatio }),
+            ...((!prev?.["src"] || main) && { src: href }),
           }) as ImageJsonItem),
     },
   };
 }
 
 export function resizeJobGroupToData(jobGroup: ResizeJobDone[]) {
-  return jobGroup.reduce<ImageJsonStructure>(reduceResizeJobGroupToData, {});
+  return jobGroup.reduce<Record<string, Partial<ImageStructure>>>(
+    reduceResizeJobGroupToData,
+    {}
+  );
 }

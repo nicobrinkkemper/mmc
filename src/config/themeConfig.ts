@@ -1,16 +1,14 @@
+import { createConfig } from "./createConfig.js";
+
 export const mainTheme = "9mmc";
 
 export const siteName = "Yearly Mario Maker Celebrations' Official Site";
 export const url = "https://mmcelebration.com";
 
-const link = (gid: number) => ({
-  gid,
-  link: `https://docs.google.com/spreadsheets/d/e/2PACX-1vROk4rxqS9jPImRfwqL6T6pFHJSBs4Gx3O9JUzabTeDA0aZrr2xccinxeuWhSNJJflByzbE63CAkZj0/pub?gid=${gid}&single=true&output=csv`,
-});
-
-export const themeConfig = {
-  _4ymm: {
-    googleSheet: link(1010271799),
+export const themeConfig = [
+  createConfig({
+    theme: "4ymm",
+    gid: 1010271799,
     weekTrailers: [
       "iY6Qj6L_oF0",
       "WUWn1gQIs_8",
@@ -21,23 +19,20 @@ export const themeConfig = {
       "8zSCJDWJUvM",
       "OHwd3qGiFOU",
     ],
-  },
-  _5ymm: {
-    googleSheet: link(588603541),
+  }),
+  createConfig({
+    theme: "5ymm",
+    gid: 588603541,
     weekTrailers: ["b26QvbP4MUI", "-f83uRDCZpA", "ouKbaTu5YKc", "13Sb6V8ydPM"],
-  },
-  _6ymm: {
-    googleSheet: link(1708788134),
-    weekTrailers: [
-      "G4mhHeXk3k0",
-      "lANqCC2xPoo",
-      "rvBtTv9aeo0",
-      "oR_7lE_Zx2c",
-      "VLiyJwx5T3E",
-    ],
-  },
-  _7mmc: {
-    googleSheet: link(0),
+  }),
+  createConfig({
+    theme: "6ymm",
+    gid: 1708788134,
+    weekTrailers: ["G4mhHeXk3k0", "lANqCC2xPoo", "rvBtTv9aeo0", "oR_7lE_Zx2c"],
+  }),
+  createConfig({
+    theme: "7mmc",
+    gid: 0,
     weekTrailers: [
       "PbKK8_liEqA",
       "s5QguY9AAig",
@@ -46,23 +41,29 @@ export const themeConfig = {
       "dn3EvFPRsls",
       "DXE5-MfeGAs",
     ],
-  },
-  _8mmc: {
-    googleSheet: link(1776023134),
+  }),
+  createConfig({
+    theme: "8mmc",
+    gid: 1776023134,
     weekTrailers: ["X7502D3SSy4"],
-  },
-  _9mmc: {
-    googleSheet: link(614218153),
-    weekTrailers: [
-      "", // if no trailer, leave empty
-    ],
-  },
-} satisfies {
-  [key: string]: {
-    googleSheet: {
-      gid: number;
-      link: string;
-    };
-    weekTrailers: string[];
-  };
-};
+  }),
+  createConfig({
+    theme: "9mmc",
+    gid: 614218153,
+    weekTrailers: [], // if no trailer, leave empty
+  }),
+] as const;
+
+/**
+ * Collection of keys. These keys are more safe to use for object keys, since they do not start with a number.
+ */
+export const themeKeys: ThemeKeys = themeConfig.map(
+  (config) => config.key
+) as ThemeKeys;
+
+/**
+ * Collection of all the themes as a tuple
+ */
+export const themes: Themes = themeConfig.map(
+  (config) => config.theme
+) as Themes;

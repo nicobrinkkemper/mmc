@@ -1,11 +1,21 @@
 import * as React from "react";
-import { Card, CardProps } from "../../components/Card.js";
+import { Card } from "../../components/Card.js";
 import { CreditsWebsite } from "../default/CreditsWebsite.js";
 import { Ymm5CreditsTrailerCard } from "./cards/Ymm5CreditsTrailerCard.js";
 
-export const Credits5YMM = ({ children, ...props }: CardProps) => (
+type Credits5YMMType = ThemeComponent<{
+  clickable: required;
+}>;
+
+export const Credits5YMM: Credits5YMMType = ({ clickable, ...props }) => (
   <>
-    <Card heading={`Credits`} subHeading={`Project Organization`} {...props}>
+    <Card
+      heading={`Credits`}
+      subHeading={`Project Organization`}
+      images={{}}
+      clickable={undefined}
+      {...props}
+    >
       <dl>
         <dt>Project manager</dt>
         <dd>Kiavik</dd>
@@ -26,7 +36,7 @@ export const Credits5YMM = ({ children, ...props }: CardProps) => (
         <dd>Salt Lake</dd>
       </dl>
     </Card>
-    <CreditsWebsite {...props} />
-    <Ymm5CreditsTrailerCard {...props} />
+    <CreditsWebsite clickable={clickable} />
+    <Ymm5CreditsTrailerCard />
   </>
 );

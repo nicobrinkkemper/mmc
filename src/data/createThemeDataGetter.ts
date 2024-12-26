@@ -12,4 +12,4 @@ export const createThemeDataGetter =
       : option
       ? { error: errorMessage }
       : null;
-  };
+  };;

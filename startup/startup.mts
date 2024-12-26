@@ -1,23 +1,29 @@
-import { createThemesFromSpreadsheet } from "../src/data/createThemesFromSpreadsheet.mjs";
+import { levelData } from "../src/data/levelData.js";
 import { writeJson } from "./file/writeJson.mjs";
 import { resizeFolders } from "./resize/resizeFolders.mjs";
 
 try {
   const resizedFolders = await resizeFolders();
-  if (!resizedFolders) throw new Error("No resizedFolders");
-  if (!resizedFolders["public"]) throw new Error("No resizedFolders.public");
 
-  const themeData = await createThemesFromSpreadsheet(resizedFolders["public"]);
-
-  // Write individual theme data files
-  for (const [key, data] of Object.entries(themeData)) {
-    await writeJson(data, `src/data/themes/${key}/${key}.json`);
-  }
-
-  // Write complete themes data
-  await writeJson(themeData, "src/data/themes.json");
-
-  console.log("Themes processed:", Object.keys(themeData).join("\n "));
+  await Promise.all([
+    ...Object.entries(resizedFolders["public"]).map(async ([theme, images]) => {
+      await writeJson(images, `src/data/themes/${theme}/images.json`);
+    }),
+    ...Object.entries(resizedFolders["src"]["assets"]).map(
+      async ([theme, images]) => {
+        await writeJson(images, `src/data/themes/${theme}/assets.json`);
+      }
+    ),
+    ...(
+      await levelData(resizedFolders["public"])
+    ).map(async (batches) => {
+      await writeJson(
+        batches,
+        `src/data/themes/${batches[0].pathInfo.theme}/${batches[0].pathInfo.theme}.json`
+      );
+      console.info(batches[0].pathInfo.theme);
+    }),
+  ]);
 } catch (e) {
   console.trace(e);
 } finally {

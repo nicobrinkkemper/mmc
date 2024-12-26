@@ -6,52 +6,71 @@ import { PublicImage } from "../../components/PublicImage.js";
 import { Tags } from "../../components/Tags.js";
 import styles from "./LevelCard.module.css";
 
-type LevelCardProps = {
-  level: Pick<
-    ThemeStaticData<`/${Theme}/level/${NumberParam}/${NumberParam}`>["level"],
-    | "makerName"
-    | "levelName"
-    | "images"
-    | "levelCode"
-    | "description"
-    | "tags"
-    | "difficulty"
-    | "difficultyName"
-  >;
-};
-
-export function LevelCard({ level }: Readonly<LevelCardProps>) {
+export const LevelCard: ThemePageComponent<
+  `/${Theme}/level/${string}/${string}`,
+  {
+    level: pickRequired<
+      [
+        "levelCode",
+        "levelName",
+        "makerName",
+        "images",
+        "tags",
+        "difficulty",
+        "difficultyName",
+        "description",
+        "tags"
+      ]
+    >;
+  }
+> = ({
+  level: {
+    levelCode,
+    levelName,
+    makerName,
+    images,
+    tags,
+    difficulty,
+    difficultyName,
+    description,
+  },
+}) => {
   return (
-    <Card className={styles["LevelCard"]}>
+    <Card
+      className={styles["LevelCard"]}
+      heading={undefined}
+      subHeading={levelName.value}
+      images={{}}
+      clickable={undefined}
+    >
       <div
         style={{
-          maxWidth: level.images.level.width + "px",
+          maxWidth: images.level.width + "px",
           justifySelf: "center",
         }}
       >
-        <h2>{level.levelName.name}</h2>
         <PublicImage
-          alt={`Screenshot: ${level.makerName.name}`}
-          src={level.images.level.src}
-          srcSet={level.images.level.srcSet}
-          width={level.images.level.width}
-          height={level.images.level.height}
+          alt={`Screenshot: ${makerName.value}`}
+          src={images.level.src}
+          srcSet={images.level.srcSet}
+          width={images.level.width}
+          height={images.level.height}
           className={styles["LevelImage"]}
         />
-        <h3 className={styles["LevelCode"]}>
-          {level.levelCode ?? "Code coming soon"}
-        </h3>
+        <h3 className={styles["LevelCode"]}>{levelCode}</h3>
       </div>
       <div className={styles["TagsAndDifficulty"]}>
-        <Tags tags={level.tags} />
+        <Tags level={{ tags: tags }} />
         <Difficulty
-          difficulty={level.difficulty}
-          difficultyName={level.difficultyName}
+          level={{
+            difficulty: difficulty,
+            difficultyName: difficultyName,
+          }}
         />
       </div>
       <div className={styles["Description"]}>
-        <CompileJSX>{level.description}</CompileJSX>
+        <CompileJSX>{description}</CompileJSX>
       </div>
     </Card>
   );
-}
+};

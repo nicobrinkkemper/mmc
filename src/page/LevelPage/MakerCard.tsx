@@ -5,32 +5,40 @@ import { MakerName } from "../../components/MakerName.js";
 import { PublicImage } from "../../components/PublicImage.js";
 import styles from "./MakerCard.module.css";
 
-type MakerCardProps = {
-  level: Pick<
-    ThemeLevel<`/${Theme}/level/${NumberParam}/${NumberParam}`>,
-    "makerName" | "nationality" | "makerId" | "makerDescription" | "images"
-  >;
-};
-
-export function MakerCard({ level }: Readonly<MakerCardProps>) {
+export const MakerCard: ThemePageComponent<
+  `/${Theme}/level/${NumberParam}/${NumberParam}`,
+  {
+    level: pickRequired<
+      ["makerName", "nationality", "makerId", "images", "makerDescription"]
+    >;
+  }
+> = ({
+  level: { makerName, nationality, makerId, images, makerDescription },
+}) => {
   return (
-    <Card className={styles["MakerCard"]}>
+    <Card
+      className={styles["MakerCard"]}
+      heading={undefined}
+      subHeading={undefined}
+      images={{}}
+      clickable={undefined}
+    >
       <PublicImage
-        alt={`Mii: ${level.makerName.name}`}
-        src={level.images.maker.src}
-        srcSet={level.images.maker.srcSet}
-        width={level.images.maker.width}
-        height={level.images.maker.height}
+        alt={`Mii: ${makerName.value}`}
+        src={images.maker.src}
+        srcSet={images.maker.srcSet}
+        width={images.maker.width}
+        height={images.maker.height}
         className={styles["MakerImage"]}
       />
       <MakerName
-        makerName={level.makerName.name}
-        nationality={level.nationality}
-        makerId={level.makerId}
+        makerName={makerName.value}
+        nationality={nationality}
+        makerId={makerId}
       />
       <div className={styles["Description"]}>
-        <CompileJSX>{level.makerDescription}</CompileJSX>
+        <CompileJSX>{makerDescription}</CompileJSX>
       </div>
     </Card>
   );
-}
+};

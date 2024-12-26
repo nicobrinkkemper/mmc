@@ -1,11 +1,17 @@
 import * as React from "react";
-import { Card, CardProps } from "../../../components/Card.js";
+import { Card } from "../../../components/Card.js";
 
-export const Ymm5CreditsTrailerCard = (
-  props: Omit<CardProps, "subHeading" | "children">
-) => {
+type Ymm5CreditsTrailerCardType = ThemeComponent<{}>;
+
+export const Ymm5CreditsTrailerCard: Ymm5CreditsTrailerCardType = (props) => {
   return (
-    <Card subHeading={`Trailers`} {...props}>
+    <Card
+      heading={`Trailers`}
+      subHeading={undefined}
+      images={{}}
+      clickable={undefined}
+      {...props}
+    >
       <dl>
         <dt>Script, visuals & edit</dt>
         <dd>Lektor</dd>

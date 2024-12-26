@@ -1,4 +1,46 @@
 declare global {
+  type Primitive = string | number | boolean | null | undefined;
+
+  /**
+   * Get all the keys of an intersection of object types
+   */
+  type KeysOfIntersection<T> = T extends T ? keyof T : never;
+  /**
+   * Return the next value in the union (expressed as a tuple)
+   * @example
+   * type Result = NextInUnion<"4ymm", ThemeKeys>; // "5ymm"
+   * type Abc = NextInUnion<"a", UnionToTuple<"a" | "b">>;
+   */
+  type NextInUnion<T, Order extends Primitive[]> = Extract<
+    Order[IndexOf<Order, T> extends -1
+      ? 0
+      : IndexOf<Order, T> extends infer I extends number
+      ? Add1<I> extends keyof Order
+        ? Add1<I>
+        : 0
+      : never],
+    Order[number]
+  >;
+
+  /**
+   * Returns the previous value in the union (expressed as a tuple)
+   * @example
+   * type Result = PrevInUnion<"5ymm", ThemeKeys>; // "4ymm"
+   * type Abc = PrevInUnion<"b", UnionToTuple<"a" | "b">>;
+   */
+  type PrevInUnion<T, Order extends Primitive[]> = Extract<
+    Order[IndexOf<Order, T> extends -1
+      ? 0
+      : IndexOf<Order, T> extends infer I extends number
+      ? I extends 0
+        ? Order["length"] extends number
+          ? Subtract1<Order["length"]>
+          : never
+        : Subtract1<I>
+      : never],
+    Order[number]
+  >;
+
   /**
    * Converts a union type to an intersection type
    * @example
@@ -12,6 +54,17 @@ declare global {
     : never;
 
   /**
+   * Converts a union type to a tuple type
+   * @example
+   * type Result = UnionToTuple<"4ymm" | "5ymm" | "6ymm"> // ["4ymm", "5ymm", "6ymm"]
+   */
+  type UnionToTuple<U> = UnionToIntersection<
+    U extends any ? (x: () => U) => void : never
+  > extends (x: () => infer R) => void
+    ? [...UnionToTuple<Exclude<U, R>>, R]
+    : [];
+
+  /**
    * Infers return types from a record of mapper functions
    * @example
    * type Mappers = {
@@ -23,6 +76,17 @@ declare global {
   type InferMapperTypes<M extends Record<string, (val: string) => any>> = {
     [K in keyof M]: ReturnType<M[K]>;
   };
+
+  /**
+   * Creates a mapper function from a configuration object
+   */
+  type CreateMapperFn = <
+    M extends Record<string, (val: string) => any>,
+    R
+  >(config: {
+    mappers: { [K in keyof M]: M[K] };
+    transform: (rows: InferMapperTypes<M>, index: number) => R;
+  }) => (rows: Record<string, string>) => R;
 
   /**
    * Recursively replaces $index keys with arrays in object types
@@ -98,6 +162,43 @@ declare global {
       }[keyof T]
     >
   >;
+
+  /**
+   * Gets index of type T in tuple Tuple
+   */
+  type IndexOf<Tuple extends any[], T> = Tuple extends [
+    ...infer Before,
+    infer Current
+  ]
+    ? T extends Current
+      ? Before["length"]
+      : IndexOf<Before, T>
+    : -1;
+
+  /**
+   * Adds 1 to a number type
+   */
+  type Add1<N extends number> = [...TupleOf<N>, any]["length"];
+
+  /** Helper: Subtracts 1 from a number type */
+  type Subtract1<N extends number> = TupleOf<N> extends [...infer Init, any]
+    ? Init["length"]
+    : never;
+
+  /**
+   * Creates tuple of length N
+   */
+  type TupleOf<N extends number, T extends any[] = []> = T["length"] extends N
+    ? T
+    : TupleOf<N, [...T, any]>;
+
+  /**
+   * Gets the index of an item in a tuple
+   */
+  type TupleIndex<T extends any[], Item> = {
+    [K in keyof T]: T[K] extends Item ? K : never;
+  }[number];
 }
 
 export {};
+

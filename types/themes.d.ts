@@ -1,41 +1,22 @@
 declare global {
-  type ThemesRaw = typeof import("../src/data/themes.json");
-  type StubTheme = {
-    [key: string]: any;
-  };
-  type Themes = `${keyof ThemesRaw}` extends `` ? StubTheme : ThemesRaw;
+  type GeneratedThemes = typeof import("../src/data/themes.json");
+  type IsGeneratedThemes = `${keyof GeneratedThemes}` extends `` ? true : false;
 
-  // generally prefer the config keys, as those are the ones used before this is generated
-  type ThemeKeys = (keyof Themes)[];
+  type ThemeConfiguration = typeof import("../src/config/themeConfig.ts");
+  type MainTheme = ThemeConfiguration["mainTheme"];
+  type ThemeConfigValue = ThemeConfiguration["themeConfig"][number];
+  type ThemeConfigKey = ThemeConfigValue["key"];
 
-  type Theme = ThemeConfigKey extends `_${infer P}` ? P : MainTheme;
+  type Theme = ThemeConfigValue["theme"];
+  type Themes = UnionToTuple<Theme>;
+  type ThemeKeys = UnionToTuple<ThemeConfigKey>;
+  type ThemeIndex<T extends Theme> = TupleIndex<Themes, T>;
 
-  type ThemeImages<T extends Theme = Theme> = T extends keyof Themes
-    ? Themes[T]["images"]
-    : ImageJsonStructure; // if this breaks, can be replaced with ImageJsonStructure for simpler type
-
-  type Level<T extends Theme = Theme> = T extends keyof Themes
-    ? Themes[T]["batches"][0]["levels"][number]
-    : Record<string, never>;
-
-  type Batch<T extends Theme = Theme> = T extends keyof Themes
-    ? Themes[T]["batches"][number]
-    : Record<string, never>[];
-
-  type WeekTrailers<T extends Theme = Theme> = T extends keyof Themes
-    ? Themes[T]["weektrailers"]
-    : string[];
-
-  type Images = Record<
-    Theme,
-    Record<"level" | "maker" | "images" | "levelThumbnail", ImageJsonStructure>
-  >;
-
-  type ThemeMarkdown<T extends Theme = Theme> = T extends keyof Themes
-    ?
-        | Themes[T]["batches"][number]["levels"][number]["description"]
-        | Themes[T]["batches"][number]["levels"][number]["makerDescription"]
-    : never;
+  /**
+   * Gets the theme config for a given theme. Using the ThemeIndex helper, we can just get it from the tuple directly.
+   */
+  type ThemeConfig<T extends Theme = Theme> =
+    ThemeConfiguration["themeConfig"][ThemeIndex<T>];
 }
 export {};
 

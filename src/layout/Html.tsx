@@ -18,7 +18,19 @@ const getMetaTags = ({
   tags,
   twitter,
   image,
-}: getMetaTagsProps) => {
+}: Pick<
+  HtmlProps,
+  | "title"
+  | "description"
+  | "url"
+  | "contentType"
+  | "published"
+  | "updated"
+  | "category"
+  | "tags"
+  | "twitter"
+  | "image"
+>) => {
   const metaTags = [
     { itemprop: "name", content: title },
     { itemprop: "description", content: description },
@@ -64,27 +76,23 @@ export function Html({
   twitter = "summary",
   image = "",
   assets: _,
-  info,
-  batches,
-  images,
   assets,
+  published,
+  url,
+  images,
 }: Readonly<HtmlProps>) {
-  const published = batches?.[0]?.releaseDate.formatted ?? "";
-  if (title === "") title = info.caps;
-  tags.push(info.caps);
-
   const metaTags = getMetaTags({
     title,
     description,
     contentType,
-    url: absoluteUrl(info.slug),
+    url,
     published,
     updated,
     category,
     tags,
     twitter,
     image: absoluteUrl(
-      image !== "" ? image : images?.["favicon_512x512"].src ?? ""
+      image !== "" ? image : images?.["images"]["favicon_512x512"][0].src ?? ""
     ),
   });
 
@@ -96,16 +104,19 @@ export function Html({
         const attrs = { ...tag };
         return <meta key={`meta-${index}`} {...attrs} />;
       })}
-      <link rel="icon" href={absoluteUrl(images?.["favicon"].src ?? "")} />
+      <link
+        rel="icon"
+        href={absoluteUrl(images?.["images"]["favicon"][0].src ?? "")}
+      />
       <link
         rel="icon"
         sizes="64x64"
-        href={absoluteUrl(images?.["favicon_512x512"].src ?? "")}
+        href={absoluteUrl(images?.["images"]["favicon_512x512"][0].src ?? "")}
       />
       <link
         rel="icon"
         sizes="192x192"
-        href={absoluteUrl(images?.["favicon_192x192"].src ?? "")}
+        href={absoluteUrl(images?.["images"]["favicon_192x192"][0].src ?? "")}
       />
       <link
         rel="stylesheet"

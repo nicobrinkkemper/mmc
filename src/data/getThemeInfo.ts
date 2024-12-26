@@ -1,6 +1,6 @@
 import { capitalize } from "lodash-es";
+import { safeSnakecase } from "../utils/safeSnakecase.js";
 import { convertNumberToWord } from "./convertNumberToWord.js";
-import { safeSnakecase } from "./safeSnakecase.mjs";
 
 export const getThemeInfo = <T extends Theme = Theme>(
   theme: T

@@ -1,37 +1,41 @@
 import * as React from "react";
+import { CarouselLogoStatic } from "./CarouselLogo.js";
 import { FooterStatic } from "./Footer.js";
-import { LogoStatic, LogoStaticProps } from "./Logo.js";
 
-export type LayoutProps = React.PropsWithChildren<{
-  className?: string;
-  type?: "special" | "simple" | "normal";
-}> &
-  Omit<LogoStaticProps, "logo">;
+type LayoutComponent = ThemeComponent<{
+  images: pickOptional<["logo", "logo_simple", "logo_special"]>;
+  pathInfo: true;
+  adjacent: {
+    pathInfo: ["to"];
+    images: ["logo"];
+  };
+  type: true;
+  small: true;
+  clickable: true;
+}>;
 
-export function LayoutStatic({
+export const Layout: LayoutComponent = ({
   children,
   className,
   type = "normal",
   small = false,
-  theme,
   images,
   pathInfo,
-  nextAndPrevTheme,
+  adjacent,
   clickable,
-}: LayoutProps) {
+}) => {
   return (
     <>
-      <LogoStatic
+      <CarouselLogoStatic
         small={small}
-        logo={type === "normal" ? "logo" : `logo_${type}`}
-        theme={theme}
+        type={type}
         pathInfo={pathInfo}
         images={images}
-        nextAndPrevTheme={nextAndPrevTheme}
+        adjacent={adjacent}
         clickable={clickable}
       />
       <article className={className}>{children}</article>
       <FooterStatic pathInfo={pathInfo} clickable={clickable} />
     </>
   );
-}
+};

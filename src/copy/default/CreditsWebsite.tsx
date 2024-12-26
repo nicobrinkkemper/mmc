@@ -1,22 +1,33 @@
 import * as React from "react";
-import { Card, CardProps } from "../../components/Card.js";
+import { Card } from "../../components/Card.js";
 
-export const CreditsWebsite = (
-  props: Omit<CardProps, "subHeading" | "children">
-) => {
+type CreditsWebsiteType = ThemeComponent<{
+  clickable: true;
+}>;
+
+export const CreditsWebsite: CreditsWebsiteType = ({
+  clickable: Clickable,
+  ...props
+}) => {
   return (
-    <Card subHeading={`Website`} {...props}>
+    <Card
+      subHeading={`Website`}
+      clickable={undefined}
+      images={{}}
+      heading={undefined}
+      {...props}
+    >
       <dl>
         <dt>Web Developer</dt>
         <dd>
-          <a
+          <Clickable
             href="https://x.com/bbmariomaker2"
             target="_BLANK"
             rel="noreferrer"
             className="highlight"
           >
             General BB / Geitje
-          </a>
+          </Clickable>
         </dd>
         <dd>Wizulus</dd>
         <dd>Mr. Games All day</dd>

@@ -1,25 +1,33 @@
 import * as React from "react";
-import { ToTheLevelsStatic } from "../../components/ToTheLevels.js";
 import { Mm7ArtWorkCard } from "./cards/Mm7ArtworkCard.js";
 import { MM7ContentCreatorCard } from "./cards/Mm7ContentCreatorCard.js";
 
+import { Button } from "../../components/Button.js";
 import { Card } from "../../components/Card.js";
 import { StayUpToDate } from "../default/StayUpToDate.js";
 
-export const Welcome7MMC = ({
+type Welcome7MMCType = ThemeComponent<{
+  info: pickRequired<["writtenOut", "themeYear"]>;
+  images: pickOptional<["illustration"]>;
+  pathInfo: required;
+  clickable: required;
+}>;
+
+export const Welcome7MMC: Welcome7MMCType = ({
   info,
   pathInfo,
   images,
   clickable,
-}: MarioTurnsXthStaticProps) => {
-  const { writtenOut, themeYear } = info;
+  ...props
+}) => {
   return (
     <>
       <Card
-        illustration
-        heading={writtenOut}
-        subHeading={`Mario Maker turns ${themeYear}!`}
+        heading={info.writtenOut}
+        subHeading={`Mario Maker turns ${info.themeYear}!`}
         images={images}
+        clickable={undefined}
+        {...props}
       >
         <p>
           The anniversary project is under new management and a new banner, but
@@ -32,10 +40,17 @@ export const Welcome7MMC = ({
           Every level has birthday balloons for you to discover. Can you find
           them all?
         </p>
-        <ToTheLevelsStatic pathInfo={pathInfo} clickable={clickable} />
+        <Button
+          primary={true}
+          icon="arrow-right"
+          href={pathInfo.toLevels}
+          clickable={clickable}
+        >
+          To the levels
+        </Button>
       </Card>
       <MM7ContentCreatorCard clickable={clickable} />
-      <StayUpToDate />
+      <StayUpToDate clickable={clickable} />
       <Mm7ArtWorkCard clickable={clickable} />
     </>
   );

@@ -1,22 +1,28 @@
 import * as React from "react";
+import { Button } from "../../components/Button.js";
+import { Card } from "../../components/Card.js";
+import { StayUpToDate } from "../default/StayUpToDate.js";
 import { Ymm5ContentCreatorCard } from "./cards/Ymm5ContentCreatorCard.js";
 
-import { Card } from "../../components/Card.js";
-import { ToTheLevelsStatic } from "../../components/ToTheLevels.js";
-import { StayUpToDate } from "../default/StayUpToDate.js";
-export const Welcome5YMM = ({
+type Welcome5YMMType = ThemeComponent<{
+  info: pickRequired<["writtenOut"]>;
+  images: pickRequired<["illustration"]>;
+  pathInfo: pickRequired<["toLevels"]>;
+  clickable: required;
+}>;
+
+export const Welcome5YMM: Welcome5YMMType = ({
   info,
   images,
   pathInfo,
   clickable,
   ...props
-}: Omit<MarioTurnsXthStaticProps, "type"> & Clickable) => {
+}) => {
   return (
     <>
       <Card
-        illustration
         type={"special"}
-        heading={info?.writtenOut ?? "{writtenOut}"}
+        heading={info.writtenOut}
         images={images}
         subHeading={`It's time to do this thing again!`}
         clickable={clickable}
@@ -32,10 +38,16 @@ export const Welcome5YMM = ({
           Every level has a birthday cake for you to discover. Can you find them
           all?
         </p>
-        <ToTheLevelsStatic pathInfo={pathInfo} clickable={clickable} />
+        <Button
+          icon="arrow-right"
+          href={pathInfo.toLevels}
+          clickable={clickable}
+        >
+          To the levels
+        </Button>
       </Card>
       <Ymm5ContentCreatorCard clickable={clickable} />
-      <StayUpToDate />
+      <StayUpToDate clickable={clickable} />
     </>
   );
 };

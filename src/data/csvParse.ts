@@ -1,5 +1,3 @@
-import { csvReviver } from "./csvReviver.js";
-
 /**
  * Parse takes a string of CSV data and converts it to a 2 dimensional array
  *
@@ -12,17 +10,7 @@ import { csvReviver } from "./csvReviver.js";
  * @param {Function} [reviver] a custom function to modify the values
  * @returns {Array} a 2 dimensional array of `[entries][values]`
  */
-export function csvParse<
-  const Skip extends boolean = false,
-  const V extends Record<K, any> = any,
-  const K extends string = string
->(
-  csv: string,
-  options?: { typed?: boolean; skipHeaders?: Skip },
-  reviver: CsvReviver<string, V> = csvReviver as CsvReviver<string, { [key in keyof V]-?: V[key] }>
-): Skip extends true 
-  ? V 
-  : [string[], ...V[]] {
+export const csvParse: ParseCsvFn = (csv, options, reviver) => {
   const ctx = Object.create(null);
   ctx.options = options || {};
   ctx.reviver = reviver;
@@ -124,11 +112,11 @@ export function csvParse<
   }
 
   return ctx.output;
-}
+};
 
 /** @private */
 function valueEnd(ctx: {
-  options: { typed?: boolean; skipHeaders?: boolean };
+  options: { typed?: boolean; skipHeaders?: boolean; rowMode?: boolean };
   value: string | number | boolean;
   entry: any;
   reviver: (
@@ -146,11 +134,21 @@ function valueEnd(ctx: {
   if (ctx.row === 1) {
     ctx.headers.push(String(value));
     if (!ctx.options.skipHeaders) {
-      ctx.entry[ctx.col - 1] = value;
+      ctx.entry = [...(ctx.entry || []), value];
     }
   } else {
     const header = ctx.headers[ctx.col - 1];
-    ctx.entry[header as string] = ctx.reviver(value, header, ctx.row, ctx.col);
+
+    if (ctx.options.rowMode) {
+      ctx.entry[header as string] = value;
+    } else {
+      ctx.entry[header as string] = ctx.reviver(
+        value,
+        header,
+        ctx.row,
+        ctx.col
+      );
+    }
   }
 
   ctx.value = "";
@@ -163,10 +161,13 @@ function entryEnd(ctx: {
   entry: any;
   row: number;
   col: number;
+  options?: { rowMode?: boolean };
+  reviver?: (value: any) => any;
 }) {
   if (Object.keys(ctx.entry).length > 0) {
-    // Create a new object for each entry
-    ctx.output.push({ ...ctx.entry });
+    const entry =
+      ctx.options?.rowMode && ctx.reviver ? ctx.reviver(ctx.entry) : ctx.entry;
+    ctx.output.push({ ...entry });
   }
   ctx.entry = {};
   ctx.row++;

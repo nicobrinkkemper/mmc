@@ -1,19 +1,19 @@
 import * as React from "react";
+import { Button } from "../../components/Button.js";
 import { Card } from "../../components/Card.js";
-import { ToTheLevelsStatic } from "../../components/ToTheLevels.js";
 
-export const MarioTurnsXthStatic = ({
-  images,
-  info,
-  pathInfo,
-  clickable,
-}: MarioTurnsXthStaticProps) => {
+export const MarioTurnsXthStatic: ThemeComponent<{
+  info: pickRequired<["writtenOut", "themeYear"]>;
+  images: pickOptional<["illustration"]>;
+  pathInfo: required;
+  clickable: required;
+}> = ({ images, info, pathInfo, clickable }) => {
   return (
     <Card
-      illustration
-      heading={`The ${info?.writtenOut ?? "{writtenOut}"}`}
-      subHeading={`Mario Maker turns ${info?.themeYear ?? "{themeYear}"}!`}
+      heading={`The ${info.writtenOut}`}
+      subHeading={`Mario Maker turns ${info.themeYear}!`}
       images={images}
+      clickable={undefined}
     >
       <p>
         The anniversary project is under new management and a new banner. We
@@ -23,7 +23,14 @@ export const MarioTurnsXthStatic = ({
         Every level has birthday balloons for you to discover. Can you find them
         all?
       </p>
-      <ToTheLevelsStatic pathInfo={pathInfo} clickable={clickable} />
+      <Button
+        primary={true}
+        icon="arrow-right"
+        href={pathInfo.toLevels}
+        clickable={clickable}
+      >
+        To the levels
+      </Button>
     </Card>
   );
 };

@@ -30,7 +30,7 @@
     "predeploy": "npm run build-gh",
     "deploy": "gh-pages -d build",
     "test": "run-s startup react:test",
-    "react:test": "vite test",
+    "react:test": "vitest",
     "react:build": "vite build",
     "react:start": "vite",
     "startup-gh": "export PUBLIC_URL='/mmc' && run-s startup:*",
@@ -76,6 +76,7 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/compression": "^1.7.5",
     "@types/cookie-parser": "^1.4.8",
+    "@types/debug": "^4.1.12",
     "@types/lodash": "^4.17.13",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.10.2",
@@ -109,6 +110,5 @@
   },
   "include": [
     "src"
-  ],
-  "dependencies": {}
+  ]
 }

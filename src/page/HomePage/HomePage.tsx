@@ -1,44 +1,31 @@
 import * as React from "react";
 import { AppStatic } from "../../App.js";
-import { mainTheme } from "../../config/themeConfig.js";
 import { Content } from "../../copy/Content.js";
-import { LayoutStatic } from "../../layout/Layout.js";
+import { Layout } from "../../layout/Layout.js";
 
-export type StaticHomePageProps = {
-  theme: Theme;
-  images: ThemeImages;
-  info: ThemeInfo;
-  pathInfo: ThemePathInfo;
-  nextAndPrevTheme: ThemePropsNextAndPrev;
-  clickable?: React.ElementType;
-};
-
-export function HomePageStatic({
-  theme = mainTheme,
+export const HomePageStatic: HomePageType = ({
   images,
   info,
   pathInfo,
-  nextAndPrevTheme,
-  clickable: Clickable = "a",
-}: StaticHomePageProps) {
+  adjacent,
+  clickable,
+}) => {
   return (
-    <AppStatic theme={theme} images={images}>
-      <LayoutStatic
+    <AppStatic pathInfo={pathInfo}>
+      <Layout
         type="special"
-        theme={theme}
         images={images}
         pathInfo={pathInfo}
-        nextAndPrevTheme={nextAndPrevTheme}
-        clickable={Clickable}
+        adjacent={adjacent}
+        clickable={clickable}
       >
         <Content.Welcome
-          theme={theme}
           images={images}
           info={info}
           pathInfo={pathInfo}
-          clickable={Clickable}
+          clickable={clickable}
         />
-      </LayoutStatic>
+      </Layout>
     </AppStatic>
   );
-}
+};

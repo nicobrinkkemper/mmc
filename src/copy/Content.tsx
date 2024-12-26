@@ -3,13 +3,14 @@ import { contentsKeys } from "./contents.js";
 import { getContent } from "./getContent.js";
 
 function ContentAt<
+  P extends ValidPath,
   Key extends ContentKey,
-  P extends ContentComponentWithThemeProps<Key>
->({ at, theme, ...props }: Readonly<{ at: Key; theme: Theme } & P>) {
-  if (!theme) {
-    throw new Error("Theme is required for a Content component");
+  Props extends ContentComponentWithThemeProps<P, Key>
+>({ at, pathInfo, ...props }: Readonly<{ at: Key; pathInfo: ThemePathInfo<P>  } & Props>) {
+  if (!pathInfo) {
+    throw new Error("PathInfo is required for a Content component");
   }
-  const Component = getContent(theme, at);
+  const Component = getContent(pathInfo.theme, at);
   return <Component {...((props ?? {}) as any)} />;
 }
 

@@ -1,4 +1,4 @@
-import { themeKeysNoPrefix } from "../config/config.js";
+import { themes } from "../config/themeConfig.js";
 
 export function isValidPath<const P extends string>(
   path: P | string
@@ -7,7 +7,7 @@ export function isValidPath<const P extends string>(
     return
   }
   const theme = path.split("/")[1];
-  if (!themeKeysNoPrefix.includes(theme as Theme)) { 
+  if (!themes.includes(theme as Theme)) { 
     throw new Error(`Invalid path: ${path}`);
   }
 }

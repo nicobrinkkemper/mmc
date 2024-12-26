@@ -6,14 +6,14 @@ import { AboutPanel } from "../default/AboutPanel.js";
 import { QuestionGetInTouchStatic } from "../default/QuestionGetInTouch.js";
 import { QuestionWhatKindOfLevelsStatic } from "../default/QuestionWhatKindOfLevels.js";
 
-export const About7MMC = ({
+export const About7MMC = <P extends `/${Theme}` = `/${Theme}`>({
   info,
   accordion: Accordion = "div",
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemButton: AccordionItemButton = "a",
   accordionItemPanel: AccordionItemPanel = "div",
-}: AboutStaticProps) => {
+}: AboutStaticProps<P>) => {
   const { caps, snake, writtenOut } = info;
   return (
     <Accordion preExpanded={["what_is_" + snake]}>

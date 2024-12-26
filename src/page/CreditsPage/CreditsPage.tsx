@@ -1,33 +1,40 @@
 import * as React from "react";
 import { AppStatic } from "../../App.js";
-import { BackToWelcome } from "../../components/BackButton.js";
-import { mainTheme } from "../../config/themeConfig.js";
+import { Button } from "../../components/Button.js";
 import { Content } from "../../copy/Content.js";
-import { LayoutStatic } from "../../layout/Layout.js";
+import { Layout } from "../../layout/Layout.js";
 import styles from "./Credits.module.css";
 
-export type CreditPageProps = ThemeStaticData<`/${Theme}/credits`>;
-
-export function CreditsPageStatic({
-  theme = mainTheme,
+export const CreditsPageStatic: CreditsPageType = ({
   images,
   pathInfo,
-  nextAndPrevTheme,
+  adjacent,
   clickable,
-}: CreditPageProps) {
+}) => {
   return (
-    <AppStatic theme={theme} images={images}>
-      <LayoutStatic
+    <AppStatic pathInfo={{ theme: pathInfo.theme }}>
+      <Layout
         type="special"
-        theme={theme}
         images={images}
         pathInfo={pathInfo}
-        nextAndPrevTheme={nextAndPrevTheme}
+        adjacent={adjacent}
         clickable={clickable}
       >
-        <BackToWelcome themeSlug={pathInfo.themeSlug} clickable={clickable} />
-        <Content.Credits className={styles["CreditsCard"]} theme={theme} />
-      </LayoutStatic>
+        <Button
+          icon="arrow-left-inverted"
+          iconPosition="left"
+          href={pathInfo.toHome}
+          inverted={true}
+          clickable={clickable}
+        >
+          Back to Welcome
+        </Button>
+        <Content.Credits
+          className={styles["CreditsCard"]}
+          pathInfo={pathInfo}
+          clickable={clickable}
+        />
+      </Layout>
     </AppStatic>
   );
-}
+};

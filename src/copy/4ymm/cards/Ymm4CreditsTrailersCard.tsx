@@ -1,10 +1,17 @@
 import * as React from "react";
-import { Card, CardProps } from "../../../components/Card.js";
+import { Card } from "../../../components/Card.js";
 
-export const Ymm4CreditsTrailerCard = (props: CardProps) => {
+type Ymm4CreditsTrailerCardType = ThemeComponent<{}>;
+
+export const Ymm4CreditsTrailerCard: Ymm4CreditsTrailerCardType = (props) => {
   return (
-    <Card {...props}>
-      <h2>Trailers</h2>
+    <Card
+      heading={`Trailers`}
+      subHeading={undefined}
+      images={{}}
+      clickable={undefined}
+      {...props}
+    >
       <dl>
         <dt>Script, visuals & edit</dt>
         <dd>Lektor</dd>

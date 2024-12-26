@@ -2,10 +2,20 @@ import * as React from "react";
 import { Button } from "../../../components/Button.js";
 import { Card } from "../../../components/Card.js";
 
-export const Ymm5ContentCreatorCard = ({ clickable }: Clickable) => (
+type Ymm5ContentCreatorCardType = ThemeComponent<{
+  clickable: required;
+}>;
+
+export const Ymm5ContentCreatorCard: Ymm5ContentCreatorCardType = ({
+  clickable,
+  ...props
+}) => (
   <Card
     heading={`Content creator?`}
     subHeading={`We have readied a Drive folder for you.`}
+    images={{}}
+    clickable={undefined}
+    {...props}
   >
     <p>
       Here you will find visual elements from the project: Logos, illustrations

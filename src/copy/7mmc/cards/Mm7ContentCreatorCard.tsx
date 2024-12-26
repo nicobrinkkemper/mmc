@@ -1,14 +1,20 @@
 import * as React from "react";
 import { Button } from "../../../components/Button.js";
-import { Card, CardProps } from "../../../components/Card.js";
+import { Card } from "../../../components/Card.js";
 
-export const MM7ContentCreatorCard = ({
+type MM7ContentCreatorCardType = ThemeComponent<{
+  clickable: required;
+}>;
+
+export const MM7ContentCreatorCard: MM7ContentCreatorCardType = ({
   clickable,
   ...props
-}: Omit<CardProps, "heading" | "subHeading" | "children"> & Clickable) => (
+}) => (
   <Card
     heading={`Content creator?`}
     subHeading={`If you are a streamer, a YouTuber, a video game writer or in any other way a content creator, we have readied a Drive folder for you.`}
+    images={{}}
+    clickable={undefined}
     {...props}
   >
     <p>

@@ -1,38 +1,38 @@
 import * as React from "react";
-import { Card, CardProps } from "../../components/Card.js";
+import { Card } from "../../components/Card.js";
 import { CreditsWebsite } from "../default/CreditsWebsite.js";
 import { Mm9CreditsTrailerCard } from "./cards/Mm9CreditsTrailerCard.js";
 
-export const Credits9MMC = (props: CardProps) => (
+type Credits9MMCType = ThemeComponent<{
+  clickable: true;
+}>;
+
+export const Credits9MMC: Credits9MMCType = ({ clickable, ...props }) => (
   <>
-    <Card heading={`Credits`} subHeading={`Project Organization`} {...props}>
+    <Card
+      heading={`Credits`}
+      subHeading={`Project Organization`}
+      clickable={undefined}
+      images={{}}
+      {...props}
+    >
       <dl>
+        <dt>Executive Producer</dt>
+        <dd>Wizulus Redikulus</dd>
+
         <dt>Judges</dt>
-        <dd>B0X_Gaming</dd>
-        <dd>BigRedBoy</dd>
-        <dd>choo_choo!</dd>
-        <dd>DeathToSpies</dd>
-        <dd>Donkey_Mint_Inc</dd>
-        <dd>DRhazar</dd>
-        <dd>grakowsky</dd>
+        <dd>Barnstorm</dd>
         <dd>jneen</dd>
-        <dd>Loup&amp;Snoop</dd>
-        <dd>Major314</dd>
-        <dd>MrElectrodude</dd>
-        <dd>nickabuz</dd>
-        <dd>Paxsman</dd>
-        <dd>PocketLint</dd>
-        <dd>rubenscube</dd>
-        <dd>rybonez</dd>
-        <dd>S Ninjar</dd>
-        <dd>Skelthane</dd>
-        <dd>warspyking</dd>
-        <dd>xxBenxxS</dd>
+        <dd>MrElectroDude</dd>
+        <dd>Rubenscube</dd>
+        <dd>Wsacha</dd>
+        <dd>SevenSilhouette</dd>
+
         <dt>Visual profile/marketing</dt>
-        <dd>Lektor</dd>
+        <dd>Duffy, Wizulus, TripDraws</dd>
       </dl>
     </Card>
-    <CreditsWebsite {...props} />
-    <Mm9CreditsTrailerCard {...props} />
+    <CreditsWebsite clickable={clickable} />
+    <Mm9CreditsTrailerCard />
   </>
 );

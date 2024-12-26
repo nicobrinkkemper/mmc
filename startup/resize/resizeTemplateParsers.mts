@@ -1,4 +1,4 @@
-import { safeSnakecase } from "../../src/data/safeSnakecase.mjs";
+import { safeSnakecase } from "../../src/utils/safeSnakecase.js";
 
 /**
  * Basically a list of all the things you can put in the template name. It gets

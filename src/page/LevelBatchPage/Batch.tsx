@@ -9,7 +9,7 @@ import styles from "./Batch.module.css";
 function BatchLevelCard({
   level,
   levelIndex,
-  clickable: Clickable,
+  clickable,
 }: Readonly<{
   level: ThemeLevel<`/${Theme}/level/${NumberParam}/${NumberParam}`>;
   levelIndex: number;
@@ -19,23 +19,29 @@ function BatchLevelCard({
     <Card
       heading={levelIndex === 0 ? level.releaseDate.formatted : undefined}
       key={level.levelName.slug}
-      href={level.pathInfo.to}
       className={styles["Batch"]}
-      clickable={Clickable}
+      clickable={clickable}
+      subHeading={undefined}
+      images={{}}
     >
       <PublicImage
-        alt={level.levelName.name}
+        alt={level.levelName.value}
         {...level.images.levelThumbnail}
       />
       <div className={styles["Info"]}>
-        <h2>{level.levelName.name}</h2>
+        <h2>{level.levelName.value}</h2>
         <MakerName
           nationality={level.nationality}
-          makerName={level.makerName.name}
+          makerName={level.makerName.value}
         />
         <div className={styles["LevelInfo"]}>
-          <Tags tags={level.tags} />
-          <Difficulty {...level} />
+          <Tags level={{ tags: level.tags }} />
+          <Difficulty
+            level={{
+              difficulty: level.difficulty,
+              difficultyName: level.difficultyName,
+            }}
+          />
         </div>
       </div>
     </Card>
@@ -43,15 +49,13 @@ function BatchLevelCard({
 }
 
 const createMapLevels = (clickable: React.ElementType = "a") =>
-  function mapLevels<
-    P extends `/${T}/level/${B}/${O}`,
-    T extends Theme,
-    B extends NumberParam,
-    O extends NumberParam
-  >(level: ThemeLevel<P, T, B, O>, orderIndex: number) {
+  function mapLevels<P extends `/${Theme}/level/${string}/${string}`>(
+    level: ThemeLevel<P>,
+    orderIndex: number
+  ) {
     return (
       <BatchLevelCard
-        key={level.levelName.name}
+        key={level.levelName.slug}
         level={level}
         levelIndex={orderIndex}
         clickable={clickable}

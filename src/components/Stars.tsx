@@ -15,9 +15,17 @@ const Star = ({ value }: { value: number }) => {
 }
 
 
-export function Stars({ value = 0 }: Readonly<{ value?: keyof typeof stars }>) {
-  const castValue = Number(value);
-  return <>{["s1", "s2", "s3", "s4"].map((key, i) => (
-    <Star key={key} value={Math.min(2, Math.max(0, castValue - i * 2))} />
-  ))}</>;
-}
+export const Stars: ThemePageComponent<
+  `/${Theme}/level/${string}/${string}`,
+  {
+    level: ["difficulty"];
+  }
+> = ({ level: { difficulty } }) => {
+  return (
+    <>
+      {["s1", "s2", "s3", "s4"].map((key, i) => (
+        <Star key={key} value={Math.min(2, Math.max(0, difficulty - i * 2))} />
+      ))}
+    </>
+  );
+};

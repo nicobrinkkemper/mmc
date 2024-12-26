@@ -1,31 +1,21 @@
 /**
  * Creates a CSV reviver function from a mapper configuration
  */
-export function createMapper<
-  const M extends Record<string, (val: string) => any>,
-  const R
->(config: {
-  mappers: {
-    [K in keyof M]: M[K];
-  };
-  transform: (rows: InferMapperTypes<M>, index: number) => R;
-}): (rows: any) => R {
-  let currentRow: any = {};
+export const createMapper: CreateMapperFn = (config) => {
   let rowIndex = 0;
 
-  return (value: string, header?: string) => {
-    if (!header) return value;
+  return (row) => {
+    // Map each field using its corresponding mapper
+    const mappedRow = Object.entries(row).reduce((acc, [header, value]) => {
+      const mapper = config.mappers[header];
+      if (mapper) {
+        acc[header] = mapper(String(value));
+      }
+      return acc;
+    }, {} as any);
 
-    const mapper = config.mappers[header as keyof M];
-    if (!mapper) return value;
+    const transformed = config.transform(mappedRow, rowIndex++);
 
-    currentRow[header] = mapper(String(value));
-
-    if (Object.keys(currentRow).length === Object.keys(config.mappers).length) {
-      const result = config.transform(currentRow, rowIndex++);
-      currentRow = {};
-      return result;
-    }
-    return value as any;
+    return transformed;
   };
-}
+};

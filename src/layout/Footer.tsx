@@ -1,15 +1,15 @@
 import * as React from "react";
 import styles from "./Footer.module.css";
 
-export type FooterStaticProps = {
-  pathInfo: Pick<ThemePathInfo, "toCredits">;
-  clickable?: React.ElementType;
-};
+type FooterType = ThemeComponent<{
+  pathInfo: pickRequired<["toCredits"]>;
+  clickable: true;
+}>;
 
-export function FooterStatic({
+export const FooterStatic: FooterType = ({
   pathInfo: { toCredits },
-  clickable: Clickable = "a",
-}: FooterStaticProps) {
+  clickable: Clickable,
+}) => {
   return (
     <footer className={styles["Footer"]}>
       <a
@@ -31,4 +31,4 @@ export function FooterStatic({
       </Clickable>
     </footer>
   );
-}
+};

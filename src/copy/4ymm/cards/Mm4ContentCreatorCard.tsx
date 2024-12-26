@@ -2,10 +2,20 @@ import * as React from "react";
 import { Button } from "../../../components/Button.js";
 import { Card } from "../../../components/Card.js";
 
-export const MM4ContentCreatorCard = ({ clickable }: Clickable) => (
+type MM4ContentCreatorCardType = ThemeComponent<{
+  clickable: required;
+}>;
+
+export const MM4ContentCreatorCard: MM4ContentCreatorCardType = ({
+  clickable,
+  ...props
+}) => (
   <Card
     heading={`Content creator?`}
     subHeading={`We have readied a Drive folder for you.`}
+    images={{}}
+    clickable={undefined}
+    {...props}
   >
     <p>
       Here you will find visual elements from the project: Logos, illustrations

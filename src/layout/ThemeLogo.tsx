@@ -1,36 +1,35 @@
 import * as React from "react";
 import { PublicImage } from "../components/PublicImage.js";
 
-export type ThemeLogoStaticProps = {
-  theme: Theme;
-  logo?: logoImageTypes;
-  small?: boolean;
-  className?: string;
-  images: ThemeImages;
+type ThemeLogoType = ThemeComponent<{
+  images: pickOptional<["logo", "logo_simple", "logo_special"]>;
+  type: optional;
+  small: optional;
+}>;
+
+export const ThemeLogoStatic: ThemeLogoType = ({ images, type, small }) => {
+  const logoType = small ? "simple" : type ?? "normal";
+  const versions =
+    logoType === "normal"
+      ? "logo" in images && images["logo"]
+        ? images["logo"]
+        : []
+      : logoType === "special"
+      ? "logo_special" in images && images["logo_special"]
+        ? images["logo_special"]
+        : "logo" in images && images["logo"]
+        ? images["logo"]
+        : []
+      : logoType === "simple"
+      ? "logo_simple" in images && images["logo_simple"]
+        ? images["logo_simple"]
+        : "logo" in images && images["logo"]
+        ? images["logo"]
+        : []
+      : [];
+  if (!versions.length) {
+    console.log("No images for ThemeLogoStatic", images);
+    return null;
+  }
+  return <PublicImage {...versions[0]} />;
 };
-
-export function ThemeLogoStatic({
-  theme,
-  logo: _logo = "logo",
-  small = false,
-  className,
-  images,
-}: ThemeLogoStaticProps) {
-  let logo = _logo;
-  const endsWithSmall = logo.endsWith("_small");
-  if (small && !endsWithSmall) logo = (logo + "_small") as logoImageTypes;
-  if (!images) return null;
-  const fallbackType = (
-    logo in images ? logo : "logo" + (small ? "_small" : "")
-  ) as "logo";
-
-  return (
-    <PublicImage
-      {...{
-        ...images[fallbackType],
-        alt: theme,
-        className: className,
-      }}
-    />
-  );
-}

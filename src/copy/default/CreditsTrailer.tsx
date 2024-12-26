@@ -1,9 +1,22 @@
 import * as React from "react";
-import { Card, type CardProps } from "../../components/Card.js";
+import { Card } from "../../components/Card.js";
 
-export const CreditsTrailer = (props: CardProps) => {
+type CreditsTrailerType = ThemeComponent<{
+  clickable: true;
+}>;
+
+export const CreditsTrailer: CreditsTrailerType = ({
+  clickable: Clickable,
+  ...props
+}) => {
   return (
-    <Card {...props}>
+    <Card
+      subHeading={undefined}
+      clickable={undefined}
+      images={{}}
+      heading={undefined}
+      {...props}
+    >
       <h2>Trailers</h2>
       <dl>
         <dt>Script and video</dt>

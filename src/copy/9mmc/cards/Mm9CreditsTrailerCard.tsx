@@ -1,24 +1,29 @@
 import * as React from "react";
-import { Card, CardProps } from "../../../components/Card.js";
+import { Card } from "../../../components/Card.js";
 
-export const Mm9CreditsTrailerCard = (props: Omit<CardProps, "subHeading">) => {
-  return (
-    <Card subHeading={`Trailers`} {...props}>
-      <h2>Trailers</h2>
-      <dl>
-        <dt>Script and video</dt>
-        <dd>Paxsman</dd>
+type Mm9CreditsTrailerCardType = ThemeComponent<{}>;
 
-        <dt>Intro animation</dt>
-        <dd>Lektor</dd>
+export const Mm9CreditsTrailerCard: Mm9CreditsTrailerCardType = (props) => (
+  <Card
+    subHeading={`Trailers`}
+    clickable={undefined}
+    images={{}}
+    heading={undefined}
+    {...props}
+  >
+    <dl>
+      <dt>Script and video</dt>
+      <dd>Paxsman</dd>
 
-        <dt>Voice</dt>
-        <dd>DuffyWeber</dd>
+      <dt>Intro animation</dt>
+      <dd>Lektor</dd>
 
-        <dt>Music</dt>
-        <dd>Qumu</dd>
-      </dl>
-      <p>Special thanks to Lektor Jr. (a.k.a. Liam)</p>
-    </Card>
-  );
-};
+      <dt>Voice</dt>
+      <dd>DuffyWeber</dd>
+
+      <dt>Music</dt>
+      <dd>Qumu</dd>
+    </dl>
+    <p>Special thanks to Lektor Jr. (a.k.a. Liam)</p>
+  </Card>
+);

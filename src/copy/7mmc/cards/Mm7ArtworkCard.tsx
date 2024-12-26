@@ -1,12 +1,19 @@
 import * as React from "react";
 import { Button } from "../../../components/Button.js";
-import { Card, CardProps } from "../../../components/Card.js";
+import { Card } from "../../../components/Card.js";
 
-export const Mm7ArtWorkCard = ({
-  clickable,
-  ...props
-}: Omit<CardProps, "heading" | "children"> & Clickable) => (
-  <Card heading={`Community Artwork Gallery`} {...props}>
+type Mm7ArtWorkCardType = ThemeComponent<{
+  clickable: required;
+}>;
+
+export const Mm7ArtWorkCard: Mm7ArtWorkCardType = ({ clickable, ...props }) => (
+  <Card
+    heading={`Community Artwork Gallery`}
+    subHeading={undefined}
+    images={{}}
+    clickable={undefined}
+    {...props}
+  >
     <p>
       Our amazing community supplied much of the art for the trailers. Click
       here to see your favorites in full detail! Forgive the dust - Page is a

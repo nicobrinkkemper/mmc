@@ -2,20 +2,20 @@ import * as React from "react";
 import styles from "./Difficulty.module.css";
 import { Stars } from "./Stars.js";
 
-type DifficultyProps = Pick<
-  ThemeStaticData<`/${Theme}/level/${NumberParam}/${NumberParam}`>["level"],
-  "difficulty" | "difficultyName"
->;
-
-export const Difficulty = ({ difficulty, difficultyName }: DifficultyProps) => {
+export const Difficulty: ThemePageComponent<
+  `/${Theme}/level/${string}/${string}`,
+  {
+    level: ["difficulty", "difficultyName"];
+  }
+> = ({ level: { difficulty, difficultyName } }) => {
   return (
     <div className={styles["Difficulty"]}>
       <span className={`${styles["Label"]}`}>Difficulty: </span>
       <span className={`${styles["Stars"]}`}>
-        {difficulty ? (
-          <Stars value={difficulty} />
+        {typeof difficulty === "number" ? (
+          <Stars level={{ difficulty }} />
         ) : (
-          difficultyName ?? "Who knows?"
+          difficultyName
         )}
       </span>
     </div>

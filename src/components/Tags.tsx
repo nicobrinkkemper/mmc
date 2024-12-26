@@ -2,17 +2,16 @@ import classNames from "classnames";
 import * as React from "react";
 import styles from "./Tags.module.css";
 
-type TagsProps =
-  | Pick<
-      ThemeStaticData<`/${Theme}/level/${NumberParam}/${NumberParam}`>["level"],
-      "tags"
-    >
-  | Pick<ThemeStaticData<`/${Theme}/levels/${NumberParam}`>["batch"], "tags">;
 
-export function Tags({ tags }: TagsProps) {
+export const Tags: ThemePageComponent<
+  `/${Theme}/level/${string}/${string}`,
+  {
+    level: ["tags"];
+  }
+> = ({ level }) => {
   return (
     <div className={styles["Tags"]}>
-      {Object.entries(tags).map(([key, tag]) => {
+      {Object.entries(level.tags).map(([key, tag]) => {
         return (
           <span
             className={classNames(
@@ -27,4 +26,4 @@ export function Tags({ tags }: TagsProps) {
       })}
     </div>
   );
-}
+};
