@@ -12,18 +12,18 @@ type Welcome9MMCType = ThemeComponent<{
 }>;
 
 export const Welcome9MMC: Welcome9MMCType = ({
-  info,
-  images,
-  pathInfo,
+  info: { writtenOut, themeYear },
+  images: { illustration },
+  pathInfo: { toLevels },
   clickable,
   ...props
 }) => {
   return (
     <>
       <Card
-        heading={`The ${info.writtenOut}`}
-        subHeading={`Mario Maker turns ${info.themeYear}!`}
-        images={images}
+        heading={`The ${writtenOut}`}
+        subHeading={`Mario Maker turns ${themeYear}!`}
+        images={{ illustration }}
         clickable={undefined}
         {...props}
       >
@@ -44,11 +44,7 @@ export const Welcome9MMC: Welcome9MMCType = ({
           to leave them nice comments for all they've done for the project!
           <br />- 9KX-PDY-61G
         </p>
-        <Button
-          icon="arrow-right"
-          href={pathInfo.toLevels}
-          clickable={clickable}
-        >
+        <Button icon="arrow-right" href={toLevels} clickable={clickable}>
           To the levels
         </Button>
       </Card>

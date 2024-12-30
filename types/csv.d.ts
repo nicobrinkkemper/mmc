@@ -2,17 +2,17 @@ import { csvThemeMapper } from "../src/data/csvThemeMapper.ts";
 
 // before we define the config, we take the change to define the types we want from the csv and reuse elsewhere throughout the codebase
 declare global {
-  type ThemeCsvParseResult = ReturnType<typeof csvThemeMapper>;
-
-  type ThemeLevelData = Omit<ThemeCsvParseResult, "images" | "pathInfo"> & {
-    images: ReturnType<ThemeCsvParseResult["images"]>;
-    pathInfo: ReturnType<ThemeCsvParseResult["pathInfo"]>;
-  };
+  type CsvParseResult = ReturnType<typeof csvThemeMapper>;
+  type ThemeLevelData = CsvParseResult & { images: LevelImages };
 
   type ThemeBatchProcessorFn = <T extends Theme = Theme>(
-    themeConfig: ThemeConfig<T>,
-    levelData: ThemeLevelData[]
-  ) => ThemeBatch[];
+    themeConfig: Pick<ThemeConfig<T>, "theme" | "weekTrailers">,
+    levelData: ThemeLevelData[],
+    images: Pick<Images[T], "batch"> | null
+  ) => {
+    batches: ThemeBatch[];
+    releaseDate: ThemeLevelData["releaseDate"];
+  };
 
   type CsvReviver<H = string, V = any> = (
     value: string | number | boolean,
@@ -55,3 +55,4 @@ declare global {
   ) => Return[];
 }
 export {};
+

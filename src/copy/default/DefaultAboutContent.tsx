@@ -1,21 +1,17 @@
 import * as React from "react";
-import type { AboutStaticProps } from "../../about/About.js";
 import styles from "./accordion.module.css";
 import { QuestionGetInTouchStatic } from "./QuestionGetInTouch.js";
 import { QuestionWhatIsThisStatic } from "./QuestionWhatIsThis.js";
 import { QuestionWhatKindOfLevelsStatic } from "./QuestionWhatKindOfLevels.js";
 
-export type DefaultAboutContentStaticProps = AboutStaticProps;
-
-export const DefaultAboutContentStatic = ({
-  info,
+export const DefaultAboutContentStatic: DefaultAboutContentType = ({
+  info: { caps, snake, writtenOut },
   accordion: Accordion = "div",
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemPanel: AccordionItemPanel = "div",
   accordionItemButton: AccordionItemButton = "a",
-}: DefaultAboutContentStaticProps) => {
-  const { caps, snake } = info;
+}) => {
   return (
     <Accordion
       className={styles["accordion"]}
@@ -23,7 +19,10 @@ export const DefaultAboutContentStatic = ({
     >
       <h1>About {caps}</h1>
       <QuestionWhatIsThisStatic
-        info={info}
+        info={{
+          caps,
+          writtenOut,
+        }}
         accordionItem={AccordionItem}
         accordionItemHeading={AccordionItemHeading}
         accordionItemPanel={AccordionItemPanel}

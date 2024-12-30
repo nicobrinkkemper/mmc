@@ -2,16 +2,16 @@ import * as React from "react";
 import { Button } from "../../components/Button.js";
 import { Card } from "../../components/Card.js";
 
-export const MarioTurnsXthStatic: ThemeComponent<{
-  info: pickRequired<["writtenOut", "themeYear"]>;
-  images: pickOptional<["illustration"]>;
-  pathInfo: required;
-  clickable: required;
-}> = ({ images, info, pathInfo, clickable }) => {
+export const MarioTurnsXth: MarioTurnsXthType = ({
+  images,
+  info: { writtenOut, themeYear },
+  pathInfo: { toLevels },
+  clickable,
+}) => {
   return (
     <Card
-      heading={`The ${info.writtenOut}`}
-      subHeading={`Mario Maker turns ${info.themeYear}!`}
+      heading={`The ${writtenOut}`}
+      subHeading={`Mario Maker turns ${themeYear}!`}
       images={images}
       clickable={undefined}
     >
@@ -26,7 +26,7 @@ export const MarioTurnsXthStatic: ThemeComponent<{
       <Button
         primary={true}
         icon="arrow-right"
-        href={pathInfo.toLevels}
+        href={toLevels}
         clickable={clickable}
       >
         To the levels

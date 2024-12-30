@@ -1,39 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" />
+    <style>
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
 
-<head>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" />
-  <style>
-    body {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+      * {
+        padding: 0;
+        margin: 0;
+        min-width: 0;
+        box-sizing: border-box;
+      }
 
-    * {
-      padding: 0;
-      margin: 0;
-      min-width: 0;
-      box-sizing: border-box;
-    }
+      img {
+        max-width: 100%;
+        object-fit: cover;
+        color: transparent;
+      }
 
-    img {
-      max-width: 100%;
-      object-fit: cover;
-      color: transparent;
-    }
+      strong {
+        font-weight: bold;
+      }
+    </style>
+    <title>MMC</title>
+    </head>
 
-    strong {
-      font-weight: bold;
-    }
-  </style>
-  <title>MMC</title>
-</head>
-
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
-  <script type="module" src="/src/index.tsx"></script>
-</body>
-
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="importmap">
+                    {
+                      "imports": {
+                        "react": "https://esm.sh/react@19.0.0-beta-26f2496093-20240514",
+                        "react-dom": "https://esm.sh/react-dom@19.0.0-beta-26f2496093-20240514",
+                        "react-dom/": "https://esm.sh/react-dom@19.0.0-beta-26f2496093-20240514/",
+                        "react/": "https://esm.sh/react@19.0.0-beta-26f2496093-20240514/",
+                        "@tanstack/react-router": "https://esm.sh/@tanstack/react-router",
+                        "react-server-dom-esm/client": "/node_modules/react-server-dom-esm/esm/react-server-dom-esm-client.browser.production.js",
+                        "@jsxImportSource": "https://esm.sh/react@19.0.0-beta-26f2496093-20240514"
+                      }
+                    }
+                        </script>
+    <script type="module" src="/src/main.tsx"></script>
+    </body>
 </html>

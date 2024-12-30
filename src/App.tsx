@@ -3,15 +3,17 @@ import * as React from "react";
 import styles from "./App.module.css";
 import { getCss } from "./css/getCss.js";
 
-export const AppStatic: ThemeComponent<{
+type AppType = ThemeComponent<{
   pathInfo: ["theme"];
-}> = ({ children, style, pathInfo, ...rest }) => {
-  const Theme = getCss(pathInfo.theme, "Theme");
+}>;
+
+export const App: AppType = ({ children, style, pathInfo, ...rest }) => {
   return (
-    <>
-      <div className={classNames(styles["App"], Theme)} {...rest}>
-        {children}
-      </div>
-    </>
+    <div
+      className={classNames(styles["App"], getCss(pathInfo.theme, "Theme"))}
+      {...rest}
+    >
+      {children}
+    </div>
   );
 };

@@ -1,24 +1,15 @@
 import * as React from "react";
-import { AboutStaticProps } from "../../about/About.js";
 import { AboutItem } from "./AboutItem.js";
 import { AboutItemHeading } from "./AboutItemHeading.js";
 import { AboutPanel } from "./AboutPanel.js";
 
-export const QuestionWhatIsThisStatic = ({
-  info,
+export const QuestionWhatIsThisStatic: QuestionWhatIsThisType = ({
+  info: { caps, writtenOut },
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemPanel: AccordionItemPanel = "div",
   accordionItemButton: AccordionItemButton = "a",
-}: Pick<
-  AboutStaticProps,
-  | "info"
-  | "accordionItem"
-  | "accordionItemHeading"
-  | "accordionItemPanel"
-  | "accordionItemButton"
->) => {
-  const { caps, writtenOut } = info;
+}) => {
   return (
     <AboutItem accordionItem={AccordionItem}>
       <AboutItemHeading

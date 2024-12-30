@@ -1,67 +1,203 @@
 import { themes } from "../config/themeConfig.js";
+import { isKeyOf } from "../utils/isKeyOf.js";
+import { pickRequired } from "../utils/pickRequired.js";
 import { getAdjacent } from "./getAdjacent.js";
 import { getTheme } from "./getTheme.js";
 import { getThemeInfo } from "./getThemeInfo.js";
-import { getThemePathInfo } from "./getThemePathInfo.js";
-import { isValidPath } from "./isValidPath.js";
 
-export const getStaticData = <
-  P extends ValidPath = ValidPath,
-  Options extends ThemeDataOptions = ThemeDataOptions
->(
-  path: P | string = "/",
-  options: Options = {} as Options
-): ThemeStaticData<P, Options> => {
-  isValidPath(path);
-  const pathInfo = getThemePathInfo(path);
+const mapAdjacent = (
+  {
+    images,
+  }: {
+    images: { logo_simple_small?: any; logo_small: any };
+  },
+  path = ""
+) => ({
+  exists: true,
+  value: {
+    pathInfo: {
+      to: path,
+    },
+    images: {
+      logo:
+        "logo_simple_small" in images
+          ? images.logo_simple_small
+          : images.logo_small,
+    },
+  },
+});
+
+export const getStaticData: ThemeStaticDataFn = (pathInfo, options) => {
   const theme = pathInfo.theme;
 
-  const themeData: any = getTheme(theme);
-  if (!themeData) {
-    throw new Error(`Invalid theme: ${theme}`);
+  if (!options) {
+    return getTheme(theme);
   }
-  const images = "images" in themeData ? themeData.images : ({} as never);
-  const batches = themeData.levelData.batches;
-  const info = getThemeInfo(theme);
+  const levelData = pickRequired(getTheme(theme), ["batches", "images"]);
+  const { images, batches } = levelData;
+  const optionEntries = Object.entries(options) as [
+    Extract<keyof typeof options, string>,
+    string[] | true
+  ][];
+  if (optionEntries.length === 0) {
+    return { ...levelData, pathInfo };
+  }
+  const batchIndex =
+    pathInfo.params.batchNumber !== ""
+      ? levelData.batches.findIndex(
+          (
+            batch // @ts-ignore
+          ) => batch.batchNumber === pathInfo.params.batchNumber
+        )
+      : -1;
 
-  const batchNumber =
-    "batchNumber" in pathInfo.params ? pathInfo.params.batchNumber : undefined;
-  const batch = batchNumber
-    ? batches.find((batch: any) => batch.batchNumber === batchNumber)
-    : undefined;
+  const batch = batchIndex !== -1 ? levelData.batches[batchIndex] : null;
 
-  const order = "order" in pathInfo.params ? pathInfo.params.order : undefined;
-  const level = order
-    ? batch.levels.find((level: any) => level.order === order)
-    : undefined;
+  const levelIndex =
+    pathInfo.params.order !== ""
+      ? batch!.levels.findIndex(
+          // @ts-ignore
+          (level) => level.order === pathInfo.params.order
+        )
+      : -1;
 
-  let clickable: React.ElementType | "a" | "button" = "a";
+  const level = levelIndex !== -1 ? batch!.levels[levelIndex] : null;
 
   const result = {
-    theme: pathInfo.theme,
+    ...levelData,
     pathInfo,
-    info,
-    images,
-    adjacent: getAdjacent(themes, pathInfo.theme),
-    clickable,
-    batch,
-    level,
-    ...batches,
-  } as unknown as ThemeStaticData<P, Options>;
-  // validate result via options object
-  for (let [option, value] of Object.entries(options)) {
-    if (value === true) {
-      if (!(option in result)) {
-        throw new Error(`Option ${option} is required`);
+  } as any;
+
+  // build & validate result via options object
+  try {
+    for (let [option, value] of optionEntries) {
+      if (isKeyOf(option, result)) {
+        continue;
       }
-    } else if (Array.isArray(value)) {
-      if (!(option in result)) {
-        throw new Error(`Option ${option} is required`);
-      }
-      if (!value.every((v) => v in result[option as never])) {
-        throw new Error(`Option ${option} is required`);
+      switch (option) {
+        case "batch": {
+          if (!batch) break;
+          result.batch = batch;
+          if (value === true) {
+            // the default value for batch is to get the adjacent
+            value = ["adjacent"];
+          }
+          for (let nestedOption of value) {
+            if (nestedOption in result.batch) {
+              continue;
+            }
+            switch (nestedOption) {
+              case "adjacent": {
+                result.batch.adjacent = getAdjacent(
+                  batches as never,
+                  batchIndex
+                ).adjacent;
+                break;
+              }
+              default: {
+                if (!isKeyOf(nestedOption, batch!)) {
+                  throw new Error(
+                    `Unhandled batch option ${option}.${nestedOption}`
+                  );
+                }
+              }
+            }
+          }
+          break;
+        }
+        case "level": {
+          if (!level) break;
+          result.level = level;
+          if (value === true) {
+            // the default value for level is to get the adjacent
+            value = ["adjacent"];
+          }
+          for (let nestedOption of value) {
+            if (nestedOption in result.level) {
+              continue;
+            }
+            switch (nestedOption) {
+              case "adjacent": {
+                result.level.adjacent = getAdjacent(
+                  batch!.levels,
+                  levelIndex
+                ).adjacent;
+                break;
+              }
+              default: {
+                if (!isKeyOf(nestedOption, level!)) {
+                  throw new Error(
+                    `Unhandled level option ${option}.${nestedOption}`
+                  );
+                }
+              }
+            }
+          }
+          break;
+        }
+        case "adjacent": {
+          const { adjacent } = getAdjacent(themes, pathInfo.theme);
+          result.adjacent = {
+            next:
+              adjacent.next.exists === true
+                ? mapAdjacent(
+                    getTheme(adjacent.next.value),
+                    `/${adjacent.next.value}${pathInfo.path}`
+                  )
+                : adjacent.next,
+            prev:
+              adjacent.prev.exists === true
+                ? mapAdjacent(
+                    getTheme(adjacent.prev.value),
+                    `/${adjacent.prev.value}${pathInfo.path}`
+                  )
+                : adjacent.prev,
+          };
+          break;
+        }
+        case "images": {
+          if (value === true) {
+            break;
+          }
+          for (let nestedOption of value) {
+            if (nestedOption in result.images) {
+              continue;
+            }
+            switch (nestedOption) {
+              default: {
+                if (!isKeyOf(nestedOption, images)) {
+                  throw new Error(
+                    `Unhandled images option ${option}.${nestedOption}`
+                  );
+                }
+              }
+            }
+          }
+          break;
+        }
+        case "clickable":
+          result.clickable = "a";
+          break;
+        case "small": {
+          result.small = true;
+          break;
+        }
+        case "info": {
+          result.info = getThemeInfo(theme);
+          break;
+        }
+        default:
+          throw new Error(
+            `Option ${option} is required but has no case for ${
+              pathInfo.to
+            }. Available options: ${Object.keys(result).join(", ")}`
+          );
       }
     }
+  } catch (error) {
+    console.error({ options, keys: Object.keys(result) });
+    throw error;
   }
+  // we made it passed all the throws, must be ok
   return result;
 };

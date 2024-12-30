@@ -1,11 +1,8 @@
 import * as React from "react";
 import { Card } from "../../components/Card.js";
 
-type CreditsWebsiteType = ThemeComponent<{
-  clickable: true;
-}>;
 
-export const CreditsWebsite: CreditsWebsiteType = ({
+export const CreditsWebsite: CreditsWebsiteCardType = ({
   clickable: Clickable,
   ...props
 }) => {

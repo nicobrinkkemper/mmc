@@ -3,11 +3,11 @@ import { Card } from "../../components/Card.js";
 import { CreditsWebsite } from "../default/CreditsWebsite.js";
 import { Mm8CreditsTrailerCard } from "./cards/Mm8CreditsTrailerCard.js";
 
-type Credits8MMCType = ThemeComponent<{
-  clickable: required;
-}>;
 
-export const Credits8MMC: Credits8MMCType = ({ clickable, ...props }) => (
+export const Credits8MMC: CreditsContentCardType = ({
+  clickable,
+  ...props
+}) => (
   <>
     <Card
       heading={`Credits`}

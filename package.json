@@ -33,10 +33,10 @@
     "react:test": "vitest",
     "react:build": "vite build",
     "react:start": "vite",
-    "startup-gh": "export PUBLIC_URL='/mmc' && run-s startup:*",
-    "startup": "export PUBLIC_URL='/' && run-s startup:*",
+    "startup-gh": "run-s startup:*",
+    "startup": "run-s startup:*",
     "startup:compile": "npm run server:build",
-    "startup:run": "export NODE_OPTIONS='--experimental-json-modules --enable-source-maps'; node ./dist/startup/startup.mjs",
+    "startup:run": "export NODE_ENV='development'; export NODE_OPTIONS='--experimental-json-modules --enable-source-maps'; node ./dist/startup/startup.mjs",
     "dev": "vite",
     "preview": "vite preview"
   },
@@ -71,7 +71,6 @@
     ]
   },
   "devDependencies": {
-    "@tanstack/react-router": "^1.90.0",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
     "@types/compression": "^1.7.5",
@@ -99,7 +98,7 @@
     "npm-check-updates": "^17.1.11",
     "npm-run-all": "^4.1.5",
     "postcss-modules": "^6.0.1",
-    "react": "^19.0.0-rc.1",
+    "react": "^19.0.0-beta-26f2496093-20240514",
     "react-dom": "^19.0.0-rc.1",
     "sharp": "^0.33.5",
     "typescript": "^5.7.2",

@@ -1,14 +1,8 @@
 import * as React from "react";
 import { Card } from "../../components/Card.js";
 
-type CreditsTrailerType = ThemeComponent<{
-  clickable: true;
-}>;
 
-export const CreditsTrailer: CreditsTrailerType = ({
-  clickable: Clickable,
-  ...props
-}) => {
+export const CreditsTrailer: CreditsTrailerCardType = (props) => {
   return (
     <Card
       subHeading={undefined}

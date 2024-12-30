@@ -31,25 +31,6 @@ The snapshot approach was good, and it had basically no downsides for our once-a
 But, I noticed that having puppeteer and or jsdom at the end of the pipeline was keeping us from thinking server side - using Wizulu's or TGR's api's for example.
 The resources it took to generate is the final HTML wasn't trivial. Puppeteer needs an entire headless chrome browser. JSDOM needs less but still significant resources, and it is not compatible with esmodules. Nor is happy-dom. Ultimately not a good solution, and this is what Wizulu's original server-side rendering PR set in motion.
 
-# Server side rendering
-
-To render on the server, we need to think about our structure differently than for the browser. For example, we should NOT use hooks as they are moving parts that have no reason to be on the server. This is easier said than done, because what if our "react-accessible-accordion" component needs to use hooks? What if our `Link` from "@tanstack/react-router" needs hooks? They can't. We need to prevent these from even loading on the server. To achieve this, many components were rewritten to be static components.
-
-Before
-```tsx
-import { Link, type LinkProps } from "react-router-dom";
-const SomeButtomIdk = (props: { children: React.ReactNode } & LinkProps) => {
-  return <marquee><Link {...props}>{props.children}</Link></marquee>;
-};
-```
-
-After
-```tsx
-const SomeButtomIdk = ({ as: Component, ...props }: { as: React.ElementType }) => {
-  return <marquee><Component {...props}>{props.children}</Component></marquee>;
-};
-```
-
 # RSC setup
 
 RSC is still experimental, and ESM support is not fully there yet. To achieve full support, I had to build the entire React github repository from source and then copy the `oss-experimental` files from the build folder into the `node_modules` folder. To save you from doing this I have included the files in the root of this repository and the script should install copy them after running `npm install`.

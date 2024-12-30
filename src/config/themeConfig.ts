@@ -1,8 +1,18 @@
 import { createConfig } from "./createConfig.js";
 
 export const mainTheme = "9mmc";
+// slug config
+export const levels = "levels";
+export const credits = "credits";
+export const notfound = "404";
+
+export const generatedFolder = "src/data/generated";
 
 export const siteName = "Yearly Mario Maker Celebrations' Official Site";
+
+export const defaultTitle = "MMC";
+export const defaultDescription = "Yearly Mario Maker Celebrations";
+
 export const url = "https://mmcelebration.com";
 
 export const themeConfig = [
@@ -28,7 +38,13 @@ export const themeConfig = [
   createConfig({
     theme: "6ymm",
     gid: 1708788134,
-    weekTrailers: ["G4mhHeXk3k0", "lANqCC2xPoo", "rvBtTv9aeo0", "oR_7lE_Zx2c"],
+    weekTrailers: [
+      "G4mhHeXk3k0",
+      "lANqCC2xPoo",
+      "rvBtTv9aeo0",
+      "oR_7lE_Zx2c",
+      "VLiyJwx5T3E",
+    ],
   }),
   createConfig({
     theme: "7mmc",
@@ -50,10 +66,11 @@ export const themeConfig = [
   createConfig({
     theme: "9mmc",
     gid: 614218153,
-    weekTrailers: [], // if no trailer, leave empty
+    weekTrailers: ["_hABAT2_1Nk", "TpdedGjPOMo"],
   }),
 ] as const;
 
+// some helpers
 /**
  * Collection of keys. These keys are more safe to use for object keys, since they do not start with a number.
  */
@@ -67,3 +84,10 @@ export const themeKeys: ThemeKeys = themeConfig.map(
 export const themes: Themes = themeConfig.map(
   (config) => config.theme
 ) as Themes;
+
+/**
+ * A predicate helper to ensure that the theme is valid.
+ */
+export const isValidTheme = (theme: unknown): theme is Theme => {
+  return themes.includes(theme as never);
+};

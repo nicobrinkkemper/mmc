@@ -2,14 +2,7 @@ import * as React from "react";
 import { Button } from "../../components/Button.js";
 import { Card } from "../../components/Card.js";
 
-type StayUpToDateProps = {
-  clickable: true;
-};
-
-export const StayUpToDate: ThemeComponent<StayUpToDateProps> = ({
-  clickable,
-  ...props
-}) => (
+export const StayUpToDate: StayUpToDateCardType = ({ clickable, ...props }) => (
   <Card
     heading={`Stay up to date!`}
     subHeading={undefined}

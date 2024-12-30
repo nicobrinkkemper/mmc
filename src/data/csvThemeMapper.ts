@@ -2,7 +2,6 @@ import { trim } from "lodash-es";
 import { assertObject } from "../utils/pickAssert.js";
 import { safeSnakecase } from "../utils/safeSnakecase.js";
 import { createMapper } from "./createMapper.js";
-import { getThemePathInfo } from "./getThemePathInfo.js";
 
 export const csvThemeMapper = createMapper({
   mappers: {
@@ -10,7 +9,6 @@ export const csvThemeMapper = createMapper({
     batchNumber: String,
     levelName: (val) => ({
       value: val,
-      thumnailName: `${val}_thumbnail`,
       slug: safeSnakecase(val),
       thumbnailSlug: `${safeSnakecase(val)}_thumbnail` as const,
     }),
@@ -25,12 +23,14 @@ export const csvThemeMapper = createMapper({
     difficulty: Number,
     difficultyName: String,
     releaseDate: (val) => ({
-      formatted: val,
+      value: val,
       date: new Date(val),
       isUnreleased: Date.now() < new Date(val).getTime(),
     }),
     levelCode: String,
     makerId: String,
+    batchName: String,
+    batchDescription: String,
   },
   transform: (row) => {
     assertObject(row, [
@@ -48,9 +48,15 @@ export const csvThemeMapper = createMapper({
       "makerId",
     ]);
     if (!row.makerDescription) {
-      console.log("Forgot to add maker description for", row.makerName);
+      console.log(
+        "No maker description for",
+        row.makerName.value,
+        row.levelName.value
+      );
     }
     return {
+      order: row.order,
+      batchNumber: row.batchNumber,
       levelName: row.levelName,
       makerName: row.makerName,
       levelCode: row.levelCode,
@@ -62,34 +68,8 @@ export const csvThemeMapper = createMapper({
       difficulty: row.difficulty,
       difficultyName: row.difficultyName,
       releaseDate: row.releaseDate,
-      params: {
-        batchNumber: row.batchNumber,
-        order: row.order,
-      },
-      pathInfo: ({ theme }: Pick<ThemeConfig, "theme">) =>
-        getThemePathInfo(`/${theme}/level/${row.batchNumber}/${row.order}`),
-      images: (images: {
-        level: Record<string, ResizedLevelImage>;
-        maker: Record<string, ResizedLevelMakerImage>;
-      }) => {
-        try {
-          assertObject(images.level, [
-            row.levelName.slug,
-            row.levelName.thumbnailSlug,
-          ]);
-          assertObject(images.maker, [row.makerName.slug]);
-        } catch (e) {
-          console.log(
-            `No images for ${row.levelName.value}, batch: ${row.batchNumber}, order: ${row.order}`
-          );
-          throw e;
-        }
-        return {
-          level: images.level[row.levelName.slug][580][0],
-          levelThumbnail: images.level[row.levelName.thumbnailSlug][110][0],
-          maker: images.maker[row.makerName.slug][180][0],
-        };
-      },
+      batchName: row.batchName,
+      batchDescription: row.batchDescription,
     };
   },
 });

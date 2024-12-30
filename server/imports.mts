@@ -29,10 +29,6 @@ export const ESM_IMPORTS: Record<string, string> = {
     PROJECT_ROOT,
     "node_modules/react-server-dom-esm/static.node.js"
   ),
-  "@tanstack/react-router": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/@tanstack/react-router/dist/esm/index.js"
-  ),
   classnames: path.resolve(PROJECT_ROOT, "node_modules/classnames/index.js"),
   "lodash-es": path.resolve(PROJECT_ROOT, "node_modules/lodash-es/lodash.js"),
   "@testing-library/react": path.resolve(

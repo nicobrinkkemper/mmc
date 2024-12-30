@@ -17,10 +17,10 @@ declare global {
 
   type WithOption<Opt, Fallback> = Opt extends true
     ? Fallback
-    : Opt extends unknown[]
-    ? Opt extends pickRequired<(keyof Fallback)[]>
+    : Opt extends readonly PropertyKey[]
+    ? Opt extends pickRequired<readonly (keyof Fallback)[]>
       ? Required<Pick<Fallback, Opt[number]>>
-      : Opt extends pickOptional<(keyof Fallback)[]>
+      : Opt extends pickOptional<readonly (keyof Fallback)[]>
       ? Partial<Pick<Fallback, Opt[number]>>
       : Opt
     : Opt extends required
@@ -73,33 +73,29 @@ declare global {
 
   type required = true;
   type optional = boolean;
-  type pickRequired<T extends PropertyKey[]> = T;
-  type pickOptional<T extends PropertyKey[]> = T | [];
+  type pickRequired<T extends readonly PropertyKey[]> = T;
+  type pickOptional<T extends readonly PropertyKey[]> = T | [];
 
   type OptValue = required | optional;
-  type OptPick<Keys extends PropertyKey[]> =
+  type OptPick<Keys extends readonly PropertyKey[]> =
     | pickRequired<Keys>
     | pickOptional<Keys>;
 
-  type ThemeDataOptions = {
-    pathInfo?: OptValue | OptPick<(keyof ThemePathInfo<ValidPath>)[]>;
-    levelData?: OptValue | OptPick<(keyof ThemeBatches<Theme>)[]>;
-    info?: OptValue | OptPick<(keyof ThemeInfo<Theme>)[]>;
-    images?: OptValue | OptPick<(keyof ResizedImages)[]>;
+  type ThemeDataOptions<R extends ValidRoute = ValidRoute> = {
+    pathInfo?: OptValue | OptPick<readonly (keyof ThemePathInfo<PathMap[R]>)[]>;
+    batches?: OptValue | OptPick<string[]>;
+    info?: OptValue | OptPick<readonly (keyof ThemeInfo<Theme>)[]>;
+    images?: OptValue | OptPick<readonly (keyof ResizedImages)[]>;
     weekTrailers?: OptValue;
     adjacent?:
       | OptValue
       | {
-          pathInfo?: OptPick<(keyof ThemePathInfo<ValidPath>)[]>;
-          images?: OptPick<(keyof ResizedImages)[]>;
+          pathInfo?: OptPick<readonly (keyof ThemePathInfo<PathMap[R]>)[]>;
+          images?: OptPick<readonly (keyof ResizedImages)[]>;
         };
     clickable?: OptValue;
-    level?:
-      | OptValue
-      | OptPick<(keyof ThemeLevel<`/${Theme}/level/${string}/${string}`>)[]>;
-    batch?:
-      | OptValue
-      | OptPick<(keyof ThemeBatch<`/${Theme}/levels/${string}`>)[]>;
+    level?: OptValue | OptPick<readonly (keyof WithAdjacent<ThemeLevel>)[]>;
+    batch?: OptValue | OptPick<readonly (keyof WithAdjacent<ThemeBatch>)[]>;
     type?: OptValue;
     small?: OptValue;
     heading?: OptValue;
@@ -114,10 +110,13 @@ declare global {
       : never
     : never;
 
-  type ThemeDataMapping<PI extends ThemePathInfo<ValidPath>> = {
+  type ThemeDataMapping<
+    P extends ValidPath,
+    PI extends Pick<ThemePathInfo<P>, "theme" | "params">
+  > = {
     pathInfo: PI;
     images: Images[PI["theme"]]["images"];
-    levelData: ThemeBatches<PI["theme"]>;
+    batches: ThemeBatch[];
     info: ThemeInfo<PI["theme"]>;
     weekTrailers: string[];
     type?: "special" | "simple" | "normal";
@@ -160,14 +159,14 @@ declare global {
         >;
     batch: "batchNumber" extends keyof PI["params"]
       ? PI["params"]["batchNumber"] extends string
-        ? ThemeBatch<`/${PI["theme"]}/levels/${PI["params"]["batchNumber"]}`>
+        ? WithAdjacent<ThemeBatch>
         : never
       : never;
     level: "batchNumber" extends keyof PI["params"]
       ? PI["params"]["batchNumber"] extends string
         ? "order" extends keyof PI["params"]
           ? PI["params"]["order"] extends string
-            ? ThemeLevel<`/${PI["theme"]}/level/${PI["params"]["batchNumber"]}/${PI["params"]["order"]}`>
+            ? WithAdjacent<ThemeLevel>
             : never
           : never
         : never
@@ -184,19 +183,18 @@ declare global {
   type ThemeData<
     P extends ValidPath,
     Opt extends ThemeDataOptions,
-    Seg extends Segments<P> = Segments<P>,
-    PI extends ThemePathInfo<P, Seg> = ThemePathInfo<P, Seg>
+    PI extends ThemePathInfo<P> = ThemePathInfo<P>
   > = {
-    [K in keyof ThemeDataMapping<PI> as WithOption<
+    [K in keyof ThemeDataMapping<P, PI> as WithOption<
       Opt[K extends keyof Opt ? K : never],
-      ThemeDataMapping<PI>[K]
+      ThemeDataMapping<P, PI>[K]
     > extends never
       ? never
-      : K extends keyof ThemeDataMapping<PI>
+      : K extends keyof ThemeDataMapping<P, PI>
       ? K
       : never]: WithOption<
       Opt[K extends keyof Opt ? K : never],
-      ThemeDataMapping<PI>[K]
+      ThemeDataMapping<P, PI>[K]
     >;
   };
 }

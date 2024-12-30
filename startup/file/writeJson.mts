@@ -1,6 +1,4 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import { createFolder } from "./createFolder.mjs";
+import { writeFile } from "./writeFile.mjs";
 
 /**
  * Write data to outputPath as json file
@@ -8,7 +6,5 @@ import { createFolder } from "./createFolder.mjs";
  * @param outputPath - Path to write to
  */
 export async function writeJson(data: unknown, outputPath: string) {
-  const { dir: outputDir } = path.parse(outputPath);
-  await createFolder(outputDir);
-  await fs.writeFile(outputPath, JSON.stringify(data));
+  await writeFile(JSON.stringify(data), outputPath);
 }

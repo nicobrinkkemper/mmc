@@ -1,15 +1,14 @@
 import * as React from "react";
-import { CarouselLogoStatic } from "./CarouselLogo.js";
 import { FooterStatic } from "./Footer.js";
+import { Logo } from "./Logo.js";
 
 type LayoutComponent = ThemeComponent<{
-  images: pickOptional<["logo", "logo_simple", "logo_special"]>;
-  pathInfo: true;
+  images: ["logo"];
+  pathInfo: ["toHome", "toCredits"];
   adjacent: {
     pathInfo: ["to"];
     images: ["logo"];
   };
-  type: true;
   small: true;
   clickable: true;
 }>;
@@ -17,7 +16,6 @@ type LayoutComponent = ThemeComponent<{
 export const Layout: LayoutComponent = ({
   children,
   className,
-  type = "normal",
   small = false,
   images,
   pathInfo,
@@ -26,9 +24,8 @@ export const Layout: LayoutComponent = ({
 }) => {
   return (
     <>
-      <CarouselLogoStatic
+      <Logo
         small={small}
-        type={type}
         pathInfo={pathInfo}
         images={images}
         adjacent={adjacent}

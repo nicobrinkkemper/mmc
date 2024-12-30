@@ -2,69 +2,79 @@ declare global {
   type logoImageTypes = "logo" | "logo_simple" | "logo_special" | "logo_small";
 
   type ImageStructure = {
-    width: number;
-    height: number;
-    aspectRatio: string;
-    srcSet: string;
-    placeholder?: string;
-    src: string;
-    alt?: string;
-    className?: string;
+    readonly width: number;
+    readonly height: number;
+    readonly aspectRatio: string;
+    readonly srcSet: string;
+    readonly placeholder?: string;
+    readonly src: string;
+    readonly alt?: string;
+    readonly className?: string;
   };
 
   type ImageJsonItem = Record<string, ImageStructure>;
 
   type ResizedImages = {
-    logo: [ResizedImage];
-    logo_small: [ResizedImage];
-    logo_simple?: [ResizedImage];
-    logo_special?: [ResizedImage];
-    illustration: [ResizedImage];
-    favicon_512x512: [ResizedImage];
-    favicon_192x192: [ResizedImage];
-    favicon_64x64: [ResizedImage];
-    favicon: [ResizedImage];
+    readonly logo: ResizedImage;
+    readonly logo_small: ResizedImage;
+    readonly logo_simple?: ResizedImage;
+    readonly logo_simple_small?: ResizedImage;
+    readonly logo_special?: ResizedImage;
+    readonly illustration: ResizedImage;
+    readonly favicon_512x512: ResizedImage;
+    readonly favicon_192x192: ResizedImage;
+    readonly favicon_64x64: ResizedImage;
+    readonly favicon: ResizedImage;
   };
 
-  type ResizedLevelImage = Record<580 | 1160 | 110 | 220, [ResizedImage]>;
-  type ResizedLevelMakerImage = Record<180 | 360, [ResizedImage]>;
+  type ResizedBatchImage = Readonly<Record<80 | 160, [string]> & ResizedImage>;
+
+  type ResizedLevelImage = Readonly<
+    Record<580 | 1160 | 110 | 220, [string]> & ResizedImage
+  >;
+  type ResizedLevelMakerImage = Readonly<
+    Record<180 | 360, [string]> & ResizedImage
+  >;
 
   type ResizedImage = {
-    width: number;
-    height: number;
-    aspectRatio: string;
-    srcSet: string;
-    placeholder?: string;
-    src: string;
-    alt?: string;
-    className?: string;
+    readonly width: number;
+    readonly height: number;
+    readonly aspectRatio: string;
+    readonly srcSet: string;
+    readonly placeholder?: string;
+    readonly src: string;
+    readonly alt?: string;
+    readonly className?: string;
   };
 
   type LevelImages = {
-    level: ResizedImage;
-    levelThumbnail: ResizedImage;
-    maker: ResizedImage;
+    readonly level: ResizedImage;
+    readonly levelThumbnail: ResizedImage;
+    readonly maker: ResizedImage;
   };
 
   type Images = {
-    [K in Theme]: {
-      images: ResizedImages;
-      level: {
+    readonly [K in Theme]: {
+      readonly images: ResizedImages;
+      readonly level: {
         [K in string]: ResizedLevelImage;
       };
-      maker: {
+      readonly maker: {
         [K in string]: ResizedLevelMakerImage;
+      };
+      readonly batch: {
+        [K in string]: ResizedBatchImage;
       };
     };
   };
 
   type ImageAssets = {
-    [K in Theme]: Record<string, ResizedImage>;
+    readonly [K in Theme]: Record<string, ResizedImage>;
   };
 
   type ResizeImageStructure = {
     public: Images;
-    src: {
+    readonly src: {
       assets: ImageAssets;
     };
   };
@@ -87,4 +97,5 @@ declare global {
   type ResizedImagePreference<T extends string> =
     T extends `${string}_${infer U}` ? U : never;
 }
-export {};
+export { };
+

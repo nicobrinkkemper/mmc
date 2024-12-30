@@ -1,19 +1,29 @@
 import { groupBy } from "lodash-es";
-import { getThemePathInfo } from "./getThemePathInfo.js";
 
 export const batchProcessor: ThemeBatchProcessorFn = (
   themeConfig,
-  themeData
+  unbatchedLevelData,
+  images
 ) => {
-  // Group levels by batch
-  const grouped = Object.values(groupBy(themeData, "batchNumber"));
-  return grouped.map((levels, batchIndex) => {
-    const path = `/${themeConfig.theme}/levels/${batchIndex}` as const;
+  const grouped = Object.values(groupBy(unbatchedLevelData, "batchNumber"));
+  const batches = grouped.map((levels, batchIndex) => {
+    const batchNumber = levels[0].batchNumber;
+    const batchName = levels[0].batchName;
+    const batchDescription = levels[0].batchDescription;
+    const batch = images?.batch;
+    const batchImage = batch?.[`batch_${batchNumber}` as keyof typeof batch];
     return {
+      batchNumber: batchNumber,
+      batchName: batchName ?? `Week ${batchNumber}`,
+      batchDescription: batchDescription ?? ``,
       weekTrailer: themeConfig.weekTrailers[batchIndex],
       levels: levels,
-      pathInfo: getThemePathInfo(path),
       releaseDate: levels[0].releaseDate,
-    } as ThemeBatch<typeof path>;
+      image: batchImage ?? null,
+    };
   });
+  return {
+    batches,
+    releaseDate: batches[0].releaseDate,
+  };
 };

@@ -2,6 +2,37 @@ declare global {
   type Primitive = string | number | boolean | null | undefined;
 
   /**
+   * Replace the params in a string with the values in the map
+   * @example
+   * type Result = TypeReplace<"/:theme/levels/:batchNumber/:order", { theme: "abc", batchNumber: "123", order: "456" }>
+   * // "abc/levels/123/456"
+   */
+  type TypeReplace<
+    S extends string,
+    M extends Record<string, any>,
+    DELIMITER extends string = ":",
+    SEPARATOR extends string = "/"
+  > = S extends `${infer Pre}:${infer Param}${SEPARATOR}${infer Rest}`
+    ? Param extends keyof M
+      ? `${Pre}${M[Param]}${SEPARATOR}${TypeReplace<
+          Rest,
+          M,
+          DELIMITER,
+          SEPARATOR
+        >}`
+      : `${Pre}${DELIMITER}${Param}${SEPARATOR}${TypeReplace<
+          Rest,
+          M,
+          DELIMITER,
+          SEPARATOR
+        >}`
+    : S extends `${infer Pre}${DELIMITER}${infer Param}`
+    ? Param extends keyof M
+      ? `${Pre}${M[Param]}`
+      : `${Pre}${DELIMITER}${Param}`
+    : S;
+
+  /**
    * Get all the keys of an intersection of object types
    */
   type KeysOfIntersection<T> = T extends T ? keyof T : never;
@@ -198,6 +229,14 @@ declare global {
   type TupleIndex<T extends any[], Item> = {
     [K in keyof T]: T[K] extends Item ? K : never;
   }[number];
+
+  type Split<S extends string, D extends string = "/"> = string extends S
+    ? string[]
+    : S extends ""
+    ? []
+    : S extends `${infer T}${D}${infer U}`
+    ? [T, ...Split<U, D>]
+    : [S];
 }
 
 export {};

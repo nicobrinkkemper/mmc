@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Card } from "../../../components/Card.js";
 
-type Ymm5CreditsTrailerCardType = ThemeComponent<{}>;
 
-export const Ymm5CreditsTrailerCard: Ymm5CreditsTrailerCardType = (props) => {
+export const Ymm5CreditsTrailerCard: CreditsTrailerCardType = (props) => {
   return (
     <Card
       heading={`Trailers`}

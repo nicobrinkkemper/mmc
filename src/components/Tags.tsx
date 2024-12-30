@@ -3,12 +3,9 @@ import * as React from "react";
 import styles from "./Tags.module.css";
 
 
-export const Tags: ThemePageComponent<
-  `/${Theme}/level/${string}/${string}`,
-  {
-    level: ["tags"];
-  }
-> = ({ level }) => {
+export const Tags: ThemeComponent<{
+  level: ["tags"];
+}> = ({ level }) => {
   return (
     <div className={styles["Tags"]}>
       {Object.entries(level.tags).map(([key, tag]) => {

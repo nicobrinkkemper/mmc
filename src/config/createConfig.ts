@@ -1,7 +1,9 @@
-const link = (gid: number) => ({
-  gid,
-  link: `https://docs.google.com/spreadsheets/d/e/2PACX-1vROk4rxqS9jPImRfwqL6T6pFHJSBs4Gx3O9JUzabTeDA0aZrr2xccinxeuWhSNJJflByzbE63CAkZj0/pub?gid=${gid}&single=true&output=csv`,
-});
+const link = <GID extends number>(gid: GID) =>
+  ({
+    gid,
+    link: `https://docs.google.com/spreadsheets/d/e/2PACX-1vROk4rxqS9jPImRfwqL6T6pFHJSBs4Gx3O9JUzabTeDA0aZrr2xccinxeuWhSNJJflByzbE63CAkZj0/pub?gid=${gid}&single=true&output=csv`,
+  } as const);
+
 /**
  * Helper to create final configuration object that will be used for the codebase.
  */
@@ -13,22 +15,19 @@ export const createConfig = <
   theme: T;
   gid: GID;
   weekTrailers: Youtubes;
-}) =>
-  ({
+}) => {
+  const spreadsheet = link(themeConfig.gid);
+  return {
     weekTrailers: themeConfig.weekTrailers,
-    spreadsheet: {
-      gid: themeConfig.gid,
-      link: link(themeConfig.gid).link,
-    },
+    spreadsheet,
     key: `_${themeConfig.theme}`,
     theme: themeConfig.theme,
-    toLevel: <B extends string, O extends string>(batchNumber: B, order: O) =>
-      `/${themeConfig.theme}/levels/${batchNumber}/${order}` as const,
     fetchCsv: () =>
-      fetch(link(themeConfig.gid).link)
+      fetch(spreadsheet.link)
         .then((res) => res.text())
         .catch((e) => {
-          console.error("Spreadhseet error", e);
-          return "";
+          console.error("Spreadsheet error", e);
+          throw e;
         }),
-  } as const);
+  } as const;
+};

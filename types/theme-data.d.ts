@@ -1,76 +1,60 @@
+import { credits, levels } from "../src/config/themeConfig.ts";
+
 declare global {
-  type ThemeBaseProps = {
-    theme: Theme;
-  };
+  type ThemeLevel = ThemeLevelData;
 
-  type ThemeLevel<
-    P extends `/${Theme}/level/${string}/${string}` = `/${Theme}/level/${string}/${string}`
-  > = Omit<ThemeCsvParseResult, "images" | "pathInfo"> & {
-    images: ReturnType<ThemeCsvParseResult["images"]>;
-    pathInfo: ReturnType<ThemeCsvParseResult["pathInfo"]>;
-    adjacent: Adjacent<
-      {
-        pathInfo: ThemePathInfo<P>;
-        releaseDate: {
-          formatted: string;
-          date: Date;
-          isUnreleased: boolean;
-        };
-      }[]
-    >;
-  };
-
-  type ThemeBatch<
-    P extends `/${Theme}/levels/${string}` = `/${Theme}/levels/${string}`
-  > = WithAdjacent<{
+  type ThemeBatch = {
+    batchNumber: string;
+    batchName: string;
+    batchDescription: string;
     weekTrailer: string;
     levels: ThemeLevel[];
-    pathInfo: ThemePathInfo<P>;
+    image: ResizedBatchImage | null;
     releaseDate: {
-      formatted: string;
+      value: string;
       date: Date;
       isUnreleased: boolean;
     };
-  }>;
-
-  type ThemeBatches<T extends Theme = Theme> = {
-    batches: ThemeBatch<`/${T}/levels/${NumberParam}`>[];
-    isUnreleased: boolean;
-    startDate: Date;
   };
 
   type ThemeInfo<T extends Theme = Theme> = {
-    slug: string;
-    caps: Uppercase<T>;
-    snake: string;
-    ordinal: number;
-    // totally useless but fun way to get the first character of the string
-    themeYear: T extends `${infer First}${string}` ? First : never;
-    writtenOutOrdinal: string;
-    writtenOut: string;
+    readonly slug: string;
+    readonly caps: Uppercase<T>;
+    readonly snake: string;
+    readonly ordinal: number;
+    readonly themeYear: T extends `${infer First}${string}` ? First : never;
+    readonly writtenOutOrdinal: string;
+    readonly writtenOut: string;
   };
 
   /**
-   * Since the number param is always a string, we can use the string type to represent it.
+   * All valid paths based on the exported pages
    */
-  type NumberParam = string;
+  type ValidPath = PathMap[keyof PathMap];
   /**
-   * Pretty straight forward, though a little repetitive.
-   * Simple definition of all possible paths.
+   * All valid routes based on hte exported pages
    */
-  type ValidPath<
-    T extends Theme = Theme,
-    B extends NumberParam = NumberParam,
-    O extends NumberParam = NumberParam
-  > =
-    | `/${T}`
-    | `/${T}/`
-    | `/${T}/credits`
-    | `/${T}/levels`
-    | `/${T}/levels/${B}`
-    | `/${T}/level/${B}/${O}`
-    | `/${T}/level/${B}`
-    | `/${T}/credits`;
+  type ValidRoute = keyof PageMap;
+
+  type getThemeRouteInfoFn = <R extends ValidRoute>(
+    route: R
+  ) => (
+    to: unknown | ThemePathInfo<PathMap[R]>
+  ) => to is ThemePathInfo<PathMap[R]>;
+
+  /**
+   * A helper map to go from `/:theme` (route) to `/${Theme}` (to) type
+   */
+  type PathMap = {
+    [k in keyof PageMap]: TypeReplace<
+      k,
+      {
+        theme: Theme;
+        batchNumber: string;
+        order: string;
+      }
+    >;
+  };
 
   /**
    * Helper type to check if a path segment exists in the path
@@ -82,32 +66,27 @@ declare global {
     S extends string
   > = P extends `${infer _}${S}${infer __}` ? true : false;
 
-  type Segments<P extends string> = P extends `${infer Start}/${infer Rest}`
-    ? Start extends ""
-      ? Segments<Rest>
-      : [Start, ...Segments<Rest>]
-    : P extends ""
-    ? []
-    : [P];
-
   /**
-   * Here we repeat the valid path, but we try to infer as much as possible (also for fun, but also because it's kind of like a test) and return it as static types.
-   * This ensures that any boolean values are staticly known and not just `true` or `false` based on the path.
+   * Use the valid path to try to infer as much as possible. Kind of like a test/sanity check for our project.
+   * This is the type that's used throughout the project to get context about where we are in the app.
    */
-  type ThemePathInfo<
-    Path extends string,
-    Seg extends Segments<Path> = Segments<Path>,
-    T extends Theme = Seg[0] extends Theme ? Seg[0] : never
-  > = {
+  type ThemePathInfo<Path extends ValidPath = ValidPath> = {
     path: string;
-    segments: Seg;
+    segments: string extends Path ? Split<Path> : string[];
     to: Path;
-    toCredits: `/${T}/credits`;
-    toLevels: `/${T}/levels`;
-    toHome: `/${T}`;
-    theme: T;
-    params: (Seg[3] extends NumberParam ? { order: Seg[3] } : {}) &
-      (Seg[2] extends NumberParam ? { batchNumber: Seg[2] } : {});
+    route: keyof {
+      [K in keyof PathMap as PathMap[K] extends Path ? K : never]: K;
+    };
+    toCredits: `/${Theme}/${typeof credits}`;
+    toLevels: `/${Theme}/${typeof levels}`;
+    toHome: `/${Theme}`;
+    toLevel: `/${Theme}/${typeof levels}/${string}/${string}` | undefined;
+    toBatch: `/${Theme}/${typeof levels}/${string}` | undefined;
+    theme: Theme;
+    params: {
+      batchNumber: string;
+      order: string;
+    };
   };
 
   type GetThemePathInfoFn = <Path extends ValidPath = ValidPath>(
@@ -116,4 +95,3 @@ declare global {
 }
 
 export {};
-

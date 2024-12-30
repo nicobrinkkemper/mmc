@@ -3,11 +3,8 @@ import { Card } from "../../components/Card.js";
 import { CreditsTrailer } from "./CreditsTrailer.js";
 import { CreditsWebsite } from "./CreditsWebsite.js";
 
-type CreditsContentType = ThemeComponent<{
-  clickable: true;
-}>;
 
-export const DefaultCreditsContent: CreditsContentType = ({
+export const DefaultCreditsContent: CreditsContentCardType = ({
   clickable,
   ...props
 }) => {
@@ -21,7 +18,7 @@ export const DefaultCreditsContent: CreditsContentType = ({
         {...props}
       />
       <CreditsWebsite clickable={clickable} />
-      <CreditsTrailer clickable={clickable} />
+      <CreditsTrailer />
     </>
   );
 };

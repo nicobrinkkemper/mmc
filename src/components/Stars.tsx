@@ -15,12 +15,9 @@ const Star = ({ value }: { value: number }) => {
 }
 
 
-export const Stars: ThemePageComponent<
-  `/${Theme}/level/${string}/${string}`,
-  {
-    level: ["difficulty"];
-  }
-> = ({ level: { difficulty } }) => {
+export const Stars: ThemeComponent<{
+  level: ["difficulty"];
+}> = ({ level: { difficulty } }) => {
   return (
     <>
       {["s1", "s2", "s3", "s4"].map((key, i) => (

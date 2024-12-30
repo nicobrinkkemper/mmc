@@ -2,7 +2,7 @@
     display: inline-grid;
     justify-items: center;
     grid-template-columns:
-        [nationality-start makerId-start] 24px [nationality-end] 6px [maker-start] max-content [maker-end makerId-end];
+        [nationality-start makerId-start] 24px [nationality-end] 8px [maker-start] max-content [maker-end makerId-end];
     grid-template-rows:
         [maker] max-content [makerId] 24px;
     width: max-content;
@@ -21,6 +21,6 @@
 
 .MakerId {
     grid-area: makerId;
-    font-size: 0.5rem;
+    font-size: .8rem;
     display: block;
 }

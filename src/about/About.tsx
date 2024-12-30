@@ -4,27 +4,30 @@ import { DefaultAboutContentStatic } from "../copy/default/DefaultAboutContent.j
 import { default as classes } from "./About.module.css";
 import { CloseSvg } from "./CloseSvg.js";
 
-export type AboutStaticProps<P extends ValidPath = ValidPath> = {
-  info: ThemeInfo<ThemePathInfo<P>["theme"]>;
-  pathInfo: ThemePathInfo<P>;
-  closeProps?: React.JSX.IntrinsicElements["a"];
-  accordion: React.ElementType;
-  accordionItem: React.ElementType;
-  accordionItemHeading: React.ElementType;
-  accordionItemButton: React.ElementType;
-  accordionItemPanel: React.ElementType;
-};
+type AboutType = ThemeComponent<
+  {
+    info: ["caps", "snake", "writtenOut"];
+  },
+  "div",
+  {
+    closeProps: React.JSX.IntrinsicElements["a"];
+    accordion: React.ElementType;
+    accordionItem: React.ElementType;
+    accordionItemHeading: React.ElementType;
+    accordionItemButton: React.ElementType;
+    accordionItemPanel: React.ElementType;
+  }
+>;
 
-export const AboutStatic = <P extends ValidPath = ValidPath>({
+export const AboutStatic: AboutType = ({
   closeProps,
-  info,
-  pathInfo,
+  info: { caps, snake, writtenOut },
   accordion: Accordion = "div",
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemButton: AccordionItemButton = "a",
   accordionItemPanel: AccordionItemPanel = "div",
-}: AboutStaticProps<P>) => {
+}) => {
   return (
     <div className={classes["outer"]} id={"!/about"}>
       <div className={classes["main"]}>
@@ -40,8 +43,11 @@ export const AboutStatic = <P extends ValidPath = ValidPath>({
           <div className={classes["body"]}>
             <div>
               <DefaultAboutContentStatic
-                info={info}
-                pathInfo={pathInfo}
+                info={{
+                  caps,
+                  snake,
+                  writtenOut,
+                }}
                 accordion={Accordion}
                 accordionItem={AccordionItem}
                 accordionItemHeading={AccordionItemHeading}

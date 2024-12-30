@@ -1,21 +1,14 @@
 import * as React from "react";
-import type { AboutStaticProps } from "../../about/About.js";
 import { AboutItem } from "./AboutItem.js";
 import { AboutItemHeading } from "./AboutItemHeading.js";
 import { AboutPanel } from "./AboutPanel.js";
 
-export const QuestionWhatKindOfLevelsStatic = ({
+export const QuestionWhatKindOfLevelsStatic: QuestionWhatKindOfLevelsType = ({
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemPanel: AccordionItemPanel = "div",
   accordionItemButton: AccordionItemButton = "a",
-}: Pick<
-  AboutStaticProps,
-  | "accordionItem"
-  | "accordionItemHeading"
-  | "accordionItemPanel"
-  | "accordionItemButton"
->) => (
+}) => (
   <AboutItem accordionItem={AccordionItem}>
     <AboutItemHeading
       accordionItemHeading={AccordionItemHeading}

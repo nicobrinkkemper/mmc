@@ -2,11 +2,7 @@ import * as React from "react";
 import { Button } from "../../../components/Button.js";
 import { Card } from "../../../components/Card.js";
 
-type Mm7ArtWorkCardType = ThemeComponent<{
-  clickable: required;
-}>;
-
-export const Mm7ArtWorkCard: Mm7ArtWorkCardType = ({ clickable, ...props }) => (
+export const Mm7ArtWorkCard: ClickableCardType = ({ clickable, ...props }) => (
   <Card
     heading={`Community Artwork Gallery`}
     subHeading={undefined}

@@ -1,16 +1,16 @@
 export const pickRequired = <T extends {}, K extends keyof T>(
   obj: T,
-  keys: K[]
-) => {
-  return keys.reduce((acc = {}, key) => {
-    acc[key] = obj[key];
-    if (!acc[key]) {
-      console.log(obj, key, acc[key]);
+  keys: K[],
+  errorMessage = "required"
+) =>
+  Object.fromEntries(
+    keys.map((key) => {
+      if (key in obj) {
+        return [key, obj[key]];
+      }
+      console.error(errorMessage ?? "required");
       throw new Error(
-        `Key ${String(key)} is required, available: ${Object.keys(obj).join(
-          ", "
-        )}`
+        `${errorMessage}\n${String(key)} not in ${Object.keys(obj).join(", ")}`
       );
-    }
-  }, {} as any) as Pick<T, K>;
-};
+    })
+  ) as Pick<T, K>;

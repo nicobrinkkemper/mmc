@@ -29,40 +29,19 @@ export default defineConfig({
       output: {
         format: "es",
         manualChunks: (id) => {
-          // React and core dependencies
-          if (
-            id.includes("node_modules/react") ||
-            id.includes("node_modules/react-dom") ||
-            id.includes("node_modules/react-server-dom-esm") ||
-            id.includes("node_modules/scheduler") ||
-            id.includes("node_modules/use-sync-external-store")
-          ) {
-            return "react-vendor";
-          }
-
-          // Router and React-dependent libraries
           if (id.includes("node_modules")) {
-            return "node-modules";
+            if (id.includes("@tanstack")) return "vendor";
+            if (id.includes("react")) return null;
+            return "deps";
           }
-
-          // Specific JSON files
-          if (id.includes("manifest.json")) {
-            return "manifest-data";
-          }
-          if (id.includes("theme.json")) {
-            return "theme-data";
-          }
-
-          // Static/computed data
-          if (id.includes("src/data")) {
-            return "data-vendor";
-          }
-
-          return null;
         },
       },
     },
     chunkSizeWarningLimit: 500,
+    commonjsOptions: {
+      include: [/node_modules/],
+      exclude: [/esm\.sh/],
+    },
   },
   server: {
     port: 3000,
@@ -70,7 +49,17 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": resolve(__dirname, "./src"),
+      "use-sync-external-store/shim/with-selector":
+        "use-sync-external-store/shim/with-selector.js",
+      react: "https://esm.sh/react@19.0.0-beta-26f2496093-20240514",
+      "react-dom": "https://esm.sh/react-dom@19.0.0-beta-26f2496093-20240514",
+      "react-dom/client":
+        "https://esm.sh/react-dom@19.0.0-beta-26f2496093-20240514/client",
+      "react/jsx-runtime":
+        "https://esm.sh/react@19.0.0-beta-26f2496093-20240514/jsx-runtime",
+      "@jsxImportSource":
+        "https://esm.sh/react@19.0.0-beta-26f2496093-20240514",
     },
+    preserveSymlinks: true,
   },
 });

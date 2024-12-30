@@ -55,6 +55,18 @@ const resizeIllustration: ResizeUserInfo[] = [
   },
 ];
 
+const resizeBatchCard: ResizeUserInfo[] = [
+  {
+    fileName: "[snakecase]-[width].webp",
+    resize: { width: 80 },
+    main: true,
+  },
+  {
+    fileName: "[snakecase]-[width].webp",
+    resize: { width: 160 },
+  },
+];
+
 const resizeLogoSpecial: ResizeUserInfo[] = [
   {
     fileName: "[snakecase]-[height].webp",
@@ -159,6 +171,7 @@ export const resizeJobs: ResizeJobsFn = ({
   if (ext === ".svg") return copySvg;
   if (relativeInputPath.includes("level")) return resizeLevel;
   if (relativeInputPath.includes("maker")) return resizeMaker;
+  if (relativeInputPath.includes("batch")) return resizeBatchCard;
   if (originalSize.width < 500) return webp;
 
   return [3, 2, 1].map(resizeX(originalSize.width));

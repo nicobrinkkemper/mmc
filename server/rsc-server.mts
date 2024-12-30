@@ -1,9 +1,11 @@
 import cookieParser from "cookie-parser";
 import express, { RequestHandler } from "express";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-import { routes } from "../src/data/routes.js";
+import { getThemePathInfo } from "../src/data/getThemePathInfo.js";
+import { Html } from "../src/layout/Html.js";
+import { RenderRoute } from "../src/router/RenderRoute.js";
 import { build, moduleBaseURL, modules, rsc_port } from "./constants.js";
-import { RenderRsc } from "./render-rsc.js";
+import { htmlAssets } from "./htmlAssets.mjs";
 import { cors, logger } from "./utils.mjs";
 
 console.log(`Listening on http://localhost:${rsc_port}`);
@@ -26,26 +28,25 @@ app
   .get("/*", async (req, res, next) => {
     const normalizedPath = req.path.replace(/\/$/, "") || "/";
 
-    if (normalizedPath.includes(".")) {
+    const pathInfo = getThemePathInfo(normalizedPath as ValidPath);
+    if (!pathInfo) {
       return next();
     }
 
     console.log("Looking for route:", normalizedPath);
 
-    const route = routes.find((r) => {
-      const routePath = r.path.replace(/\/$/, "") || "/";
-      return routePath === normalizedPath;
-    });
-
-    if (!route) {
-      const notFoundRoute = routes[routes.length - 1];
-      renderToPipeableStream(
-        RenderRsc(notFoundRoute as any),
-        moduleBaseURL
-      ).pipe(res);
-    } else {
-      renderToPipeableStream(RenderRsc(route as any), moduleBaseURL).pipe(res);
-    }
+    renderToPipeableStream(
+      RenderRoute({
+        pathInfo,
+        layout: Html,
+        layoutProps: {
+          assets: {
+            css: htmlAssets.css,
+          },
+        },
+      })!,
+      moduleBaseURL
+    ).pipe(res);
   })
   .use("/", express.static(build))
   .listen(rsc_port);

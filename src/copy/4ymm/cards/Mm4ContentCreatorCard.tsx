@@ -2,11 +2,7 @@ import * as React from "react";
 import { Button } from "../../../components/Button.js";
 import { Card } from "../../../components/Card.js";
 
-type MM4ContentCreatorCardType = ThemeComponent<{
-  clickable: required;
-}>;
-
-export const MM4ContentCreatorCard: MM4ContentCreatorCardType = ({
+export const MM4ContentCreatorCard: ContentCreatorCardType = ({
   clickable,
   ...props
 }) => (

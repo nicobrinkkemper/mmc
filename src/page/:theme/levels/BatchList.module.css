@@ -1,0 +1,68 @@
+.Batches {
+    gap: var(--gap, .5rem);
+    display: grid;
+    align-content: baseline;
+}
+
+.BatchCard {
+    --_batch-number-width: var(--batch-number-width, 2.4375rem);
+    grid-template-columns: var(--_batch-number-width) 1fr min-content;
+    display: grid;
+    grid-template-columns: fit-content(80px) max-content;
+}
+
+.BatchNumber {
+    display: flex;
+    border-radius: 50%;
+    height: var(--_batch-number-width);
+    width: var(--_batch-number-width);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font: var(--batch-number-font);
+    background: var(--batch-number-background, white);
+    border: var(--batch-number-border, none);
+    color: var(--batch-number-color, black);
+    mix-blend-mode: var(--batch-number-mix-blend-mode, none);
+    margin-right: .5rem;
+}
+
+
+.BatchImage {
+    border-radius: var(--batch-image-border-radius, 0);
+    display: flex;
+}
+
+.BatchInfo {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-height: min-content;
+    flex: 1 0 0;
+}
+
+.BatchName {
+    font-size: 1rem;
+    line-height: 1.3rem;
+    font-family: var(--font-secondary);
+}
+
+.BatchDescription {
+    font-size: .875rem;
+    line-height: 1rem;
+}
+
+.BatchReleaseDay {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: .875rem;
+    line-height: 1.125rem;
+    font-family: var(--font-secondary);
+}
+
+.BatchLevelAmount {
+    font-size: .875rem;
+    line-height: 1rem;
+}

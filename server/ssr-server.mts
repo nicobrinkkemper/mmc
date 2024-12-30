@@ -16,11 +16,10 @@ import {
   rsc_port,
   ssr_port,
 } from "./constants.js";
+import { htmlAssets } from "./htmlAssets.mjs";
 import { cors, logger } from "./utils.mjs";
 
 console.log(`Listening on http://localhost:${ssr_port}`);
-// ... other imports ...
-import { getStaticData } from "../src/data/getStaticData.js";
 
 express()
   .use(logger)
@@ -44,19 +43,31 @@ express()
     /**
      * Render the full HTML document using the Html component
      */
-    const stream = renderToPipeableStream(
-      createElement(App, getStaticData(req.path as ValidPath) as any),
-      {
-        onError(error) {
-          console.error(error);
-          res.status(500).end();
+    const stream = renderToPipeableStream(createElement(App), {
+      bootstrapModules: [htmlAssets.main],
+      importMap: {
+        imports: {
+          react: "https://esm.sh/react@19.0.0-beta-26f2496093-20240514",
+          "react-dom":
+            "https://esm.sh/react-dom@19.0.0-beta-26f2496093-20240514",
+          "react-dom/":
+            "https://esm.sh/react-dom@19.0.0-beta-26f2496093-20240514/",
+          "react/": "https://esm.sh/react@19.0.0-beta-26f2496093-20240514/",
+          "react-server-dom-esm/client":
+            "/node_modules/react-server-dom-esm/esm/react-server-dom-esm-client.browser.production.js",
+          "@jsxImportSource":
+            "https://esm.sh/react@19.0.0-beta-26f2496093-20240514",
         },
-        onAllReady() {
-          res.setHeader("Content-Type", "text/html");
-          stream.pipe(res);
-        },
-      }
-    );
+      },
+      onError(error) {
+        console.error(error);
+        res.status(500).end();
+      },
+      onAllReady() {
+        res.setHeader("Content-Type", "text/html");
+        stream.pipe(res);
+      },
+    });
   })
   .use("/", express.static(build))
   .use("/dist/src", express.static(modules))

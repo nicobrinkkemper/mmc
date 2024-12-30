@@ -5,50 +5,50 @@ import postcss from "postcss";
 import postcssModules from "postcss-modules";
 import { ESM_IMPORTS } from "./imports.mjs";
 
-function findSourceThroughSourceMap(url: string) {
-  if (!url) return url;
+// function findSourceThroughSourceMap(url: string) {
+//   if (!url) return url;
 
-  try {
-    const filePath = decodeURIComponent(url.replace("file://", ""));
+//   try {
+//     const filePath = decodeURIComponent(url.replace("file://", ""));
 
-    // Try to read the external source map first
-    const mapPath = `${filePath}.map`;
-    if (fs.existsSync(mapPath)) {
-      const sourceMap = JSON.parse(fs.readFileSync(mapPath, "utf-8"));
-      if (sourceMap.sources?.[0]) {
-        const sourcePath = path.resolve(
-          path.dirname(filePath),
-          sourceMap.sourceRoot || "",
-          sourceMap.sources[0]
-        );
-        return `file://${sourcePath}`;
-      }
-    }
+//     // Try to read the external source map first
+//     const mapPath = `${filePath}.map`;
+//     if (fs.existsSync(mapPath)) {
+//       const sourceMap = JSON.parse(fs.readFileSync(mapPath, "utf-8"));
+//       if (sourceMap.sources?.[0]) {
+//         const sourcePath = path.resolve(
+//           path.dirname(filePath),
+//           sourceMap.sourceRoot || "",
+//           sourceMap.sources[0]
+//         );
+//         return `file://${sourcePath}`;
+//       }
+//     }
 
-    // Fallback to inline source map
-    const content = fs.readFileSync(filePath, "utf-8");
-    const sourceMapMatch = content.match(
-      /\/\/#\s*sourceMappingURL=data:application\/json;base64,(.+)$/
-    );
-    if (sourceMapMatch) {
-      const sourceMap = JSON.parse(
-        Buffer.from(sourceMapMatch[1], "base64").toString()
-      );
-      if (sourceMap.sources?.[0]) {
-        const sourcePath = path.resolve(
-          path.dirname(filePath),
-          sourceMap.sourceRoot || "",
-          sourceMap.sources[0]
-        );
-        return `file://${sourcePath}`;
-      }
-    }
-  } catch (error) {
-    return url;
-  }
+//     // Fallback to inline source map
+//     const content = fs.readFileSync(filePath, "utf-8");
+//     const sourceMapMatch = content.match(
+//       /\/\/#\s*sourceMappingURL=data:application\/json;base64,(.+)$/
+//     );
+//     if (sourceMapMatch) {
+//       const sourceMap = JSON.parse(
+//         Buffer.from(sourceMapMatch[1], "base64").toString()
+//       );
+//       if (sourceMap.sources?.[0]) {
+//         const sourcePath = path.resolve(
+//           path.dirname(filePath),
+//           sourceMap.sourceRoot || "",
+//           sourceMap.sources[0]
+//         );
+//         return `file://${sourcePath}`;
+//       }
+//     }
+//   } catch (error) {
+//     return url;
+//   }
 
-  return url;
-}
+//   return url;
+// }
 
 /**
  * Directly handle all module loading without delegating to React's loader
@@ -59,11 +59,11 @@ export async function resolve(
   nextResolve: any
 ) {
   // Log for debugging
-  console.log(
-    "\nResolving:",
-    findSourceThroughSourceMap(context?.parentURL) || "unknown",
-    `(${specifier.split("/").toReversed().slice(-2).join("/")})`
-  );
+  // console.log(
+  //   "\nResolving:",
+  //   findSourceThroughSourceMap(context?.parentURL) || "unknown",
+  //   `(${specifier.split("/").toReversed().slice(-2).join("/")})`
+  // );
 
   // Handle node: protocol
   if (specifier.startsWith("node:")) {
@@ -92,9 +92,9 @@ export async function resolve(
 
   // Handle ESM imports from our mapping
   if (ESM_IMPORTS[specifier]) {
-    console.log(
-      `✓ Using mapped import: ${specifier} -> ${ESM_IMPORTS[specifier]}`
-    );
+    // console.log(
+    //   `✓ Using mapped import: ${specifier} -> ${ESM_IMPORTS[specifier]}`
+    // );
     return {
       shortCircuit: true,
       url: pathToFileURL(ESM_IMPORTS[specifier]).href,
@@ -107,9 +107,9 @@ export async function resolve(
 
 export async function load(url: string, context: any, nextLoad: any) {
   const urlPath = new URL(url).pathname;
-  console.log("\nLoading:", urlPath);
-  console.log("Format:", context.format);
-  console.log("Import Assertions:", context.importAssertions);
+  // console.log("\nLoading:", urlPath);
+  // console.log("Format:", context.format);
+  // console.log("Import Assertions:", context.importAssertions);
 
   try {
     // Handle node: protocol and built-in modules first
@@ -195,23 +195,6 @@ export async function load(url: string, context: any, nextLoad: any) {
           export const use = React.use;
           export const cache = React.cache;
         `,
-      };
-    }
-
-    // Handle @tanstack/react-router
-    if (urlPath.includes("node_modules/@tanstack/react-router/")) {
-      // Determine the correct entry point based on the import path
-      const source = urlPath.includes("dist/esm")
-        ? fs.readFileSync(urlPath, "utf-8")
-        : fs.readFileSync(
-            urlPath.replace("/react-router/", "/react-router/dist/esm/"),
-            "utf-8"
-          );
-
-      return {
-        format: "module",
-        shortCircuit: true,
-        source,
       };
     }
 

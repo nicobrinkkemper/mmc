@@ -48,8 +48,10 @@ function collectImports(key: string, seen = new Set<string>()): string[] {
   const nestedImports = imports.flatMap((imp: string) =>
     collectImports(imp, seen)
   );
+  // no accidental duplicates
+  const uniqueImports = [...new Set([...imports, ...nestedImports])];
 
-  return [...imports, ...nestedImports];
+  return uniqueImports;
 }
 
 // Find the entry point
@@ -58,14 +60,14 @@ const entryPoint = Object.keys(manifest).find(
 );
 
 if (!entryPoint) {
-  console.warn("No entry point found in manifest");
+  throw new Error("No entry point found in manifest");
 }
 
 export const htmlAssets = {
   css: entryPoint
     ? collectCssFromImports(entryPoint).map((file) => `/${file}`)
     : [],
-  main: entryPoint ? `/${manifest[entryPoint].file}` : undefined,
+  main: `/${manifest[entryPoint].file}`,
   imports: entryPoint
     ? collectImports(entryPoint).map((imp) => `/${manifest[imp].file}`)
     : [],

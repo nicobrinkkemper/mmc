@@ -1,17 +1,22 @@
 import * as React from "react";
-import { MarioTurnsXthStatic } from "./MarioTurnsXth.js";
+import { MarioTurnsXth } from "./MarioTurnsXth.js";
 import { StayUpToDate } from "./StayUpToDate.js";
 
-export const DefaultWelcomeContent: ThemeComponent<{
-  info: pickRequired<["writtenOut", "themeYear"]>;
-  images: pickOptional<["illustration"]>;
-  pathInfo: required;
-  clickable: required;
-}> = (props) => {
+export const DefaultWelcomeContent: DefaultWelcomeContentType = ({
+  info: { writtenOut, themeYear },
+  pathInfo: { toLevels },
+  images: { illustration },
+  clickable,
+}) => {
   return (
     <>
-      <MarioTurnsXthStatic {...props} />
-      <StayUpToDate clickable={props.clickable} />
+      <MarioTurnsXth
+        info={{ writtenOut, themeYear }}
+        clickable={clickable}
+        images={{ illustration }}
+        pathInfo={{ toLevels }}
+      />
+      <StayUpToDate clickable={clickable} />
     </>
   );
 };

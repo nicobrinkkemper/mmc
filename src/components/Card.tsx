@@ -3,9 +3,13 @@ import * as React from "react";
 import styles from "./Card.module.css";
 import { PublicImage } from "./PublicImage.js";
 
-const CardOuter: ThemeComponent<{
-  heading: optional;
-}> = ({ heading, children }) => {
+const CardOuter: ThemeComponent<
+  {},
+  "div",
+  {
+    heading: React.ReactNode;
+  }
+> = ({ heading, children }) => {
   if (!heading) return <>{children}</>;
   return (
     <div className={classnames(styles["CardOuter"])}>
@@ -15,28 +19,39 @@ const CardOuter: ThemeComponent<{
   );
 };
 
-const CardInner: ThemeComponent<{
-  clickable: optional;
-}> = ({ clickable: Clickable, children, className }) => {
+const CardInner: ThemeComponent<
+  {
+    clickable: boolean;
+  },
+  "div",
+  {
+    to?: string;
+  }
+> = ({ clickable: Clickable, children, className, to }) => {
   const names = classnames(styles["CardInner"], className);
-  return (
-    <div className={names}>
-      {Clickable ? (
-        <Clickable className={names}>{children}</Clickable>
-      ) : (
-        children
-      )}
-    </div>
+  return Clickable ? (
+    <Clickable href={to} className={names}>
+      {children}
+    </Clickable>
+  ) : (
+    <div className={names}>{children}</div>
   );
 };
 
-export const Card: ThemeComponent<{
-  images: pickOptional<["illustration"]>;
-  type: required;
-  clickable: optional;
-  heading: optional;
-  subHeading: optional;
-}> = ({
+export const Card: ThemeComponent<
+  {
+    images: ["illustration"] | [];
+    clickable: boolean;
+  },
+  "div",
+  {
+    to?: string;
+    type?: "simple" | "special";
+    heading?: string | React.ReactNode;
+    subHeading?: string | React.ReactNode;
+    disabled?: boolean;
+  }
+> = ({
   children,
   type = "simple",
   className,
@@ -44,23 +59,27 @@ export const Card: ThemeComponent<{
   clickable,
   heading,
   subHeading,
+  disabled,
+  to,
 }) => {
   const cardIllustration =
-    "illustration" in images ? images["illustration"][0] : null;
+    typeof images === "object" && images != null && "illustration" in images
+      ? images["illustration"]
+      : null;
   const names = classnames(
     styles["Card"],
     className,
-    !clickable && styles["IsCardDisabled"],
+    disabled && styles["IsCardDisabled"],
     !!clickable && styles["IsClickableCard"],
     cardIllustration?.className,
-    cardIllustration?.className &&
+    cardIllustration &&
       (type === "special"
         ? styles["HasSpecialCardIllustration"]
         : styles["HasCardIllustration"])
   );
   return (
     <CardOuter heading={heading}>
-      <CardInner className={names} clickable={clickable}>
+      <CardInner className={names} clickable={clickable} to={to}>
         {cardIllustration ? (
           <PublicImage
             className={classnames(

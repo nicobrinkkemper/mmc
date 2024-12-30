@@ -4,23 +4,22 @@ import { Card } from "../../components/Card.js";
 import { StayUpToDate } from "../default/StayUpToDate.js";
 import { MM4ContentCreatorCard } from "./cards/Mm4ContentCreatorCard.js";
 
-export const Welcome4YMM: ThemeComponent<
-  {
-    info: pickRequired<["writtenOut"]>;
-    pathInfo: true;
-    clickable: true;
-    images: pickOptional<["illustration"]>;
-  },
-  "div"
-> = ({ info, pathInfo, clickable, ...props }) => {
+export const Welcome4YMM: DefaultWelcomeContentType = ({
+  info: { writtenOut },
+  pathInfo: { toLevels },
+  clickable,
+  images: { illustration },
+  ...props
+}) => {
   return (
     <>
       <Card
         type={"special"}
-        heading={info.writtenOut}
+        heading={writtenOut}
         subHeading={`Come join us celebrate the anniversary of Super Mario Maker 2!`}
-        {...props}
+        images={{ illustration }}
         clickable={undefined}
+        {...props}
       >
         <p>
           Again, Kiavik has recruited a top notch team for this annual
@@ -35,11 +34,7 @@ export const Welcome4YMM: ThemeComponent<
           Every level has a birthday cake for you to discover. Can you find them
           all?
         </p>
-        <Button
-          icon="arrow-right"
-          href={pathInfo.toLevels}
-          clickable={clickable}
-        >
+        <Button icon="arrow-right" href={toLevels} clickable={clickable}>
           To the levels
         </Button>
       </Card>

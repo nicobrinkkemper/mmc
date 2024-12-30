@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import * as React from "react";
 import { expect, test } from "vitest";
-import { AppStatic } from "./App.js";
+import { App } from "./App.js";
 
 test("renders React App", () => {
   render(
-    <AppStatic
+    <App
       pathInfo={{
         theme: "4ymm",
       }}

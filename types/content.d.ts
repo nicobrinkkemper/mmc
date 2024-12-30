@@ -5,29 +5,30 @@ declare global {
   type ContentKey = keyof Contents["_default"];
   type ContentComponent<Key extends ContentKey = ContentKey> =
     Contents["_default"][Key];
-  type ContentComponentProps<Key extends ContentKey = ContentKey> =
-    React.ComponentProps<Contents["_default"][Key]>;
 
-  /**
-   * A Content component is usually just a card, but it can be anything that
-   * each theme can have. This is a wrapper that includes the theme as a prop for
-   * each of those components automatically
-   */
-  type ContentComponentWithTheme<Key extends ContentKey = ContentKey> = <
-    P extends ValidPath
-  >(
-    props: Parameters<Contents["_default"][Key]>[0] & {
-      pathInfo: ThemePathInfo<P>;
-    }
-  ) => ReturnType<Contents["_default"][Key]>;
-
-  type ContentComponentWithThemeProps<
+  type ContentComponentProps<
     P extends ValidPath,
     Key extends ContentKey = ContentKey
   > = React.ComponentProps<Contents["_default"][Key]> & {
-    pathInfo: ThemePathInfo<P>;
+    pathInfo: ThemePathInfo<P> & { theme: string };
+  };
+
+  type ContentAtFn = <
+    P extends ValidPath,
+    Key extends ContentKey,
+    Props extends ContentComponentProps<P, Key>
+  >(
+    props: Readonly<{ at: Key; pathInfo: ThemePathInfo<P> } & Props>
+  ) => React.ReactNode;
+
+  type ContentsRecord = {
+    About: Contents["_default"]["About"];
+    Credits: Contents["_default"]["Credits"];
+    Welcome: Contents["_default"]["Welcome"];
   };
 }
+
+
 
 export {};
 

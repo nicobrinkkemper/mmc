@@ -1,5 +1,9 @@
-export const createRoute: ThemeRouteCreator<AnyPage> = (staticData, Page) => ({
-  path: staticData.pathInfo.to,
+export const createRoute: ThemeRouteCreatorFn = (
+  path,
   staticData,
-  component: Page,
+  component
+) => ({
+  path,
+  staticData,
+  component,
 });

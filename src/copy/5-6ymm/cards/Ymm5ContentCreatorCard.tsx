@@ -2,11 +2,8 @@ import * as React from "react";
 import { Button } from "../../../components/Button.js";
 import { Card } from "../../../components/Card.js";
 
-type Ymm5ContentCreatorCardType = ThemeComponent<{
-  clickable: required;
-}>;
 
-export const Ymm5ContentCreatorCard: Ymm5ContentCreatorCardType = ({
+export const Ymm5ContentCreatorCard: ContentCreatorCardType = ({
   clickable,
   ...props
 }) => (

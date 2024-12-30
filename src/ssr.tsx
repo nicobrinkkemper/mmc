@@ -1,5 +1,4 @@
-import * as React from "react";
-import { use, type FC, type ReactNode, type Usable } from "react";
+import React from "react";
 import { hydrateRoot } from "react-dom/client";
 import { createFromFetch, encodeReply } from "react-server-dom-esm/client";
 // do not import constants from server here, since those files will not be hosted, best to not import here yet since its the entry point
@@ -47,9 +46,9 @@ const data = createFromFetch(
 );
 
 // Wrap Shell with context provider
-const Shell: FC<{
-  data: Usable<Awaited<ReactNode>>;
-}> = ({ data }) => use(data);
+const Shell: React.FC<{
+  data: React.Usable<Awaited<React.ReactNode>>;
+}> = ({ data }) => React.use(data);
 
 // Root Hydration
 const rootElement = document.getElementById("root");
@@ -65,6 +64,6 @@ if (!rootElement) throw new Error("Root element not found");
 hydrateRoot(
   rootElement,
   React.createElement(Shell, {
-    data: data as Usable<Awaited<ReactNode>>,
+    data: data as React.Usable<Awaited<React.ReactNode>>,
   })
 );

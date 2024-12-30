@@ -6,26 +6,21 @@ import { Button } from "../../components/Button.js";
 import { Card } from "../../components/Card.js";
 import { StayUpToDate } from "../default/StayUpToDate.js";
 
-type Welcome7MMCType = ThemeComponent<{
-  info: pickRequired<["writtenOut", "themeYear"]>;
-  images: pickOptional<["illustration"]>;
-  pathInfo: required;
-  clickable: required;
-}>;
 
-export const Welcome7MMC: Welcome7MMCType = ({
-  info,
-  pathInfo,
-  images,
+
+export const Welcome7MMC: DefaultWelcomeContentType = ({
+  info: { writtenOut, themeYear },
+  images: { illustration },
+  pathInfo: { toLevels },
   clickable,
   ...props
 }) => {
   return (
     <>
       <Card
-        heading={info.writtenOut}
-        subHeading={`Mario Maker turns ${info.themeYear}!`}
-        images={images}
+        heading={writtenOut}
+        subHeading={`Mario Maker turns ${themeYear}!`}
+        images={{ illustration }}
         clickable={undefined}
         {...props}
       >
@@ -43,7 +38,7 @@ export const Welcome7MMC: Welcome7MMCType = ({
         <Button
           primary={true}
           icon="arrow-right"
-          href={pathInfo.toLevels}
+          href={toLevels}
           clickable={clickable}
         >
           To the levels

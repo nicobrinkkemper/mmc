@@ -1,3 +1,5 @@
+import "../startup/env.mjs";
+//
 /**
  * Coordinates the startup of RSC and SSR servers for the application
  */

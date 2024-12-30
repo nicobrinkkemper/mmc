@@ -1,20 +1,18 @@
 import * as React from "react";
-import type { AboutStaticProps } from "../../about/About.js";
 import { AboutItem } from "../default/AboutItem.js";
 import { AboutItemHeading } from "../default/AboutItemHeading.js";
 import { AboutPanel } from "../default/AboutPanel.js";
 import { QuestionGetInTouchStatic } from "../default/QuestionGetInTouch.js";
 import { QuestionWhatKindOfLevelsStatic } from "../default/QuestionWhatKindOfLevels.js";
 
-export const About7MMC = <P extends `/${Theme}` = `/${Theme}`>({
-  info,
+export const About7MMC: DefaultAboutContentType = ({
+  info: { caps, snake, writtenOut },
   accordion: Accordion = "div",
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemButton: AccordionItemButton = "a",
   accordionItemPanel: AccordionItemPanel = "div",
-}: AboutStaticProps<P>) => {
-  const { caps, snake, writtenOut } = info;
+}) => {
   return (
     <Accordion preExpanded={["what_is_" + snake]}>
       <h1>About {caps}</h1>

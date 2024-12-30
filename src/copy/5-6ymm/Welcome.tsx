@@ -4,17 +4,10 @@ import { Card } from "../../components/Card.js";
 import { StayUpToDate } from "../default/StayUpToDate.js";
 import { Ymm5ContentCreatorCard } from "./cards/Ymm5ContentCreatorCard.js";
 
-type Welcome5YMMType = ThemeComponent<{
-  info: pickRequired<["writtenOut"]>;
-  images: pickRequired<["illustration"]>;
-  pathInfo: pickRequired<["toLevels"]>;
-  clickable: required;
-}>;
-
-export const Welcome5YMM: Welcome5YMMType = ({
-  info,
-  images,
-  pathInfo,
+export const Welcome5YMM: DefaultWelcomeContentType = ({
+  info: { writtenOut },
+  images: { illustration },
+  pathInfo: { toLevels },
   clickable,
   ...props
 }) => {
@@ -22,8 +15,8 @@ export const Welcome5YMM: Welcome5YMMType = ({
     <>
       <Card
         type={"special"}
-        heading={info.writtenOut}
-        images={images}
+        heading={writtenOut}
+        images={{ illustration }}
         subHeading={`It's time to do this thing again!`}
         clickable={clickable}
         {...props}
@@ -38,11 +31,7 @@ export const Welcome5YMM: Welcome5YMMType = ({
           Every level has a birthday cake for you to discover. Can you find them
           all?
         </p>
-        <Button
-          icon="arrow-right"
-          href={pathInfo.toLevels}
-          clickable={clickable}
-        >
+        <Button icon="arrow-right" href={toLevels} clickable={clickable}>
           To the levels
         </Button>
       </Card>

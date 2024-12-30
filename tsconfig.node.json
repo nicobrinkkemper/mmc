@@ -59,7 +59,8 @@
   ],
   "exclude": [
     "dist",
-    "tsconfig.json",
+    "startup/tsconfig.json",
+    "server/tsconfig.json",
     "tsconfig.node.json",
     "package.json",
     "**/*.test.ts",

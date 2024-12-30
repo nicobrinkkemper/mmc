@@ -22,6 +22,7 @@ export async function resizeFolders(): Promise<ResizeImageStructure> {
         };
       }),
     ];
+
     return merge({}, ...directoryGrouping) as ResizeImageStructure;
   } catch (e) {
     console.trace(e);
