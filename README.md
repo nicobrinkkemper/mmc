@@ -11,6 +11,7 @@ The best Mario Makers from around the world showcase their style.
 - [6YMM](https://mmcelebration.com/6ymm)
 - [7MMC](https://mmcelebration.com/7mmc)
 - [8MMC](https://mmcelebration.com/8mmc)
+- [9MMC](https://mmcelebration.com/9mmc)
 
 
 ### `npm run startup`
@@ -99,7 +100,7 @@ The welcome, about and credit contents are exported here. Use it like so:
 Using these components will automatically load the right content for the theme, based on what is available. Any props given to the component
 will be given to the final component as well.
 
-## startup/src/themeConfig.ts
+## src/config/themeConfig.ts
 ```ts
 ...
 _5ymm: {
@@ -127,6 +128,6 @@ If everything went well, you can now run `npm run startup` to generate the image
 If that went well, try `npm run build`, this will do the following:
 - generate `src/data/generated/themes.ts`
 - generate the simple react client in `build/`
-- generate a optimized version of the website by running the server's crawl command: `npm run ssg`
+- generate a optimized version of the website by running the server's crawl command: `npm run server:crawl`
 - Now you can look at the build folder to see the final product
 - If you want to test out the final product, run `npm run serve` and click through the website in the browser, this is what the users will see once uploaded to mmcelebration.com, you can view the page source and see that the html is generated for each page. 
