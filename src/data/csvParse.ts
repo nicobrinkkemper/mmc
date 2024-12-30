@@ -1,10 +1,13 @@
 /**
- * Parse takes a string of CSV data and converts it to a 2 dimensional array
+ * csvParse takes a string of CSV data and converts it to a 2 dimensional array
+ * 
+ * It is a modified version of `https://github.com/vanillaes/csv/blob/main/index.js` that also
+ * accepts record based and skip header options.
+ * 
+ * @example ```
+ * const data = csvParse(csvString, { typed: true, skipHeaders: true, rowMode: true });
+ * ```
  *
- * options
- * - typed - infer types [false]
- *
- * @static
  * @param {string} csv the CSV string to parse
  * @param {Object} [options] an object containing the options
  * @param {Function} [reviver] a custom function to modify the values
