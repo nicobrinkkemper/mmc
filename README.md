@@ -125,7 +125,7 @@ Add to
 If everything went well, you can now run `npm run startup` to generate the images, themes.json.
 
 If that went well, try `npm run build`, this will do the following:
-- generate `src/data/themes.json`
+- generate `src/data/generated/themes.ts`
 - generate the simple react client in `build/`
 - generate a optimized version of the website by running the server's crawl command: `npm run ssg`
 - Now you can look at the build folder to see the final product
