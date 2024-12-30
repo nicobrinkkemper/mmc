@@ -4,14 +4,26 @@ import { renderToPipeableStream } from "react-server-dom-esm/server.node";
 import { getThemePathInfo } from "../src/data/getThemePathInfo.js";
 import { Html } from "../src/layout/Html.js";
 import { RenderRoute } from "../src/router/RenderRoute.js";
-import { build, moduleBaseURL, modules, rsc_port } from "./constants.js";
+import {
+  build,
+  moduleBaseURL,
+  modules,
+  publicUrl,
+  rsc_port,
+} from "./constants.js";
 import { htmlAssets } from "./htmlAssets.mjs";
 import { cors, logger } from "./utils.mjs";
 
-console.log(`Listening on http://localhost:${rsc_port}`);
+console.log(`Listening on http://localhost:${rsc_port}${publicUrl}`);
 
 const app = express();
-
+// Remove basePath from requests before serving
+app.use((req, _res, next) => {
+  if (publicUrl && req.url.startsWith(publicUrl)) {
+    req.url = req.url.slice(publicUrl.length) || "/";
+  }
+  next();
+});
 app
   .use(logger)
   .use(cors)
@@ -33,11 +45,9 @@ app
       return next();
     }
 
-    console.log("Looking for route:", normalizedPath);
-
     renderToPipeableStream(
       RenderRoute({
-        pathInfo,
+        pathInfo: pathInfo as any,
         layout: Html,
         layoutProps: {
           assets: {

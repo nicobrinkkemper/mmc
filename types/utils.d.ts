@@ -2,6 +2,17 @@ declare global {
   type Primitive = string | number | boolean | null | undefined;
 
   /**
+   * IF you've used a predicate function, this type will infer the type of the value it is checking for
+   * @example
+   * type Result = GuardType<typeof isString> // string
+   */
+  type GuardType<T extends (x: string) => boolean> = T extends (
+    x: any
+  ) => x is infer X
+    ? X
+    : never;
+
+  /**
    * Replace the params in a string with the values in the map
    * @example
    * type Result = TypeReplace<"/:theme/levels/:batchNumber/:order", { theme: "abc", batchNumber: "123", order: "456" }>

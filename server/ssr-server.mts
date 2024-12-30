@@ -1,9 +1,7 @@
 import cookieParser from "cookie-parser";
 import express, { RequestHandler } from "express";
-import { resolve } from "node:path";
 import { Readable } from "node:stream";
 import { ReadableStream } from "node:stream/web";
-import { Worker } from "node:worker_threads";
 import { createElement, FunctionComponent, use } from "react";
 import { renderToPipeableStream } from "react-dom/server.node";
 import { createFromNodeStream } from "react-server-dom-esm/client";
@@ -12,16 +10,25 @@ import {
   moduleBaseURL,
   modules,
   node_modules,
-  root,
+  publicUrl,
   rsc_port,
   ssr_port,
 } from "./constants.js";
 import { htmlAssets } from "./htmlAssets.mjs";
 import { cors, logger } from "./utils.mjs";
 
-console.log(`Listening on http://localhost:${ssr_port}`);
+console.log(`Listening on http://localhost:${ssr_port}${publicUrl}`);
 
-express()
+const app = express();
+// Remove basePath from requests before serving
+app.use((req, _res, next) => {
+  if (publicUrl && req.url.startsWith(publicUrl)) {
+    req.url = req.url.slice(publicUrl.length) || "/";
+  }
+  next();
+});
+
+app
   .use(logger)
   .use(cors)
   .use(cookieParser() as RequestHandler)
@@ -88,7 +95,3 @@ express()
     })
   )
   .listen(ssr_port);
-
-new Worker(resolve(root, "dist/server/export.mjs")).addListener("close", (_) =>
-  console.log("Pages exported successfully! 🚀")
-);

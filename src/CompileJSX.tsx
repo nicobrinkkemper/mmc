@@ -1,15 +1,6 @@
 import * as React from "react";
 
-type NestedJsxType =
-  | string
-  | null
-  | {
-      type: string;
-      key?: string | number;
-      props: {
-        children: NestedJsxType | NestedJsxType[];
-      };
-    };
+type NestedJsxType = string | React.JSX.Element;
 
 /**
  * It recursively creates React elements from "precompiled" JSX

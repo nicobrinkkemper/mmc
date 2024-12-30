@@ -118,10 +118,9 @@ export const getStaticData: ThemeStaticDataFn = (pathInfo, options) => {
             }
             switch (nestedOption) {
               case "adjacent": {
-                result.level.adjacent = getAdjacent(
-                  batch!.levels,
-                  levelIndex
-                ).adjacent;
+                result.level.adjacent = getAdjacent<
+                  Exclude<typeof batch, null>["levels"]
+                >(batch!.levels, levelIndex).adjacent;
                 break;
               }
               default: {

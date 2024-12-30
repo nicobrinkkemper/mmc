@@ -35,12 +35,26 @@ declare global {
    * All valid routes based on hte exported pages
    */
   type ValidRoute = keyof PageMap;
+  type RouteParamMap = {
+    theme: Theme;
+    path: string;
+    to: string;
+    params: {
+      batchNumber: string;
+      order: string;
+    };
+  };
+  type getThemeRouteParamsFn = <R extends ValidRoute>(
+    route: R
+  ) => (to: string) => RouteParamMap;
 
   type getThemeRouteInfoFn = <R extends ValidRoute>(
     route: R
-  ) => (
-    to: unknown | ThemePathInfo<PathMap[R]>
-  ) => to is ThemePathInfo<PathMap[R]>;
+  ) => (to: unknown | ThemePathInfo<PathMap[R]>) => RouteParamMap | null;
+
+  type isThemeRouteFn = <R extends ValidRoute>(
+    route: R
+  ) => (to: unknown) => to is ThemePathInfo<PathMap[R]>;
 
   /**
    * A helper map to go from `/:theme` (route) to `/${Theme}` (to) type
@@ -52,6 +66,8 @@ declare global {
         theme: Theme;
         batchNumber: string;
         order: string;
+        path: string;
+        to: string;
       }
     >;
   };
@@ -95,3 +111,4 @@ declare global {
 }
 
 export {};
+

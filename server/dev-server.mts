@@ -4,13 +4,13 @@ import path from 'path';
 
 const app = express();
 const initialPort = parseInt(process.env["PORT"] || "3000");
-const basePath = process.env["PUBLIC_URL"] || "";
 const buildDir = path.join(process.cwd(), "build");
 
+const publicUrl = process.env["PUBLIC_URL"] || "";
 // Remove basePath from requests before serving
 app.use((req, _res, next) => {
-  if (basePath && req.url.startsWith(basePath)) {
-    req.url = req.url.slice(basePath.length) || "/";
+  if (publicUrl && req.url.startsWith(publicUrl)) {
+    req.url = req.url.slice(publicUrl.length) || "/";
   }
   next();
 });
@@ -43,7 +43,7 @@ const startServer = (port: number) => {
       .listen(port)
       .once("listening", () => {
         console.log(
-          `Dev server running at http://localhost:${port}${basePath}`
+          `Dev server running at http://localhost:${port}${publicUrl}`
         );
         resolve(server);
       })

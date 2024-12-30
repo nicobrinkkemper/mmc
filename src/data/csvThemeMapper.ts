@@ -1,4 +1,13 @@
+declare global {
+  namespace JSX {
+    interface Element extends React.ReactElement<any, any> {}
+    interface IntrinsicElements extends React.JSX.IntrinsicElements {}
+  }
+}
+
 import { trim } from "lodash-es";
+
+import { compiler } from "markdown-to-jsx";
 import { assertObject } from "../utils/pickAssert.js";
 import { safeSnakecase } from "../utils/safeSnakecase.js";
 import { createMapper } from "./createMapper.js";
@@ -17,7 +26,7 @@ export const csvThemeMapper = createMapper({
       slug: safeSnakecase(val),
     }),
     description: trim,
-    makerDescription: trim,
+    makerDescription: (val) => (val ? compiler(val.trim()) : ""),
     tags: (val) => (val ? val.split(",").map(trim) : []),
     nationality: String,
     difficulty: Number,
@@ -62,7 +71,7 @@ export const csvThemeMapper = createMapper({
       levelCode: row.levelCode,
       makerId: row.makerId,
       description: row.description,
-      makerDescription: !row.makerDescription ? "" : row.makerDescription,
+      makerDescription: row.makerDescription,
       tags: row.tags,
       nationality: row.nationality,
       difficulty: row.difficulty,

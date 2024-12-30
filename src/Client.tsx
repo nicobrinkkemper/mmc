@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { PUBLIC_URL } from "./config/constants.js";
 import { getThemePathInfo } from "./data/getThemePathInfo.js";
 import { useEventListener } from "./hooks/useEventListener.js";
 import { Favicons } from "./layout/Favicons.js";
@@ -44,17 +45,20 @@ const ClientLayout = ({
   );
 };
 
+const baseUrl =
+  PUBLIC_URL !== ""
+    ? PUBLIC_URL.startsWith("/")
+      ? PUBLIC_URL
+      : "/" + PUBLIC_URL
+    : "";
 export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
   const [pathInfo = initialPathInfo, setPathInfo] =
     React.useState<ThemePathInfo<ValidPath>>();
 
   useEventListener("popstate", () => {
     const newPathInfo = getThemePathInfo(window.location.pathname as ValidPath);
-    console.log("popstate", newPathInfo);
-    setPathInfo(newPathInfo);
+    setPathInfo(newPathInfo as any);
   });
-
-  console.log("Client", pathInfo);
 
   const clickHandler: React.MouseEventHandler<HTMLAnchorElement> =
     React.useCallback((e) => {
@@ -62,10 +66,11 @@ export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
       if (!e.currentTarget.href) return;
       try {
         const newPathInfo = getThemePathInfo(e.currentTarget.href as ValidPath);
+        console.log(baseUrl, newPathInfo.to);
         // use the History API to navigate
-        window.history.pushState({}, "", newPathInfo.to);
+        window.history.pushState({}, "", `${baseUrl}${newPathInfo.to}`);
         window.dispatchEvent(new PopStateEvent("popstate"));
-        setPathInfo(newPathInfo);
+        setPathInfo(newPathInfo as any);
       } catch (err) {
         console.error(e.currentTarget.href, err);
       }
@@ -75,12 +80,19 @@ export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
     () => ({
       clickable: ({
         children,
+        href,
         ...props
-      }: React.PropsWithChildren<Clickable>) => (
-        <a {...props} onClick={clickHandler}>
-          {children}
-        </a>
-      ),
+      }: React.PropsWithChildren<{ href: string }>) => {
+        return (
+          <a
+            {...props}
+            href={href ? baseUrl + href : ""}
+            onClick={clickHandler}
+          >
+            {children}
+          </a>
+        );
+      },
     }),
     [clickHandler]
   );

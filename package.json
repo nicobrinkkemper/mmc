@@ -7,22 +7,17 @@
   "scripts": {
     "start": "run-s react:start",
     "lint": "eslint ./src --fix",
-    "serve": "node server/dist/dev-server.mjs",
-    "serve-gh": "PUBLIC_URL=/mmc node server/dist/dev-server.mjs",
+    "serve": "node dist/server/dev-server.mjs",
+    "serve-gh": "export PUBLIC_URL=/mmc; node dist/server/dev-server.mjs",
     "build": "export BASE_URL='https://mmcelebration.com' && vite build",
+    "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && run-s startup-gh build server:crawl",
     "server:build": "rm -rf dist && npx tsc --project tsconfig.node.json && cp --parents `find -name \"*.css\"` dist/",
     "server:run": "run-p server:rsc:dev server:ssr:dev",
     "server:iterate": "npm run server:build && run-p server:start",
     "server:start": "NODE_OPTIONS='--experimental-json-modules --enable-source-maps' node ./dist/server/start.mjs",
-    "server:run:prod": "run-p server:rsc:prod server:ssr:prod",
-    "server:rsc:dev": "NODE_OPTIONS='--conditions=react-server --enable-source-maps --experimental-json-modules --loader ./dist/server/moduleHook.dev.mjs' node ./dist/server/rsc-server.mjs",
-    "server:rsc:prod": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules --loader ./dist/server/moduleHook.prod.mjs' node ./dist/server/rsc-server.mjs",
-    "server:ssr:dev": "NODE_OPTIONS='--experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.dev.mjs' node ./dist/server/ssr-server.mjs",
-    "server:ssr:prod": "NODE_OPTIONS='--experimental-json-modules --loader ./dist/server/moduleHook.prod.mjs' node ./dist/server/ssr-server.mjs",
-    "server:crawl": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules' node ./dist/server/server.mjs crawl",
+    "server:crawl": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules' node ./dist/server/start.mjs crawl",
     "server:export": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules' node ./dist/server/export.mjs",
     "ssg": "run-s build server:build server:crawl",
-    "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && run-s startup-gh react:build server:build server:crawl",
     "postbuild": "export BASE_URL='https://mmcelebration.com'",
     "prebuild-gh": "run-s startup:*",
     "postbuild-gh": "echo 'Build completed'",
@@ -109,5 +104,8 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "dependencies": {
+    "markdown-to-jsx": "^7.7.2"
+  }
 }

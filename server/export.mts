@@ -1,15 +1,20 @@
-
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { credits, levels, notfound, themes } from "../src/config/themeConfig.js";
-import * as themeData from "../src/data/generated/themes.js" with { type: "json" };
+import { parentPort } from "node:worker_threads";
+import {
+  credits,
+  levels,
+  notfound,
+  themes,
+} from "../src/config/themeConfig.js";
+import * as themeData from "../src/data/generated/themes.js";
 
 const routes = [
   { path: "/" },
   { path: `/${notfound}` },
   ...themes.flatMap((theme) => {
     const data = themeData[`_${theme}`];
-    
+
     return [
       { path: `/${theme}` },
       { path: `/${theme}/${credits}` },
@@ -59,6 +64,8 @@ async function generateStaticFiles() {
   }
 
   console.log("🚀 Static build ready!");
+  // After crawling is complete
+  parentPort?.postMessage("done");
 }
 
 generateStaticFiles().catch(console.error);

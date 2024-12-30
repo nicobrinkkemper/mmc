@@ -10,7 +10,6 @@ import { type RouteType } from "./props.js";
 
 export const Page: ThemePageComponent<RouteType> = ({
   images: { logo, logo_small, logo_simple_small },
-  info: { caps },
   pathInfo: { theme, toLevels, toCredits, toHome },
   batch: { levels, weekTrailer, adjacent, batchName, batchDescription, image },
   clickable,

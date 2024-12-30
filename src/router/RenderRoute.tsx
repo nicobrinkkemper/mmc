@@ -22,6 +22,9 @@ export function RenderRoute({
   };
   layoutProps?: React.PropsWithChildren<Partial<HtmlProps>>;
 }) {
+  if (!(pathInfo.route in pages)) {
+    throw new Error(`Page not found for ${JSON.stringify(pathInfo.route)}`);
+  }
   const { Page, props: propsFn } = pages[pathInfo.route];
   const data = propsFn(pathInfo.to);
   if (!data) {

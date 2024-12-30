@@ -17,13 +17,11 @@ const pathInfo = getThemePathInfo(
 );
 // hydrate if root has already been rendered
 if (hasDomNode && !import.meta.env.DEV) {
-  console.log("hydrating <Client />");
-  hydrateRoot(domNode, <Client pathInfo={pathInfo} />);
+  hydrateRoot(domNode, <Client pathInfo={pathInfo as any} />);
 } else if (!hasDomNode) {
   // Ensure router is ready before rendering
   const root = createRoot(domNode);
-  console.log("rendering <Client />");
-  root.render(<Client pathInfo={pathInfo} />);
+  root.render(<Client pathInfo={pathInfo as any} />);
 
   // For Vite HMR
   if (import.meta.hot) {

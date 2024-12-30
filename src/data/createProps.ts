@@ -12,7 +12,7 @@ export const createProps: CreatePropsFn = (route, options, fn) => {
     const pathInfo = getThemePathInfo(to);
 
     return head({
-      ...getStaticData(pathInfo, options),
+      ...getStaticData(pathInfo as any, options),
       pathInfo,
     } as any);
   };

@@ -11,7 +11,6 @@ export const Page: ThemePageComponent<RouteType> = ({
   pathInfo,
   clickable,
   adjacent,
-  info: { caps },
 }) => {
   return (
     <App

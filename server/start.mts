@@ -1,9 +1,12 @@
+import { Worker } from "node:worker_threads";
+import { resolve } from "path";
 import "../startup/env.mjs";
 //
 /**
  * Coordinates the startup of RSC and SSR servers for the application
  */
 import { spawn } from "child_process";
+import { root } from "./constants.js";
 
 function logLine(data: string, identifier: string = "") {
   const prettyData = data
@@ -80,6 +83,25 @@ async function main() {
 
   console.log("🚀 All servers started successfully!");
   console.log("Application is ready at http://localhost:3001");
+
+  if (process.argv.includes("crawl")) {
+    console.log("Crawling pages...");
+    const worker = new Worker(resolve(root, "dist/server/export.mjs"));
+
+    worker.on("message", (message) => {
+      if (message === "done") {
+        console.log("Pages exported successfully! 🚀");
+        worker.terminate();
+        process.exit(0);
+      }
+    });
+
+    worker.on("error", (error) => {
+      console.error("Worker error:", error);
+      worker.terminate();
+      process.exit(1);
+    });
+  }
 }
 
 main().catch((error) => {
