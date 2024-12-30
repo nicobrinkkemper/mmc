@@ -40,22 +40,12 @@ the final product.
 
 ## themes.json
 
-Get the data for the current theme
-```tsx
-const {data} = useTheme();
-// data includes all the data for the current theme
-<PublicImage {...data.images.logo} />
-```
+In the intiial startup, the various files are generated to the src/data/generated folder. These files
+can be imported to create the react application. It will be in sync with the spreadsheet everytime
+you run `npm run startup`.
 
-Get the current level
-```ts
-const {level} = useLevel();
-```
 
-Get the current batch
-```ts
-const {batch} = useBatch();
-```
+
 
 ## /resizeImages
 All original images are collected here using snake_case naming.
@@ -65,8 +55,7 @@ All images will be resized to single and double format, a href and srcSet attrib
 ## src/css/index.ts
 ```ts
 export { default as _4ymm } from "./4ymm.module.css";
-export { default as _5ymm } from "./5ymm.module.css";
-export { default as _6ymm } from "./5ymm.module.css"; // same as 5ymm
+export { default as _5ymm, default as _6ymm } from "./5ymm.module.css";
 export { default as _7mmc } from "./7mmc.module.css";
 export { default as _8mmc } from "./8mmc.module.css";
 ```
@@ -74,6 +63,7 @@ Each theme sets css variables that alter the look of the website.
 This file needs to have such an export for each theme.
 
 Any class defined in a theme has to be defined in all the themes. Currently only the Theme class is used to keep it simple.
+That means, whenever we add a new theme we also need to add a content file and a css module - or in the very least export a key for it like we did for 6ymm.
 
 ```ts
 const Theme = useCss('Theme')
@@ -86,7 +76,6 @@ This applies the current theme's css variables to the website.
 ```ts
 export * as _4ymm from "./4ymm";
 export * as _5ymm from "./5ymm";
-export * as _6ymm from "./5ymm"; // same as 5ymm
 export * as _7mmc from "./7mmc";
 export * as _8mmc from "./8mmc";
 export * as _default from "./default";
@@ -97,8 +86,8 @@ The welcome, about and credit contents are exported here. Use it like so:
 <Content.Welcome />
 <Content.Credits />
 ```
-Using these components will automatically load the right content for the theme, based on what is available. Any props given to the component
-will be given to the final component as well.
+We drill down all the props in to the content files, same as we do for the default content. You can request
+props through the custom made type system, and at the page level you can do the same in the `props` file.
 
 ## src/config/themeConfig.ts
 ```ts
