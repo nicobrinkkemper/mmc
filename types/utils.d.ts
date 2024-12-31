@@ -107,6 +107,20 @@ declare global {
     : [];
 
   /**
+   * Checks if a type is a union
+   * @example
+   * type Result = IsUnion<"4ymm" | "5ymm" | "6ymm"> // true
+   * type Result2 = IsUnion<"4ymm"> // false
+   */
+  type IsUnion<T> = [T] extends [infer U]
+    ? T extends U
+      ? Exclude<T, U> extends never
+        ? false // Single theme
+        : true // Union of themes
+      : never
+    : never;
+
+  /**
    * Infers return types from a record of mapper functions
    * @example
    * type Mappers = {

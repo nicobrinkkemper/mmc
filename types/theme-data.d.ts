@@ -1,6 +1,16 @@
 declare global {
-  type ThemeLevel = ThemeLevelData;
+  /**
+   * `ThemeLevel` contains everything known about a level. It's the main type
+   * to use when working with level data.
+   */
+  type ThemeLevel = {
+    [K in keyof ThemeLevelData]: ThemeLevelData[K];
+  };
 
+  /**
+   * `ThemeBatch` contains everything known about a batch. It's the main type
+   * to use when working with batch data.
+   */
   type ThemeBatch = {
     batchNumber: string;
     batchName: string;
@@ -15,6 +25,10 @@ declare global {
     };
   };
 
+  /**
+   * `ThemeInfo` contains miscellaneous information about a theme, like the all caps version, ordinal, etc.
+   * Feel free to add more as needed, and it should be available using the `info` option.
+   */
   type ThemeInfo<T extends Theme = Theme> = {
     readonly slug: string;
     readonly caps: Uppercase<T>;
@@ -25,22 +39,40 @@ declare global {
     readonly writtenOut: string;
   };
 
-  
+  /**
+   * `ThemeData` is the type we can use to infer the theme data for a given path and options configuration.
+   * It makes sure we get the same keys back with the right inferred values from the ThemeDataMapping.
+   */
+  type ThemeData<
+    P extends ValidPath,
+    Opt extends ThemeDataOptions,
+    PI extends ThemePathInfo<P> = ThemePathInfo<P>
+  > = {
+    [K in keyof ThemeDataMapping<P, PI> as WithOption<
+      Opt[K extends keyof Opt ? K : never],
+      ThemeDataMapping<P, PI>[K]
+    > extends never
+      ? never
+      : K extends keyof ThemeDataMapping<P, PI>
+      ? K
+      : never]: WithOption<
+      Opt[K extends keyof Opt ? K : never],
+      ThemeDataMapping<P, PI>[K]
+    >;
+  };
+
+  /**
+   * `ThemeStaticData` is the same as `ThemeData`, but it always includes the path info even when it's not requested.
+   */
   type ThemeStaticData<
     P extends ValidPath,
     PI extends ThemePathInfo<P>,
     Opt extends ThemeDataOptions = {}
   > = ThemeData<P, Opt> & PI;
 
-  type ThemeStaticDataFn = <
-    P extends ValidPath,
-    PI extends ThemePathInfo<P>,
-    Opt extends ThemeDataOptions
-  >(
-    pathInfo: PI,
-    options?: Opt
-  ) => ThemeStaticData<P, PI, Opt>;
-
+  /**
+   * `ThemeUtil` is the main type to use when creating new utilities for the theme. Anything that isn't a React component.
+   */
   type ThemeUtil<
     P extends ValidPath,
     Opt extends ThemeDataOptions = ThemeDataOptions,
@@ -96,35 +128,17 @@ declare global {
     React.ReactNode
   >;
 
-  type ThemeRouteCreatorReturn<
-    P extends ValidPath,
-    T,
-    As extends React.ComponentType<T> = React.ComponentType<T>
-  > = {
-    path: P;
-    staticData: T;
-    component: As;
-  };
   /**
-   * To make the createRoute function work
-   * @example
-   * ```tsx
-   * export const createRoute: ThemeRouteCreator<AnyPage> = (staticData, Page) => ({
-   *   path: staticData.pathInfo.to,
-   *   staticData,
-   *   component: Page,
-   * });
-   * ```
+   * `GetStaticDataFn` is used for `getStaticData`, cntr+click on any type to see it.
    */
-  type ThemeRouteCreatorFn = <
+  type GetStaticDataFn = <
     P extends ValidPath,
-    T,
-    As extends React.ComponentType<T> = React.ComponentType<T>
+    PI extends ThemePathInfo<P>,
+    Opt extends ThemeDataOptions
   >(
-    path: P,
-    staticData: T,
-    component: As
-  ) => ThemeRouteCreatorReturn<P, T, As>;
+    pathInfo: PI,
+    options?: Opt
+  ) => ThemeStaticData<P, PI, Opt>;
 }
 
 export { };

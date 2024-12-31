@@ -17,7 +17,7 @@ export const Page: ThemePageComponent<RouteType> = ({
   return (
     <App pathInfo={{ theme }}>
       <Layout
-        small
+        small={true}
         images={{
           logo: logo_simple_small ?? logo_small ?? logo,
         }}

@@ -27,7 +27,7 @@ const mapAdjacent = (
   },
 });
 
-export const getStaticData: ThemeStaticDataFn = (pathInfo, options) => {
+export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
   const theme = pathInfo.theme;
 
   if (!options) {
