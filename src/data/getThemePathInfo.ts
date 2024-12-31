@@ -1,38 +1,5 @@
-import {
-  credits,
-  isValidTheme,
-  levels,
-  mainTheme,
-  notfound,
-} from "../config/themeConfig.js";
-
-const routeMap = {
-  0: {
-    $theme: (theme: string): theme is Theme => isValidTheme(theme),
-    "404": (seg: string): seg is string => seg === notfound,
-  },
-  1: {
-    credits: (seg: string): seg is typeof credits => seg === credits,
-    levels: (seg: string): seg is typeof levels => seg === levels,
-  },
-  2: {
-    $batchNumber: (seg: string): seg is string => !isNaN(Number(seg)),
-  },
-  3: {
-    $order: (seg: string): seg is string => !isNaN(Number(seg)),
-  },
-};
-type RouteMapType = typeof routeMap;
-type RouteNestLevel = keyof RouteMapType;
-// type MaxNestLevel = UnionToTuple<RouteNestLevel>["length"];
-type RoutesMapKeys = KeysOfIntersection<RouteMapType[RouteNestLevel]>;
-// type NestLevelRecursive<N extends number> = N extends 0
-//   ? RoutesMapKeys
-//   : NestLevelRecursive<Subtract1<N>>;
-
-type VariableRouteMapKeys = {
-  [K in RoutesMapKeys as K extends `$${infer V}` ? V : never]: string;
-};
+import { credits, levels, mainTheme } from "../config/themeConfig.js";
+import { pageNesting } from "../page/pageNesting.js";
 
 const addNavigation = <
   P extends ValidPath,
@@ -68,8 +35,8 @@ const getRouteSegments = (
       pathSegment: string;
       variableName: false | keyof VariableRouteMapKeys;
     } => {
-  if (!(nestedLevel in routeMap)) return undefined;
-  const mapLevel = routeMap[nestedLevel as keyof typeof routeMap];
+  if (!(nestedLevel in pageNesting)) return undefined;
+  const mapLevel = pageNesting[nestedLevel as keyof typeof pageNesting];
 
   const result = Object.entries(mapLevel).find(([_, guard]) => guard(seg));
   if (!result) return undefined;

@@ -1,5 +1,7 @@
+import { pages } from "../src/page/pages.js";
+
 declare global {
-  type PageMap = typeof import("../src/page/pages.js").pages;
+  type PageMap = typeof pages;
   type AnyPage = PageMap[keyof PageMap];
 }
 
