@@ -19,7 +19,7 @@ type AboutType = ThemeComponent<
   }
 >;
 
-export const AboutStatic: AboutType = ({
+export const About: AboutType = ({
   closeProps,
   info: { caps, snake, writtenOut },
   accordion: Accordion = "div",
