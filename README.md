@@ -89,6 +89,8 @@ The welcome, about and credit contents are exported here. Use it like so:
 We drill down all the props in to the content files, same as we do for the default content. You can request
 props through the custom made type system, and at the page level you can do the same in the `props` file.
 
+
+
 ## src/config/themeConfig.ts
 ```ts
 ...

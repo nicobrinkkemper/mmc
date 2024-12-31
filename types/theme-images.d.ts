@@ -41,7 +41,6 @@ declare global {
     readonly height: number;
     readonly aspectRatio: string;
     readonly srcSet: string;
-    readonly placeholder?: string;
     readonly src: string;
     readonly alt?: string;
     readonly className?: string;

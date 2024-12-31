@@ -21,13 +21,7 @@ declare global {
     props: Readonly<{ at: Key; pathInfo: ThemePathInfo<P> } & Props>
   ) => React.ReactNode;
 
-  type ContentsRecord = {
-    About: Contents["_default"]["About"];
-    Credits: Contents["_default"]["Credits"];
-    Welcome: Contents["_default"]["Welcome"];
-  };
 }
-
 
 
 export {};

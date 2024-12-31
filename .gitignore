@@ -39,3 +39,6 @@ server/dist/**/*
 
 # WSL
 *.Zone.Identifier
+
+# react oss
+oss-experimental/**/*

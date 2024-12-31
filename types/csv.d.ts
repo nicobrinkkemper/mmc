@@ -1,6 +1,6 @@
 import { csvThemeMapper } from "../src/data/csvThemeMapper.ts";
 
-// before we define the config, we take the change to define the types we want from the csv and reuse elsewhere throughout the codebase
+// before we define the config, we take the chance to define the types we want from the csv and reuse elsewhere through-out the codebase
 declare global {
   type CsvParseResult = ReturnType<typeof csvThemeMapper>;
   type ThemeLevelData = CsvParseResult & { images: LevelImages };
@@ -21,21 +21,6 @@ declare global {
     col?: number
   ) => V;
 
-  /*
-  export function csvParse<
-  const Skip extends boolean = false,
-  const RowMode extends boolean = false,
-  const Value extends RowMode extends true ? Record<string, unknown> : string = RowMode extends true ? Record<string, unknown> : string,
-  const Reviver extends RowMode extends true ? (row: Value) => any : (value: string) => any = RowMode extends true ? (row: Value) => Value : (value: string) => string
->(
-  csv: string,
-  options?: { typed?: boolean; skipHeaders?: Skip; rowMode?: RowMode },
-  reviver: Reviver = ((value: Value) => value) as Reviver
-): Skip extends true 
-  ? ReturnType<Reviver>[] 
-  : [ReturnType<Reviver>[], ...ReturnType<Reviver>[]] {
-  const ctx = Object.create(null);
-    */
   type ParseCsvFn = <
     Skip extends boolean,
     RowMode extends boolean,
