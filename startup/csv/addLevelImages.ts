@@ -1,4 +1,4 @@
-import { assertObject } from "../utils/pickAssert.js";
+import { assertObject } from "../../src/utils/pickAssert.js";
 
 export const addLevelImages =
   (images: Pick<Images[Theme], "level" | "maker">) =>

@@ -1,4 +1,4 @@
-import { csvThemeMapper } from "../src/data/csvThemeMapper.ts";
+import { csvThemeMapper } from "../startup/csv/csvThemeMapper.mts";
 
 // before we define the config, we take the chance to define the types we want from the csv and reuse elsewhere through-out the codebase
 declare global {
@@ -40,4 +40,3 @@ declare global {
   ) => Return[];
 }
 export {};
-

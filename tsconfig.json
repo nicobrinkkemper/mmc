@@ -74,7 +74,14 @@
     "src/**/*.css",
     "src/**/*.module.css",
     "types/**/*.d.ts"
-  ],
+,
+"startup/csv/csvThemeMapper.mts",
+"startup/csv/levelData.mts",
+"startup/csv/csvParse.ts",
+"startup/csv/addLevelImages.ts",
+"startup/csv/batchProcessor.ts",
+"startup/csv/createMapper.ts"
+],
   "exclude": [
     "dist",
     "node_modules",

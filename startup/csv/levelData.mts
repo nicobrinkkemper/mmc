@@ -1,7 +1,7 @@
 import { addLevelImages } from "./addLevelImages.js";
 import { batchProcessor } from "./batchProcessor.js";
 import { csvParse } from "./csvParse.js";
-import { csvThemeMapper } from "./csvThemeMapper.js";
+import { csvThemeMapper } from "./csvThemeMapper.mjs";
 
 /**
  * In goes a structured format of all the images, out comes the data that will be saved to /src/data/themes.json

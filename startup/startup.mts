@@ -5,7 +5,7 @@ import {
   themeConfig,
   themes,
 } from "../src/config/themeConfig.js";
-import { levelData } from "../src/data/levelData.js";
+import { levelData } from "./csv/levelData.mjs";
 import { writeFile } from "./file/writeFile.mjs";
 import { writeJson } from "./file/writeJson.mjs";
 import { resizeFolders } from "./resize/resizeFolders.mjs";

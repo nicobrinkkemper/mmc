@@ -1,3 +1,4 @@
+// added this to fix a bug with the "markdown-to-jsx" dependency we are using here. The namespace changed from JSX to React.JSX
 declare global {
   namespace JSX {
     interface Element extends React.ReactElement<any, any> {}
@@ -8,10 +9,18 @@ declare global {
 import { trim } from "lodash-es";
 
 import { compiler } from "markdown-to-jsx";
-import { assertObject } from "../utils/pickAssert.js";
-import { safeSnakecase } from "../utils/safeSnakecase.js";
+import { assertObject } from "../../src/utils/pickAssert.js";
+import { safeSnakecase } from "../../src/utils/safeSnakecase.js";
 import { createMapper } from "./createMapper.js";
-
+/**
+ * This mapper is used to transform the CSV data into a format that is easier to work with.
+ *
+ * The interesting bit is the jsx transformation of the makerDescription field,
+ * which requires to be wrapped in <CompileJsx> tags. This allows the markdown support,
+ * while not relying too much on the markdown-to-jsx library itself.
+ *
+ * you can add any header to the csv and create a mapper for it here.
+ */
 export const csvThemeMapper = createMapper({
   mappers: {
     order: String,
@@ -63,22 +72,7 @@ export const csvThemeMapper = createMapper({
         row.levelName.value
       );
     }
-    return {
-      order: row.order,
-      batchNumber: row.batchNumber,
-      levelName: row.levelName,
-      makerName: row.makerName,
-      levelCode: row.levelCode,
-      makerId: row.makerId,
-      description: row.description,
-      makerDescription: row.makerDescription,
-      tags: row.tags,
-      nationality: row.nationality,
-      difficulty: row.difficulty,
-      difficultyName: row.difficultyName,
-      releaseDate: row.releaseDate,
-      batchName: row.batchName,
-      batchDescription: row.batchDescription,
-    };
+    // no final transformation is needed here, but we can potentially add some here
+    return row;
   },
 });
