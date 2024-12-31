@@ -14,7 +14,10 @@ The best Mario Makers from around the world showcase their style.
 - [9MMC](https://mmcelebration.com/9mmc)
 
 
+
 ### `npm run startup`
+
+- write local env file
 - resize images
 - download and parse csv
 - combine image and csv data
