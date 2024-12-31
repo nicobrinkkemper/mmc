@@ -83,9 +83,7 @@ async function main() {
 
   console.log("🚀 All servers started successfully!");
   console.log("Application is ready at http://localhost:3001");
-
   if (process.argv.includes("crawl")) {
-    console.log("Crawling pages...");
     const worker = new Worker(resolve(root, "dist/server/export.mjs"));
 
     worker.on("message", (message) => {

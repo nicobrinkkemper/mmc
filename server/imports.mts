@@ -45,12 +45,5 @@ export const ESM_IMPORTS: Record<string, string> = {
     "node_modules/set-cookie-parser/lib/set-cookie.js"
   ),
   express: path.resolve(PROJECT_ROOT, "node_modules/express/index.js"),
-  "tiny-warning": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/tiny-warning/dist/tiny-warning.esm.js"
-  ),
-  "use-sync-external-store/shim/with-selector": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/use-sync-external-store/shim/with-selector.js"
-  ),
+
 };

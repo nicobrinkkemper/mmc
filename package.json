@@ -17,7 +17,7 @@
     "server:start": "NODE_OPTIONS='--experimental-json-modules --enable-source-maps' node ./dist/server/start.mjs",
     "server:crawl": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules' node ./dist/server/start.mjs crawl",
     "server:export": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules' node ./dist/server/export.mjs",
-    "ssg": "run-s build server:build server:crawl",
+    "ssg": "run-s build server:crawl",
     "postbuild": "export BASE_URL='https://mmcelebration.com'",
     "prebuild-gh": "run-s startup:*",
     "postbuild-gh": "echo 'Build completed'",
