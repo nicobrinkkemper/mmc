@@ -94,12 +94,6 @@ declare global {
    * const App: ThemeComponent = ({ pathInfo, images, clickable }) => {
    *   return <div>App</div>;
    * };
-   * // if you need more props
-   * const Welcome: ThemeComponent<{
-   *    images: 'illustration'
-   * }> = ({ images, clickable }) => {
-   *   return <div><PublicPage {...images.illustration} /></div>;
-   * };
    * ```
    */
   type ThemeComponent<
