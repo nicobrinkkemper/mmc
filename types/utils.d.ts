@@ -23,7 +23,7 @@ declare global {
     M extends Record<string, any>,
     DELIMITER extends string = ":",
     SEPARATOR extends string = "/"
-  > = S extends `${infer Pre}:${infer Param}${SEPARATOR}${infer Rest}`
+  > = S extends `${infer Pre}${DELIMITER}${infer Param}${SEPARATOR}${infer Rest}`
     ? Param extends keyof M
       ? `${Pre}${M[Param]}${SEPARATOR}${TypeReplace<
           Rest,

@@ -1,5 +1,5 @@
 declare global {
-  type GeneratedThemes = typeof import("../src/data/themes.json");
+  type GeneratedThemes = typeof import("../src/data/generated/themes.js");
   type IsGeneratedThemes = `${keyof GeneratedThemes}` extends `` ? true : false;
 
   type ThemeConfiguration = typeof import("../src/config/themeConfig.ts");
@@ -18,5 +18,5 @@ declare global {
   type ThemeConfig<T extends Theme = Theme> =
     ThemeConfiguration["themeConfig"][ThemeIndex<T>];
 }
-export {};
+export { };
 

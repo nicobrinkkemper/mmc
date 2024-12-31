@@ -30,7 +30,3 @@ declare module "react-server-dom-esm/node-loader" {
   export function resolve(url: string): string;
   export function transformSource(source: string): string;
 }
-
-declare module "webpack-sources/lib/helpers/createMappingsSerializer.js";
-
-declare module "webpack-sources/lib/helpers/readMappings.js";
