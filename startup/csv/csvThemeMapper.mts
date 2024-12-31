@@ -44,6 +44,10 @@ export const csvThemeMapper = createMapper({
       value: val,
       date: new Date(val),
       isUnreleased: Date.now() < new Date(val).getTime(),
+      formatted: new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        day: "numeric",
+      }).format(new Date(val)),
     }),
     levelCode: String,
     makerId: String,
