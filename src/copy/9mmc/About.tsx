@@ -2,8 +2,8 @@ import * as React from "react";
 import { AboutItem } from "../default/AboutItem.js";
 import { AboutItemHeading } from "../default/AboutItemHeading.js";
 import { AboutPanel } from "../default/AboutPanel.js";
-import { QuestionGetInTouchStatic } from "../default/QuestionGetInTouch.js";
-import { QuestionWhatKindOfLevelsStatic } from "../default/QuestionWhatKindOfLevels.js";
+import { QuestionGetInTouch } from "../default/QuestionGetInTouch.js";
+import { QuestionWhatKindOfLevels } from "../default/QuestionWhatKindOfLevels.js";
 
 export const About9MMC: DefaultAboutContentType = ({
   info: { caps, snake, writtenOut },
@@ -29,13 +29,13 @@ export const About9MMC: DefaultAboutContentType = ({
           demonstrate just what the game is capable of.
         </AboutPanel>
       </AboutItem>
-      <QuestionWhatKindOfLevelsStatic
+      <QuestionWhatKindOfLevels
         accordionItem={AccordionItem}
         accordionItemHeading={AccordionItemHeading}
         accordionItemPanel={AccordionItemPanel}
         accordionItemButton={AccordionItemButton}
       />
-      <QuestionGetInTouchStatic
+      <QuestionGetInTouch
         accordionItem={AccordionItem}
         accordionItemHeading={AccordionItemHeading}
         accordionItemPanel={AccordionItemPanel}

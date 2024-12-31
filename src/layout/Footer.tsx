@@ -6,7 +6,7 @@ type FooterType = ThemeComponent<{
   clickable: true;
 }>;
 
-export const FooterStatic: FooterType = ({
+export const Footer: FooterType = ({
   pathInfo: { toCredits },
   clickable: Clickable,
 }) => {

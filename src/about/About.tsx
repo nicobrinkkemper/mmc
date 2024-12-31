@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import * as React from "react";
-import { DefaultAboutContentStatic } from "../copy/default/DefaultAboutContent.js";
+import { DefaultAboutContent } from "../copy/default/DefaultAboutContent.js";
 import { default as classes } from "./About.module.css";
 import { CloseSvg } from "./CloseSvg.js";
 
@@ -42,7 +42,7 @@ export const AboutStatic: AboutType = ({
           </div>
           <div className={classes["body"]}>
             <div>
-              <DefaultAboutContentStatic
+              <DefaultAboutContent
                 info={{
                   caps,
                   snake,

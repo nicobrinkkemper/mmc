@@ -36,15 +36,11 @@ declare global {
     Record<180 | 360, [string]> & ResizedImage
   >;
 
-  type ResizedImage = {
-    readonly width: number;
-    readonly height: number;
-    readonly aspectRatio: string;
-    readonly srcSet: string;
-    readonly src: string;
-    readonly alt?: string;
-    readonly className?: string;
-  };
+  /**
+   * We are not using the placeholder image since I didn't think it looked good,
+   * might give it another try later.
+   */
+  type ResizedImage = Omit<ImageStructure, "placeholder">;
 
   type LevelImages = {
     readonly level: ResizedImage;

@@ -3,7 +3,7 @@ import { AboutItem } from "./AboutItem.js";
 import { AboutItemHeading } from "./AboutItemHeading.js";
 import { AboutPanel } from "./AboutPanel.js";
 
-export const QuestionGetInTouchStatic: QuestionGetInTouchType = ({
+export const QuestionGetInTouch: QuestionGetInTouchType = ({
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemPanel: AccordionItemPanel = "div",

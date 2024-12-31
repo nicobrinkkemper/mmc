@@ -3,7 +3,7 @@ import { AboutItem } from "./AboutItem.js";
 import { AboutItemHeading } from "./AboutItemHeading.js";
 import { AboutPanel } from "./AboutPanel.js";
 
-export const QuestionWhatIsThisStatic: QuestionWhatIsThisType = ({
+export const QuestionWhatIsThis: QuestionWhatIsThisType = ({
   info: { caps, writtenOut },
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",

@@ -1,10 +1,10 @@
 import * as React from "react";
 import styles from "./accordion.module.css";
-import { QuestionGetInTouchStatic } from "./QuestionGetInTouch.js";
-import { QuestionWhatIsThisStatic } from "./QuestionWhatIsThis.js";
-import { QuestionWhatKindOfLevelsStatic } from "./QuestionWhatKindOfLevels.js";
+import { QuestionGetInTouch } from "./QuestionGetInTouch.js";
+import { QuestionWhatIsThis } from "./QuestionWhatIsThis.js";
+import { QuestionWhatKindOfLevels } from "./QuestionWhatKindOfLevels.js";
 
-export const DefaultAboutContentStatic: DefaultAboutContentType = ({
+export const DefaultAboutContent: DefaultAboutContentType = ({
   info: { caps, snake, writtenOut },
   accordion: Accordion = "div",
   accordionItem: AccordionItem = "div",
@@ -18,7 +18,7 @@ export const DefaultAboutContentStatic: DefaultAboutContentType = ({
       preExpanded={["what_is_" + snake]}
     >
       <h1>About {caps}</h1>
-      <QuestionWhatIsThisStatic
+      <QuestionWhatIsThis
         info={{
           caps,
           writtenOut,
@@ -28,13 +28,13 @@ export const DefaultAboutContentStatic: DefaultAboutContentType = ({
         accordionItemPanel={AccordionItemPanel}
         accordionItemButton={AccordionItemButton}
       />
-      <QuestionWhatKindOfLevelsStatic
+      <QuestionWhatKindOfLevels
         accordionItem={AccordionItem}
         accordionItemHeading={AccordionItemHeading}
         accordionItemPanel={AccordionItemPanel}
         accordionItemButton={AccordionItemButton}
       />
-      <QuestionGetInTouchStatic
+      <QuestionGetInTouch
         accordionItem={AccordionItem}
         accordionItemHeading={AccordionItemHeading}
         accordionItemPanel={AccordionItemPanel}

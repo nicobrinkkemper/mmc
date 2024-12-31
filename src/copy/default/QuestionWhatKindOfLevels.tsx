@@ -3,7 +3,7 @@ import { AboutItem } from "./AboutItem.js";
 import { AboutItemHeading } from "./AboutItemHeading.js";
 import { AboutPanel } from "./AboutPanel.js";
 
-export const QuestionWhatKindOfLevelsStatic: QuestionWhatKindOfLevelsType = ({
+export const QuestionWhatKindOfLevels: QuestionWhatKindOfLevelsType = ({
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemPanel: AccordionItemPanel = "div",

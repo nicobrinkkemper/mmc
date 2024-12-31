@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FooterStatic } from "./Footer.js";
+import { Footer } from "./Footer.js";
 import { Logo } from "./Logo.js";
 
 type LayoutComponent = ThemeComponent<{
@@ -32,7 +32,7 @@ export const Layout: LayoutComponent = ({
         clickable={clickable}
       />
       <article className={className}>{children}</article>
-      <FooterStatic pathInfo={pathInfo} clickable={clickable} />
+      <Footer pathInfo={pathInfo} clickable={clickable} />
     </>
   );
 };
