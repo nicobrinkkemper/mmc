@@ -27,7 +27,7 @@ function startRsc(): Promise<void> {
       env: {
         ...process.env,
         NODE_OPTIONS:
-          "--conditions=react-server --experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.prod.mjs",
+          "--conditions=react-server --experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.dev.mjs",
       },
     });
 
@@ -54,7 +54,7 @@ function startSsr(): Promise<void> {
       env: {
         ...process.env,
         NODE_OPTIONS:
-          "--experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.prod.mjs",
+          "--experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.dev.mjs",
       },
     });
 
