@@ -1,0 +1,26 @@
+{
+  "name": "use-subscription",
+  "description": "Reusable hooks",
+  "version": "0.0.0-experimental-ed15d500-20241110",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/react.git",
+    "directory": "packages/use-subscription"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "cjs/"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "0.0.0-experimental-ed15d500-20241110"
+  },
+  "devDependencies": {
+    "rxjs": "^5.5.6"
+  },
+  "dependencies": {
+    "use-sync-external-store": "0.0.0-experimental-ed15d500-20241110"
+  }
+}

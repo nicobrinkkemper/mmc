@@ -41,4 +41,4 @@ server/dist/**/*
 *.Zone.Identifier
 
 # react oss
-oss-experimental
+/oss-experimental
