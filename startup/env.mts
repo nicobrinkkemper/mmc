@@ -11,7 +11,7 @@ if (
   // write the env file
   console.log("Writing env file");
   fs.writeFileSync(
-    ".env.local.development",
+    ".env.development.local",
     "VITE_BASE_URL='http://localhost:3000'\nVITE_PUBLIC_URL=''"
   );
   process.env["VITE_BASE_URL"] = "http://localhost:3000";
