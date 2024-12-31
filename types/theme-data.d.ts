@@ -40,10 +40,9 @@ declare global {
   };
 
   /**
-   * `ThemeData` is the type we can use to infer the theme data for a given path and options configuration.
-   * It makes sure we get the same keys back with the right inferred values from the ThemeDataMapping.
+   * `ThemeStaticDataReturn` is the type returned by `getStaticData`
    */
-  type ThemeData<
+  type ThemeStaticDataReturn<
     P extends ValidPath,
     Opt extends ThemeDataOptions,
     PI extends ThemePathInfo<P> = ThemePathInfo<P>
@@ -62,15 +61,6 @@ declare global {
   };
 
   /**
-   * `ThemeStaticData` is the same as `ThemeData`, but it always includes the path info even when it's not requested.
-   */
-  type ThemeStaticData<
-    P extends ValidPath,
-    PI extends ThemePathInfo<P>,
-    Opt extends ThemeDataOptions = {}
-  > = ThemeData<P, Opt> & PI;
-
-  /**
    * `ThemeUtil` is the main type to use when creating new utilities for the theme. Anything that isn't a React component.
    */
   type ThemeUtil<
@@ -78,7 +68,7 @@ declare global {
     Opt extends ThemeDataOptions = ThemeDataOptions,
     Custom = Record<never, never>,
     Return = any
-  > = (props: ThemeData<P, Opt> & Custom) => Return;
+  > = (props: ThemeStaticDataReturn<P, Opt> & Custom) => Return;
 
   /**
    * Helper to create a page aware component for a theme
@@ -138,7 +128,7 @@ declare global {
   >(
     pathInfo: PI,
     options?: Opt
-  ) => ThemeStaticData<P, PI, Opt>;
+  ) => ThemeStaticDataReturn<P, Opt> & PI;
 }
 
 export { };

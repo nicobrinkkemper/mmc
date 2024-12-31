@@ -55,7 +55,8 @@ declare global {
     fn: ThemeUtil<PathMap[R], typeof options & HeadDefaultOpt>
   ) => (
     to: string
-  ) => ThemeData<PathMap[R], typeof options> & ReturnType<typeof fn>;
+  ) => ThemeStaticDataReturn<PathMap[R], typeof options> &
+    ReturnType<typeof fn>;
 
   type Clickable = {
     clickable: React.ElementType | "a" | "button";
@@ -63,3 +64,4 @@ declare global {
 }
 
 export {};
+
