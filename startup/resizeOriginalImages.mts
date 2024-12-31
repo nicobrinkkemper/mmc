@@ -10,7 +10,7 @@ const QUALITY = 90;
 /**
  * Resize image to a maximum width of 2048px, while maintaining the original format.
  * This will ensure that our repo size will not grow too much.
- * We do not need to run this often, you can run `npm run resize-original-images` to resize all images, and automatically commit the changes later.
+ * We do not need to run this often, you can run `node dist/startup/resizeOriginalImages.mjs` to resize all images, and automatically commit the changes later.
  * The idea is that we will only touch the files that are arguably too big but keep the original format as much as possible.
  */
 async function processImage(filePath: string) {

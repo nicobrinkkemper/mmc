@@ -13,7 +13,8 @@ export type LevelListCardContentType = ThemeComponent<{
     "makerName",
     "tags",
     "difficulty",
-    "difficultyName"
+    "difficultyName",
+    "makerId"
   ];
   clickable: true;
 }>;
@@ -27,6 +28,7 @@ export const LevelListCardContent: LevelListCardContentType = ({
     tags,
     difficulty,
     difficultyName,
+    makerId,
   },
 }) => {
   return (
@@ -34,7 +36,7 @@ export const LevelListCardContent: LevelListCardContentType = ({
       <PublicImage {...images.levelThumbnail} />
       <div className={styles["Info"]}>
         <h2>{levelName.value}</h2>
-        <MakerName nationality={nationality} makerName={makerName.value} />
+        <MakerName level={{ makerName, nationality, makerId }} />
         <div className={styles["LevelInfo"]}>
           <Tags level={{ tags }} />
           <Difficulty

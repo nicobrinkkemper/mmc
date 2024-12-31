@@ -22,6 +22,7 @@ export const LevelList: LevelsType = ({ batch: { levels }, clickable }) => {
         difficultyName,
         batchNumber,
         order,
+        makerId,
       }) => (
         <Card
           key={levelName.slug}
@@ -41,6 +42,7 @@ export const LevelList: LevelsType = ({ batch: { levels }, clickable }) => {
               tags,
               difficulty,
               difficultyName,
+              makerId,
             }}
           />
         </Card>

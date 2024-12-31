@@ -29,9 +29,11 @@ export const MakerCard: MakerCardType = ({
         className={styles["MakerImage"]}
       />
       <MakerName
-        makerName={makerName.value}
-        nationality={nationality}
-        makerId={makerId}
+        level={{
+          makerName,
+          nationality,
+          makerId,
+        }}
       />
       <div className={styles["Description"]}>
         <CompileJSX>{makerDescription}</CompileJSX>
