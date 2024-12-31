@@ -64,7 +64,7 @@ export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
 
   const clickHandler: React.MouseEventHandler<HTMLAnchorElement> =
     React.useCallback((e) => {
-      e.preventDefault();
+      if (e.currentTarget.target !== "_blank") e.preventDefault();
       if (!e.currentTarget.href) return;
       try {
         const newPathInfo = getThemePathInfo(e.currentTarget.href as ValidPath);
