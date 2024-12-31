@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 export const publicUrl = process.env["PUBLIC_URL"] || "";
 export const moduleBaseURL = "/build/";
 export const ssr_port = 3001;
-export const rsc_port = 3002;
+export const rsc_port = 3003;
 export const build = resolve("build");
 export const assets = resolve(build, "assets");
 export const root = resolve(".");

@@ -27,13 +27,13 @@ function startRsc(): Promise<void> {
       env: {
         ...process.env,
         NODE_OPTIONS:
-          "--conditions=react-server --experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.dev.mjs",
+          "--conditions=react-server --experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.mjs",
       },
     });
 
     rsc.stdout.on("data", (data) => {
       console.info(logLine(data, "RSC"));
-      if (data.toString().includes("Listening on http://localhost:3002")) {
+      if (data.toString().includes("Listening on http://localhost:3003")) {
         resolve();
       }
     });
@@ -54,7 +54,7 @@ function startSsr(): Promise<void> {
       env: {
         ...process.env,
         NODE_OPTIONS:
-          "--experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.dev.mjs",
+          "--experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.mjs",
       },
     });
 

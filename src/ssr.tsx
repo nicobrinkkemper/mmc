@@ -10,7 +10,7 @@ type ServerResponse = {
 // URL Helper
 const getServerUrl = (): URL => {
   const url = new URL(location.href);
-  url.port = "3002";
+  url.port = "3003";
   return url;
 };
 

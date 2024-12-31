@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+"use client";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { Client } from "./Client.js";
 import { getThemePathInfo } from "./data/getThemePathInfo.js";

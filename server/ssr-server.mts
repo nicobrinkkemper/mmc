@@ -1,3 +1,4 @@
+"use client";
 import cookieParser from "cookie-parser";
 import express, { RequestHandler } from "express";
 import { Readable } from "node:stream";
