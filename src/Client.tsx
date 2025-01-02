@@ -58,6 +58,18 @@ const ClientLayout = ({
   );
 };
 
+type CallbackType = (
+  e: React.MouseEvent<HTMLAnchorElement>,
+  anchorProps: { href: string; target?: string }
+) => void;
+
+const resolvePath = (base: string, path: string) => {
+  if (path.startsWith("/")) return path;
+  const parts = base.split("/").filter(Boolean);
+  const pathParts = path.split("/").filter(Boolean);
+  return "/" + [...parts.slice(0, -1), ...pathParts].join("/");
+};
+
 export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
   const [pathInfo = initialPathInfo, setPathInfo] =
     React.useState<ThemePathInfo>();
@@ -73,10 +85,7 @@ export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
     }
   });
 
-  const clickHandler: (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    anchorProps: { href: string; target?: string }
-  ) => void = React.useCallback(
+  const clickHandler: CallbackType = React.useCallback(
     (e, { href, target }) => {
       e.preventDefault();
       if (target?.toLowerCase() === "_blank") {
@@ -84,8 +93,7 @@ export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
         return;
       }
       if (!href) return;
-      // Handle relative and hash changes
-      const newHref = !href.startsWith("/") ? pathInfo?.to + href : href;
+      const newHref = resolvePath(pathInfo?.to ?? "/", href);
       const newState = getThemePathInfo(newHref);
       window.history.pushState(newState, "", newHref);
 
