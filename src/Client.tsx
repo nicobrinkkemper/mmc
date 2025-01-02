@@ -93,7 +93,9 @@ export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
         return;
       }
       if (!href) return;
-      const newHref = resolvePath(pathInfo?.to ?? "/", href);
+      const newHref = href.startsWith("#")
+        ? pathInfo?.to + href
+        : resolvePath(pathInfo?.to ?? "/", href);
       const newState = getThemePathInfo(newHref);
       window.history.pushState(newState, "", newHref);
 
