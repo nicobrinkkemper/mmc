@@ -1,8 +1,15 @@
-import Button from "../../components/Button";
-import { Card } from "../../components/Card";
+import * as React from "react";
+import { Button } from "../../components/Button.js";
+import { Card } from "../../components/Card.js";
 
-export const StayUpToDate = () => (
-  <Card heading={`Stay up to date!`}>
+export const StayUpToDate: StayUpToDateCardType = ({ clickable, ...props }) => (
+  <Card
+    heading={`Stay up to date!`}
+    subHeading={undefined}
+    clickable={undefined}
+    images={{}}
+    {...props}
+  >
     <p>
       If you want to be notified when a new release drops, subscribe to our
       YouTube channel, where we will post a video showcasing all new levels
@@ -10,7 +17,8 @@ export const StayUpToDate = () => (
     </p>
     <Button
       icon="play-button"
-      to="https://www.youtube.com/channel/UClayAs7TxVjMbzBLxBbqyoQ"
+      href="https://www.youtube.com/channel/UClayAs7TxVjMbzBLxBbqyoQ"
+      clickable={clickable}
     >
       To the videos
     </Button>

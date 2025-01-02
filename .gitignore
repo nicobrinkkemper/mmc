@@ -17,6 +17,7 @@ scripts/.oauthkey.json
 # production
 /build
 /docker-build
+/dist
 
 # misc
 .DS_Store
@@ -35,3 +36,9 @@ scripts/data/*
 
 startup/dist/**/*
 server/dist/**/*
+
+# WSL
+*.Zone.Identifier
+
+# react oss
+/oss-experimental

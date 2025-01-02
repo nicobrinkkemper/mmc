@@ -1,17 +1,24 @@
-import { Card, CardProps } from "../../components/Card";
-import { CreditsTrailer } from "./CreditsTrailer";
-import { CreditsWebsite } from "./CreditsWebsite";
+import * as React from "react";
+import { Card } from "../../components/Card.js";
+import { CreditsTrailer } from "./CreditsTrailer.js";
+import { CreditsWebsite } from "./CreditsWebsite.js";
 
-export const DefaultCreditsContent = (props: CardProps) => {
+
+export const DefaultCreditsContent: CreditsContentCardType = ({
+  clickable,
+  ...props
+}) => {
   return (
     <>
       <Card
         subHeading={`Project Organization`}
         heading={`Credits`}
+        images={{}}
+        clickable={undefined}
         {...props}
       />
-      <CreditsWebsite {...props} />
-      <CreditsTrailer {...props} />
+      <CreditsWebsite clickable={clickable} />
+      <CreditsTrailer />
     </>
   );
 };

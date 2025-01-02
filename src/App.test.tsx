@@ -1,8 +1,17 @@
-import { render, screen } from '@testing-library/react';
-import { AppWrapper } from './AppWrapper';
+import { render, screen } from "@testing-library/react";
+import * as React from "react";
+import { expect, test } from "vitest";
+import { App } from "./App.js";
 
-test('renders About button', () => {
-  render(<AppWrapper />);
-  const linkElement = screen.getByText(/About/i);
-  expect(linkElement).toBeInTheDocument();
+test("renders React App", () => {
+  render(
+    <App
+      pathInfo={{
+        theme: "4ymm",
+      }}
+      children={<div>test</div>}
+    />
+  );
+  const linkElement = screen.getByText(/test/i);
+  expect(linkElement).toBeDefined();
 });

@@ -1,2 +1,2 @@
-export { Credits } from "./Credits";
-export { About } from "./About";
+export { About8MMC as About } from "./About.js";
+export { Credits8MMC as Credits } from "./Credits.js";

@@ -7,14 +7,13 @@
     border: none;
     text-decoration: none;
     background: none;
-    outline: var(--button-outline);
-        font-weight: var(--button-font-weight);
+    outline: var(--button-outline, none);
+    font-weight: var(--button-font-weight, 400);
 }
 
 .Button.info-inverted {
     color: var(--button-info-inverted-color, inherit);
 }
-
 .ButtonInner {
     display: grid;
     grid-template-columns: 1fr 24px;
@@ -52,7 +51,6 @@
     background: var(--button-after-background, inherit);
     mix-blend-mode: var(--button-after-mix-blend-mode, none);
     box-shadow: var(--button-after-box-shadow, none);
-    filter: var(--button-shadow, none);
 }
 
 .ButtonIcon {
@@ -67,4 +65,25 @@
 
 .hidden {
     display: none;
+}
+
+.primary {
+    background: var(--button-primary-background);
+}
+
+.secondary {
+    background: var(--button-secondary-background);
+}
+
+.tertiary {
+    background: var(--button-tertiary-background);
+}
+
+.inverted {
+    background: var(--button-inverted-background);
+}
+
+.hasIcon {
+    grid-template-columns: 24px 1fr;
+    justify-items: center;
 }

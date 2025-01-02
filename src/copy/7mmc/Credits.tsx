@@ -1,10 +1,21 @@
-import { Card, CardProps } from "../../components/Card";
-import { CreditsWebsite } from "../default/CreditsWebsite";
-import { Mm7CreditsTrailerCard } from "./cards/Mm7CreditsTrailerCard";
+import * as React from "react";
+import { Card } from "../../components/Card.js";
+import { CreditsWebsite } from "../default/CreditsWebsite.js";
+import { Mm7CreditsTrailerCard } from "./cards/Mm7CreditsTrailerCard.js";
 
-export const Credits = (props: CardProps) => (
+
+export const Credits7MMC: CreditsContentCardType = ({
+  clickable,
+  ...props
+}) => (
   <>
-    <Card heading={`Credits`} subHeading={`Project Organization`} {...props}>
+    <Card
+      heading={`Credits`}
+      subHeading={`Project Organization`}
+      images={{}}
+      clickable={undefined}
+      {...props}
+    >
       <dl>
         <dt>Judges</dt>
         <dd>B0X_Gaming</dd>
@@ -31,7 +42,7 @@ export const Credits = (props: CardProps) => (
         <dd>Lektor</dd>
       </dl>
     </Card>
-    <CreditsWebsite {...props} />
-    <Mm7CreditsTrailerCard {...props} />
+    <CreditsWebsite clickable={clickable} />
+    <Mm7CreditsTrailerCard />
   </>
 );

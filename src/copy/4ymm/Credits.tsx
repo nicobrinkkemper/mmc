@@ -1,10 +1,20 @@
-import { Card, CardProps } from "../../components/Card";
-import { CreditsWebsite } from "../default/CreditsWebsite";
-import { Ymm4CreditsTrailerCard } from "./cards/Ymm4CreditsTrailersCard";
+import * as React from "react";
+import { Card } from "../../components/Card.js";
+import { CreditsWebsite } from "../default/CreditsWebsite.js";
+import { Ymm4CreditsTrailerCard } from "./cards/Ymm4CreditsTrailersCard.js";
 
-export const Credits = ({ children, ...props }: CardProps) => (
+export const Credits4YMM: CreditsContentCardType = ({
+  clickable,
+  ...props
+}) => (
   <>
-    <Card heading={`Credits`} subHeading={`Project Organization`} {...props}>
+    <Card
+      heading={`Credits`}
+      subHeading={`Project Organization`}
+      images={{}}
+      clickable={undefined}
+      {...props}
+    >
       <dl>
         <dt>Project manager</dt>
         <dd>Kiavik</dd>
@@ -21,7 +31,7 @@ export const Credits = ({ children, ...props }: CardProps) => (
         <dd>Julian</dd>
       </dl>
     </Card>
-    <CreditsWebsite {...props} />
-    <Ymm4CreditsTrailerCard {...props} />
+    <CreditsWebsite clickable={clickable} />
+    <Ymm4CreditsTrailerCard />
   </>
 );
