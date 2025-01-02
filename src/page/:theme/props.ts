@@ -13,6 +13,7 @@ export const props = createProps(
     pathInfo: true,
     adjacent: true,
     clickable: true,
+    accordion: true,
   },
   ({ info: { writtenOut, caps }, images: { logo } }) => ({
     description: `Welcome to ${caps}! | ${siteName}`,

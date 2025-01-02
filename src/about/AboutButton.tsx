@@ -4,13 +4,17 @@ import styles from "./AboutButton.module.css";
 
 type AboutButtonType = ThemeComponent<{
   clickable: true;
+  pathInfo: ["toAbout"];
 }>;
 
-export const AboutButton: AboutButtonType = ({ clickable }) => {
+export const AboutButton: AboutButtonType = ({
+  clickable,
+  pathInfo: { toAbout },
+}) => {
   return (
     <>
       <Button
-        href={`#/about`}
+        href={toAbout}
         className={styles["AboutButton"]}
         icon="info-inverted"
         clickable={clickable}

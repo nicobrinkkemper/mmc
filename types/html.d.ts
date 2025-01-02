@@ -32,7 +32,7 @@ declare global {
       "favicon_192x192",
       "favicon_64x64"
     ];
-    info: ["writtenOut", "themeYear", "caps"];
+    info: true;
     pathInfo: true;
   };
 
@@ -41,22 +41,21 @@ declare global {
   };
 
   type CreateHeadFn = <R extends ValidRoute>(
-    fn: ThemeUtil<PathMap[R], HeadDefaultOpt>
+    fn: ThemeUtil<R, HeadDefaultOpt>
   ) => ThemeUtil<
-    PathMap[R],
+    R,
     HeadDefaultOpt,
     Partial<HtmlProps>,
     Required<HtmlProps> & ReturnType<typeof fn>
   >;
 
   type CreatePropsFn = <R extends ValidRoute>(
-    route: ThemePathInfo<PathMap[R]>["route"],
+    route: ThemePathInfo<R>["route"],
     options: ThemeDataOptions<R>,
-    fn: ThemeUtil<PathMap[R], typeof options & HeadDefaultOpt>
+    fn: ThemeUtil<R, typeof options & HeadDefaultOpt>
   ) => (
     to: string
-  ) => ThemeStaticDataReturn<PathMap[R], typeof options> &
-    ReturnType<typeof fn>;
+  ) => ThemeStaticDataReturn<R, typeof options> & ReturnType<typeof fn>;
 
   type Clickable = {
     clickable: React.ElementType | "a" | "button";

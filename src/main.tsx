@@ -13,9 +13,7 @@ if (!domNode) {
 }
 const hasDomNode = domNode.hasChildNodes();
 
-const pathInfo = getThemePathInfo(
-  new URL(window.location.href).pathname as ValidPath
-);
+const pathInfo = getThemePathInfo(window.location.href);
 // hydrate if root has already been rendered
 if (hasDomNode && !import.meta.env.DEV) {
   hydrateRoot(domNode, <Client pathInfo={pathInfo as any} />);

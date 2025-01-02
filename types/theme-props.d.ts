@@ -56,28 +56,29 @@ declare global {
    * `ThemeDataOptions` is the type we can use to satisfy new options for theme components and pages.
    */
   type ThemeDataOptions<R extends ValidRoute = ValidRoute> = {
-    pathInfo?: OptValue | OptPick<readonly (keyof ThemePathInfo<PathMap[R]>)[]>;
+    pathInfo?: OptValue | OptPick<readonly (keyof ThemePathInfo<R>)[]>;
     batches?: OptValue | OptPick<string[]>;
     info?: OptValue | OptPick<readonly (keyof ThemeInfo<Theme>)[]>;
     images?: OptValue | OptPick<readonly (keyof ResizedImages)[]>;
     adjacent?:
       | OptValue
       | {
-          pathInfo?: OptPick<readonly (keyof ThemePathInfo<PathMap[R]>)[]>;
+          pathInfo?: OptPick<readonly (keyof ThemePathInfo<R>)[]>;
           images?: OptPick<readonly (keyof ResizedImages)[]>;
         };
     batch?: OptValue | OptPick<readonly (keyof WithAdjacent<ThemeBatch>)[]>;
     level?: OptValue | OptPick<readonly (keyof WithAdjacent<ThemeLevel>)[]>;
     small?: OptValue;
+    accordion?: OptValue | OptPick<readonly (keyof AccordionProps)[]>;
     clickable?: OptValue;
   };
 
   /**
-   * `ThemeDataMapping` defines how we map the options to the theme data.
+   * `ThemeDataMapping` defines the actual values we expect for each option
    */
   type ThemeDataMapping<
-    P extends ValidPath,
-    PI extends Pick<ThemePathInfo<P>, "theme" | "params">
+    R extends ValidRoute,
+    PI extends Pick<ThemePathInfo<R>, "theme" | "params">
   > = {
     pathInfo: PI;
     batches: ThemeBatch[];
@@ -86,7 +87,8 @@ declare global {
     adjacent: WithAdjacentTheme<PI>;
     batch: WithAdjacentBatch<PI>;
     level: WithAdjacentLevel<PI>;
-    small?: boolean;
+    small?: true;
+    accordion: AccordionProps;
     clickable: React.ElementType | "button" | "a";
   };
 }

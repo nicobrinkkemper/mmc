@@ -1,3 +1,5 @@
+import React from "react";
+
 declare global {
   /**
    * `ThemeLevel` contains everything known about a level. It's the main type
@@ -34,7 +36,7 @@ declare global {
     readonly caps: Uppercase<T>;
     readonly snake: string;
     readonly ordinal: number;
-    readonly themeYear: T extends `${infer First}${string}` ? First : never;
+    readonly themeYear: T extends `${infer First}${string}` ? First : string;
     readonly writtenOutOrdinal: string;
     readonly writtenOut: string;
   };
@@ -43,20 +45,20 @@ declare global {
    * `ThemeStaticDataReturn` is the type returned by `getStaticData`
    */
   type ThemeStaticDataReturn<
-    P extends ValidPath,
+    R extends ValidRoute,
     Opt extends ThemeDataOptions,
-    PI extends ThemePathInfo<P> = ThemePathInfo<P>
+    PI extends ThemePathInfo<R> = ThemePathInfo<R>
   > = {
-    [K in keyof ThemeDataMapping<P, PI> as WithOption<
+    [K in keyof ThemeDataMapping<R, PI> as WithOption<
       Opt[K extends keyof Opt ? K : never],
-      ThemeDataMapping<P, PI>[K]
+      ThemeDataMapping<R, PI>[K]
     > extends never
       ? never
-      : K extends keyof ThemeDataMapping<P, PI>
+      : K extends keyof ThemeDataMapping<R, PI>
       ? K
       : never]: WithOption<
       Opt[K extends keyof Opt ? K : never],
-      ThemeDataMapping<P, PI>[K]
+      ThemeDataMapping<R, PI>[K]
     >;
   };
 
@@ -64,11 +66,11 @@ declare global {
    * `ThemeUtil` is the main type to use when creating new utilities for the theme. Anything that isn't a React component.
    */
   type ThemeUtil<
-    P extends ValidPath,
+    R extends ValidRoute,
     Opt extends ThemeDataOptions = ThemeDataOptions,
     Custom = Record<never, never>,
     Return = any
-  > = (props: ThemeStaticDataReturn<P, Opt> & Custom) => Return;
+  > = (props: ThemeStaticDataReturn<R, Opt> & Custom) => Return;
 
   /**
    * Helper to create a page aware component for a theme
@@ -87,6 +89,22 @@ declare global {
     As extends keyof React.JSX.IntrinsicElements = "div"
   > = (props: Props & React.JSX.IntrinsicElements[As]) => React.ReactNode;
 
+  type AsProperty = React.ElementType;
+  /**
+   * The As property might not be implemented at every component level, but
+   * each component can have the `as` property to override the default element. This
+   * can just be a string for static rendering, but at client side rendering it can
+   * be a React component.
+   *
+   * Besides the as property, things like className and other default html props
+   * will be available through JSX intrinsic elements.
+   */
+  type WithAsProperty<As extends AsProperty> = (As extends ""
+    ? React.ComponentProps<typeof React.Fragment>
+    : As extends keyof React.JSX.IntrinsicElements
+    ? React.JSX.IntrinsicElements[As]
+    : {}) & { as?: As };
+
   /**
    * Helper to create a component for a theme.
    * @example
@@ -100,30 +118,21 @@ declare global {
     Opt extends ThemeDataOptions = {
       pathInfo: true;
     },
-    As extends string = "div",
+    As extends AsProperty = "div",
     Custom extends Record<string, unknown> = Record<never, never>
-  > = ThemeUtil<
-    ValidPath,
-    Opt,
-    (As extends keyof React.JSX.IntrinsicElements
-      ? React.JSX.IntrinsicElements[As]
-      : {}) &
-      Custom,
-    React.ReactNode
-  >;
+  > = ThemeUtil<ValidRoute, Opt, WithAsProperty<As> & Custom, React.ReactNode>;
 
   /**
    * `GetStaticDataFn` is used for `getStaticData`, cntr+click on any type to see it.
    */
   type GetStaticDataFn = <
-    P extends ValidPath,
-    PI extends ThemePathInfo<P>,
+    R extends ValidRoute,
+    PI extends ThemePathInfo<R>,
     Opt extends ThemeDataOptions
   >(
     pathInfo: PI,
     options?: Opt
-  ) => ThemeStaticDataReturn<P, Opt> & PI;
+  ) => ThemeStaticDataReturn<R, Opt> & PI;
 }
 
-export { };
-
+export {};

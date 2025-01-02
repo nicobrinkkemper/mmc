@@ -1,27 +1,28 @@
 declare global {
+  type AccordionProps = {
+    accordion: React.ElementType;
+    accordionItem: React.ElementType;
+    accordionItemHeading: React.ElementType;
+    accordionItemButton: React.ElementType;
+    accordionItemPanel: React.ElementType;
+  };
+
   type AboutPanelType = ThemeComponent<
     {},
     "div",
-    {
-      accordionItemPanel: React.ElementType;
-    }
+    Pick<AccordionProps, "accordionItemPanel">
   >;
 
   type AboutItemType = ThemeComponent<
     {},
     "div",
-    {
-      accordionItem: React.ElementType;
-    }
+    Pick<AccordionProps, "accordionItem">
   >;
 
   type AboutItemHeadingType = ThemeComponent<
     {},
     "div",
-    {
-      accordionItemHeading: React.ElementType;
-      accordionItemButton: React.ElementType;
-    }
+    Pick<AccordionProps, "accordionItemHeading" | "accordionItemButton">
   >;
 
   type DefaultWelcomeContentType = ThemeComponent<{
@@ -33,27 +34,30 @@ declare global {
 
   type DefaultAboutContentType = ThemeComponent<
     {
+      pathInfo: ["theme"];
       info: ["caps", "snake", "writtenOut"];
     },
     "div",
-    {
-      accordion: React.ElementType;
-      accordionItem: React.ElementType;
-      accordionItemHeading: React.ElementType;
-      accordionItemButton: React.ElementType;
-      accordionItemPanel: React.ElementType;
-    }
+    Pick<
+      AccordionProps,
+      | "accordion"
+      | "accordionItem"
+      | "accordionItemHeading"
+      | "accordionItemButton"
+      | "accordionItemPanel"
+    >
   >;
 
   type QuestionWhatKindOfLevelsType = ThemeComponent<
     {},
     "div",
-    {
-      accordionItem: React.ElementType;
-      accordionItemHeading: React.ElementType;
-      accordionItemPanel: React.ElementType;
-      accordionItemButton: React.ElementType;
-    }
+    Pick<
+      AccordionProps,
+      | "accordionItem"
+      | "accordionItemHeading"
+      | "accordionItemPanel"
+      | "accordionItemButton"
+    >
   >;
 
   type QuestionWhatIsThisType = ThemeComponent<
@@ -61,23 +65,25 @@ declare global {
       info: ["caps", "writtenOut"];
     },
     "div",
-    {
-      accordionItem: React.ElementType;
-      accordionItemHeading: React.ElementType;
-      accordionItemPanel: React.ElementType;
-      accordionItemButton: React.ElementType;
-    }
+    Pick<
+      AccordionProps,
+      | "accordionItem"
+      | "accordionItemHeading"
+      | "accordionItemPanel"
+      | "accordionItemButton"
+    >
   >;
 
   type QuestionGetInTouchType = ThemeComponent<
     {},
     "div",
-    {
-      accordionItem: React.ElementType;
-      accordionItemHeading: React.ElementType;
-      accordionItemPanel: React.ElementType;
-      accordionItemButton: React.ElementType;
-    }
+    Pick<
+      AccordionProps,
+      | "accordionItem"
+      | "accordionItemHeading"
+      | "accordionItemPanel"
+      | "accordionItemButton"
+    >
   >;
 
   type MarioTurnsXthType = ThemeComponent<{
@@ -105,4 +111,5 @@ declare global {
   type CreditsTrailerCardType = GenericCardType;
 }
 
-export {};
+// prettier-ignore
+export { };

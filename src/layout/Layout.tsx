@@ -16,7 +16,7 @@ type LayoutComponent = ThemeComponent<{
 export const Layout: LayoutComponent = ({
   children,
   className,
-  small = false,
+  small,
   images,
   pathInfo,
   adjacent,

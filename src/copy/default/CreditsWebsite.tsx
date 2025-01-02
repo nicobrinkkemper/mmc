@@ -38,6 +38,29 @@ export const CreditsWebsite: CreditsWebsiteCardType = ({
         <dt>Hosting</dt>
         <dd>DuffyWeber</dd>
       </dl>
+      <dl>
+        <dt>Open Source</dt>
+        <dd>
+          <Clickable
+            href="https://github.com/nicobrinkkemper/mmc"
+            target="_BLANK"
+            rel="noreferrer"
+            className="highlight"
+          >
+            Github
+          </Clickable>
+        </dd>
+        <dd>
+          <Clickable
+            href="https://nicobrinkkemper.github.io/mmc/"
+            target="_BLANK"
+            rel="noreferrer"
+            className="highlight"
+          >
+            GitHub Pages mirror
+          </Clickable>
+        </dd>
+      </dl>
     </Card>
   );
 };

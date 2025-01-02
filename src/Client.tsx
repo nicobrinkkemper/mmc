@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import { PUBLIC_URL } from "./config/constants.js";
 import { getThemePathInfo } from "./data/getThemePathInfo.js";
 import { useEventListener } from "./hooks/useEventListener.js";
 import { Favicons } from "./layout/Favicons.js";
@@ -16,7 +15,19 @@ const ClientLayout = ({
   children,
   favicons,
   title,
-}: React.PropsWithChildren<Pick<HtmlProps, "favicons" | "title">>) => {
+  pathInfo,
+}: React.PropsWithChildren<{
+  pathInfo: ThemePathInfo;
+  favicons: {
+    [key in
+      | "favicon"
+      | "favicon_512x512"
+      | "favicon_192x192"
+      | "favicon_64x64"]: string;
+  };
+  title: string;
+}>) => {
+  console.log("Client", { pathInfo });
   const nodes = React.useRef<NodeListOf<Element> | null>(
     document.querySelectorAll("link[rel='icon']")
   );
@@ -47,36 +58,45 @@ const ClientLayout = ({
   );
 };
 
-const baseUrl =
-  PUBLIC_URL !== ""
-    ? PUBLIC_URL.startsWith("/")
-      ? PUBLIC_URL
-      : "/" + PUBLIC_URL
-    : "";
 export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
   const [pathInfo = initialPathInfo, setPathInfo] =
-    React.useState<ThemePathInfo<ValidPath>>();
+    React.useState<ThemePathInfo>();
 
-  useEventListener("popstate", () => {
-    const newPathInfo = getThemePathInfo(window.location.pathname as ValidPath);
-    setPathInfo(newPathInfo as any);
+  useEventListener("popstate", (e) => {
+    if (e instanceof PopStateEvent) {
+      // if we already have state, we probably don't need to update it
+      if (Object.keys(e.state ?? {}).length) {
+        setPathInfo(e.state);
+      } else {
+        setPathInfo(getThemePathInfo(window.location.href));
+      }
+    }
   });
 
-  const clickHandler: React.MouseEventHandler<HTMLAnchorElement> =
-    React.useCallback((e) => {
-      if (e.currentTarget.target !== "_blank") e.preventDefault();
-      if (!e.currentTarget.href) return;
-      try {
-        const newPathInfo = getThemePathInfo(e.currentTarget.href as ValidPath);
-        console.log(baseUrl, newPathInfo.to);
-        // use the History API to navigate
-        window.history.pushState({}, "", `${baseUrl}${newPathInfo.to}`);
-        window.dispatchEvent(new PopStateEvent("popstate"));
-        setPathInfo(newPathInfo as any);
-      } catch (err) {
-        console.error(e.currentTarget.href, err);
+  const clickHandler: (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    anchorProps: { href: string; target?: string }
+  ) => void = React.useCallback(
+    (e, { href, target }) => {
+      e.preventDefault();
+      if (target?.toLowerCase() === "_blank") {
+        window.open(href, "_blank");
+        return;
       }
-    }, []);
+      if (!href) return;
+      // Handle relative and hash changes
+      const newHref = !href.startsWith("/") ? pathInfo?.to + href : href;
+      const newState = getThemePathInfo(newHref);
+      window.history.pushState(newState, "", newHref);
+
+      window.dispatchEvent(
+        new PopStateEvent("popstate", {
+          state: newState,
+        })
+      );
+    },
+    [pathInfo]
+  );
 
   const props = React.useMemo(
     () => ({
@@ -88,8 +108,10 @@ export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
         return (
           <a
             {...props}
-            href={href ? baseUrl + href : ""}
-            onClick={clickHandler}
+            href={href ? href : ""}
+            onClick={(e) => {
+              clickHandler(e, { href: href, ...props });
+            }}
           >
             {children}
           </a>

@@ -1,7 +1,9 @@
 export function getAdjacent<T extends unknown[]>(
-  items: [...T],
+  items: T,
   indexOrKey: number | string
-) {
+): {
+  adjacent: Adjacent<T>;
+} {
   const index =
     typeof indexOrKey === "number"
       ? indexOrKey

@@ -7,18 +7,18 @@ declare global {
     Contents["_default"][Key];
 
   type ContentComponentProps<
-    P extends ValidPath,
+    R extends ValidRoute,
     Key extends ContentKey = ContentKey
   > = React.ComponentProps<Contents["_default"][Key]> & {
-    pathInfo: ThemePathInfo<P> & { theme: string };
+    pathInfo: ThemePathInfo<R> & { theme: string };
   };
 
   type ContentAtFn = <
-    P extends ValidPath,
+    R extends ValidRoute,
     Key extends ContentKey,
-    Props extends ContentComponentProps<P, Key>
+    Props extends ContentComponentProps<R, Key>
   >(
-    props: Readonly<{ at: Key; pathInfo: ThemePathInfo<P> } & Props>
+    props: Readonly<{ at: Key; pathInfo: ThemePathInfo<R> } & Props>
   ) => React.ReactNode;
 
 }

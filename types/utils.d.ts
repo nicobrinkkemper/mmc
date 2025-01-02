@@ -6,7 +6,7 @@ declare global {
    * @example
    * type Result = GuardType<typeof isString> // string
    */
-  type GuardType<T extends (x: string) => boolean> = T extends (
+  type GuardType<T extends (x: any) => x is any> = T extends (
     x: any
   ) => x is infer X
     ? X
@@ -229,6 +229,24 @@ declare global {
     ? T extends Current
       ? Before["length"]
       : IndexOf<Before, T>
+    : -1;
+
+  /**
+   * Index of record key in a tuple of records
+   * @example
+   * type Result = IndexOfKey<[{ a: 1 }, { b: 2 }, { c: 3 }], "b">;
+   * // 1
+   */
+  type IndexOfKey<
+    Tuple extends readonly Record<PropertyKey, any>[],
+    T extends PropertyKey
+  > = Tuple extends readonly [
+    ...infer Before extends readonly Record<PropertyKey, any>[],
+    infer Current extends Record<PropertyKey, any>
+  ]
+    ? T extends keyof Current
+      ? Before["length"]
+      : IndexOfKey<Before, T>
     : -1;
 
   /**

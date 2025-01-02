@@ -32,8 +32,8 @@ declare global {
   };
 
   type AdjacentTheme<P, I> = {
-    pathInfo: P extends (infer K extends keyof ThemePathInfo<ValidPath>)[]
-      ? Required<Pick<ThemePathInfo<ValidPath>, K>>
+    pathInfo: P extends (infer K extends keyof ThemePathInfo)[]
+      ? Required<Pick<ThemePathInfo, K>>
       : never;
     images: I extends (infer K extends keyof ResizedImages)[]
       ? Required<Pick<ResizedImages, K>>
@@ -52,52 +52,53 @@ declare global {
    * trying to when we didn't get a union of a theme. It's overkill since we do not have instances
    * where this happens aside from the tests.
    */
-  type WithAdjacentTheme<PI extends Pick<ThemePathInfo<ValidPath>, "theme">> =
-    IsUnion<PI["theme"]> extends true
-      ? InferAdjacent<PI["theme"], ThemeKeys> extends {
-          next: { exists: infer A; value: infer V };
-          prev: { exists: infer B; value: infer W };
+  type WithAdjacentTheme<PI extends Pick<ThemePathInfo, "theme">> = IsUnion<
+    PI["theme"]
+  > extends true
+    ? InferAdjacent<PI["theme"], ThemeKeys> extends {
+        next: { exists: infer A; value: infer V };
+        prev: { exists: infer B; value: infer W };
+      }
+      ? {
+          next: A extends true
+            ? {
+                exists: true;
+                value: V extends Theme
+                  ? {
+                      pathInfo: ThemePathInfo<"/:theme", `/${V}`>;
+                      images: Images[V]["images"];
+                    }
+                  : never;
+              }
+            : { exists: false };
+          prev: B extends true
+            ? {
+                exists: true;
+                value: W extends Theme
+                  ? {
+                      pathInfo: ThemePathInfo<"/:theme", `/${W}`>;
+                      images: Images[W]["images"];
+                    }
+                  : never;
+              }
+            : { exists: false };
         }
-        ? {
-            next: A extends true
-              ? {
-                  exists: true;
-                  value: V extends Theme
-                    ? {
-                        pathInfo: ThemePathInfo<`/${V}`>;
-                        images: Images[V]["images"];
-                      }
-                    : never;
-                }
-              : { exists: false };
-            prev: B extends true
-              ? {
-                  exists: true;
-                  value: W extends Theme
-                    ? {
-                        pathInfo: ThemePathInfo<`/${W}`>;
-                        images: Images[W]["images"];
-                      }
-                    : never;
-                }
-              : { exists: false };
-          }
-        : never
-      : Adjacent<
-          {
-            pathInfo: ThemePathInfo<ValidPath>;
-            images: ResizedImages;
-          }[]
-        >;
+      : never
+    : Adjacent<
+        {
+          pathInfo: ThemePathInfo;
+          images: ResizedImages;
+        }[]
+      >;
 
-  type WithAdjacentBatch<PI extends Pick<ThemePathInfo<ValidPath>, "params">> =
+  type WithAdjacentBatch<PI extends Pick<ThemePathInfo, "params">> =
     "batchNumber" extends keyof PI["params"]
       ? PI["params"]["batchNumber"] extends string
         ? WithAdjacent<ThemeBatch>
         : never
       : never;
 
-  type WithAdjacentLevel<PI extends Pick<ThemePathInfo<ValidPath>, "params">> =
+  type WithAdjacentLevel<PI extends Pick<ThemePathInfo, "params">> =
     "batchNumber" extends keyof PI["params"]
       ? PI["params"]["batchNumber"] extends string
         ? "order" extends keyof PI["params"]
@@ -110,3 +111,4 @@ declare global {
 }
 
 export {};
+

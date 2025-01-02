@@ -1,9 +1,10 @@
 import { createHead } from "./createHead.js";
+import { getRouteValidator } from "./getRouteValidator.js";
 import { getStaticData } from "./getStaticData.js";
-import { getThemePathInfo, getThemeRouteInfo } from "./getThemePathInfo.js";
+import { getThemePathInfo } from "./getThemePathInfo.js";
 
 export const createProps: CreatePropsFn = (route, options, fn) => {
-  const validator = getThemeRouteInfo(route);
+  const validator = getRouteValidator(route);
   const head = createHead(fn);
   return (to) => {
     if (!validator(to)) {
@@ -14,6 +15,6 @@ export const createProps: CreatePropsFn = (route, options, fn) => {
     return head({
       ...getStaticData(pathInfo as any, options),
       pathInfo,
-    } as any);
+    });
   };
 };

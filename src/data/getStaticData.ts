@@ -45,9 +45,7 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
   const batchIndex =
     pathInfo.params.batchNumber !== ""
       ? levelData.batches.findIndex(
-          (
-            batch // @ts-ignore
-          ) => batch.batchNumber === pathInfo.params.batchNumber
+          (batch) => batch.batchNumber === pathInfo.params.batchNumber
         )
       : -1;
 
@@ -56,7 +54,6 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
   const levelIndex =
     pathInfo.params.order !== ""
       ? batch!.levels.findIndex(
-          // @ts-ignore
           (level) => level.order === pathInfo.params.order
         )
       : -1;
@@ -183,6 +180,16 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
         }
         case "info": {
           result.info = getThemeInfo(theme);
+          break;
+        }
+        case "accordion": {
+          result.accordion = {
+            accordion: "div",
+            accordionItem: "div",
+            accordionItemHeading: "div",
+            accordionItemButton: "div",
+            accordionItemPanel: "div",
+          } satisfies AccordionProps;
           break;
         }
         default:
