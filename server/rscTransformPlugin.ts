@@ -82,7 +82,7 @@ export const createRscTransformer =
  */
 export const rscTransformPlugin = (
   options: RscPluginOptions = {},
-  name = "vite:rsc-transform"
+  name = "vite:react-transform"
 ) => ({
   name,
   transform: createRscTransformer(options),

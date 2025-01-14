@@ -15,16 +15,16 @@ export function rscTransformPlugin(options: RscPluginOptions): Plugin {
   const include = options.include || fileExtensionRE;
   const exclude = options.exclude;
   let transform: any;
-  let config: any;
-  let isRscRequest = false;
 
+  // check for server condition
+  let config: any;
   return {
-    name: "vite:rsc-transform",
+    name: "vite:react-transform",
     enforce: "pre",
 
     config(config) {
       // Only add react-server condition for RSC/SSR requests
-      if (isRscRequest || config.build?.ssr) {
+      if (config.build?.ssr) {
         return {
           resolve: {
             conditions: ["react-server"],
@@ -81,7 +81,7 @@ export function rscTransformPlugin(options: RscPluginOptions): Plugin {
        *
        * Development (Vite Dev Server):
        * 1. RSC Stream (isRscRequest true):
-       *    - Handled through index.html + ssr.tsx entry
+       *    - Handled through index.html + client.tsx entry
        *    - Creates module map for client/server references
        *    - Enables fast refresh and HMR
        *
@@ -96,11 +96,6 @@ export function rscTransformPlugin(options: RscPluginOptions): Plugin {
        *    - Strips RSC functionality in final output
        *    - Results in optimized static files
        */
-
-      // For RSC streaming, we need both client and server transforms
-      if (isRscRequest) {
-        return transform?.(code, id, { ...opts, ssr: true });
-      }
 
       // For client component requests, we need the client reference metadata
       if (directive === "client" && !opts?.ssr) {
@@ -126,9 +121,10 @@ export function rscTransformPlugin(options: RscPluginOptions): Plugin {
     },
 
     configureServer(server) {
+      let isRscEnvironment = false;
       server.middlewares.use(async (req, res, next) => {
-        isRscRequest = req.headers.accept === "text/x-component";
-        if (isRscRequest) {
+        isRscEnvironment = req.headers.accept === "text/x-component";
+        if (isRscEnvironment) {
           res.setHeader("Link", '</>; rel="rsc"');
         }
         next();
@@ -137,9 +133,9 @@ export function rscTransformPlugin(options: RscPluginOptions): Plugin {
   };
 }
 
-const moduleIdDefault = (options: RscPluginOptions) => (moduleId) => {
+const moduleIdDefault = ({ projectRoot }: RscPluginOptions) => (moduleId: string) => {
   const normalized = normalizePath(moduleId);
-  const relative = normalized.slice(options.projectRoot.length);
+  const relative = normalized.startsWith(projectRoot) ? normalized.slice(projectRoot.length) : normalized;
   return relative;
 };
 

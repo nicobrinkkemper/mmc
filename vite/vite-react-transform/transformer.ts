@@ -4,7 +4,7 @@ export interface TransformerOptions {
 
 export function createRscTransformer(options: TransformerOptions) {
   return {
-    name: "vite:rsc-transform",
+    name: "vite:react-transform",
     enforce: "post" as const,
 
     async transform(code: string, path: string) {
@@ -30,13 +30,12 @@ export function createRscTransformer(options: TransformerOptions) {
       return {
         code: `${modifiedCode}
 const ${exportName}Ref = Object.defineProperties(
-  ${
-    isClass
-      ? `class extends ${exportName} {
+  ${isClass
+            ? `class extends ${exportName} {
         constructor(...args) { super(...args); }
       }`
-      : `function(...args) { return ${exportName}.apply(null, args); }`
-  },
+            : `function(...args) { return ${exportName}.apply(null, args); }`
+          },
   {
     $$typeof: { value: Symbol.for("react.client.reference") },
     $$id: { value: ${JSON.stringify(moduleId + "#" + exportName)} }

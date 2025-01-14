@@ -27,17 +27,20 @@
   },
   "include": [
     // support just normal ts
-    "src/*.ts",
+    "src/**/*.ts",
     "startup/**/*.ts",
     "server/**/*.ts",
+    "vite/**/*.ts",
     // support tsx
-    "src/*.tsx",
+    "src/**/*.tsx",
     "startup/**/*.tsx",
     "server/**/*.tsx",
+    "vite/**/*.tsx",
     // support mts
     "src/**/*.mts",
     "startup/**/*.mts",
     "server/**/*.mts",
+    "vite/**/*.mts",
     // support json
     "src/**/*.json",
     "startup/**/*.json",

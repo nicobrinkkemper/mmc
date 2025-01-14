@@ -1,12 +1,12 @@
-import { DefaultLayout } from "../components";
+import { DefaultLayout } from "../components.js";
 import type {
   BaseProps,
   ModuleLoader,
   Options,
   RequestHandler,
   RscServerConfig,
-} from "../types";
-import { handleSsrStream } from "./ssr";
+} from "../types.js";
+import { handleSsrStream } from "./ssr.js";
 
 /**
  * Creates a request handler for production

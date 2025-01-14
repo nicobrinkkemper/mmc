@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
 import type { ViteDevServer } from "vite";
-import type { BaseProps, RscStreamParams, StreamResult } from "../types";
+import type { BaseProps, RscStreamParams, StreamResult } from "../types.js";
 
 /**
  * Collects all assets from the module graph
@@ -31,7 +31,7 @@ function collectAssets(moduleId: string, server?: ViteDevServer) {
       const cssContent = mod.transformResult?.code || "";
       const imageUrls =
         cssContent.match(/url\((?:['"]?)([^'"]*?)(?:['"]?)\)/g) || [];
-      imageUrls.forEach((match) => {
+      imageUrls.forEach((match: string) => {
         const urlMatch = match.match(/url\((?:['"]?)([^'"]*?)(?:['"]?)\)/)?.[1];
         if (
           urlMatch &&
@@ -100,8 +100,8 @@ export async function handleRscStream<T extends BaseProps>(
 
     // Load modules directly through the SSR loader
     const [Page, props] = await Promise.all([
-      loader(pagePath).then((mod) => mod[pageExportName]),
-      loader(propsPath).then((mod) => mod[propsExportName](url)),
+      loader(pagePath).then(({ [pageExportName]: Page }: any) => typeof Page === "function" ? Page : () => Page),
+      loader(propsPath).then(({ [propsExportName]: props }: any) => typeof props === "function" ? props(url) : props),
     ]);
 
     // Collect all assets
@@ -111,8 +111,8 @@ export async function handleRscStream<T extends BaseProps>(
     // Create stream with collected assets
     const stream = renderToPipeableStream(
       createElement(Layout, { manifest, ...props }, createElement(Page, props)),
-      options.moduleBase,
-      controller
+      options.moduleBase ?? "",
+      controller as any
     );
 
     return { type: "success", stream };

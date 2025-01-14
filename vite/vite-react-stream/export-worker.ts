@@ -1,5 +1,5 @@
 import { Worker } from "worker_threads";
-import type { BaseProps, BuildConfig } from "./types";
+import type { BaseProps, BuildConfig } from "./types.js";
 
 export async function startExport<T extends BaseProps>(config: BuildConfig<T>) {
   return new Promise((resolve, reject) => {

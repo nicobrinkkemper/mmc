@@ -1,12 +1,12 @@
 import type { ViteDevServer } from "vite";
-import { DefaultLayout } from "../components";
+import { DefaultLayout } from "../components.js";
 import type {
   BaseProps,
   ModuleLoader,
   Options,
   RequestHandler,
-} from "../types";
-import { handleRscStream } from "./rsc";
+} from "../types.js";
+import { handleRscStream } from "./rsc.js";
 
 /**
  * Creates a request handler for development

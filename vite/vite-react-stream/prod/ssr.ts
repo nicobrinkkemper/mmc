@@ -6,7 +6,7 @@ import type {
   RscServerConfig,
   RscStreamParams,
   StreamResult,
-} from "../types";
+} from "../types.js";
 
 /**
  * Handles SSR streaming in production

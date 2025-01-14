@@ -5,7 +5,11 @@ const getEnv = () => {
   }
 
   if (typeof import.meta !== "undefined") {
-    return import.meta.env;
+    if (typeof import.meta.env !== "undefined") {
+      if (import.meta.env["VITE_BASE_URL"]) {
+        return import.meta.env;
+      }
+    }
   }
 
   return {

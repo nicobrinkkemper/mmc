@@ -70,4 +70,31 @@ declare module "react-server-dom-esm/client" {
     value: unknown,
     options?: EncodeReplyOptions
   ): Promise<FormData>;
+
+  interface CreateFromNodeStreamOptions {
+    encodeFormAction?: boolean;
+    nonce?: string;
+    findSourceMapURL?: (source: string) => string | undefined;
+    replayConsoleLogs?: boolean;
+    environmentName?: string;
+  }
+
+  export function createFromNodeStream<T>(
+    stream: import("node:stream").Readable,
+    moduleRootPath: string,
+    moduleBaseURL: string,
+    options?: CreateFromNodeStreamOptions
+  ): React.Usable<T>;
+
+
+  export function createFromFetch(
+    response: Response,
+    options?: { callServer?: Function; moduleBaseURL?: string }
+  ): React.Usable<any>;
+
 }
+
+
+// declare module "react-server-dom-webpack/client" {
+//   export * from "react-server-dom-esm/client";
+// }

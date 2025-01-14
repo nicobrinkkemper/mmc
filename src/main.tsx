@@ -1,8 +1,8 @@
 "use client";
-import "./ssr.js";
+import "./client.js";
 // import * as React from "react";
 // import { createRoot, hydrateRoot } from "react-dom/client";
-// import { createFromFetch } from "react-server-dom-esm/client";
+// import { createFromFetch } from "react-server-dom-webpack/client";
 // import { Client } from "./Client.js";
 // import { getThemePathInfo } from "./data/getThemePathInfo.js";
 // import "./index.css";

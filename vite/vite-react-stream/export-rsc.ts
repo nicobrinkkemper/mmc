@@ -3,7 +3,7 @@ import { dirname, resolve } from "node:path";
 import { parentPort } from "node:worker_threads";
 import { createElement, Fragment } from "react";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-import type { BaseProps, BuildConfig } from "./types";
+import type { BaseProps, BuildConfig } from "./types.js";
 
 async function getRscData<T extends BaseProps>(
   route: string,
@@ -33,7 +33,7 @@ async function getRscData<T extends BaseProps>(
       createElement("div"),
     ]),
     "/src",
-    new AbortController()
+    new AbortController() as any
   );
 
   // Collect stream data
@@ -41,7 +41,7 @@ async function getRscData<T extends BaseProps>(
     stream.pipe({
       write: (chunk: Buffer) => chunks.push(chunk),
       end: () => resolve(),
-    });
+    } as any);
   });
 
   console.log(

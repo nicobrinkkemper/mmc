@@ -1,17 +1,16 @@
+import { globSync } from "fs";
 import fs from "fs/promises";
-import glob from "glob";
 import path from "path";
 import postcss from "postcss";
 import postcssModules from "postcss-modules";
-import { safeSnakecase } from "../src/utils/safeSnakecase.js";
 
+// deprecated, can be used to generate css modules for typescript, but we use the css-modules plugin for typescript
 export async function processCssModules() {
   console.log("Processing CSS modules...");
-  const cssFiles = glob.sync("src/**/*.module.css");
+  const cssFiles = globSync("src/**/*.module.css");
   console.log(`Found ${cssFiles.length} CSS modules`);
 
   for (const cssFile of cssFiles) {
-    console.log(`Processing ${cssFile}...`);
     const css = await fs.readFile(cssFile, "utf-8");
 
     let classNames = {};
@@ -23,21 +22,16 @@ export async function processCssModules() {
       }),
     ]).process(css, { from: cssFile });
 
-    console.log(`Found classes: ${Object.keys(classNames).join(", ")}`);
-
-    const jsContent = Object.entries(classNames).map(([name, value]) => {
-      return `export const ${safeSnakecase(name)} = "${value}";\n`;
-    });
     // rawStyles
-    jsContent.push(`export const css = \`${result.css}\`;`);
+    const jsContent = `export default ${JSON.stringify(classNames)};`;
 
     const serverFile = path.join(
-      process.cwd(),
+      process.cwd() + '/dist/css-modules',
       cssFile.replace(".css", ".css.server.ts")
     );
 
     await fs.mkdir(path.dirname(serverFile), { recursive: true });
     await fs.writeFile(serverFile, jsContent);
-    console.log(`Created ${serverFile}`);
   }
 }
+

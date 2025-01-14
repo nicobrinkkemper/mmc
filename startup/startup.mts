@@ -9,7 +9,6 @@ import {
 import { levelData } from "./csv/levelData.mjs";
 import { writeFile } from "./file/writeFile.mjs";
 import { writeJson } from "./file/writeJson.mjs";
-import { processCssModules } from "./postcss.mjs";
 import { resizeFolders } from "./resize/resizeFolders.mjs";
 
 const generateJsonBarrel = (entries: string[], fileName: string) =>
@@ -38,7 +37,7 @@ const processThemeData = async (
 ) => {
   const csv = await themeConfig.fetchCsv();
   return {
-    ...levelData(themeConfig, resizedPublic[themeConfig.theme], csv),
+    ...levelData(themeConfig, resizedPublic[themeConfig.theme], csv ?? ""),
     images: resizedPublic[themeConfig.theme]["images"],
   };
 };
@@ -52,8 +51,6 @@ const main = async () => {
     } = resizedFolders;
 
     await Promise.all([
-      // Process CSS modules
-      processCssModules(),
       // Process theme data
       Promise.all(
         themeConfig.map(async (config) => {

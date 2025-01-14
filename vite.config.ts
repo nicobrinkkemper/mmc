@@ -2,8 +2,8 @@ import path from "path";
 import { defineConfig } from "vite";
 import { patchCssModules } from "vite-css-modules";
 import { getThemePathInfo } from "./src/data/getThemePathInfo.js";
-import { rscTransformPlugin } from "./vite/rsc-transform";
 import { viteReactStream } from "./vite/vite-react-stream/index.js";
+import { rscTransformPlugin } from "./vite/vite-react-transform/index.js";
 
 const ReactCompilerConfig = {
   sources: (filePath: string) => {
@@ -57,7 +57,7 @@ export default defineConfig(() => ({
   build: {
     rollupOptions: {
       input: {
-        app: "index.html", // Vite will handle this and find ssr.tsx, additional css through the module graph
+        app: "index.html", // Vite will handle this and find client.tsx, additional css through the module graph
       },
     },
   },

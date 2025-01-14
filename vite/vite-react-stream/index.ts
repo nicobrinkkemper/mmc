@@ -5,9 +5,9 @@ import path from "path";
 import { createElement, Fragment } from "react";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
 import type { Plugin, ViteDevServer } from "vite";
-import { startExport } from "./export-worker";
-import { getModuleGraph } from "./module-graph";
-import type { BaseProps, Options } from "./types";
+import { startExport } from "./export-worker.js";
+import { getModuleGraph } from "./module-graph.js";
+import type { BaseProps, Options } from "./types.js";
 
 export const viteReactStream = <T extends BaseProps>(
   options: Options<T>
@@ -88,7 +88,7 @@ export const viteReactStream = <T extends BaseProps>(
                 ),
               ]),
               options.moduleBase ?? "/src",
-              new AbortController()
+              new AbortController() as any
             );
 
             stream.pipe(res);
@@ -113,6 +113,7 @@ export const viteReactStream = <T extends BaseProps>(
           platform: "node",
           target: "node18",
           bundle: true,
+          inject: ["./vite/vite-react-stream/node-globals.js"],
           external: [
             // Node built-ins
             "stream",
@@ -129,7 +130,7 @@ export const viteReactStream = <T extends BaseProps>(
           jsxFactory: "React.createElement",
           jsxFragment: "React.Fragment",
           define: {
-            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+            "process.env.NODE_ENV": JSON.stringify(process.env["NODE_ENV"]),
           },
         });
       } catch (error) {
@@ -151,8 +152,8 @@ export const viteReactStream = <T extends BaseProps>(
           bundle: true,
           external: [
             "react",
-            "react-server-dom-esm",
-            "react-server-dom-esm/server.node",
+            "react-server-dom-webpack",
+            "react-server-dom-webpack/server.node",
             "*.webp",
             "*.svg",
           ],
@@ -226,13 +227,13 @@ export const viteReactStream = <T extends BaseProps>(
           ],
           define: {
             "process.env.VITE_BASE_URL": JSON.stringify(
-              process.env.VITE_BASE_URL || ""
+              process.env["VITE_BASE_URL"] || ""
             ),
-            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+            "process.env.NODE_ENV": JSON.stringify(process.env["NODE_ENV"]),
             "import.meta.env": JSON.stringify({
-              VITE_BASE_URL: process.env.VITE_BASE_URL || "",
-              VITE_PUBLIC_URL: process.env.VITE_PUBLIC_URL || "/",
-              MODE: process.env.NODE_ENV || "production",
+              VITE_BASE_URL: process.env["VITE_BASE_URL"] || "",
+              VITE_PUBLIC_URL: process.env["VITE_PUBLIC_URL"] || "/",
+              MODE: process.env["NODE_ENV"] || "production",
               DEV: false,
               SSR: true,
             }),

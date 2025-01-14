@@ -6,7 +6,7 @@ const cleanVersion = (version: string) =>
 // Get the exact React beta version
 const reactVersion = cleanVersion(packageJson.devDependencies.react);
 const reactDomVersion = cleanVersion(packageJson.devDependencies["react-dom"]);
-const clsxVersion = cleanVersion(packageJson.dependencies.clsx);
+const clsxVersion = cleanVersion(packageJson.devDependencies.clsx);
 
 console.log("Using React version:", reactVersion);
 console.log("Using ReactDOM version:", reactDomVersion);
