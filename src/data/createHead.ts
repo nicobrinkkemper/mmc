@@ -10,8 +10,12 @@ export const createHead: CreateHeadFn =
         description: defaultDescription,
         url: BASE_URL + pathInfo?.to,
         contentType: "text/html",
-        published: new Date(Date.now()).toDateString(),
-        updated: new Date(Date.now()).toDateString(),
+        published: props.published
+          ? props.published
+          : new Date(Date.now()).toDateString(),
+        updated: props.updated
+          ? props.updated
+          : new Date(Date.now()).toDateString(),
         category: "gaming",
         tags: [
           "Mario Maker 2",
@@ -35,10 +39,10 @@ export const createHead: CreateHeadFn =
       });
       return {
         images,
-        pathInfo,
         ...props,
         ...defaultMeta,
         ...customHeadProperties,
+        pathInfo,
       };
     } catch (error) {
       console.error(pathInfo, error);

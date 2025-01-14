@@ -1,4 +1,5 @@
 import { capitalize } from "lodash-es";
+import { mainTheme } from "../config/themeConfig.js";
 import { safeSnakecase } from "../utils/safeSnakecase.js";
 import { convertNumberToWord } from "./convertNumberToWord.js";
 
@@ -6,7 +7,7 @@ export const getThemeInfo = <T extends Theme = Theme>(
   theme: T
 ): ThemeInfo<T> => {
   if (!theme) {
-    throw new Error("No theme defined");
+    theme = mainTheme as T;
   }
   const caps = theme.toUpperCase() as ThemeInfo<T>["caps"];
   const slug = theme;

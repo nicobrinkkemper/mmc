@@ -1,5 +1,5 @@
 {
-  "name": "ymm",
+  "name": "mmc",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -11,12 +11,17 @@
     "serve-gh": "export PUBLIC_URL=/mmc; node dist/server/dev-server.mjs",
     "build": "export BASE_URL='https://mmcelebration.com' && vite build",
     "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && run-s startup-gh build server:crawl",
-    "server:build": "rm -rf dist && npx tsc --project tsconfig.node.json && cp --parents `find -name \"*.css\"` dist/",
-    "server:run": "run-p server:rsc:dev server:ssr:dev",
+    "server:build": "rm -rf dist && BUILD_TARGET=server vite build",
     "server:iterate": "npm run server:build && run-p server:start",
+    "tsc": "rm -rf dist && npx tsc --project tsconfig.node.json && find src -name \"*.css\" -exec cp --parents {} dist/ \\;",
+    "tsc-watch": "npx tsc --build --watch --incremental --force",
+    "server:iterate-quick": "BUILD_TARGET=server vite build && node ./dist/server/start.mjs",
     "server:start": "NODE_OPTIONS='--experimental-json-modules --enable-source-maps' node ./dist/server/start.mjs",
+    "server:start-rsc": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules --enable-source-maps' node ./dist/server/rsc-server.js",
+    "server:start-ssr": "NODE_OPTIONS='--experimental-json-modules --enable-source-maps' node ./dist/server/ssr-server.js",
     "server:crawl": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules' node ./dist/server/start.mjs crawl",
     "server:export": "NODE_OPTIONS='--conditions=react-server --experimental-json-modules' node ./dist/server/export.mjs",
+    "server:kill": "lsof -ti:3001| xargs kill; lsof -ti:3003| xargs kill; lsof -ti:3000| xargs kill; true",
     "ssg": "run-s build server:crawl",
     "postbuild": "export BASE_URL='https://mmcelebration.com'",
     "prebuild-gh": "run-s startup:*",
@@ -26,14 +31,15 @@
     "deploy": "gh-pages -d build",
     "test": "run-s startup react:test",
     "react:test": "vitest",
-    "react:build": "vite build",
-    "react:start": "vite",
+    "react:build": "NODE_OPTIONS='--conditions react-server' vite build",
+    "react:start": "NODE_OPTIONS='--conditions react-server' vite",
     "startup-gh": "run-s startup:*",
     "startup": "run-s startup:*",
     "startup:compile": "npm run server:build",
     "startup:run": "export NODE_ENV='development'; export NODE_OPTIONS='--experimental-json-modules --enable-source-maps'; node ./dist/startup/startup.mjs",
     "dev": "vite",
-    "preview": "vite preview"
+    "preview": "NODE_OPTIONS='--conditions react-server' vite preview",
+    "css": "find src -name \"*.css\" -exec cp --parents {} dist/ \\;"
   },
   "engines": {
     "node": ">=18"
@@ -66,6 +72,7 @@
     ]
   },
   "devDependencies": {
+    "@rollup/plugin-json": "^6.1.0",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
     "@types/compression": "^1.7.5",
@@ -79,7 +86,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "acorn-loose": "^8.4.0",
     "babel-plugin-react-compiler": "^19.0.0-beta-37ed2a7-20241206",
-    "classnames": "^2.5.1",
     "compression": "^1.7.5",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
@@ -95,11 +101,12 @@
     "npm-run-all": "^4.1.5",
     "postcss-modules": "^6.0.1",
     "react": "^19.0.0-beta-26f2496093-20240514",
-    "react-dom": "^19.0.0-rc.1",
+    "react-dom": "^19.0.0-beta-26f2496093-20240514",
     "sharp": "^0.33.5",
     "typescript": "^5.7.2",
     "typescript-plugin-css-modules": "^5.1.0",
     "vite": "^6.0.3",
+    "vite-css-modules": "^1.8.0",
     "vitest": "^2.1.8"
   },
   "include": [
@@ -108,5 +115,9 @@
   "overrides": {
     "react": "$react",
     "react-dom": "$react-dom"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "webpack-sources": "^3.2.3"
   }
 }

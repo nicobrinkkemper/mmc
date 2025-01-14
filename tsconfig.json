@@ -20,10 +20,9 @@
       "dom.iterable",
       "DOM"
     ],
-    // We use the node next module system, which means that our distilled files will look very similar to how we wrote them.
-    "module": "nodenext",
-    // We need this to be the same as the module system.
-    "moduleResolution": "nodenext",
+    // Should you want to change all the imports to .tsc,.ts, then that will only work if you use vite and remove the entryFileNames remapping, and remove project references = find alternative = turbo repo or whatever.
+    // this is actually the "sensible" default, when using swc but we are mapping it to be interchangable with `npx tsc --project tsconfig.node.json` setup.
+    "allowImportingTsExtensions": false,
     // We force module detection to be sure that the module system is detected correctly.
     "moduleDetection": "force",
     // To indicate that we are NOT going to be emitting files
@@ -33,9 +32,9 @@
     // We don't allow property access from index signatures. In this case we prefer to write record['images'] instead of record.images
     "noPropertyAccessFromIndexSignature": true,
     // You'll get an error if you forget to remove a variable. If you intended not to use it, you can prefix the variable with an underscore or change to a underscore variable to indicate unused variables.
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     // Same as above, but for function parameters.
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     // We allow JSON imports. In fact we promote using them. We need to use the `with {type: 'json'}` which is the most recent way to do it.
     "resolveJsonModule": true,
     // If you are having issues with libraries, you can disable this and it won't check the types of the libraries.
@@ -50,7 +49,6 @@
     "types": [
       "@types/react/experimental",
       "vite/client",
-      "vitest"
     ],
     "typeRoots": [
       "./node_modules/@types",
@@ -63,28 +61,29 @@
       {
         "name": "typescript-plugin-css-modules"
       }
-    ]
+    ],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolvePackageJsonImports": true,
+    "resolvePackageJsonExports": true,
+    "verbatimModuleSyntax": true
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.mts",
-    "src/**/*.mtsx",
     "src/**/*.json",
     "src/**/*.css",
     "src/**/*.module.css",
-    "types/**/*.d.ts"
-,
-"startup/csv/csvThemeMapper.mts",
-"startup/csv/levelData.mts",
-"startup/csv/csvParse.ts",
-"startup/csv/addLevelImages.ts",
-"startup/csv/batchProcessor.ts",
-"startup/csv/createMapper.ts"
-],
+    "types/**/*.d.ts",
+    "test/setup.test.ts",
+    "types/babel-plugin-react-compiler.ts",
+  ],
   "exclude": [
     "dist",
     "node_modules",
-    "oss-experimental"
+    "oss-experimental",
+    "src/**/*.server.ts",
+    "src/**/*.server.tsx"
   ]
 }

@@ -1,64 +1,65 @@
-import react from "@vitejs/plugin-react";
-import { resolve } from "node:path";
+import path from "path";
 import { defineConfig } from "vite";
+import { patchCssModules } from "vite-css-modules";
+import { getThemePathInfo } from "./src/data/getThemePathInfo.js";
+import { rscTransformPlugin } from "./vite/rsc-transform";
+import { viteReactStream } from "./vite/vite-react-stream/index.js";
 
 const ReactCompilerConfig = {
-  sources: (filename: string) => filename.includes("src"),
+  sources: (filePath: string) => {
+    return filePath.indexOf(".client") === -1;
+  },
 };
 
-export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
-      },
-    }),
-    {
-      name: "generate-meta",
+const createRouter = (fileName: string) => (url: string) => {
+  const { route } = getThemePathInfo(url);
+  const fixRoot = route === "/" ? "" : route.replace(/:/g, "_");
+  return `src/page${fixRoot}/${fileName}`;
+};
+console.log(path.resolve(__dirname, "src"));
+export default defineConfig(() => ({
+  server: {
+    port: 5173,
+    warmup: {
+      clientFiles: [
+        "./src/page/*/page.tsx",
+        "./src/page/*/props.ts",
+        "./src/**/*.module.css",
+      ],
     },
-  ],
-  root: ".",
-  build: {
-    outDir: "build",
-    target: "esnext",
-    manifest: "manifest.json",
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, "index.html"),
-      },
-      output: {
-        format: "es",
-        manualChunks: (id) => {
-          if (id.includes("node_modules")) {
-            if (id.includes("react")) return null;
-            return "deps";
-          }
+  },
+  plugins: [
+    patchCssModules(),
+    rscTransformPlugin({
+      projectRoot: __dirname,
+      moduleBase: "/src",
+    }),
+    viteReactStream({
+      moduleBase: "/src",
+      Page: createRouter("page.tsx"),
+      props: createRouter("props.ts"),
+      pageExportName: "Page",
+      propsExportName: "props",
+      build: {
+        pages: "src/page/pages.tsx",
+        output: {
+          dir: "dist",
+          rsc: "rsc",
         },
       },
-    },
-    chunkSizeWarningLimit: 500,
-    commonjsOptions: {
-      include: [/node_modules/],
-      exclude: [/esm\.sh/],
+    }),
+  ],
+  css: {
+    modules: {
+      generateScopedName: "[name]__[local]",
     },
   },
-  server: {
-    port: 3000,
-    open: true,
-  },
-  resolve: {
-    alias: {
-      "use-sync-external-store/shim/with-selector":
-        "use-sync-external-store/shim/with-selector.js",
-      react: "https://esm.sh/react@19.0.0-beta-26f2496093-20240514",
-      "react-dom": "https://esm.sh/react-dom@19.0.0-beta-26f2496093-20240514",
-      "react-dom/client":
-        "https://esm.sh/react-dom@19.0.0-beta-26f2496093-20240514/client",
-      "react/jsx-runtime":
-        "https://esm.sh/react@19.0.0-beta-26f2496093-20240514/jsx-runtime",
-      "@jsxImportSource":
-        "https://esm.sh/react@19.0.0-beta-26f2496093-20240514",
+  build: {
+    rollupOptions: {
+      input: {
+        app: "index.html", // Vite will handle this and find ssr.tsx, additional css through the module graph
+      },
     },
-    preserveSymlinks: true,
   },
-});
+}));
+// ps if you save this file or any of the files imported directly here, you need to restart. Won't fix for now.

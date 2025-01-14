@@ -1,23 +1,17 @@
-import fs from "fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { loadEnv } from "vite";
-import { root } from "../server/constants.js";
-const mode = process.env["NODE_ENV"] || "development";
-const env = loadEnv(mode, root, "");
 
-if (
-  typeof env["VITE_BASE_URL"] !== "string" ||
-  typeof env["VITE_PUBLIC_URL"] !== "string"
-) {
-  // write the env file
-  console.log("Writing env file");
-  fs.writeFileSync(
-    ".env.development.local",
-    "VITE_BASE_URL='http://localhost:3000'\nVITE_PUBLIC_URL=''"
-  );
-  process.env["VITE_BASE_URL"] = "http://localhost:3000";
-  process.env["VITE_PUBLIC_URL"] = "";
-} else {
-  console.log("Using env file");
-  process.env["VITE_BASE_URL"] = env["VITE_BASE_URL"];
-  process.env["VITE_PUBLIC_URL"] = env["VITE_PUBLIC_URL"];
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+let mode = "";
+try {
+  mode = process.env["NODE_ENV"] || "production";
+} catch (e) {
+  try {
+    // @ts-ignore
+    mode = import.meta.env.MODE || "production";
+  } catch (e) {
+    console.error("Error loading env:", e);
+  }
 }
+export const env = loadEnv(mode, root, "");

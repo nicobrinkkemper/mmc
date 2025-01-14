@@ -5,6 +5,13 @@ import {
   notfound,
 } from "../config/themeConfig.js";
 
+const isNumber = (seg: string): seg is string =>
+  !isNaN(Number(seg)) && seg !== "";
+
+const isLiteral =
+  <T extends string>(seg1: string) =>
+  (seg2: string): seg2 is T =>
+    seg1 === seg2;
 /**
  * For each possible nested level, we have a map of guards that will be used to validate the path.
  * The guards are functions that return true if the path segment is valid for that level.
@@ -13,16 +20,16 @@ import {
 export const pageNesting = [
   {
     $theme: isValidTheme,
-    [notfound]: (seg: string): seg is typeof notfound => seg === notfound,
+    [notfound]: isLiteral(notfound),
   },
   {
-    [credits]: (seg: string): seg is typeof credits => seg === credits,
-    [levels]: (seg: string): seg is typeof levels => seg === levels,
+    [credits]: isLiteral(credits),
+    [levels]: isLiteral(levels),
   },
   {
-    $batchNumber: (seg: string): seg is string => !isNaN(Number(seg)),
+    $batchNumber: isNumber,
   },
   {
-    $order: (seg: string): seg is string => !isNaN(Number(seg)),
+    $order: isNumber,
   },
 ] as const;

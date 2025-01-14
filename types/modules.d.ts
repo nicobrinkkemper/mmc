@@ -20,7 +20,10 @@ declare module "react-server-dom-esm/client" {
     /** Environment name */
     environmentName?: string;
   }
-
+  const registerServerReference: (
+    id: string,
+    callServer: (id: string, args: unknown[]) => Promise<unknown>
+  ) => (...args: unknown[]) => Promise<unknown>;
   /**
    * Options for encoding replies
    */
@@ -34,10 +37,10 @@ declare module "react-server-dom-esm/client" {
   /**
    * Creates a response from a fetch request
    */
-  export function createFromFetch(
+  export function createFromFetch<T>(
     promiseForResponse: Promise<Response>,
     options?: ClientResponseOptions
-  ): Promise<unknown>;
+  ): React.Usable<T>;
 
   /**
    * Creates a response from a ReadableStream

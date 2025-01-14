@@ -1,6 +1,7 @@
-import classNames from "classnames";
+import classNames from "clsx";
 import * as React from "react";
 import styles from "./App.module.css";
+import { ComponentStyles } from "./components/ComponentStyles.js";
 import { getCss } from "./css/getCss.js";
 
 type AppType = ThemeComponent<{
@@ -8,12 +9,13 @@ type AppType = ThemeComponent<{
 }>;
 
 export const App: AppType = ({ children, style, pathInfo, ...rest }) => {
+  const themeClass = getCss(pathInfo.theme, "Theme");
   return (
-    <div
-      className={classNames(styles["App"], getCss(pathInfo.theme, "Theme"))}
-      {...rest}
-    >
-      {children}
-    </div>
+    <>
+      <ComponentStyles pathInfo={pathInfo} />
+      <div className={classNames(styles["App"], themeClass)} {...rest}>
+        {children}
+      </div>
+    </>
   );
 };

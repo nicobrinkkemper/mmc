@@ -6,7 +6,7 @@ import { QuestionGetInTouch } from "../default/QuestionGetInTouch.js";
 import { QuestionWhatKindOfLevels } from "../default/QuestionWhatKindOfLevels.js";
 
 export const About9MMC: DefaultAboutContentType = ({
-  info: { caps, snake, writtenOut },
+  info: { caps, writtenOut },
   accordion: Accordion = "div",
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
@@ -14,7 +14,7 @@ export const About9MMC: DefaultAboutContentType = ({
   accordionItemButton: AccordionItemButton = "a",
 }) => {
   return (
-    <Accordion preExpanded={["what_is_" + snake]}>
+    <Accordion>
       <h1>About {caps}</h1>
       <AboutItem accordionItem={AccordionItem}>
         <AboutItemHeading

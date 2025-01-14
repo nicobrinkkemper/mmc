@@ -1,32 +1,39 @@
 import * as React from "react";
 import { absoluteUrl } from "../utils/absoluteUrl.js";
 
-export function Favicons({ favicons }: Pick<HtmlProps, "favicons">) {
+export function Favicons({
+  favicons,
+  baseUrl,
+  publicUrl,
+}: Pick<HtmlProps, "favicons" | "baseUrl" | "publicUrl">) {
   if (!favicons) return null;
   return (
     <>
       {favicons.favicon ? (
-        <link rel="icon" href={absoluteUrl(favicons.favicon)} />
+        <link
+          rel="icon"
+          href={absoluteUrl(favicons.favicon, baseUrl, publicUrl)}
+        />
       ) : null}
       {favicons.favicon_512x512 ? (
         <link
           rel="icon"
           sizes="512x512"
-          href={absoluteUrl(favicons.favicon_512x512)}
+          href={absoluteUrl(favicons.favicon_512x512, baseUrl, publicUrl)}
         />
       ) : null}
       {favicons.favicon_192x192 ? (
         <link
           rel="icon"
           sizes="192x192"
-          href={absoluteUrl(favicons.favicon_192x192)}
+          href={absoluteUrl(favicons.favicon_192x192, baseUrl, publicUrl)}
         />
       ) : null}
       {favicons.favicon_64x64 ? (
         <link
           rel="icon"
           sizes="64x64"
-          href={absoluteUrl(favicons.favicon_64x64)}
+          href={absoluteUrl(favicons.favicon_64x64, baseUrl, publicUrl)}
         />
       ) : null}
     </>

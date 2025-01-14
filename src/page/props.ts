@@ -30,7 +30,6 @@ export const props = createProps(
     clickable: true,
   },
   (props) => {
-    console.log(route);
     return props;
   }
 );

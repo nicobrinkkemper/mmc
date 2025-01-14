@@ -1,0 +1,1 @@
+export {default as _5ymm} from "./5ymm.json" with { type: "json" };

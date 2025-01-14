@@ -1,14 +1,13 @@
 import { Worker } from "node:worker_threads";
 import { resolve } from "path";
-import "../startup/env.mjs";
 //
 /**
  * Coordinates the startup of RSC and SSR servers for the application
  */
 import { spawn } from "child_process";
-import { root } from "./constants.js";
+import { root } from "./constants.mjs";
 
-function logLine(data: string, identifier: string = "") {
+function logLine(data: Buffer | string, identifier: string = "") {
   const prettyData = data
     .toString()
     .replace(/\n/g, "\n\t")
@@ -18,56 +17,90 @@ function logLine(data: string, identifier: string = "") {
 }
 
 /**
- * Starts the React Server Components (RSC) server
- * @returns Promise that resolves when the RSC server is ready
+ * Handles server process errors and logging
  */
-function startRsc(): Promise<void> {
-  return new Promise((resolve) => {
-    const rsc = spawn("node", ["./dist/server/rsc-server.mjs"], {
-      env: {
-        ...process.env,
-        NODE_OPTIONS:
-          "--conditions=react-server --experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.mjs",
-      },
-    });
+function handleServerProcess(process: any, name: string) {
+  process.stdout.on("data", (data: Buffer) => {
+    console.info(logLine(data, name));
+  });
 
-    rsc.stdout.on("data", (data) => {
-      console.info(logLine(data, "RSC"));
-      if (data.toString().includes("Listening on http://localhost:3003")) {
+  process.stderr.on("data", (data: Buffer) => {
+    console.error(logLine(data, `${name} Error`));
+  });
+
+  process.on("error", (error: Error) => {
+    console.error(`${name} process error:`, error);
+  });
+
+  process.on("exit", (code: number) => {
+    if (code !== 0) {
+      console.error(`${name} process exited with code ${code}`);
+    }
+  });
+}
+
+function startServer(
+  name: "RSC" | "SSR",
+  options: {
+    script: string;
+    port: number;
+    nodeOptions: string;
+  }
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const server = spawn(
+      process.execPath,
+      [`./dist/server/${options.script}`],
+      {
+        env: {
+          ...process.env,
+          NODE_OPTIONS: options.nodeOptions,
+        },
+      }
+    );
+
+    handleServerProcess(server, name);
+
+    // Add cleanup on process exit
+    const cleanup = () => {
+      server.kill();
+    };
+    process.on("exit", cleanup);
+    process.on("SIGTERM", cleanup);
+    process.on("SIGINT", cleanup);
+
+    server.stdout.on("data", (data) => {
+      if (
+        data
+          .toString()
+          .includes(`listening on http://localhost:${options.port}`)
+      ) {
         resolve();
       }
     });
 
-    rsc.stderr.on("data", (data) => {
-      console.error(logLine(data, "RSC-error"));
+    server.on("exit", (code) => {
+      if (code !== 0) {
+        reject(new Error(`${name} server exited with code ${code}`));
+      }
     });
   });
 }
 
-/**
- * Starts the Server-Side Rendering (SSR) server
- * @returns Promise that resolves when the SSR server is ready
- */
+function startRsc(): Promise<void> {
+  return startServer("RSC", {
+    script: "rsc-server.js",
+    port: 3003,
+    nodeOptions:
+      "--conditions react-server --experimental-json-modules --trace-warnings --enable-source-maps",
+  });
+}
+
 function startSsr(): Promise<void> {
-  return new Promise((resolve) => {
-    const ssr = spawn("node", ["./dist/server/ssr-server.mjs"], {
-      env: {
-        ...process.env,
-        NODE_OPTIONS:
-          "--experimental-json-modules --enable-source-maps --loader ./dist/server/moduleHook.mjs",
-      },
-    });
-
-    ssr.stdout.on("data", (data) => {
-      console.info(logLine(data));
-      if (data.toString().includes("Listening on http://localhost:3001")) {
-        resolve();
-      }
-    });
-
-    ssr.stderr.on("data", (data) => {
-      console.error(logLine(data, "SSR-error"));
-    });
+  return startServer("SSR", {
+    script: "ssr-server.js",
+    port: 3001,
+    nodeOptions: "--experimental-json-modules --enable-source-maps",
   });
 }
 
@@ -75,34 +108,51 @@ function startSsr(): Promise<void> {
  * Main function to start both servers in the correct order
  */
 async function main() {
-  console.log("Starting RSC server...");
-  await startRsc();
+  try {
+    console.log("Starting RSC server...");
+    await startRsc();
 
-  console.log("Starting SSR server...");
-  await startSsr();
+    console.log("Starting SSR server...");
+    await startSsr();
 
-  console.log("🚀 All servers started successfully!");
-  console.log("Application is ready at http://localhost:3001");
-  if (process.argv.includes("crawl")) {
-    const worker = new Worker(resolve(root, "dist/server/export.mjs"));
+    console.log("🚀 All servers started successfully!");
+    console.log("Application is ready at http://localhost:3001");
 
-    worker.on("message", (message) => {
-      if (message === "done") {
-        console.log("Pages exported successfully! 🚀");
+    if (process.argv.includes("crawl")) {
+      const worker = new Worker(resolve(root, "dist/server/export.mjs"));
+
+      worker.on("message", (message) => {
+        if (message === "done") {
+          console.log("Pages exported successfully! 🚀");
+          worker.terminate();
+          process.exit(0);
+        }
+      });
+
+      worker.on("error", (error) => {
+        console.error("Worker error:", error);
         worker.terminate();
-        process.exit(0);
-      }
-    });
-
-    worker.on("error", (error) => {
-      console.error("Worker error:", error);
-      worker.terminate();
-      process.exit(1);
-    });
+        process.exit(1);
+      });
+    }
+  } catch (error) {
+    console.error("Failed to start servers:", error);
+    process.exit(1);
   }
 }
 
-main().catch((error) => {
+// Add proper error handling for uncaught exceptions
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception:", error);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (error) => {
+  console.error("Unhandled Rejection:", error);
+  process.exit(1);
+});
+
+await main().catch((error) => {
   console.error("Failed to start servers:", error);
   process.exit(1);
 });

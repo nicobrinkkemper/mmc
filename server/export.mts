@@ -7,6 +7,7 @@ import {
   notfound,
   themes,
 } from "../src/config/themeConfig.js";
+// @ts-ignore
 import * as themeData from "../src/data/generated/themes.js";
 
 const routes = [
@@ -20,12 +21,12 @@ const routes = [
       { path: `/${theme}/${credits}` },
       { path: `/${theme}/${levels}` },
       // Level batches
-      ...data.batches.map((batch) => ({
+      ...data.batches.map((batch: any) => ({
         path: `/${theme}/${levels}/${batch.batchNumber}`,
       })),
       // Individual levels
-      ...data.batches.flatMap((batch) =>
-        batch.levels.map((level) => ({
+      ...data.batches.flatMap((batch: any) =>
+        batch.levels.map((level: any) => ({
           path: `/${theme}/${levels}/${level.batchNumber}/${level.order}`,
         }))
       ),

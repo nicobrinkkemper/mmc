@@ -1,6 +1,6 @@
-import classNames from "classnames";
+import classNames from "clsx";
 import * as React from "react";
-import { default as classes } from "./About.module.css";
+import styles from "./About.module.css";
 import { CloseSvg } from "./CloseSvg.js";
 
 type AboutType = ThemeComponent<
@@ -22,20 +22,20 @@ export const About: AboutType = ({
 }) => {
   return (
     <div
-      className={classNames(classes["outer"], visible && classes["visible"])}
+      className={classNames(styles["outer"], visible && styles["visible"])}
       id={"!/about"}
     >
-      <div className={classes["main"]}>
-        <div className={classes["inner"]}>
-          <div className={classes["header"]}>
+      <div className={styles["main"]}>
+        <div className={styles["inner"]}>
+          <div className={styles["header"]}>
             <Clickable
-              className={classNames(classes["close"], closeProps?.className)}
+              className={classNames(styles["close"], closeProps?.className)}
               {...closeProps}
             >
               <CloseSvg />
             </Clickable>
           </div>
-          <div className={classes["body"]}>
+          <div className={styles["body"]}>
             <div>{children}</div>
           </div>
         </div>

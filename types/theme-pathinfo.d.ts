@@ -20,15 +20,15 @@ declare global {
    */
   type ThemePathInfo<
     R extends string = string,
-    T extends `/${string}` = `/${string}`
+    T extends ValidPath = ValidPath
   > = {
     path: string;
     segments: string[];
     to: T;
-    parsed: URL | undefined;
     route: R;
     theme: Theme;
     hash: string;
+    search: string;
     params: {
       batchNumber: string;
       order: string;
@@ -84,7 +84,7 @@ declare global {
    * A helper map to go from `/:theme` (route) to `/${Theme}` (to) type
    */
   type PathMap = {
-    [k in keyof PageMap]: TypeReplace<k, Route>;
+    [k in keyof PageMap]: TypeReplace<k, Required<Route>>;
   };
 
   /**

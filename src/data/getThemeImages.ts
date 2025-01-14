@@ -1,10 +1,8 @@
-import * as themes from "./generated/images.js" with { type: "json" };
+import { isValidTheme, mainTheme } from "../config/themeConfig.js";
 
-export function getThemeImages<T extends Theme = Theme>(
-  theme: T | string
-) {
-  if (!themes || typeof themes !== "object" || !(`_${theme}` in themes)) {
-    throw new Error(`Invalid theme: ${theme}`);
+export function getThemeImages<T extends Theme = Theme>(theme: T | string) {
+  if (isValidTheme(theme)) {
+    theme = mainTheme;
   }
-  return themes[`_${theme}` as keyof typeof themes]
+  return import(`./generated/${theme}.images.json`);
 }

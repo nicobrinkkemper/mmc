@@ -1,17 +1,16 @@
 import * as React from "react";
 import { Button } from "../../components/Button.js";
 import { Card } from "../../components/Card.js";
+import { ErrorClientMessage } from "./ErrorClientMessage.js";
 import styles from "./NotFound.module.css";
 
 type NotFoundType = ThemeComponent<{
-  pathInfo: ["toHome", "toLevels"];
+  pathInfo: ["toHome", "toLevels", "search"];
   clickable: true;
 }>;
 
-export const NotFound: NotFoundType = ({
-  pathInfo: { toHome, toLevels },
-  clickable,
-}) => {
+export const NotFound: NotFoundType = ({ pathInfo, clickable }) => {
+  const { toHome, toLevels, search } = pathInfo;
   return (
     <>
       <Card
@@ -21,7 +20,8 @@ export const NotFound: NotFoundType = ({
         subHeading={undefined}
         images={{}}
       >
-        <p>This page was not found, sorry! Jank can happen sometimes.</p>
+        <p>Sorry! Jank can happen sometimes.</p>
+        <ErrorClientMessage search={search} />
       </Card>
       <div className={styles["Buttons"]}>
         <Button

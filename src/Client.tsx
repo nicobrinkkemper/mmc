@@ -1,137 +1,88 @@
 "use client";
 
 import * as React from "react";
-import { useEffect } from "react";
-import { createPortal } from "react-dom";
-import { getThemePathInfo } from "./data/getThemePathInfo.js";
-import { useEventListener } from "./hooks/useEventListener.js";
-import { Favicons } from "./layout/Favicons.js";
-import { RenderRoute } from "./router/RenderRoute.js";
 type ClientType = ThemeComponent<{
   pathInfo: true;
 }>;
 
-const ClientLayout = ({
-  children,
-  favicons,
-  title,
-  pathInfo,
-}: React.PropsWithChildren<{
-  pathInfo: ThemePathInfo;
-  favicons: {
-    [key in
-      | "favicon"
-      | "favicon_512x512"
-      | "favicon_192x192"
-      | "favicon_64x64"]: string;
-  };
-  title: string;
-}>) => {
-  console.log("Client", { pathInfo });
-  const nodes = React.useRef<NodeListOf<Element> | null>(
-    document.querySelectorAll("link[rel='icon']")
-  );
-  useEffect(() => {
-    // remove title and favicons from the HEAD so we can portal them in
-    if (title && title !== document.title) document.title = title;
-    if (Object.keys(favicons).length > 0) {
-      nodes.current?.forEach((favicon) => {
-        if (favicon instanceof HTMLLinkElement && favicons) {
-          const size = favicon.sizes.value;
-          const matchingFavicon = !size
-            ? favicons["favicon"]
-            : `favicon_${size}` in favicons
-            ? favicons[`favicon_${size}` as keyof typeof favicons]
-            : null;
-          if (matchingFavicon) {
-            favicon.href = matchingFavicon;
-          }
-        }
-      });
-    }
-  }, [favicons, title]);
+// type CallbackType = (
+//   e: React.MouseEvent<HTMLAnchorElement>,
+//   anchorProps: { href: string; target?: string }
+// ) => void;
+
+// const resolvePath = (base: string, path: string) => {
+//   if (path.startsWith("/")) return path;
+//   const parts = base.split("/").filter(Boolean);
+//   const pathParts = path.split("/").filter(Boolean);
+//   return "/" + [...parts.slice(0, -1), ...pathParts].join("/");
+// };
+
+// type Props = {
+//   clickable: (
+//     props: React.PropsWithChildren<{ href: string }>
+//   ) => React.ReactElement;
+// };
+
+// type ClickableProps = {
+//   clickable?: string;
+//   href: string;
+//   children?: React.ReactNode;
+// };
+
+export const Client: ClientType = ({ pathInfo: initialPathInfo, children }) => {
+  const [pathInfo, setPathInfo] =
+    React.useState<ThemePathInfo>(initialPathInfo);
+
+  // const clickHandler: CallbackType = React.useCallback(
+  //   (e, { href, target }) => {
+  //     e.preventDefault();
+  //     if (target?.toLowerCase() === "_blank") {
+  //       window.open(href, "_blank");
+  //       return;
+  //     }
+  //     if (!href) return;
+  //     const newHref = href.startsWith("#")
+  //       ? pathInfo?.to + href
+  //       : resolvePath(pathInfo?.to ?? "/", href);
+  //     const newState = getThemePathInfo(newHref);
+  //     window.history.pushState(newState, "", newHref);
+
+  //     window.dispatchEvent(
+  //       new PopStateEvent("popstate", {
+  //         state: newState,
+  //       })
+  //     );
+  //   },
+  //   [pathInfo]
+  // );
+
+  // const props = React.useMemo(
+  //   () =>
+  //     ({
+  //       clickable: ({
+  //         children,
+  //         href,
+  //         ...props
+  //       }: React.PropsWithChildren<{ href: string }>) => {
+  //         return (
+  //           <a
+  //             {...props}
+  //             href={href ? href : ""}
+  //             onClick={(e) => {
+  //               clickHandler(e, { href: href, ...props });
+  //             }}
+  //           >
+  //             {children}
+  //           </a>
+  //         );
+  //       },
+  //     } as Props),
+  //   [clickHandler]
+  // );
+
   return (
-    <React.Fragment key={title}>
-      {createPortal(<Favicons favicons={favicons} />, document.head)}
+    <React.Fragment key={pathInfo.to + pathInfo.hash}>
       {children}
     </React.Fragment>
-  );
-};
-
-type CallbackType = (
-  e: React.MouseEvent<HTMLAnchorElement>,
-  anchorProps: { href: string; target?: string }
-) => void;
-
-const resolvePath = (base: string, path: string) => {
-  if (path.startsWith("/")) return path;
-  const parts = base.split("/").filter(Boolean);
-  const pathParts = path.split("/").filter(Boolean);
-  return "/" + [...parts.slice(0, -1), ...pathParts].join("/");
-};
-
-export const Client: ClientType = ({ pathInfo: initialPathInfo }) => {
-  const [pathInfo = initialPathInfo, setPathInfo] =
-    React.useState<ThemePathInfo>();
-
-  useEventListener("popstate", (e) => {
-    if (e instanceof PopStateEvent) {
-      // if we already have state, we probably don't need to update it
-      if (Object.keys(e.state ?? {}).length) {
-        setPathInfo(e.state);
-      } else {
-        setPathInfo(getThemePathInfo(window.location.href));
-      }
-    }
-  });
-
-  const clickHandler: CallbackType = React.useCallback(
-    (e, { href, target }) => {
-      e.preventDefault();
-      if (target?.toLowerCase() === "_blank") {
-        window.open(href, "_blank");
-        return;
-      }
-      if (!href) return;
-      const newHref = href.startsWith("#")
-        ? pathInfo?.to + href
-        : resolvePath(pathInfo?.to ?? "/", href);
-      const newState = getThemePathInfo(newHref);
-      window.history.pushState(newState, "", newHref);
-
-      window.dispatchEvent(
-        new PopStateEvent("popstate", {
-          state: newState,
-        })
-      );
-    },
-    [pathInfo]
-  );
-
-  const props = React.useMemo(
-    () => ({
-      clickable: ({
-        children,
-        href,
-        ...props
-      }: React.PropsWithChildren<{ href: string }>) => {
-        return (
-          <a
-            {...props}
-            href={href ? href : ""}
-            onClick={(e) => {
-              clickHandler(e, { href: href, ...props });
-            }}
-          >
-            {children}
-          </a>
-        );
-      },
-    }),
-    [clickHandler]
-  );
-
-  return (
-    <RenderRoute pathInfo={pathInfo} props={props} layout={ClientLayout} />
   );
 };

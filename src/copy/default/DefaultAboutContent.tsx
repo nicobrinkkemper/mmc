@@ -5,7 +5,7 @@ import { QuestionWhatIsThis } from "./QuestionWhatIsThis.js";
 import { QuestionWhatKindOfLevels } from "./QuestionWhatKindOfLevels.js";
 
 export const DefaultAboutContent: DefaultAboutContentType = ({
-  info: { caps, snake, writtenOut },
+  info: { caps, writtenOut },
   accordion: Accordion = "div",
   accordionItem: AccordionItem = "div",
   accordionItemHeading: AccordionItemHeading = "div",
@@ -13,10 +13,7 @@ export const DefaultAboutContent: DefaultAboutContentType = ({
   accordionItemButton: AccordionItemButton = "a",
 }) => {
   return (
-    <Accordion
-      className={styles["accordion"]}
-      preExpanded={["what_is_" + snake]}
-    >
+    <Accordion className={styles["accordion"]}>
       <h1>About {caps}</h1>
       <QuestionWhatIsThis
         info={{

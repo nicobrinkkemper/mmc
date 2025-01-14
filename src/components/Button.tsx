@@ -1,5 +1,5 @@
-import classNames from "classnames";
-import * as React from "react";
+import classNames from "clsx";
+import React from "react";
 import styles from "./Button.module.css";
 import { ButtonIcons } from "./ButtonIcons.js";
 
@@ -33,7 +33,7 @@ export const Button = ({
    * Handle special cases for button content
    * @remarks This ensures consistent rendering between server and client
    */
-  const buttonChildren = React.isValidElement(children) ? (
+  const buttonChildren = children ? (
     children
   ) : (
     <span className={styles["ButtonLabel"]}>{children}</span>
@@ -85,12 +85,19 @@ export const Button = ({
     : {};
 
   return (
-    <Clickable href={normalizedHref} id={id} className={classN} {...blankProps}>
-      <div className={styles["ButtonInner"]}>
-        {iconPosition === "left" && Icon}
-        {buttonChildren}
-        {iconPosition !== "left" && Icon}
-      </div>
-    </Clickable>
+    <>
+      <Clickable
+        href={normalizedHref}
+        id={id}
+        className={classN}
+        {...blankProps}
+      >
+        <div className={styles["ButtonInner"]}>
+          {iconPosition === "left" && Icon}
+          {buttonChildren}
+          {iconPosition !== "left" && Icon}
+        </div>
+      </Clickable>
+    </>
   );
 };

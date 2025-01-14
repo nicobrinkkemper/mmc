@@ -24,17 +24,19 @@ export async function toPlaceholderBase64(
         return undefined;
       });
     if (!buffer) {
-      throw new Error(
+      console.warn(
         "Could not create placeholder buffer for " + job.output.file
       );
+      return;
     }
     const string = buffer.toString("base64");
     if (!string)
-      throw new Error(
+      console.warn(
         "Could not create placeholder base64 for " + job.output.file
       );
     return string;
   } catch (e) {
     console.trace(e);
+    return;
   }
 }

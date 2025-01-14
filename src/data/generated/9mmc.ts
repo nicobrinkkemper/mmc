@@ -1,0 +1,1 @@
+export {default as _9mmc} from "./9mmc.json" with { type: "json" };

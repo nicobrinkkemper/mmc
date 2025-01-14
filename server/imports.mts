@@ -1,49 +1,43 @@
-import path from "node:path";
+import packageJson from "../package.json" with { type: "json" };
+
+const cleanVersion = (version: string) =>
+  version?.replace(/[\^~]/, "") ?? "latest";
+
+// Get the exact React beta version
+const reactVersion = cleanVersion(packageJson.devDependencies.react);
+const reactDomVersion = cleanVersion(packageJson.devDependencies["react-dom"]);
+const clsxVersion = cleanVersion(packageJson.dependencies.clsx);
+
+console.log("Using React version:", reactVersion);
+console.log("Using ReactDOM version:", reactDomVersion);
 
 export const EXTENSIONS = [".js", ".mjs", ".cjs", ".json"];
 
-// Get project root once
-export const PROJECT_ROOT = process.cwd();
+// Determine if we're in development mode
+const isDev = globalThis.process?.env?.["NODE_ENV"] !== "production";
+console.log("Environment:", isDev ? "development" : "production");
 
-// ESM imports mapping with absolute paths
-export const ESM_IMPORTS: Record<string, string> = {
-  react: path.resolve(PROJECT_ROOT, "node_modules/react/index.js"),
-  "react-dom": path.resolve(PROJECT_ROOT, "node_modules/react-dom/index.js"),
-  "react-dom/server": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/react-dom/server.browser.js"
-  ),
-  "react-dom/client": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/react-dom/client.js"
-  ),
-  "react-server-dom-esm/server": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/react-server-dom-esm/server.node.js"
-  ),
-  "react-server-dom-esm/client": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/react-server-dom-esm/client.node.js"
-  ),
-  "react-server-dom-esm/static": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/react-server-dom-esm/static.node.js"
-  ),
-  classnames: path.resolve(PROJECT_ROOT, "node_modules/classnames/index.js"),
-  "lodash-es": path.resolve(PROJECT_ROOT, "node_modules/lodash-es/lodash.js"),
-  "@testing-library/react": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/@testing-library/react/dist/index.js"
-  ),
-  cookie: path.resolve(PROJECT_ROOT, "node_modules/cookie/index.js"),
-  "cookie-parser": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/cookie-parser/index.js"
-  ),
-  "set-cookie-parser": path.resolve(
-    PROJECT_ROOT,
-    "node_modules/set-cookie-parser/lib/set-cookie.js"
-  ),
-  express: path.resolve(PROJECT_ROOT, "node_modules/express/index.js"),
-
+// ESM imports mapping with environment-aware paths
+export const ESM_IMPORTS = {
+  react: `https://esm.sh/stable/react@${reactVersion}/es2022/${
+    isDev ? "react.development" : "react"
+  }.mjs`,
+  "react/jsx-runtime": `https://esm.sh/stable/react@${reactVersion}/es2022/${
+    isDev ? "jsx-runtime.development" : "jsx-runtime"
+  }.mjs`,
+  "react-dom": `https://esm.sh/stable/react-dom@${reactDomVersion}/es2022/${
+    isDev ? "react-dom.development" : "react-dom"
+  }.mjs`,
+  "react-dom/client": `https://esm.sh/stable/react-dom@${reactDomVersion}/es2022/${
+    isDev ? "client.development" : "client"
+  }.mjs`,
+  clsx: `https://esm.sh/stable/clsx@${clsxVersion}/es2022/clsx.mjs`,
+  "react-server-dom-esm/client": isDev
+    ? "./node_modules/react-server-dom-esm/esm/react-server-dom-esm-client.browser.development.js"
+    : "./node_modules/react-server-dom-esm/esm/react-server-dom-esm-client.browser.production.js",
+  "@jsxImportSource": `https://esm.sh/stable/react@${reactVersion}/es2022/${
+    isDev ? "development/" : ""
+  }react.mjs`,
 };
+
+console.log("ESM_IMPORTS configured:", ESM_IMPORTS);

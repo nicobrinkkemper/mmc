@@ -18,30 +18,29 @@ export function Html({
   tags,
   twitter,
   image,
+  baseUrl,
+  publicUrl,
 }: React.PropsWithChildren<Required<HtmlProps>>) {
   return (
-    <html lang="en">
-      <head>
-        <Head title={title}>
-          <MetaTags
-            title={title}
-            description={description}
-            contentType={contentType}
-            url={url}
-            published={published}
-            updated={updated}
-            category={category}
-            tags={tags}
-            twitter={twitter}
-            image={image}
-          />
-          <Favicons favicons={favicons} />
-          <Assets assets={assets} />
-        </Head>
-      </head>
-      <body>
-        <div id="root">{children}</div>
-      </body>
-    </html>
+    <>
+      <Head title={title} />
+      <MetaTags
+        title={title}
+        description={description}
+        contentType={contentType}
+        url={url}
+        published={published}
+        updated={updated}
+        category={category}
+        tags={tags}
+        twitter={twitter}
+        image={image}
+        baseUrl={baseUrl}
+        publicUrl={publicUrl}
+      />
+      <Favicons favicons={favicons} baseUrl={baseUrl} publicUrl={publicUrl} />
+      <Assets assets={assets} />
+      {children}
+    </>
   );
 }

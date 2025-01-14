@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classNames from "clsx";
 import * as React from "react";
 import { PublicImage } from "../components/PublicImage.js";
 import styles from "./Logo.module.css";
@@ -17,7 +17,7 @@ type LogoType = ThemeComponent<{
 export const Logo: LogoType = ({
   small,
   className,
-  images: { logo },
+  images,
   pathInfo,
   adjacent,
   clickable: Clickable,
@@ -29,15 +29,18 @@ export const Logo: LogoType = ({
         className={classNames(
           className,
           styles["Logo"],
-          styles[small ? "small" : "big"]
+          small ? styles["small"] : styles["big"]
         )}
       >
-        <PublicImage {...logo} />
+        <PublicImage {...images.logo} />
       </Clickable>
 
       {adjacent?.prev.exists === true ? (
         <Clickable
-          className={classNames(styles["PrevTheme"], styles["small"])}
+          className={classNames(
+            styles["PrevTheme"],
+            small ? styles["small"] : styles["big"]
+          )}
           href={adjacent.prev.value.pathInfo.to}
         >
           <PublicImage {...adjacent.prev.value.images.logo} />
@@ -45,7 +48,10 @@ export const Logo: LogoType = ({
       ) : null}
       {adjacent?.next.exists === true ? (
         <Clickable
-          className={classNames(styles["NextTheme"], styles["small"])}
+          className={classNames(
+            styles["NextTheme"],
+            small ? styles["small"] : styles["big"]
+          )}
           href={adjacent.next.value.pathInfo.to}
         >
           <PublicImage {...adjacent.next.value.images.logo} />

@@ -1,0 +1,1 @@
+export {default as _6ymm} from "./6ymm.json" with { type: "json" };

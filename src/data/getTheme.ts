@@ -1,8 +1,10 @@
-import * as themes from "./generated/themes.js";
+import { isValidTheme, mainTheme } from "../config/themeConfig.js";
 
-export function getTheme<T extends Theme = Theme>(theme: T | string) {
-  if (!themes || typeof themes !== "object" || !(`_${theme}` in themes)) {
-    throw new Error(`Invalid theme: ${theme}`);
+export async function getTheme<T extends Theme = Theme>(theme: T | string) {
+  if (!isValidTheme(theme)) {
+    theme = mainTheme;
   }
-  return themes[`_${theme}` as keyof typeof themes];
+  const themeData = await import(`./generated/${theme}.ts`);
+
+  return themeData[`_${theme}`];
 }

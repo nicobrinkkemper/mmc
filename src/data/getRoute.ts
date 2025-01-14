@@ -22,20 +22,22 @@ const routeReducer = (acc: Partial<Route>, seg: string): Partial<Route> => {
 };
 
 export const getRoute = <P extends string>(anyPath: P) => {
-  const [withoutHash, hash = ""] = anyPath.split("#", 2);
+  const [withoutHash, hash] = anyPath.split("#", 2);
+  const [withoutSearch, search] = withoutHash.split("?", 2);
   const {
     route = "/",
     to = "/",
     segments = [],
     ...variables
-  } = withoutHash
+  } = withoutSearch
     .split("/")
     .reduce(routeReducer, {} as Parameters<typeof routeReducer>[0]);
   return {
     route,
     to,
     segments,
-    hash,
+    hash: hash ?? "",
+    search: search ?? "",
     ...variables,
   };
 };

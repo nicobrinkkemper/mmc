@@ -1,16 +1,20 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { build } from "./constants.js";
+import { fileURLToPath } from "node:url";
 
+const dirname = fileURLToPath(new URL(".", import.meta.url));
+const buildDir = resolve(dirname, "..", "build");
 // Read and parse manifest.json
-const manifestPath = resolve(build, "manifest.json");
+const manifestPath = resolve(buildDir, "manifest.json");
 let manifest: Record<string, any>;
 
 try {
   manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+  console.log("Loaded manifest from:", manifestPath);
 } catch (err) {
-  console.warn("No manifest found, using empty object");
-  manifest = {};
+  console.error("Failed to load manifest:", err);
+  console.error("Tried path:", manifestPath);
+  throw err;
 }
 
 /**
@@ -60,14 +64,17 @@ const entryPoint = Object.keys(manifest).find(
 );
 
 if (!entryPoint) {
-  throw new Error("No entry point found in manifest");
+  console.warn("No entry point found in manifest");
 }
 
 export const htmlAssets = {
   css: entryPoint
-    ? collectCssFromImports(entryPoint).map((file) => `/${file}`)
+    ? collectCssFromImports(entryPoint).map((file) => {
+        console.log("file", file);
+        return `/${file}`;
+      })
     : [],
-  main: `/${manifest[entryPoint].file}`,
+  main: entryPoint ? `/${manifest[entryPoint].file}` : undefined,
   imports: entryPoint
     ? collectImports(entryPoint).map((imp) => `/${manifest[imp].file}`)
     : [],

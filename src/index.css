@@ -53,6 +53,54 @@ p {
 code {
   font-family: var(--font-monospace);
 }
+/* Main app */
+.App {
+  display: grid;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 100vh;
+  max-width: 100svw;
+  min-height: var(--app-min-height);
+  background: var(--app-background);
+  color: var(--text-color);
+  font: var(--app-font);
+
+  --side-space: 1px;
+  --full: minmax(var(--side-space), 1fr);
+  --content: min(var(--max-content-width), 100% - var(--side-space) * 2);
+
+  grid-template-rows:
+    [header-start] max-content [header-end body-start] minmax(min-content, auto) [body-end footer-start] 3rem [footer-end];
+  grid-template-columns:
+    [full-start] var(--full) [content-start] var(--content) [content-end] var(--full) [full-end];
+  gap: 2rem 0;
+  padding-top: 1rem
+}
+
+@media (min-width: 320px) {
+  .App {
+    --side-space: 6px;
+  }
+}
+
+@media (min-width: 520px) {
+  .App {
+    --side-space: clamp(1rem, 6vw, 3rem);
+  }
+}
+
+@media (min-width: 720px) {
+  .App {
+    --side-space: clamp(1rem, 6vw, 3rem);
+  }
+}
+
+.App>article {
+  grid-area: body / content;
+  display: flex;
+  flex-flow: column;
+  gap: var(--gap, .5rem);
+}
 
 
 /* TYPOGRAPHY */

@@ -6,7 +6,7 @@ import { type RouteType } from "./props.js";
 
 export const Page: ThemePageComponent<RouteType> = ({
   images,
-  pathInfo: { theme, toHome, toCredits, toLevels },
+  pathInfo: { theme, toHome, toCredits, toLevels, search },
   clickable,
 }) => {
   return (
@@ -21,7 +21,10 @@ export const Page: ThemePageComponent<RouteType> = ({
         clickable={clickable}
         adjacent={undefined as never}
       >
-        <NotFound pathInfo={{ toHome, toLevels }} clickable={clickable} />
+        <NotFound
+          pathInfo={{ toHome, toLevels, search }}
+          clickable={clickable}
+        />
       </Layout>
     </App>
   );

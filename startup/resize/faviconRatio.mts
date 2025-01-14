@@ -17,14 +17,17 @@ export function aspectRatio({
   if (!maxWidth && maxHeight)
     maxWidth = (originalWidth / originalHeight) * maxHeight; // = new width;
   if (!maxWidth || isNaN(maxWidth))
-    throw new Error(
+    console.warn(
       `Could not create aspect ratio, no maxWidth. ${originalWidth}x${originalHeight} ${maxWidth}x${maxHeight}`
     );
   if (!maxHeight || isNaN(maxHeight))
-    throw new Error(
+    console.warn(
       `Could not create aspect ratio, no maxHeight. ${originalWidth}x${originalHeight} ${maxWidth}x${maxHeight}`
     );
-  const ratio = Math.min(maxWidth / originalWidth, maxHeight / originalHeight);
+  const ratio = Math.min(
+    (maxWidth ?? 1) / originalWidth,
+    (maxHeight ?? 1) / originalHeight
+  );
   return {
     width: Math.round(Math.round(originalWidth * ratio * 100) / 100),
     height: Math.round(Math.round(originalHeight * ratio * 100) / 100),

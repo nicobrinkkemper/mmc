@@ -4,16 +4,18 @@ import { getContent } from "./getContent.js";
 
 const ContentAt: ContentAtFn = ({ at, pathInfo, ...props }) => {
   if (!pathInfo) {
-    throw new Error("PathInfo is required for a Content component");
+    console.warn("PathInfo is required for a Content component");
+    return null;
   }
   if (!pathInfo.theme) {
-    throw new Error(
+    console.warn(
       `No theme found in pathInfo, you need to request it as a type via \`pathInfo:['theme']\`. available: ${JSON.stringify(
         pathInfo,
         null,
         2
       )}`
     );
+    return null;
   }
   const Component: any = getContent(pathInfo.theme, at);
   return <Component pathInfo={pathInfo} {...props} />;

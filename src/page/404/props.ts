@@ -8,7 +8,7 @@ export type RouteType = typeof route;
 export const props = createProps(
   route,
   {
-    images: true,
+    images: ["logo"],
     pathInfo: true,
     info: true,
     clickable: true,

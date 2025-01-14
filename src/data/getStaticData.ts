@@ -20,20 +20,20 @@ const mapAdjacent = (
     },
     images: {
       logo:
-        "logo_simple_small" in images
+        images && "logo_simple_small" in images
           ? images.logo_simple_small
-          : images.logo_small,
+          : images?.logo_small,
     },
   },
 });
 
-export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
+export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
   const theme = pathInfo.theme;
 
   if (!options) {
-    return getTheme(theme);
+    return await getTheme(theme);
   }
-  const levelData = pickRequired(getTheme(theme), ["batches", "images"]);
+  const levelData = pickRequired(await getTheme(theme), ["batches", "images"]);
   const { images, batches } = levelData;
   const optionEntries = Object.entries(options) as [
     Extract<keyof typeof options, string>,
@@ -45,7 +45,7 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
   const batchIndex =
     pathInfo.params.batchNumber !== ""
       ? levelData.batches.findIndex(
-          (batch) => batch.batchNumber === pathInfo.params.batchNumber
+          (batch: any) => batch.batchNumber === pathInfo.params.batchNumber
         )
       : -1;
 
@@ -54,7 +54,7 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
   const levelIndex =
     pathInfo.params.order !== ""
       ? batch!.levels.findIndex(
-          (level) => level.order === pathInfo.params.order
+          (level: any) => level.order === pathInfo.params.order
         )
       : -1;
 
@@ -93,9 +93,10 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
               }
               default: {
                 if (!isKeyOf(nestedOption, batch!)) {
-                  throw new Error(
+                  console.warn(
                     `Unhandled batch option ${option}.${nestedOption}`
                   );
+                  result[option][nestedOption] = value;
                 }
               }
             }
@@ -122,9 +123,10 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
               }
               default: {
                 if (!isKeyOf(nestedOption, level!)) {
-                  throw new Error(
+                  console.warn(
                     `Unhandled level option ${option}.${nestedOption}`
                   );
+                  result[option][nestedOption] = nestedOption;
                 }
               }
             }
@@ -137,14 +139,14 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
             next:
               adjacent.next.exists === true
                 ? mapAdjacent(
-                    getTheme(adjacent.next.value),
+                    await getTheme(adjacent.next.value),
                     `/${adjacent.next.value}${pathInfo.path}`
                   )
                 : adjacent.next,
             prev:
               adjacent.prev.exists === true
                 ? mapAdjacent(
-                    getTheme(adjacent.prev.value),
+                    await getTheme(adjacent.prev.value),
                     `/${adjacent.prev.value}${pathInfo.path}`
                   )
                 : adjacent.prev,
@@ -162,9 +164,10 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
             switch (nestedOption) {
               default: {
                 if (!isKeyOf(nestedOption, images)) {
-                  throw new Error(
+                  console.warn(
                     `Unhandled images option ${option}.${nestedOption}`
                   );
+                  result[option][nestedOption] = nestedOption;
                 }
               }
             }
@@ -172,10 +175,22 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
           break;
         }
         case "clickable":
-          result.clickable = "a";
+          if (!result.clickable) {
+            try {
+              result.clickable = (
+                await import("../components/ClientClickable.jsx")
+              ).ClientClickable;
+            } catch (error) {
+              console.error("Error loading ClientClickable:", error);
+            }
+          }
           break;
         case "small": {
           result.small = true;
+          break;
+        }
+        case "pathInfo": {
+          result.pathInfo = pathInfo;
           break;
         }
         case "info": {
@@ -193,15 +208,20 @@ export const getStaticData: GetStaticDataFn = (pathInfo, options) => {
           break;
         }
         default:
-          throw new Error(
+          console.warn(
             `Option ${option} is required but has no case for ${
               pathInfo.to
             }. Available options: ${Object.keys(result).join(", ")}`
           );
+          result[option] = value;
       }
     }
   } catch (error) {
-    console.error({ options, keys: Object.keys(result) });
+    console.trace(error);
+    console.error("getStaticData error", {
+      options,
+      keys: Object.keys(result),
+    });
     throw error;
   }
   // we made it passed all the throws, must be ok

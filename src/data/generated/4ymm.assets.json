@@ -1,0 +1,18 @@
+{
+    "bg": {
+        "1": [
+            "src/assets/4ymm/bg-1x.webp"
+        ],
+        "2": [
+            "src/assets/4ymm/bg-2x.webp"
+        ],
+        "3": [
+            "src/assets/4ymm/bg-3x.webp"
+        ],
+        "srcSet": "src/assets/4ymm/bg-1x.webp 172w, src/assets/4ymm/bg-2x.webp 258w, src/assets/4ymm/bg-3x.webp 516w",
+        "width": 172,
+        "height": 165,
+        "aspectRatio": "172:165",
+        "src": "src/assets/4ymm/bg-1x.webp"
+    }
+}

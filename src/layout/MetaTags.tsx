@@ -1,5 +1,4 @@
-import * as React from "react";
-import { BASE_URL } from "../config/constants.js";
+import React from "react";
 
 export const MetaTags = ({
   title,
@@ -12,6 +11,8 @@ export const MetaTags = ({
   tags,
   twitter,
   image,
+  baseUrl,
+  publicUrl,
 }: Pick<
   Required<HtmlProps>,
   | "title"
@@ -24,20 +25,23 @@ export const MetaTags = ({
   | "tags"
   | "twitter"
   | "image"
+  | "baseUrl"
+  | "publicUrl"
 >) => {
+  const baseUrlWithPublicUrl = `${baseUrl}${publicUrl}`;
   const metaTags = [
-    { itemprop: "name", content: title },
-    { itemprop: "description", content: description },
+    { itemProp: "name", content: title },
+    { itemProp: "description", content: description },
     { name: "viewport", content: `width=device-width,initial-scale=1` },
     { name: "description", content: description },
-    { name: "twitter:title", content: `${title} | ${BASE_URL}` },
+    { name: "twitter:title", content: `${title} | ${baseUrlWithPublicUrl}` },
     { name: "twitter:description", content: description },
     { name: "twitter:creator", content: "@bbmariomaker2" },
-    { name: "og:title", content: `${title} | ${BASE_URL}` },
+    { name: "og:title", content: `${title} | ${baseUrlWithPublicUrl}` },
     { name: "og:type", content: contentType },
     { name: "og:url", content: url },
     { name: "og:description", content: description },
-    { name: "og:site_name", content: `${BASE_URL}` },
+    { name: "og:site_name", content: `${baseUrlWithPublicUrl}` },
     { name: "og:locale", content: "en_EN" },
   ];
 
@@ -48,7 +52,7 @@ export const MetaTags = ({
   if (category) metaTags.push({ name: "article:section", content: category });
   if (tags) metaTags.push({ name: "article:tag", content: tags.join(",") });
   if (image) {
-    metaTags.push({ itemprop: "image", content: image });
+    metaTags.push({ itemProp: "image", content: image });
     metaTags.push({ name: "twitter:image", content: image });
     metaTags.push({ name: "og:image", content: image });
     metaTags.push({ name: "twitter:card", content: twitter });
@@ -59,8 +63,8 @@ export const MetaTags = ({
 
   return (
     <>
-      {metaTags.map((tag) => (
-        <meta key={`meta-${tag?.name || tag?.itemprop}`} {...tag} />
+      {Object.entries(metaTags).map(([key, value]) => (
+        <meta key={key} {...value} />
       ))}
     </>
   );

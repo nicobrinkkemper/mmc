@@ -2,24 +2,35 @@ import "./env.mjs";
 //
 import {
   generatedFolder,
+  isValidTheme,
   themeConfig,
   themes,
 } from "../src/config/themeConfig.js";
 import { levelData } from "./csv/levelData.mjs";
 import { writeFile } from "./file/writeFile.mjs";
 import { writeJson } from "./file/writeJson.mjs";
+import { processCssModules } from "./postcss.mjs";
 import { resizeFolders } from "./resize/resizeFolders.mjs";
 
 const generateJsonBarrel = (entries: string[], fileName: string) =>
   entries
     .map(
       (theme) =>
-        `export {default as _${theme}} from "./${theme}/${fileName}.json" with { type: "json" };`
+        `export {default as _${theme}} from "./${
+          "themes" === fileName || isValidTheme(fileName)
+            ? theme
+            : `${theme}.${fileName}`
+        }.json" with { type: "json" };`
     )
     .join("\n");
 
 const writeThemeJson = async (theme: string, images: any, fileName: string) =>
-  await writeJson(images, `${generatedFolder}/${theme}/${fileName}.json`);
+  await writeJson(
+    images,
+    `${generatedFolder}/${
+      theme === fileName ? theme : `${theme}.${fileName}`
+    }.json`
+  );
 
 const processThemeData = async (
   themeConfig: ThemeConfig<Theme>,
@@ -41,23 +52,27 @@ const main = async () => {
     } = resizedFolders;
 
     await Promise.all([
+      // Process CSS modules
+      processCssModules(),
       // Process theme data
       Promise.all(
         themeConfig.map(async (config) => {
-          // important bit
           const data = await processThemeData(config, publicFolders);
-          await writeJson(
-            data,
-            `${generatedFolder}/${config.theme}/themes.json`
-          );
+          await writeJson(data, `${generatedFolder}/${config.theme}.json`);
           return [config.theme, data];
         })
-      ).then(() =>
-        writeFile(
+      ).then(async () => {
+        await writeFile(
           generateJsonBarrel(themes, "themes"),
           `${generatedFolder}/themes.ts`
-        )
-      ),
+        );
+        for (let theme of themes) {
+          await writeFile(
+            generateJsonBarrel([theme], theme),
+            `${generatedFolder}/${theme}.ts`
+          );
+        }
+      }),
       // Handle public images
       Promise.all(
         Object.entries(publicFolders).map(([theme, images]) =>

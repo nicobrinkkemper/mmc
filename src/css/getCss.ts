@@ -1,12 +1,25 @@
 import { mainTheme } from "../config/themeConfig.js";
 import * as themesCss from "./index.js";
 
-export function getCss<
-  K extends keyof (typeof themesCss)[keyof typeof themesCss]
->(theme: Theme, className: K) {
+type WhiteLabelClasses = keyof (typeof themesCss)[keyof typeof themesCss];
+
+type Return<K extends WhiteLabelClasses | undefined = undefined> =
+  K extends WhiteLabelClasses
+    ? (typeof themesCss)[keyof typeof themesCss][K]
+    : K extends undefined
+    ? (typeof themesCss)[keyof typeof themesCss]
+    : never;
+
+export function getCss<K extends WhiteLabelClasses | undefined = undefined>(
+  theme: Theme,
+  className?: K
+): Return<K> {
   const key = `_${theme}`;
   const fallback = (
     key in themesCss ? key : `_${mainTheme}`
   ) as keyof typeof themesCss;
-  return themesCss[fallback][className];
+  if (className) {
+    return themesCss[fallback][className as never] as Return<K>;
+  }
+  return themesCss[fallback] as Return<K>;
 }

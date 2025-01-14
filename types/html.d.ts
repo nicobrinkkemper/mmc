@@ -1,5 +1,7 @@
 declare global {
   type HtmlProps = {
+    baseUrl: string;
+    publicUrl: string;
     title?: string;
     description?: string;
     url?: string;

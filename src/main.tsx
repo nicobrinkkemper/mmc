@@ -1,29 +1,45 @@
-/** @jsxImportSource react */
 "use client";
-import { createRoot, hydrateRoot } from "react-dom/client";
-import { Client } from "./Client.js";
-import { getThemePathInfo } from "./data/getThemePathInfo.js";
-import "./index.css";
-// Map of paths to components
+import "./ssr.js";
+// import * as React from "react";
+// import { createRoot, hydrateRoot } from "react-dom/client";
+// import { createFromFetch } from "react-server-dom-esm/client";
+// import { Client } from "./Client.js";
+// import { getThemePathInfo } from "./data/getThemePathInfo.js";
+// import "./index.css";
 
-const domNode = document.getElementById("root");
+// const domNode = document.getElementById("root");
+// if (!domNode) {
+//   console.warn("Failed to find root element");
+// }
+// const hasDomNode = domNode?.hasChildNodes();
 
-if (!domNode) {
-  throw new Error("Failed to find root element");
-}
-const hasDomNode = domNode.hasChildNodes();
+// const pathInfo = getThemePathInfo(window.location.href);
 
-const pathInfo = getThemePathInfo(window.location.href);
-// hydrate if root has already been rendered
-if (hasDomNode && !import.meta.env.DEV) {
-  hydrateRoot(domNode, <Client pathInfo={pathInfo as any} />);
-} else if (!hasDomNode) {
-  // Ensure router is ready before rendering
-  const root = createRoot(domNode);
-  root.render(<Client pathInfo={pathInfo as any} />);
+// const rscData = createFromFetch(
+//   fetch(window.location.href, {
+//     headers: { Accept: "text/x-component" },
+//   }),
+//   {
+//     moduleBaseURL: "/dist/",
+//   }
+// );
 
-  // For Vite HMR
-  if (import.meta.hot) {
-    import.meta.hot.accept();
-  }
-}
+// if (hasDomNode && !import.meta.env.DEV) {
+//   hydrateRoot(
+//     domNode!,
+//     <Client pathInfo={pathInfo as any}>
+//       {rscData as any as React.ReactNode}
+//     </Client>
+//   );
+// } else if (!hasDomNode) {
+//   const root = createRoot(domNode!);
+//   root.render(
+//     <Client pathInfo={pathInfo as any}>
+//       {rscData as any as React.ReactNode}
+//     </Client>
+//   );
+
+//   if (import.meta.hot) {
+//     import.meta.hot.accept();
+//   }
+// }

@@ -11,7 +11,9 @@ export function getAdjacent<T extends unknown[]>(
       ? items.indexOf(indexOrKey as any)
       : -1;
   if (index === -1) {
-    throw new Error("Invalid index or key");
+    throw new Error(
+      `Invalid index or key: ${indexOrKey}. Available keys: ${items.join(", ")}`
+    );
   }
   return {
     adjacent: {

@@ -9,6 +9,8 @@
 .Tag {
     position: relative;
     padding: var(--tag-padding, .5em);
+    margin: var(--tag-margin, 0);
+    box-sizing: border-box;
     font: var(--_tag-font, inherit);
     min-width: var(--tag-min-width, inherit);
     text-align: var(--tag-text-align, inherit);
@@ -30,13 +32,13 @@
     mix-blend-mode: var(--tag-before-mix-blend-mode, none);
     border-radius: var(--tag-before-border-radius, 0);
 }
-.new,
+.new_release,
 .precision,
 .unreleased {
     color: var(--tag-new-color);
     background: var(--tag-new-background, none);
 }
-.new:before,
+.new_release:before,
 .precision:before,
 .unreleased:before {
     background: var(--tag-before-new-background);

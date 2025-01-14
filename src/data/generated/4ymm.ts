@@ -1,0 +1,1 @@
+export {default as _4ymm} from "./4ymm.json" with { type: "json" };

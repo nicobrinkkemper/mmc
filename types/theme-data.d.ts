@@ -132,7 +132,8 @@ declare global {
   >(
     pathInfo: PI,
     options?: Opt
-  ) => ThemeStaticDataReturn<R, Opt> & PI;
+  ) => Promise<ThemeStaticDataReturn<R, Opt> & PI>;
 }
 
 export {};
+

@@ -1,5 +1,7 @@
 declare global {
+  // @ts-ignore
   type GeneratedThemes = typeof import("../src/data/generated/themes.js");
+  // @ts-ignore
   type IsGeneratedThemes = `${keyof GeneratedThemes}` extends `` ? true : false;
 
   type ThemeConfiguration = typeof import("../src/config/themeConfig.ts");

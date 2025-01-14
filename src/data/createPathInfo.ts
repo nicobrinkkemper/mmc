@@ -3,7 +3,7 @@ import { credits, mainTheme } from "../config/themeConfig.js";
 import { levels } from "../config/themeConfig.js";
 
 const remove = (search: string, p: string) =>
-  search && p.includes(search)
+  search !== "" && p.includes(search)
     ? `${p}`.replace(`/${search}/`, "/").replace(`/${search}`, "/")
     : p;
 

@@ -2,25 +2,40 @@
     display: inline-grid;
     justify-items: center;
     grid-template-columns:
-        [nationality-start makerId-start] 24px [nationality-end] 8px [maker-start] max-content [maker-end makerId-end];
+        [first-start] 24px [first-end] 8px [second-start] max-content [second-end];
     grid-template-rows:
-        [maker] max-content [makerId] 24px;
+        [first-row] max-content [second-row] 24px [end];
     width: max-content;
 }
 
 .Nationality {
-    grid-area: maker / nationality;
+    grid-area: first-row / first;
 }
 
 .Name {
-    grid-area: maker;
-    font-size: 0.7rem;
+    grid-area: first-row;
+    font-size: 1rem;
     line-height: 150%;
-    align-self: flex-start;
+    grid-area: first-row / second;
+}
+.compact .Name {
+    justify-self: flex-start;
+    font-size: 0.8rem;
 }
 
 .MakerId {
-    grid-area: makerId;
-    font-size: .8rem;
+    grid-area: second-row;
+    font-size: 1rem;
     display: block;
+    grid-area: second-row / first / second-row / second;
+}
+.compact .MakerId {
+    font-size: 0.8rem;
+    justify-self: flex-start;
+}
+
+.MakerCollab {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
 }
