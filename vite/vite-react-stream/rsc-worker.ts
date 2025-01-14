@@ -1,9 +1,9 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { Writable } from "node:stream";
 import { parentPort } from "node:worker_threads";
 import { createElement, Fragment } from "react";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-import { Writable } from "stream";
 import type { ViteDevServer } from "vite";
 import { getModuleGraph } from "./module-graph.js";
 import type { BaseProps, BuildConfig, Options } from "./types.js";

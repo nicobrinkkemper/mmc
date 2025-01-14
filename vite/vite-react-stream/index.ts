@@ -113,7 +113,16 @@ export const viteReactStream = <T extends BaseProps>(
           platform: "node",
           target: "node18",
           bundle: true,
-          inject: ["./vite/vite-react-stream/node-globals.js"],
+          plugins: [{
+            name: 'rsc-worker',
+            setup(build) {
+              // Handle stream imports
+              build.onResolve({ filter: /^stream$/ }, () => ({
+                path: 'stream',
+                namespace: 'node-builtin'
+              }));
+            }
+          }],
           external: [
             // Node built-ins
             "stream",
