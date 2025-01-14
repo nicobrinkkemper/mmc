@@ -6,8 +6,6 @@ const link = <GID extends number>(gid: GID) =>
 
 let hasErrors = false;
 
-// exponential back-off queue
-const queue: string[] = [];
 function fetchWithRetry(url: string, retries = 3, delay = 1000): Promise<Response> {
   return new Promise((resolve, reject) => {
     const attempt = async (attemptNumber: number) => {
