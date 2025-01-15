@@ -161,8 +161,8 @@ export const viteReactStream = <T extends BaseProps>(
           bundle: true,
           external: [
             "react",
-            "react-server-dom-webpack",
-            "react-server-dom-webpack/server.node",
+            "react-server-dom-esm",
+            "react-server-dom-esm/server.node",
             "*.webp",
             "*.svg",
           ],
@@ -178,7 +178,6 @@ export const viteReactStream = <T extends BaseProps>(
                 // Track CSS imports during build
                 build.onResolve({ filter: /\.css$/ }, (args) => {
                   const resolvedPath = path.resolve(args.resolveDir, args.path);
-                  console.log("[CSS Build] Resolving:", resolvedPath);
                   cssFiles.add(resolvedPath);
                   // Generate a .js file path instead
                   return {
@@ -191,11 +190,6 @@ export const viteReactStream = <T extends BaseProps>(
                 build.onLoad(
                   { filter: /\.css\.js$/, namespace: "css-proxy" },
                   (args) => {
-                    const actualPath = args.path.replace(/\.js$/, "");
-                    console.log(
-                      "[CSS Build] Generating proxy for:",
-                      actualPath
-                    );
                     return {
                       contents: `
                     const proxy = new Proxy({}, {
@@ -209,17 +203,6 @@ export const viteReactStream = <T extends BaseProps>(
                 );
 
                 build.onEnd(() => {
-                  // Convert absolute paths to relative for manifest
-                  const relativePaths = [...cssFiles].map((absPath) =>
-                    // Make paths relative to src directory for proper imports
-                    path.relative(path.join(process.cwd(), "src"), absPath)
-                  );
-                  console.log("[CSS Build] Collected files:", relativePaths);
-                  writeFileSync(
-                    "dist/server/css-manifest.json",
-                    JSON.stringify(relativePaths, null, 2)
-                  );
-
                   // Copy CSS files to output preserving directory structure
                   for (const absPath of cssFiles) {
                     const relPath = path.relative(

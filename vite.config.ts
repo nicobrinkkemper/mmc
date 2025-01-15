@@ -1,22 +1,16 @@
-import path from "path";
 import { defineConfig } from "vite";
 import { patchCssModules } from "vite-css-modules";
 import { getThemePathInfo } from "./src/data/getThemePathInfo.js";
+import { viteReactClientTransformPlugin } from "./vite/vite-react-client-transform/index.js";
 import { viteReactStream } from "./vite/vite-react-stream/index.js";
-import { rscTransformPlugin } from "./vite/vite-react-transform/index.js";
 
-const ReactCompilerConfig = {
-  sources: (filePath: string) => {
-    return filePath.indexOf(".client") === -1;
-  },
-};
 
 const createRouter = (fileName: string) => (url: string) => {
   const { route } = getThemePathInfo(url);
-  const fixRoot = route === "/" ? "" : route.replace(/:/g, "_");
-  return `src/page${fixRoot}/${fileName}`;
+  const { pathname } = new URL(`file://./src/page${route.replace(/:/g, "_")}/${fileName}`)
+  return pathname;
 };
-console.log(path.resolve(__dirname, "src"));
+
 export default defineConfig(() => ({
   server: {
     port: 5173,
@@ -30,9 +24,8 @@ export default defineConfig(() => ({
   },
   plugins: [
     patchCssModules(),
-    rscTransformPlugin({
-      projectRoot: __dirname,
-      moduleBase: "/src",
+    viteReactClientTransformPlugin({
+      projectRoot: __dirname
     }),
     viteReactStream({
       moduleBase: "/src",

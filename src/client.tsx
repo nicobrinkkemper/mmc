@@ -1,9 +1,8 @@
 "use client";
 import React, {
   Suspense,
-  useDeferredValue,
-  useEffect,
-  useTransition,
+  useCallback,
+  useTransition
 } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { createFromFetch, encodeReply } from "react-server-dom-esm/client";
@@ -50,12 +49,6 @@ const callServer = async (id: string, args: unknown[]): Promise<unknown> => {
   return returnValue;
 };
 
-/**
- * Create a map for the references
- */
-const referenceMap = new Map<string, unknown>([
-  ["/components/ClientClickable.ts", "/src/components/ClientClickable.tsx"],
-]);
 
 /**
  * Create initial RSC data stream
@@ -64,111 +57,60 @@ const initialData = createFromFetch(
   fetch(window.location.pathname, {
     headers: {
       Accept: "text/x-component",
-      "X-Reference-Map": JSON.stringify(Array.from(referenceMap.entries())),
     },
   }),
   {
     callServer,
     moduleBaseURL,
-    temporaryReferences: referenceMap,
   }
 );
 
-/**
- * Store for managing RSC data across navigation
- */
-const createRscStore = () => {
-  let listeners = new Set<(data: typeof initialData) => void>();
-  let currentData = initialData;
-
-  return {
-    subscribe: (listener: (data: typeof initialData) => void) => {
-      listeners.add(listener);
-      return () => listeners.delete(listener);
-    },
-    getData: () => currentData as React.Usable<React.ReactNode>,
-    setData: (newData: typeof initialData) => {
-      currentData = newData;
-      listeners.forEach((listener) => listener(newData));
-    },
-  };
-};
-
-const rscStore = createRscStore();
 /**
  * Main application shell component
  * Handles navigation and RSC data updates
  */
 const Shell: React.FC<{
-  data: React.Usable<React.ReactNode>;
+  data: React.Usable<unknown>;
   pathInfo: ThemePathInfo;
 }> = ({ data: initialServerData, pathInfo: initialPathInfo }) => {
   const [, startTransition] = useTransition();
   const [storeData, setStoreData] =
-    React.useState<typeof initialServerData>(initialServerData);
-  const deferredData = useDeferredValue(storeData);
+    React.useState<React.Usable<unknown>>(initialServerData);
   const [pathInfo, setPathInfo] = React.useState(initialPathInfo);
-  const [isPending, setIsPending] = React.useState(false);
 
-  // Handle browser navigation
-  useEventListener("popstate", (e) => {
-    setPathInfo((prevState) => {
-      const hasState =
-        e instanceof PopStateEvent &&
-        e.state &&
-        !!Object.keys(e.state ?? {}).length;
-      if (hasState) {
-        if (e.state?.to) {
-          return e.state;
-        }
-      } else {
-        return getThemePathInfo(window.location.pathname);
-      }
-    });
-  });
-  // Handle client-side navigation
-  useEffect(() => {
-    if (!pathInfo) return;
-
-    setIsPending(true);
+  const navigate = useCallback((to: string) => {
     startTransition(() => {
-      const serverUrl = window.location.origin + pathInfo.to;
+      setPathInfo(getThemePathInfo(to));
+      const serverUrl = window.location.origin + to;
       // Create new RSC data stream
       const newData = createFromFetch(
         fetch(serverUrl, {
           headers: {
             Accept: "text/x-component",
-            "X-Reference-Map": JSON.stringify(
-              Array.from(referenceMap.entries())
-            ),
           },
         }),
         {
           callServer,
-          moduleBaseURL,
-          temporaryReferences: referenceMap,
-          findSourceMapURL: () => null,
-          replayConsoleLogs: false,
+          moduleBaseURL
         }
       );
-
       setStoreData(newData as typeof initialServerData);
-      setIsPending(false);
     });
-  }, [pathInfo.to]);
+  }, []);
 
-  const rsc = React.use(deferredData);
+  // Handle browser navigation
+  useEventListener("popstate", (e) => {
+    if (e instanceof PopStateEvent) {
+      if (e.state?.to) {
+        return navigate(e.state.to);
+      }
+    } else {
+      return navigate(window.location.pathname);
+    }
+  });
 
-  // Handle different types of RSC data
-  const content = React.useMemo(() => {
-    if (Array.isArray(rsc)) {
-      return <>{rsc}</>;
-    }
-    if (typeof rsc === "function") {
-      return React.createElement(rsc);
-    }
-    return rsc;
-  }, [rsc]);
+
+  const content = React.use(storeData);
 
   return (
     <ErrorBoundary>
@@ -180,7 +122,7 @@ const Shell: React.FC<{
           </>
         }
       >
-        {content}
+        {content as React.ReactNode}
       </Suspense>
     </ErrorBoundary>
   );
@@ -193,10 +135,10 @@ const intitialPathInfo = getThemePathInfo(window.location.href);
 if (rootElement.hasChildNodes() && !import.meta?.env?.DEV) {
   hydrateRoot(
     rootElement,
-    <Shell data={rscStore.getData()} pathInfo={intitialPathInfo} />
+    <Shell data={initialData} pathInfo={intitialPathInfo} />
   );
 } else {
   createRoot(rootElement).render(
-    <Shell data={rscStore.getData()} pathInfo={intitialPathInfo} />
+    <Shell data={initialData} pathInfo={intitialPathInfo} />
   );
 }

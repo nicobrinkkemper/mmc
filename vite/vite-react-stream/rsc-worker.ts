@@ -1,15 +1,13 @@
 import { mkdirSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { Writable } from "node:stream";
 import { parentPort } from "node:worker_threads";
 import { createElement, Fragment } from "react";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-import type { ViteDevServer } from "vite";
-import { getModuleGraph } from "./module-graph.js";
-import type { BaseProps, BuildConfig, Options } from "./types.js";
+import type { BuildConfig, Options } from "./types.js";
 
-function collectStream(stream: ReturnType<typeof renderToPipeableStream>): Promise<Buffer> {
-  return new Promise((resolve, reject) => {
+async function collectStream(stream: ReturnType<typeof renderToPipeableStream>): Promise<Buffer> {
+  return new Promise((resolve) => {
     const chunks: Buffer[] = [];
     const writable = new Writable({
       write(chunk, _encoding, callback) {
@@ -26,94 +24,103 @@ function collectStream(stream: ReturnType<typeof renderToPipeableStream>): Promi
   });
 }
 
-/** Generate RSC data for a route */
-async function getRscData<T extends BaseProps>(
+async function generateRscPayload<T>(
   route: string,
-  options: Options<T>,
-  server: ViteDevServer
+  options: Options,
+  outputDir: string
 ) {
-  console.log("\n[CSS Worker] Starting RSC generation for route:", route);
+  console.log(`\n[RSC] Generating payload for route: ${route}`);
 
-  // Get module paths
-  const pagePath =
-    typeof options.Page === "function" ? options.Page(route) : options.Page;
-  const propsPath =
-    typeof options.props === "function" ? options.props(route) : options.props;
-  const pageExportName = (options.pageExportName ?? "Page") as keyof typeof pageModule;
-  const propsExportName = (options.propsExportName ?? "props") as keyof typeof propsModule;
+  try {
+    // Get module paths
+    const pagePath = typeof options.Page === "function"
+      ? options.Page(route)
+      : options.Page;
+    const propsPath = typeof options.props === "function"
+      ? options.props(route)
+      : options.props;
 
-  // Import modules and collect CSS from Vite's module graph
-  const { getModuleWithDeps } = getModuleGraph(server);
+    // Dynamic imports for page and props
+    const [{ [options.pageExportName ?? 'Page']: Page }, propsModule] = await Promise.all([
+      import(resolve(process.cwd(), pagePath)),
+      import(resolve(process.cwd(), propsPath))
+    ]);
 
-  // Load modules and collect CSS dependencies
-  const [pageModule, propsModule] = await Promise.all([
-    getModuleWithDeps(pagePath),
-    getModuleWithDeps(propsPath),
-  ]);
+    // Get props
+    const props = typeof propsModule[options.propsExportName ?? 'props'] === 'function'
+      ? await propsModule[options.propsExportName ?? 'props'](route)
+      : propsModule[options.propsExportName ?? 'props'];
 
-  // Use collected CSS from module graph
-  const cssFiles = new Set([...pageModule.css, ...propsModule.css]);
-  const pageModuleExport = pageModule[pageExportName];
-  const propsModuleExport = propsModule[propsExportName];
-  // Get exports using configured names
-  const [Page, props] = await Promise.all([
-    typeof pageModuleExport === 'string' ? server.ssrLoadModule(pageModuleExport).then(mod => mod[pageExportName]) : Promise.resolve(pageModuleExport),
-    typeof propsModuleExport === 'string' ? server.ssrLoadModule(propsModuleExport).then(mod => mod[propsExportName](route)) : Promise.resolve(propsModuleExport),
-  ]);
-  console.log(Page, props);
-  // Add CSS links to stream in order of import
-  const stream = renderToPipeableStream(
-    createElement(Fragment, null, [
-      ...[...cssFiles].map((href) =>
-        createElement("link", { rel: "stylesheet", href })
-      ),
-      createElement(Page, props),
-    ]),
-    "/src",
-    new AbortController() as any
-  );
-  // Remove unused cssImports and cssManifest references
-  console.log(
-    "\n[CSS Worker] Found CSS files:",
-    [...cssFiles].map((path) => `\n  - ${path}`).join("")
-  );
+    // Create RSC stream
+    const stream = renderToPipeableStream(
+      createElement(Fragment, null, [
+        createElement(Page, props)
+      ]),
+      options.moduleBase ?? '/src',
+      new AbortController() as any
+    );
 
-  const data = await collectStream(stream);
-  // Write RSC data to file
-  const RSC_DIR = join(process.cwd(), "dist/rsc");
-  const outputPath = join(
-    RSC_DIR,
-    `${route === "/" ? "index" : route.replace(/^\//, "")}.json`
-  );
-  mkdirSync(dirname(outputPath), { recursive: true });
-  writeFileSync(outputPath, JSON.stringify(data));
+    // Collect stream data
+    const data = await collectStream(stream);
 
-  server.close();
-  return data;
-}
+    // Write RSC payload
+    const outputPath = join(
+      outputDir,
+      route === '/' ? 'index.rsc' : `${route.replace(/^\//, '')}.rsc`
+    );
 
-/** Generate static HTML */
-async function generateHtml<T extends BaseProps>(
-  route: string,
-  options: Options<T>,
-  server: ViteDevServer
-) {
-  return getRscData(route, options, server);
-}
+    mkdirSync(dirname(outputPath), { recursive: true });
+    writeFileSync(outputPath, data);
 
-parentPort?.on(
-  "message",
-  async <T extends BaseProps>(config: BuildConfig<T>) => {
-    try {
-      for (const route of config.routes ?? []) {
-        const data = await getRscData(route.path, config.options!, config.server!);
-        // Do something with data if needed
-      }
-      parentPort?.postMessage("done");
-      process.exit(0);
-    } catch (error) {
-      console.error(error);
-      process.exit(1);
-    }
+    console.log(`[RSC] Generated ${outputPath}`);
+    return data;
+
+  } catch (error) {
+    console.error(`[RSC] Failed to generate payload for ${route}:`, error);
+    throw error;
   }
-);
+}
+
+// Handle worker messages
+parentPort?.on('message', async (config: BuildConfig<any>) => {
+  try {
+    const outputDir = resolve(
+      process.cwd(),
+      config.output?.dir ?? 'dist',
+      config.output?.rsc ?? 'rsc'
+    );
+
+    // Import routes configuration
+    const { [config.options?.propsExportName ?? 'props']: props } = await import(resolve(process.cwd(), config.pages)) as {
+      [key: string]: Record<string, { route: { path: string } }>;
+    };
+
+    // Instead of passing functions, pass the resolved paths directly
+    const routes = Object.values(props).map(page => ({
+      path: page.route.path,
+      pagePath: join(process.cwd(), 'dist/server',
+        typeof config.options?.Page === "function"
+          ? config.options.Page(page.route.path)
+          : config.options?.Page ?? 'Page'),
+      propsPath: join(process.cwd(), 'dist/server',
+        typeof config.options?.props === "function"
+          ? config.options.props(page.route.path)
+          : config.options?.props ?? 'props')
+    }));
+
+    for (const route of routes) {
+      await generateRscPayload(route.path, {
+        ...config.options,
+        // Use resolved paths instead of functions
+        Page: route.pagePath,
+        props: route.propsPath
+      }, outputDir);
+    }
+
+    parentPort?.postMessage('done');
+    process.exit(0);
+  } catch (error) {
+    console.error('[RSC] Export failed:', error);
+    process.exit(1);
+  }
+});

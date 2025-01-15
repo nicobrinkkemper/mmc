@@ -41,7 +41,11 @@ export interface RouteConfig {
 
 export interface BuildConfig<T extends BaseProps> {
   routes?: RouteConfig[];
-  output?: { dir?: string; rsc?: string };
+  output?: {
+    dir?: string;
+    rsc?: string;
+    worker?: string; // Path to the worker script
+  };
   pages: string;
   options?: Options<T>;
   server?: ViteDevServer;

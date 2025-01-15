@@ -1,17 +1,17 @@
-export interface TransformerOptions {
-  moduleId: (path: string) => string;
-}
+import type { TransformerOptions } from "./types.js";
 
 export function createRscTransformer(options: TransformerOptions) {
   return {
-    name: "vite:react-transform",
+    name: "vite:react-client-transform",
     enforce: "post" as const,
 
     async transform(code: string, path: string) {
       if (!code || !path.endsWith(".tsx")) return null;
 
-      const directiveMatch = code.match(/(?:^|\n|;)"use client";?/);
-      if (!directiveMatch) return null;
+      // Must start with "use client" directive
+      if (!code.trimStart().match(/^["']use client["']/)) {
+        return null;
+      }
 
       const moduleId = options.moduleId(path);
 
@@ -21,14 +21,15 @@ export function createRscTransformer(options: TransformerOptions) {
       if (!exportMatch) return null;
 
       const [fullMatch, exportName] = exportMatch;
+      if (!exportName) return null;
+
       const isClass = fullMatch.includes("class");
       const modifiedCode = code.replace(
         fullMatch,
         fullMatch.replace("export ", "")
       );
-
       return {
-        code: `${modifiedCode}
+        code: `${modifiedCode.trimStart()}
 const ${exportName}Ref = Object.defineProperties(
   ${isClass
             ? `class extends ${exportName} {

@@ -10,6 +10,7 @@ function collectAssets(moduleId: string, server?: ViteDevServer) {
   if (!server) return { css: [], imports: [], assets: [] };
   const cssFiles = new Set<string>();
   const assetFiles = new Set<string>();
+  const importsFiles = new Set<string>();
 
   // Convert moduleId to URL format that Vite uses internally
   const moduleUrl = "/" + moduleId;
@@ -24,8 +25,10 @@ function collectAssets(moduleId: string, server?: ViteDevServer) {
   function traverse(mod: any) {
     if (!mod?.id || seen.has(mod.id)) return;
     seen.add(mod.id);
-
-    // Add CSS files
+    if (mod.url?.match(/\.m?[jt]sx?$/)) {
+      importsFiles.add(mod.url);
+      return;
+    }
     if (mod.url?.endsWith(".css")) {
       cssFiles.add(mod.url);
       const cssContent = mod.transformResult?.code || "";
@@ -36,14 +39,12 @@ function collectAssets(moduleId: string, server?: ViteDevServer) {
         if (
           urlMatch &&
           !urlMatch.startsWith("data:") &&
-          !urlMatch.startsWith("http") &&
-          urlMatch.match(/\.(png|jpe?g|gif|svg|webp)$/)
+          !urlMatch.startsWith("http")
         ) {
           assetFiles.add(urlMatch);
         }
       });
     }
-
     // Traverse imported modules
     mod.importedModules?.forEach((m: any) => traverse(m));
   }
@@ -52,7 +53,7 @@ function collectAssets(moduleId: string, server?: ViteDevServer) {
 
   return {
     css: Array.from(cssFiles),
-    imports: [],
+    imports: Array.from(importsFiles),
     assets: Array.from(assetFiles),
   };
 }

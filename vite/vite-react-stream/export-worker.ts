@@ -1,11 +1,16 @@
-import { Worker } from "worker_threads";
+import { join } from "node:path";
+import { Worker } from "node:worker_threads";
 import type { BaseProps, BuildConfig } from "./types.js";
 
 export async function startExport<T extends BaseProps>(config: BuildConfig<T>) {
   return new Promise((resolve, reject) => {
     console.log("\n[Export] Starting RSC export...\n");
 
-    const worker = new Worker("./dist/rsc-worker.js", {
+    const workerPath = join(process.cwd(),
+      config.output?.worker ?? 'dist/server/rsc-worker.js'
+    );
+
+    const worker = new Worker(workerPath, {
       stdout: true,
       stderr: true,
     });
@@ -25,10 +30,20 @@ export async function startExport<T extends BaseProps>(config: BuildConfig<T>) {
       reject(error);
     });
 
-    // Just send the pages file path - worker will handle the rest
+    worker.on("exit", (code) => {
+      if (code !== 0) {
+        reject(new Error(`Worker stopped with exit code ${code}`));
+      }
+    });
+
     worker.postMessage({
       pages: config.pages,
       output: config.output,
+      options: {
+        moduleBase: config.options?.moduleBase,
+        pageExportName: config.options?.pageExportName,
+        propsExportName: config.options?.propsExportName
+      }
     });
   });
 }
