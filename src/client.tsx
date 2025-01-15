@@ -142,3 +142,6 @@ if (rootElement.hasChildNodes() && !import.meta?.env?.DEV) {
     <Shell data={initialData} pathInfo={intitialPathInfo} />
   );
 }
+if (import.meta.hot) {
+  import.meta.hot.accept();
+}

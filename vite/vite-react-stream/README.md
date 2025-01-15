@@ -100,17 +100,23 @@ const rscData = createFromFetch(
     moduleBaseURL: window.location.origin + '/',
   }
 );
+
+const Client = ({ url, data }: { url: string, data: React.Usable<unknown> }) => {
+  const content = React.use(data)
+  return <div>Client {url} {content}</div>
+}
+
 if (hasDomNode && !import.meta.env.DEV) {
   hydrateRoot(
     domNode!,
-    <Client url={pathInfo as any}>
+    <Client url={window.location.href} initialData={rscData}>
       {rscData as any as React.ReactNode}
     </Client>
   );
 } else if (!hasDomNode) {
   const root = createRoot(domNode!);
   root.render(
-    <Client url={pathInfo as any}>
+    <Client url={window.location.href} initialData={rscData}>
       {rscData as any as React.ReactNode}
     </Client>
   );
