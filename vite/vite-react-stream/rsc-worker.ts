@@ -4,7 +4,7 @@ import { Writable } from "node:stream";
 import { parentPort } from "node:worker_threads";
 import { createElement, Fragment } from "react";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-import type { BuildConfig, Options } from "./types.js";
+import { DEFAULT_CONFIG, type BuildConfig, type Options } from "./types.js";
 
 async function collectStream(stream: ReturnType<typeof renderToPipeableStream>): Promise<Buffer> {
   return new Promise((resolve) => {
@@ -32,7 +32,7 @@ async function generateRscPayload<T>(
   console.log(`\n[RSC] Generating payload for route: ${route}`);
 
   try {
-    // Get module paths
+    // Get module paths - they should already be resolved
     const pagePath = typeof options.Page === "function"
       ? options.Page(route)
       : options.Page;
@@ -40,23 +40,27 @@ async function generateRscPayload<T>(
       ? options.props(route)
       : options.props;
 
-    // Dynamic imports for page and props
-    const [{ [options.pageExportName ?? 'Page']: Page }, propsModule] = await Promise.all([
-      import(resolve(process.cwd(), pagePath)),
-      import(resolve(process.cwd(), propsPath))
-    ]);
+    // Ensure we're using .js extension
+    const pagePathJs = pagePath.replace(/\.tsx?$/, '.js');
+    const propsPathJs = propsPath.replace(/\.tsx?$/, '.js');
 
-    // Get props
-    const props = typeof propsModule[options.propsExportName ?? 'props'] === 'function'
-      ? await propsModule[options.propsExportName ?? 'props'](route)
-      : propsModule[options.propsExportName ?? 'props'];
+    console.log(`[RSC] Loading modules:
+      Page: ${pagePathJs}
+      Props: ${propsPathJs}
+    `);
+
+    // Dynamic imports for page and props
+    const [{ [options.pageExportName ?? DEFAULT_CONFIG.PAGE_EXPORT]: Page }, { [options.propsExportName ?? DEFAULT_CONFIG.PROPS_EXPORT]: props }] = await Promise.all([
+      import(pagePathJs),
+      import(propsPathJs)
+    ]);
 
     // Create RSC stream
     const stream = renderToPipeableStream(
       createElement(Fragment, null, [
         createElement(Page, props)
       ]),
-      options.moduleBase ?? '/src',
+      options.moduleBase ?? DEFAULT_CONFIG.MODULE_BASE,
       new AbortController() as any
     );
 
@@ -86,34 +90,24 @@ parentPort?.on('message', async (config: BuildConfig<any>) => {
   try {
     const outputDir = resolve(
       process.cwd(),
-      config.output?.dir ?? 'dist',
-      config.output?.rsc ?? 'rsc'
+      config.output?.dir ?? DEFAULT_CONFIG.OUT_DIR,
+      config.output?.rsc ?? DEFAULT_CONFIG.RSC_DIR
     );
 
-    // Import routes configuration
-    const { [config.options?.propsExportName ?? 'props']: props } = await import(resolve(process.cwd(), config.pages)) as {
-      [key: string]: Record<string, { route: { path: string } }>;
-    };
+    // Handle both sync and async pages
+    const pagesPath = typeof config.pages === 'function'
+      ? await config.pages()
+      : config.pages;
 
-    // Instead of passing functions, pass the resolved paths directly
-    const routes = Object.values(props).map(page => ({
-      path: page.route.path,
-      pagePath: join(process.cwd(), 'dist/server',
-        typeof config.options?.Page === "function"
-          ? config.options.Page(page.route.path)
-          : config.options?.Page ?? 'Page'),
-      propsPath: join(process.cwd(), 'dist/server',
-        typeof config.options?.props === "function"
-          ? config.options.props(page.route.path)
-          : config.options?.props ?? 'props')
-    }));
+    const routes = await Promise.resolve(pagesPath);
 
     for (const route of routes) {
-      await generateRscPayload(route.path, {
+      await generateRscPayload(route, {
         ...config.options,
-        // Use resolved paths instead of functions
-        Page: route.pagePath,
-        props: route.propsPath
+        moduleBase: config.options?.moduleBase ?? DEFAULT_CONFIG.MODULE_BASE,
+        Page: config.options?.Page || DEFAULT_CONFIG.PAGE_EXPORT,
+        props: config.options?.props || DEFAULT_CONFIG.PROPS_EXPORT,
+        Html: config.options?.Html || DEFAULT_CONFIG.HTML
       }, outputDir);
     }
 

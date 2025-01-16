@@ -1,8 +1,6 @@
 /** Get environment variables in a type-safe way */
 const getEnv = () => {
-  if (typeof process !== "undefined" && process.env["VITE_BASE_URL"]) {
-    return process.env;
-  }
+
 
   if (typeof import.meta !== "undefined") {
     if (typeof import.meta.env !== "undefined") {
@@ -28,3 +26,5 @@ export const BASE_URL = env["VITE_BASE_URL"];
 
 /** Public URL path prefix */
 export const PUBLIC_URL = env["VITE_PUBLIC_URL"];
+
+export const DEV = env["DEV"];

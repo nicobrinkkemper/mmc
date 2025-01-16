@@ -1,5 +1,19 @@
+import type React from "react";
 import type { ComponentType } from "react";
 import type { Connect, Manifest, ViteDevServer } from "vite";
+import { DefaultHtml } from "./DefaultHtml.js";
+
+// Default configuration values
+export const DEFAULT_CONFIG = {
+  OUT_DIR: 'dist',
+  SERVER_DIR: 'server',
+  RSC_DIR: 'rsc',
+  MODULE_BASE: '/src',
+  PAGE_EXPORT: 'Page',
+  PROPS_EXPORT: 'props',
+  WORKER_PATH: 'dist/rsc-worker.js',
+  HTML: DefaultHtml
+} as const;
 
 export type ModuleLoader = (path: string) => Promise<Record<string, any>>;
 
@@ -14,13 +28,13 @@ export type StreamResult =
     }
   | { type: "error"; error: unknown };
 
-export type RscStreamParams<T extends BaseProps> = {
+export type RscStreamParams<T extends BaseProps = BaseProps> = {
   url: string;
   controller: AbortController;
   server?: ViteDevServer;
   loader: ModuleLoader;
   Layout: ComponentType<T>;
-  options: Options<T>;
+  options: Options;
   pageExportName: string;
   propsExportName: string;
 };
@@ -46,8 +60,8 @@ export interface BuildConfig<T extends BaseProps> {
     rsc?: string;
     worker?: string; // Path to the worker script
   };
-  pages: string;
-  options?: Options<T>;
+  pages: () => (Promise<string[]> | string[]);
+  options?: Options;
   server?: ViteDevServer;
 }
 
@@ -62,32 +76,45 @@ export interface RscResolver {
   }>;
 }
 
-export type Options<T extends BaseProps = BaseProps> = {
-  /** Layout component that wraps the page */
-  Html?: ComponentType<T>;
-  /** Resolves the path to the page component */
+export interface Options {
+  moduleBase: string;
+  Html?: React.ComponentType<React.PropsWithChildren<{ manifest: Manifest }>>;
   Page: string | ((url: string) => string);
-  /** Resolves the path to the props module */
   props: string | ((url: string) => string);
-  /** Custom module loader function */
-  moduleLoader?: (server: ViteDevServer) => ModuleLoader;
-  /** Base module directory (usually "src") */
-  moduleBase?: string;
-  /** Name of the props export */
-  propsExportName?: string;
-  /** Name of the page component export */
   pageExportName?: string;
-  /** Build configuration */
-  build?: BuildConfig<T>;
-};
+  propsExportName?: string;
+  moduleLoader?: (server: ViteDevServer) => ModuleLoader;
+  build?: BuildConfig<BaseProps>;
+  outDir?: string;  // defaults to 'dist'
+}
 
 export type RequestHandler = Connect.NextHandleFunction;
 
+export interface SsrStreamOptions {
+  bootstrapModules?: string[];
+  bootstrapScripts?: string[];
+  bootstrapScriptContent?: string;
+  signal?: AbortSignal;
+  identifierPrefix?: string;
+  namespaceURI?: string;
+  nonce?: string;
+  progressiveChunkSize?: number;
+  onShellReady?: () => void;
+  onAllReady?: () => void;
+  onError?: (error: unknown) => void;
+  importMap?: {
+    imports?: Record<string, string>;
+  };
+}
+
 export type RscServerConfig = {
   /** How to get RSC data (e.g. HTTP, direct import, etc) */
-  getRscComponent: (url: string) => Promise<React.ReactNode>;
+  getRscComponent: (url: string) => React.Usable<React.ReactNode>;
   /** Base URL for client assets */
   clientBase?: string;
+  /** SSR stream rendering options */
+
+  ssrOptions?: SsrStreamOptions;
 };
 
 export interface RscServerModule {

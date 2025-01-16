@@ -1,10 +1,11 @@
 import type { ViteDevServer } from "vite";
 import { DefaultLayout } from "../components.js";
-import type {
-  BaseProps,
-  ModuleLoader,
-  Options,
-  RequestHandler,
+import {
+  DEFAULT_CONFIG,
+  type BaseProps,
+  type ModuleLoader,
+  type Options,
+  type RequestHandler,
 } from "../types.js";
 import { handleRscStream } from "./rsc.js";
 
@@ -13,12 +14,12 @@ import { handleRscStream } from "./rsc.js";
  */
 export function createDevHandler<T extends BaseProps>(
   server: ViteDevServer,
-  options: Options<T>,
+  options: Options,
   loader: ModuleLoader
 ): RequestHandler {
   const Layout = options.Html ?? DefaultLayout;
-  const pageExportName = options.pageExportName ?? "Page";
-  const propsExportName = options.propsExportName ?? "props";
+  const pageExportName = options.pageExportName ?? DEFAULT_CONFIG.PAGE_EXPORT;
+  const propsExportName = options.propsExportName ?? DEFAULT_CONFIG.PROPS_EXPORT;
 
   return async (req, res, next) => {
     // Skip non-page requests
@@ -26,15 +27,8 @@ export function createDevHandler<T extends BaseProps>(
       return next();
     }
 
-    // Check if this handler can handle the URL
-    const pagePath =
-      typeof options.Page === "function" ? options.Page(req.url) : options.Page;
-
-    if (!pagePath) {
-      return next();
-    }
-
     try {
+      console.log("[stream] Handling RSC stream");
       const result = await handleRscStream({
         url: req.url ?? "",
         controller: new AbortController(),
@@ -47,15 +41,27 @@ export function createDevHandler<T extends BaseProps>(
       });
 
       if (result.type === "error") {
+        if ((result.error as Error).message?.includes('module runner has been closed')) {
+          console.log("[RSC] Module runner closed, returning 503");
+          res.writeHead(503, { 'Content-Type': 'text/x-component' });
+          res.end('{"error":"Server restarting..."}');
+          return;
+        }
         console.error("[RSC] Stream error:", result.error);
-        res.writeHead(500);
-        res.end("Internal Server Error");
+        res.writeHead(500, { 'Content-Type': 'text/x-component' });
+        res.end('{"error":"Internal Server Error"}');
         return;
       }
 
       res.setHeader("Content-Type", "text/x-component");
       result.stream.pipe(res);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message?.includes('module runner has been closed')) {
+        console.log("[RSC] Module runner closed, returning 503");
+        res.writeHead(503, { 'Content-Type': 'text/x-component' });
+        res.end('{"error":"Server restarting..."}');
+        return;
+      }
       next(error);
     }
   };

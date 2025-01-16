@@ -1,18 +1,17 @@
 import { DefaultLayout } from "../components.js";
 import type {
-  BaseProps,
   ModuleLoader,
   Options,
   RequestHandler,
-  RscServerConfig,
+  RscServerConfig
 } from "../types.js";
 import { handleSsrStream } from "./ssr.js";
 
 /**
  * Creates a request handler for production
  */
-export function createProdHandler<T extends BaseProps>(
-  options: Options<T>,
+export function createProdHandler(
+  options: Options,
   loader: ModuleLoader,
   rscServer: RscServerConfig
 ): RequestHandler {

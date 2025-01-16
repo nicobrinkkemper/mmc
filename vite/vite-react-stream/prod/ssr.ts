@@ -1,5 +1,5 @@
 "use server";
-import { createElement } from "react";
+import { createElement, use } from "react";
 import { renderToPipeableStream } from "react-dom/server.node";
 import type {
   BaseProps,
@@ -17,15 +17,14 @@ export async function handleSsrStream<T extends BaseProps>(
   const { url, controller, Layout, rscServer } = params;
 
   try {
-    const rscComponent = await rscServer.getRscComponent(url);
+    const rscComponent = use(rscServer.getRscComponent(url))
 
     const stream = renderToPipeableStream(
       createElement(Layout, { manifest: {} } as T, rscComponent),
       {
-        bootstrapModules: [`${rscServer.clientBase ?? ""}/entry-client.js`],
-        onError(error: unknown) {
-          console.error("[SSR] Stream error:", error);
-        },
+        ...rscServer.ssrOptions,
+        bootstrapModules: rscServer.ssrOptions?.bootstrapModules ?? [`${rscServer.clientBase ?? ""}/entry-client.js`],
+        signal: rscServer.ssrOptions?.signal ?? controller.signal,
       }
     );
 

@@ -7,8 +7,22 @@ export async function startExport<T extends BaseProps>(config: BuildConfig<T>) {
     console.log("\n[Export] Starting RSC export...\n");
 
     const workerPath = join(process.cwd(),
-      config.output?.worker ?? 'dist/server/rsc-worker.js'
+      config.output?.worker ?? 'dist/rsc-worker.js'
     );
+
+    // Ensure the paths are resolved before sending to worker
+    const serializedConfig = {
+      ...config,
+      pages: config.pages,
+      options: {
+        ...config.options,
+        Page: config.options?.Page,
+        props: config.options?.props,
+        moduleBase: config.options?.moduleBase,
+        pageExportName: config.options?.pageExportName,
+        propsExportName: config.options?.propsExportName
+      }
+    };
 
     const worker = new Worker(workerPath, {
       stdout: true,
@@ -36,14 +50,6 @@ export async function startExport<T extends BaseProps>(config: BuildConfig<T>) {
       }
     });
 
-    worker.postMessage({
-      pages: config.pages,
-      output: config.output,
-      options: {
-        moduleBase: config.options?.moduleBase,
-        pageExportName: config.options?.pageExportName,
-        propsExportName: config.options?.propsExportName
-      }
-    });
+    worker.postMessage(serializedConfig);
   });
 }

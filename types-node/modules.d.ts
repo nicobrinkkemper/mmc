@@ -67,6 +67,7 @@ declare module "react-server-dom-esm/server.node" {
     temporaryReferences?: WeakMap<any, string>;
     environmentName?: string;
     filterStackFrame?: (frame: string) => boolean;
+    signal?: AbortSignal;
   }
 
   interface PipeableStream {

@@ -3,7 +3,7 @@ import { dirname, resolve } from "node:path";
 import { parentPort } from "node:worker_threads";
 import { createElement, Fragment } from "react";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-import type { BaseProps, BuildConfig } from "./types.js";
+import { DEFAULT_CONFIG, type BaseProps, type BuildConfig } from "./types.js";
 
 async function getRscData<T extends BaseProps>(
   route: string,
@@ -13,7 +13,7 @@ async function getRscData<T extends BaseProps>(
 
   // Read CSS manifest
   const cssManifest = JSON.parse(
-    readFileSync("dist/server/css-manifest.json", "utf-8")
+    readFileSync(`${DEFAULT_CONFIG.OUT_DIR}/${DEFAULT_CONFIG.SERVER_DIR}/css-manifest.json`, "utf-8")
   ) as string[];
 
   // Create chunks array to collect stream data
@@ -26,13 +26,13 @@ async function getRscData<T extends BaseProps>(
       ...cssManifest.map((href) =>
         createElement("link", {
           rel: "stylesheet",
-          href: `/src/${href}`,
+          href: `${DEFAULT_CONFIG.MODULE_BASE}/${href}`,
         })
       ),
       // Then the page content
-      createElement("div"),
+      createElement(options?.Html || DEFAULT_CONFIG.HTML, { manifest: {} }),
     ]),
-    "/src",
+    options?.moduleBase ?? DEFAULT_CONFIG.MODULE_BASE,
     new AbortController() as any
   );
 
@@ -53,14 +53,18 @@ async function getRscData<T extends BaseProps>(
 }
 
 export async function exportRsc<T extends BaseProps>(config: BuildConfig<T>) {
-  const BASE_DIR = resolve(process.cwd(), config.output?.dir ?? "dist");
-  const RSC_DIR = resolve(BASE_DIR, config.output?.rsc ?? "rsc");
+  const BASE_DIR = resolve(process.cwd(), config.output?.dir ?? DEFAULT_CONFIG.OUT_DIR);
+  const RSC_DIR = resolve(BASE_DIR, config.output?.rsc ?? DEFAULT_CONFIG.RSC_DIR);
 
   // Ensure RSC directory exists
   mkdirSync(RSC_DIR, { recursive: true });
 
   // Import pages and get routes
-  const { pages } = (await import(config.pages)) as {
+  const pagesPath = typeof config.pages === 'function'
+    ? await config.pages()
+    : config.pages;
+
+  const { pages } = await import(pagesPath[0]) as {
     pages: Record<string, { route: { path: string } }>;
   };
 

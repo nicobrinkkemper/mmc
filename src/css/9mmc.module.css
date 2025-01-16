@@ -2,8 +2,8 @@
     --font-monospace: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
     --font-primary: 'Courier New', Courier, monospace;
     --font-primary-weight: bold;
-    --font-secondary: 'Calibri Bold','Tahoma',  sans-serif;
-    --font-tertiary: "BordersDivideButHeartsShallConquer", 'Tahoma', sans-serif;;
+    --font-secondary: 'Calibri Bold', 'Tahoma', sans-serif;
+        --font-tertiary: "BordersDivideButHeartsShallConquer", 'Tahoma', sans-serif;
     --h1-letter-spacing: 0.9rem;
     --h1-font: bolder 1.6rem/2rem var(--font-secondary);
     --h2-font: bolder 1rem/1.2rem var(--font-primary);
@@ -15,22 +15,22 @@
     --letter-spacing: 0;
     --link-color-active: #2c001f;
     --card-texture: #436e79;
-        --base-font-size: 1.2rem;
+    --base-font-size: 1.2rem;
         --font-weight: bold;
     --font-tertiary: 'Poppins', sans-serif;
-        --button-font: 700 1.2em/1.125em var(--font-tertiary);
+    --button-font: 700 1.2em/1.125em var(--font-tertiary);
         --button-font-weight: bold;
         --button-background: rgb(73, 163, 218);
-            --button-box-shadow: 0 0 10px 1px rgba(0, 0, 0, .5);
-            --button-padding: .6em 1em;
+        --button-box-shadow: 0 0 10px 1px rgba(0, 0, 0, .5);
+        --button-padding: .6em 1em;
     --button-after-background: ;
     --button-after-border: 1px solid rgba(0, 0, 0, .5);
     /*--button-outline: 2px solid rgba(0, 0, 0, 1); */
-        --button-border-radius: 9999px;
+    --button-border-radius: 9999px;
 
 
     --app-font: normal 1rem/1.2rem var(--font-primary);
---app-background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)),
+    --app-background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)),
         url("../assets/9mmc/hologram-3x.webp") repeat center;
     background-size: cover;
 
@@ -40,7 +40,7 @@
     --modal-inner-box-shadow: 0px 0.25rem 0.25rem rgba(46, 47, 48, 0.1);
 
     --batch-number-background: rgb(73, 163, 218);
-        --batch-number-border: 2px solid rgba(0, 0, 0, 1);
+    --batch-number-border: 2px solid rgba(0, 0, 0, 1);
     --batch-number-color: #111;
     --batch-number-font: 400 2rem/2rem var(--font-secondary);
     --batch-number-mix-blend-mode: none;
@@ -51,19 +51,19 @@
     --card-button-color: #111;
     --card-button-border: 1px solid rgba(0, 0, 0, .5);
     --card-button-border-radius: .5rem;
-        --card-button-box-shadow: var(--box-shadow);
+    --card-button-box-shadow: var(--box-shadow);
     --card-button-after-background: #facd00;
     --card-background: var(--card-texture) repeat;
     --card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
     --illustration-box-shadow: none;
-        --card-illustration-transform: rotate(0deg) translate(6em, -18rem);
+    --card-illustration-transform: rotate(0deg) translate(6em, -18rem);
 
     --tag-min-width: 100px;
     --tag-before-content: '';
     --tag-text-align: center;
     --tag-before-mix-blend-mode: darken;
     --tag-before-background: yellow;
-        --tag-new-background: red;
+    --tag-new-background: red;
         --tag-other-background: green;
     --tag-before-transform: scale(1, 1);
     --tag-before-top: 0;
@@ -71,7 +71,7 @@
     --tag-before-right: 0;
     --tag-before-bottom: 0;
     --tag-before-color: #ffffff;
-        --tag-border-radius: 999px;
+    --tag-border-radius: 999px;
         --tag-before-border-radius: 999px;
 
     --maker-info-mix-blend-mode: multiply;

@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import { patchCssModules } from "vite-css-modules";
+import { credits, levels, notfound, themeKeys, themes } from "./src/config/themeConfig.js";
 import { getThemePathInfo } from "./src/data/getThemePathInfo.js";
 import { viteReactClientTransformPlugin } from "./vite/vite-react-client-transform/index.js";
 import { viteReactStream } from "./vite/vite-react-stream/index.js";
@@ -34,7 +35,27 @@ export default defineConfig(() => ({
       pageExportName: "Page",
       propsExportName: "props",
       build: {
-        pages: "src/page/pages.tsx",
+        pages: async () => {
+          const themeData = await import("./src/data/generated/themes.js");
+          return [
+            "/",
+            `/${notfound}`,
+            ...themes.flatMap((theme, i) => {
+              const { batches } = themeData[themeKeys[i]];
+              return [
+                `/${theme}`,
+                `/${theme}/${credits}`,
+                `/${theme}/${levels}`,
+                // Level batches
+                ...batches.map((batch) => `/${theme}/${levels}/${batch.batchNumber}`),
+                // Individual levels
+                ...batches.flatMap((batch) =>
+                  batch.levels.map((level) => `/${theme}/${levels}/${level.batchNumber}/${level.order}`)
+                ),
+              ];
+            }),
+          ]
+        },
         output: {
           dir: "dist",
           rsc: "rsc",
