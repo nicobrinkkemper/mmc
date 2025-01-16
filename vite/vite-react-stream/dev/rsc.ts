@@ -95,7 +95,7 @@ export async function handleRscStream<T extends BaseProps>(
     controller,
     server,
     loader,
-    Layout,
+    Html: Layout,
     options,
     pageExportName,
     propsExportName,

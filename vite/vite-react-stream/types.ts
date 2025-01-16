@@ -33,7 +33,7 @@ export type RscStreamParams<T extends BaseProps = BaseProps> = {
   controller: AbortController;
   server?: ViteDevServer;
   loader: ModuleLoader;
-  Layout: ComponentType<T>;
+  Html: ComponentType<T>;
   options: Options;
   pageExportName: string;
   propsExportName: string;
@@ -113,7 +113,6 @@ export type RscServerConfig = {
   /** Base URL for client assets */
   clientBase?: string;
   /** SSR stream rendering options */
-
   ssrOptions?: SsrStreamOptions;
 };
 

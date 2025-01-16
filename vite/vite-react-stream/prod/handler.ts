@@ -1,4 +1,4 @@
-import { DefaultLayout } from "../components.js";
+import { DefaultHtml } from "../DefaultHtml.js";
 import type {
   ModuleLoader,
   Options,
@@ -15,7 +15,7 @@ export function createProdHandler(
   loader: ModuleLoader,
   rscServer: RscServerConfig
 ): RequestHandler {
-  const Layout = options.Html ?? DefaultLayout;
+  const Html = options.Html ?? DefaultHtml;
   const pageExportName = options.pageExportName ?? "Page";
   const propsExportName = options.propsExportName ?? "props";
 
@@ -29,7 +29,7 @@ export function createProdHandler(
         url: req.url ?? "",
         controller: new AbortController(),
         loader,
-        Layout: Layout as React.ComponentType<any>,
+        Html: Html as React.ComponentType<any>,
         options,
         pageExportName,
         propsExportName,

@@ -1,5 +1,5 @@
 import type { ViteDevServer } from "vite";
-import { DefaultLayout } from "../components.js";
+import { DefaultHtml } from "../DefaultHtml.js";
 import {
   DEFAULT_CONFIG,
   type BaseProps,
@@ -17,7 +17,7 @@ export function createDevHandler<T extends BaseProps>(
   options: Options,
   loader: ModuleLoader
 ): RequestHandler {
-  const Layout = options.Html ?? DefaultLayout;
+  const Html = options.Html ?? DefaultHtml;
   const pageExportName = options.pageExportName ?? DEFAULT_CONFIG.PAGE_EXPORT;
   const propsExportName = options.propsExportName ?? DEFAULT_CONFIG.PROPS_EXPORT;
 
@@ -34,7 +34,7 @@ export function createDevHandler<T extends BaseProps>(
         controller: new AbortController(),
         server,
         loader,
-        Layout: Layout as React.ComponentType<any>,
+        Html: Html as React.ComponentType<any>,
         options,
         pageExportName,
         propsExportName,

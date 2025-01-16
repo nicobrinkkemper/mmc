@@ -14,7 +14,7 @@ import type {
 export async function handleSsrStream<T extends BaseProps>(
   params: RscStreamParams<T> & { rscServer: RscServerConfig }
 ): Promise<StreamResult> {
-  const { url, controller, Layout, rscServer } = params;
+  const { url, controller, Html: Layout, rscServer } = params;
 
   try {
     const rscComponent = use(rscServer.getRscComponent(url))
