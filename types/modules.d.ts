@@ -2,7 +2,7 @@
  * Type declarations for react-server-dom-esm-client
  */
 
-declare module "react-server-dom-esm/client" {
+declare module "react-server-dom-esm/client.browser" {
   /**
    * Options for creating a client response
    */
@@ -20,27 +20,14 @@ declare module "react-server-dom-esm/client" {
     /** Environment name */
     environmentName?: string;
   }
-  const registerServerReference: (
-    id: string,
-    callServer: (id: string, args: unknown[]) => Promise<unknown>
-  ) => (...args: unknown[]) => Promise<unknown>;
-  /**
-   * Options for encoding replies
-   */
-  interface EncodeReplyOptions {
-    /** Temporary reference set for object deduplication */
-    temporaryReferences?: Map<string, unknown>;
-    /** AbortSignal for cancellation */
-    signal?: AbortSignal;
-  }
 
   /**
    * Creates a response from a fetch request
    */
-  export function createFromFetch<T>(
+  export function createFromFetch(
     promiseForResponse: Promise<Response>,
     options?: ClientResponseOptions
-  ): React.Usable<T>;
+  ): React.Usable<unknown>;
 
   /**
    * Creates a response from a ReadableStream
@@ -48,14 +35,17 @@ declare module "react-server-dom-esm/client" {
   export function createFromReadableStream(
     stream: ReadableStream,
     options?: ClientResponseOptions
-  ): Promise<unknown>;
+  ): React.Usable<unknown>;
 
   /**
    * Creates a server reference
    */
   export function createServerReference(
     id: string,
-    callServer: (id: string, args: unknown[]) => Promise<unknown>
+    callServer?: (id: string, args: unknown[]) => Promise<unknown>,
+    encodeFormAction?: boolean,
+    findSourceMapURL?: (url: string, env: string) => string | null,
+    functionName?: string
   ): (...args: unknown[]) => Promise<unknown>;
 
   /**
@@ -68,33 +58,9 @@ declare module "react-server-dom-esm/client" {
    */
   export function encodeReply(
     value: unknown,
-    options?: EncodeReplyOptions
+    options?: {
+      temporaryReferences?: Map<string, unknown>;
+      signal?: AbortSignal;
+    }
   ): Promise<FormData>;
-
-  interface CreateFromNodeStreamOptions {
-    encodeFormAction?: boolean;
-    nonce?: string;
-    findSourceMapURL?: (source: string) => string | undefined;
-    replayConsoleLogs?: boolean;
-    environmentName?: string;
-  }
-
-  export function createFromNodeStream<T>(
-    stream: import("node:stream").Readable,
-    moduleRootPath: string,
-    moduleBaseURL: string,
-    options?: CreateFromNodeStreamOptions
-  ): React.Usable<T>;
-
-
-  export function createFromFetch(
-    response: Response,
-    options?: { callServer?: Function; moduleBaseURL?: string }
-  ): React.Usable<any>;
-
 }
-
-
-// declare module "react-server-dom-webpack/client" {
-//   export * from "react-server-dom-esm/client";
-// }

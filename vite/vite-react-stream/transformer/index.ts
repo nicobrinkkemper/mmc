@@ -1,7 +1,10 @@
 import type { Plugin } from "vite";
 import { normalizePath } from "vite";
+import { DEFAULT_CONFIG } from "../types.js";
 import { createRscTransformer } from "./transformer.js";
 import type { ViteReactClientTransformOptions } from "./types.js";
+
+const fileExtensionRE = /\.m?[jt]sx?$/;
 
 /**
  * Plugin for transforming React Client Components.
@@ -27,19 +30,26 @@ import type { ViteReactClientTransformOptions } from "./types.js";
  * });
  * ```
  */
-export function viteReactClientTransformPlugin(options: ViteReactClientTransformOptions): Plugin {
-  const fileExtensionRE = /\.m?[jt]sx?$/;
-  const include = options.include || fileExtensionRE;
-  const exclude = options.exclude;
+
+export function viteReactClientTransformPlugin(options?: ViteReactClientTransformOptions): Plugin {
+  const projectRoot = options?.projectRoot || process.cwd();
+  const include = options?.include || fileExtensionRE;
+  const exclude = options?.exclude;
   let transform: any;
+  // get the file we are imported from (parent)
 
   return {
-    name: "vite:react-client-transform",
+    name: "vite:react-stream-transformer",
     enforce: "pre",
 
     configResolved(_config) {
       transform = createRscTransformer({
-        moduleId: options.moduleId || moduleIdDefault(options),
+        moduleId: options?.moduleId || moduleIdDefault({
+          projectRoot: projectRoot,
+          output: {
+            dir: _config.build?.outDir ?? DEFAULT_CONFIG.OUT_DIR
+          }
+        }),
       }).transform;
     },
 
@@ -50,7 +60,7 @@ export function viteReactClientTransformPlugin(options: ViteReactClientTransform
       }
 
       // Look for use client directive at start of file (after any comments)
-      const directiveMatch = code.match(/^(?:\s|\/\*.*?\*\/|\/\/[^\n]*\n)*['"]use client['"];?/);
+      const directiveMatch = code.startsWith('"use client"') || code.startsWith('\'use client\'');
       if (!directiveMatch) return null;
 
       // Transform client components
@@ -59,9 +69,11 @@ export function viteReactClientTransformPlugin(options: ViteReactClientTransform
   };
 }
 
-const moduleIdDefault = ({ projectRoot }: ViteReactClientTransformOptions) => (moduleId: string) => {
+const moduleIdDefault = ({ projectRoot, output: { dir } }: { projectRoot: string, output: { dir: string } }) => (moduleId: string, ssr: boolean) => {
   const normalized = normalizePath(moduleId);
-  return normalized.startsWith(projectRoot) ? normalized.slice(projectRoot.length) : normalized;
+  const noRoot = normalized.startsWith(projectRoot) ? normalized.slice(projectRoot.length) : normalized;
+
+  return noRoot;
 };
 
 const matchPattern = (

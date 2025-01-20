@@ -1,20 +1,28 @@
-This is the React 19 stream plugin. It uses experimental dependencies from React.
-Specifically `react-server-dom-esm/server.node`, which should be retrieved from React's github repository build.
+# Vite React Server Components Plugin
 
-## How to use
+A Vite plugin that enables React Server Components (RSC) without a full-stack framework. Uses experimental dependencies from React, specifically `react-server-dom-esm/server.node`.
 
+## Features
 
-in your vite.config.ts
+- 🚀 Zero-config React Server Components
+- 🔄 Use vite like you would nextjs
 
-```ts
-import { viteReactStreamPlugin } from "vite-react-stream-plugin";
+## Installation
 
-// this can be any router implementation, turn a url in to a file to load
-// in this case, we want the props and page files next to each other
-// but you can give different logic to each.
+```bash
+npm install vite-react-stream
+```
+
+## Usage
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import { viteReactStreamPlugin } from 'vite-react-stream'
+
+// Custom router example
 const createRouter = (fileName: string) => (url: string) => {
   try {
-    // * handle any dynamic variables here *
     return new URL(`file://./src/page${url}/${fileName}`).pathname
   } catch (e) {
     return `src/page/404/${fileName}`
@@ -23,75 +31,54 @@ const createRouter = (fileName: string) => (url: string) => {
 
 export default defineConfig({
   plugins: [
-    // will add client references for server components based on "use client"
-    // this moduleId is essential for the client references to work
-    viteReactClientTransformPlugin({
-        projectRoot: __dirname
-    }),
-    // This plugin requires the `NODE_OPTIONS="--conditions="react server"`
-    // for the vite process itself. It will stream the components, if
-    // the accept headers are text/x-component.
     viteReactStreamPlugin({
       moduleBase: "/src",
       Page: createRouter("page.tsx"),
-      props: createRouter("page.ts"),
+      props: createRouter("props.ts"),
       pageExportName: "Page",
       propsExportName: "props",
       build: {
-        pages: "src/page/pages.tsx",
         output: {
           dir: "dist",
           rsc: "rsc",
         },
       },
-  })],
-});
+    })
+  ]
+})
 ```
 
-Now we can make a prop file, we can start simple
-```ts
-// whats that pokemon?
+## Server Components
+
+Create server components in your pages directory:
+
+```typescript
+// src/pages/pokemon.tsx
+export function Page({ pokemon }) {
+  return <div>It's a {pokemon.name}!</div>
+}
+```
+
+## Page Props
+
+Define props for your pages:
+
+```typescript
+// src/props/pokemon.ts
 export const props = {
-  pokemon: ()=>{
-    return fetch("https://pokeapi.co/api/v2/pokemon-form/399/").then(res => res.json())
+  pokemon: async () => {
+    const res = await fetch("https://pokeapi.co/api/v2/pokemon-form/399/")
+    return res.json()
   }
 }
 ```
-Our page
-```tsx
-export default function Page({ pokemon }: {pokemon: {name: string}}) {
-  return <div>It's a {pokemon.name}</div>
-}
-```
 
-Now, we have everything we need to make pages and it'll only stream the components and props you are visiting.
-It'll also collect the css and add them to the stream.
+## Client Entry
 
-There's one more thing, the entry point:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <link href="src/index.css" rel="stylesheet" />
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/client.tsx"></script>
-    </body>
-</html>
-```
-
-So far so good. We do not need a title, because we can stream it at any time.
-
-```tsx
-import * as React from "react";
-import { createRoot, hydrateRoot } from "react-dom/client";
+```typescript
+// src/client.tsx
 import { createFromFetch } from "react-server-dom-esm/client";
 
-const domNode = document.getElementById("root");
-const hasDomNode = domNode?.hasChildNodes();
-const pathInfo = new URL(window.location.href);
 const rscData = createFromFetch(
   fetch(window.location.href, {
     headers: { Accept: "text/x-component" },
@@ -101,30 +88,35 @@ const rscData = createFromFetch(
   }
 );
 
-const Client = ({ url, data }: { url: string, data: React.Usable<unknown> }) => {
-  const content = React.use(data)
-  return <div>Client {url} {content}</div>
-}
-
-if (hasDomNode && !import.meta.env.DEV) {
-  hydrateRoot(
-    domNode!,
-    <Client url={window.location.href} initialData={rscData}>
-      {rscData as any as React.ReactNode}
-    </Client>
-  );
-} else if (!hasDomNode) {
-  const root = createRoot(domNode!);
-  root.render(
-    <Client url={window.location.href} initialData={rscData}>
-      {rscData as any as React.ReactNode}
-    </Client>
-  );
-  if (import.meta.hot) {
-    import.meta.hot.accept();
-  }
-}
+// ... rest of client setup
 ```
+
+## HTML Template
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link href="src/index.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/client.tsx"></script>
+  </body>
+</html>
+```
+
+## Notes
+
+- Requires `NODE_OPTIONS="--conditions=react-server"` for the Vite process
+- CSS files are automatically collected and streamed
+- Components are streamed only when visited
+- Supports both sync and async props
+
+## License
+
+MIT
 
 
 

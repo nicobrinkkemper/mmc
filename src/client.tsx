@@ -1,11 +1,14 @@
 "use client";
 import React, {
   Suspense,
+  use,
   useCallback,
-  useTransition
+  useState,
+  useTransition,
+  type ReactNode
 } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
-import { createFromFetch, encodeReply } from "react-server-dom-esm/client";
+import { createFromFetch, encodeReply } from "react-server-dom-esm/client.browser";
 import { App } from "./App.js";
 import { getThemePathInfo } from "./data/getThemePathInfo.js";
 import { ErrorBoundary } from "./ErrorBoundary.js";
@@ -76,7 +79,7 @@ const Shell: React.FC<{
   const [, startTransition] = useTransition();
   const [storeData, setStoreData] =
     React.useState<React.Usable<unknown>>(initialServerData);
-  const [pathInfo, setPathInfo] = React.useState(initialPathInfo);
+  const [pathInfo, setPathInfo] = useState(initialPathInfo);
 
   const navigate = useCallback((to: string) => {
     startTransition(() => {
@@ -110,7 +113,7 @@ const Shell: React.FC<{
   });
 
 
-  const content = React.use(storeData);
+  const content = use(storeData);
 
   return (
     <ErrorBoundary>
@@ -122,7 +125,7 @@ const Shell: React.FC<{
           </>
         }
       >
-        {content as React.ReactNode}
+        {content as ReactNode}
       </Suspense>
     </ErrorBoundary>
   );

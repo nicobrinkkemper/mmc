@@ -1,6 +1,5 @@
-import { createElement, Fragment } from "react";
+import { createElement } from "react";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-import { CssCollector } from "../components.js";
 import type { ModuleLoader, RscStreamOptions, StreamResult } from '../types.js';
 
 async function resolveProps(loader: ModuleLoader, path: string, exportName: string, url: string) {
@@ -30,49 +29,20 @@ async function resolvePage(loader: ModuleLoader, path: string, exportName: strin
 }
 
 export async function handleRscStream(params: RscStreamOptions): Promise<StreamResult> {
-  const { url, controller, loader, Html, moduleBase, pagePath, propsPath, temporaryReferences, logger, cssFiles = [] } = params;
+  const { url, controller, loader, Html, moduleBase, pagePath, propsPath, temporaryReferences, logger } = params;
   try {
-    // Track CSS modules as they're loaded
-    const cssModules = new Set<string>();
-    
-    // Add any pre-collected CSS files
-    cssFiles.forEach(file => cssModules.add(file));
-
-    const wrappedLoader: ModuleLoader = async (id) => {
-      const mod = await loader(id);
-      // If this is a CSS module, emit a collector
-      if (id.endsWith('.css')) {
-        console.log('[RSC CSS] Found in loader:', id);
-        cssModules.add(id);
-      }
-      return mod;
-    };
-
-    // Get props using wrapped loader
-    const props = await resolveProps(wrappedLoader, propsPath ?? pagePath, params.propsExportName, url);
+    // Get props
+    const props = await resolveProps(loader, propsPath ?? pagePath, params.propsExportName, url);
     if(props.type === "error") return { type: props.type, error: props.error };
-    
-    // Get page using wrapped loader
-    const Page = await resolvePage(wrappedLoader, pagePath, params.pageExportName);
+    // Get page
+    const Page = await resolvePage(loader, pagePath, params.pageExportName);
     if(Page.type === "error") return { type: Page.type, error: Page.error };
 
-    // Log CSS modules before creating stream
-    console.log('[RSC CSS] Collected modules:', Array.from(cssModules));
-
-    // Create RSC stream with keyed elements
+    // Create RSC stream
     const stream = renderToPipeableStream(
-      createElement(Fragment, null, [
-        createElement(Html, { key: 'html' },
-          createElement(Page.page, { key: 'page', ...props.props })
-        ),
-        // Add CSS collectors for each module
-        ...(cssFiles || []).map((css, index) => 
-          createElement(CssCollector, { 
-            key: `css-${index}`,
-            url: css
-          })
-        )
-      ]),
+      createElement(Html, null,
+        createElement(Page.page, props.props)
+      ),
       moduleBase,
       {
         signal: controller.signal,

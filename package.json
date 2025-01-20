@@ -9,7 +9,9 @@
     "lint": "eslint ./src --fix",
     "serve": "node dist/server/dev-server.mjs",
     "serve-gh": "export PUBLIC_URL=/mmc; node dist/server/dev-server.mjs",
-    "build": "export BASE_URL='https://mmcelebration.com'; NODE_OPTIONS='--conditions=react-server' vite build",
+    "build": "NODE_OPTIONS='--conditions=react-server' vite build",
+    "export": "node dist/server/export.js",
+    "build:all": "npm run build && npm run export",
     "build-gh": "export BASE_URL='https://nicobrinkkemper.github.io' && export PUBLIC_URL='/mmc' && run-s startup-gh build server:crawl",
     "tsc": "rm -rf dist && npx tsc --project tsconfig.node.json && find src -name \"*.css\" -exec cp --parents {} dist/ \\;",
     "tsc-watch": "npx tsc --build --watch --incremental --force",
@@ -36,8 +38,9 @@
     "startup:compile": "npx tsc --project tsconfig.node.json",
     "startup:run": "export NODE_ENV='development'; export NODE_OPTIONS='--experimental-json-modules --enable-source-maps'; node ./dist/startup/startup.mjs",
     "dev": "vite",
-    "preview": "NODE_OPTIONS='--conditions react-server' vite preview",
-    "css": "find src -name \"*.css\" -exec cp --parents {} dist/ \\;"
+    "preview": "serve static",
+    "css": "find src -name \"*.css\" -exec cp --parents {} dist/ \\;",
+    "oopsie-wsl": "find . -type f -name \"*:Zone.Identifier\" -exec rm {} \\;"
   },
   "engines": {
     "node": ">=18"
@@ -80,8 +83,8 @@
     "@types/lodash": "^4.17.13",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.10.2",
-    "@types/react": "^19.0.0-rc.1",
-    "@types/react-dom": "^19.0.0-rc.1",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
     "acorn-loose": "^8.4.0",
     "babel-plugin-react-compiler": "^19.0.0-beta-37ed2a7-20241206",

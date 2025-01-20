@@ -1,51 +1,62 @@
-import { DefaultHtml } from "../DefaultHtml.js";
-import type {
-  ModuleLoader,
-  Options,
-  RequestHandler,
-  RscServerConfig
+import { IncomingMessage, ServerResponse } from "http";
+import type { ViteDevServer } from "vite";
+import { createLogger } from "vite";
+import { createHandler } from "../createHandler.js";
+import {
+  type RequestHandler,
+  type StreamPluginOptions
 } from "../types.js";
-import { handleSsrStream } from "./ssr.js";
 
 /**
- * Creates a request handler for production
+ * Creates a request handler for development
  */
 export function createProdHandler(
-  options: Options,
-  loader: ModuleLoader,
-  rscServer: RscServerConfig
+  server: ViteDevServer,
+  options: StreamPluginOptions,
 ): RequestHandler {
-  const Html = options.Html ?? DefaultHtml;
-  const pageExportName = options.pageExportName ?? "Page";
-  const propsExportName = options.propsExportName ?? "props";
-
-  return async (req, res, next) => {
+  return async (req: IncomingMessage, res: ServerResponse, next: any) => {
     // Skip non-page requests
-    if (req.url?.includes(".")) {
+    if (!req.url || req.url.includes(".")) {
       return next();
     }
+
     try {
-      const result = await handleSsrStream({
+      console.log("[stream] Handling RSC stream");
+      
+      const result = await createHandler(options, {
         url: req.url ?? "",
-        controller: new AbortController(),
-        loader,
-        Html: Html as React.ComponentType<any>,
-        options,
-        pageExportName,
-        propsExportName,
-        rscServer,
+        loader: server.ssrLoadModule,
+        temporaryReferences: new WeakMap(),
+        logger: createLogger()
       });
 
       if (result.type === "error") {
-        console.error("[SSR] Stream error:", result.error);
-        res.writeHead(500);
-        res.end("Internal Server Error");
+        if ((result.error as Error).message?.includes('module runner has been closed')) {
+          console.log("[RSC] Module runner closed, returning 503");
+          res.writeHead(503, { 'Content-Type': 'text/x-component' });
+          res.end('{"error":"Server restarting..."}');
+          return;
+        }
+        console.error("[RSC] Stream error:", result.error);
+        res.writeHead(500, { 'Content-Type': 'text/x-component' });
+        res.end('{"error":"Internal Server Error"}');
         return;
       }
 
-      res.setHeader("Content-Type", "text/html");
+      if (result.type !== "success") {
+        res.end();
+        return;
+      }
+
+      res.setHeader("Content-Type", "text/x-component");
       result.stream.pipe(res);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message?.includes('module runner has been closed')) {
+        console.log("[RSC] Module runner closed, returning 503");
+        res.writeHead(503, { 'Content-Type': 'text/x-component' });
+        res.end('{"error":"Server restarting..."}');
+        return;
+      }
       next(error);
     }
   };

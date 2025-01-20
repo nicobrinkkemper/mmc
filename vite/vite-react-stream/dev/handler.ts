@@ -1,27 +1,20 @@
+import { IncomingMessage, ServerResponse } from "http";
 import type { ViteDevServer } from "vite";
-import { DefaultHtml } from "../DefaultHtml.js";
+import { createLogger } from "vite";
+import { createHandler } from "../createHandler.js";
 import {
-  DEFAULT_CONFIG,
-  type BaseProps,
-  type ModuleLoader,
-  type Options,
   type RequestHandler,
+  type StreamPluginOptions
 } from "../types.js";
-import { handleRscStream } from "./rsc.js";
 
 /**
  * Creates a request handler for development
  */
-export function createDevHandler<T extends BaseProps>(
+export function createDevHandler(
   server: ViteDevServer,
-  options: Options,
-  loader: ModuleLoader
+  options: StreamPluginOptions,
 ): RequestHandler {
-  const Html = options.Html ?? DefaultHtml;
-  const pageExportName = options.pageExportName ?? DEFAULT_CONFIG.PAGE_EXPORT;
-  const propsExportName = options.propsExportName ?? DEFAULT_CONFIG.PROPS_EXPORT;
-
-  return async (req, res, next) => {
+  return async (req: IncomingMessage, res: ServerResponse, next: any) => {
     // Skip non-page requests
     if (!req.url || req.url.includes(".")) {
       return next();
@@ -29,15 +22,13 @@ export function createDevHandler<T extends BaseProps>(
 
     try {
       console.log("[stream] Handling RSC stream");
-      const result = await handleRscStream({
+      
+      const result = await createHandler(options, {
         url: req.url ?? "",
-        controller: new AbortController(),
-        server,
-        loader,
-        Html: Html as React.ComponentType<any>,
-        options,
-        pageExportName,
-        propsExportName,
+        loader: server.ssrLoadModule,
+        temporaryReferences: new WeakMap(),
+        logger: createLogger(),
+        moduleGraph: server.moduleGraph
       });
 
       if (result.type === "error") {
@@ -50,6 +41,11 @@ export function createDevHandler<T extends BaseProps>(
         console.error("[RSC] Stream error:", result.error);
         res.writeHead(500, { 'Content-Type': 'text/x-component' });
         res.end('{"error":"Internal Server Error"}');
+        return;
+      }
+
+      if (result.type !== "success") {
+        res.end();
         return;
       }
 

@@ -1,13 +1,13 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { parentPort } from "node:worker_threads";
 import { createElement, Fragment } from "react";
+import { renderToPipeableStream as renderToHtmlStream } from "react-dom/server.node";
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-import { DEFAULT_CONFIG, type BaseProps, type BuildConfig } from "./types.js";
+import { DEFAULT_CONFIG, type BuildConfig } from "./types.js";
 
-async function getRscData<T extends BaseProps>(
+async function getRscData(
   route: string,
-  options: BuildConfig<T>["options"]
+  options: BuildConfig["options"]
 ) {
   console.log("\n[RSC] Generating RSC data for route:", route);
 
@@ -52,44 +52,87 @@ async function getRscData<T extends BaseProps>(
   return Buffer.concat(chunks);
 }
 
-export async function exportRsc<T extends BaseProps>(config: BuildConfig<T>) {
+async function generateStaticOutput(
+  route: string,
+  rscData: Buffer,
+  options: BuildConfig["options"],
+  outputDir: string
+) {
+  // Create HTML stream with RSC data embedded
+  const htmlStream = renderToHtmlStream(
+    createElement(options?.Html || DEFAULT_CONFIG.HTML, {
+      manifest: {},
+      children: createElement(Fragment, null, [
+        // Embed RSC data
+        createElement('script', {
+          type: 'text/x-component',
+          dangerouslySetInnerHTML: {
+            __html: rscData.toString('utf-8')
+          }
+        }),
+        // Add client entry
+        createElement('script', {
+          type: 'module',
+          src: `${options?.moduleBase || DEFAULT_CONFIG.MODULE_BASE}/entry-client.js`
+        })
+      ])
+    })
+  );
+
+  // Collect HTML stream
+  const chunks: Buffer[] = [];
+  await new Promise<void>((resolve) => {
+    htmlStream.pipe({
+      write: (chunk: Buffer) => chunks.push(chunk),
+      end: () => resolve(),
+    } as any);
+  });
+
+  // Write HTML file
+  const htmlPath = resolve(
+    outputDir,
+    route === '/' ? 'index.html' : `${route.replace(/^\//, '')}/index.html`
+  );
+  mkdirSync(dirname(htmlPath), { recursive: true });
+  writeFileSync(htmlPath, Buffer.concat(chunks));
+
+  console.log(`[Static] Generated ${htmlPath}`);
+}
+
+export async function exportRsc(config: BuildConfig) {
   const BASE_DIR = resolve(process.cwd(), config.output?.dir ?? DEFAULT_CONFIG.OUT_DIR);
   const RSC_DIR = resolve(BASE_DIR, config.output?.rsc ?? DEFAULT_CONFIG.RSC_DIR);
+  const STATIC_DIR = resolve(BASE_DIR, config.output?.static ?? 'static');
 
-  // Ensure RSC directory exists
+  // Ensure directories exist
   mkdirSync(RSC_DIR, { recursive: true });
+  mkdirSync(STATIC_DIR, { recursive: true });
 
-  // Import pages and get routes
-  const pagesPath = typeof config.pages === 'function'
+  // Get routes
+  const routes = typeof config.pages === 'function' 
     ? await config.pages()
     : config.pages;
 
-  const { pages } = await import(pagesPath[0]) as {
-    pages: Record<string, { route: { path: string } }>;
-  };
-
-  for (const { route } of Object.values(pages)) {
+  for (const route of routes) {
     try {
-      // Normalize path for filesystem
-      const normalizedPath = route.path.replace(/^\/+/, "").replace(/\/+$/, "");
-      const outputPath = resolve(
-        RSC_DIR,
-        normalizedPath ? `${normalizedPath}.json` : "index.json"
-      );
-
-      // Ensure directory exists
-      mkdirSync(dirname(outputPath), { recursive: true });
-
       // Generate RSC data
-      const rsc = await getRscData<T>(route.path, config.options);
-      writeFileSync(outputPath, JSON.stringify(rsc));
+      const rsc = await getRscData(route, config.options);
+      
+      // Write RSC data
+      const rscPath = resolve(
+        RSC_DIR,
+        route === '/' ? 'index.json' : `${route.replace(/^\//, '')}.json`
+      );
+      mkdirSync(dirname(rscPath), { recursive: true });
+      writeFileSync(rscPath, rsc);
 
-      console.log(`[RSC] Generated ${route.path} -> ${outputPath}`);
+      // Generate static HTML
+      await generateStaticOutput(route, rsc, config.options, STATIC_DIR);
+
     } catch (error) {
-      console.error(`[RSC] Failed to generate ${route.path}:`, error);
+      console.error(`[Export] Failed to generate ${route}:`, error);
     }
   }
 
-  console.log("🚀 RSC build ready!");
-  parentPort?.postMessage("done");
+  console.log("🚀 Static site generation complete!");
 }
