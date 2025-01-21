@@ -92,12 +92,12 @@ declare global {
   type AsProperty = React.ElementType;
   /**
    * The As property might not be implemented at every component level, but
-   * each component can have the `as` property to override the default element. This
-   * can just be a string for static rendering, but at client side rendering it can
-   * be a React component.
+   * each component can have the `as` property to override the default element.
    *
-   * Besides the as property, things like className and other default html props
-   * will be available through JSX intrinsic elements.
+   * It can also be a full fledged component. When it's a client component,
+   * it will trigger the client boundary as expected - until it's rendered.
+   *
+   * Lastly, the "" string can be used as a shortcut for the default React.Fragment component.
    */
   type WithAsProperty<As extends AsProperty> = (As extends ""
     ? React.ComponentProps<typeof React.Fragment>

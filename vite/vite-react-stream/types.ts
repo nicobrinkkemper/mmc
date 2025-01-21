@@ -1,6 +1,6 @@
 import React from "react";
 import type { PipeableStream } from "react-dom/server.node";
-import type { Connect, Logger, Manifest, ViteDevServer } from "vite";
+import type { Connect, Logger, Manifest, ModuleGraph, ViteDevServer } from "vite";
 
 export interface StreamPluginOptions {
   moduleBase: string;
@@ -84,6 +84,7 @@ export interface RscStreamOptions {
   temporaryReferences: WeakMap<any, string>;
   logger: Console | Logger;
   cssFiles?: string[];
+  moduleGraph: ModuleGraph;
 }
 
 export interface RouteConfig {

@@ -1,4 +1,5 @@
 import React from "react";
+import { BASE_URL_WITH_PUBLIC_URL } from "../config/env";
 
 export const MetaTags = ({
   title,
@@ -11,8 +12,6 @@ export const MetaTags = ({
   tags,
   twitter,
   image,
-  baseUrl,
-  publicUrl,
 }: Pick<
   Required<HtmlProps>,
   | "title"
@@ -25,23 +24,20 @@ export const MetaTags = ({
   | "tags"
   | "twitter"
   | "image"
-  | "baseUrl"
-  | "publicUrl"
 >) => {
-  const baseUrlWithPublicUrl = `${baseUrl}${publicUrl}`;
   const metaTags = [
     { itemProp: "name", content: title },
     { itemProp: "description", content: description },
     { name: "viewport", content: `width=device-width,initial-scale=1` },
     { name: "description", content: description },
-    { name: "twitter:title", content: `${title} | ${baseUrlWithPublicUrl}` },
+    { name: "twitter:title", content: `${title} | ${BASE_URL_WITH_PUBLIC_URL}` },
     { name: "twitter:description", content: description },
     { name: "twitter:creator", content: "@bbmariomaker2" },
-    { name: "og:title", content: `${title} | ${baseUrlWithPublicUrl}` },
+    { name: "og:title", content: `${title} | ${BASE_URL_WITH_PUBLIC_URL}` },
     { name: "og:type", content: contentType },
     { name: "og:url", content: url },
     { name: "og:description", content: description },
-    { name: "og:site_name", content: `${baseUrlWithPublicUrl}` },
+    { name: "og:site_name", content: `${BASE_URL_WITH_PUBLIC_URL}` },
     { name: "og:locale", content: "en_EN" },
   ];
 

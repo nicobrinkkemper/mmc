@@ -18,8 +18,6 @@ export function Html({
   tags,
   twitter,
   image,
-  baseUrl,
-  publicUrl,
 }: React.PropsWithChildren<Required<HtmlProps>>) {
   return (
     <>
@@ -35,10 +33,8 @@ export function Html({
         tags={tags}
         twitter={twitter}
         image={image}
-        baseUrl={baseUrl}
-        publicUrl={publicUrl}
       />
-      <Favicons favicons={favicons} baseUrl={baseUrl} publicUrl={publicUrl} />
+      <Favicons favicons={favicons}  />
       <Assets assets={assets} />
       {children}
     </>

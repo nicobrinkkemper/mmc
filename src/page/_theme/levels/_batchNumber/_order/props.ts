@@ -14,7 +14,8 @@ export const props = createProps(
     clickable: true,
   },
   ({ info: { caps }, level }) => {
-    if (!level || !("makerName" in level)) return {};
+    if (!level || !("levelName" in level))
+      throw new Error(`${caps} level not found`);
     return {
       description: `${caps} level by ${level.makerName.value}: ${level.levelName.value} - ${level.levelCode}`,
       title: `${level.levelName.value} | ${level.levelCode} | ${caps}`,

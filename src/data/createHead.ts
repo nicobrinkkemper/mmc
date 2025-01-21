@@ -1,4 +1,4 @@
-import { BASE_URL } from "../config/constants.js";
+import { BASE_URL } from "../config/env.js";
 import { defaultDescription, defaultTitle } from "../config/themeConfig.js";
 
 export const createHead: CreateHeadFn =

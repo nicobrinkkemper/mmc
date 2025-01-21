@@ -1,3 +1,5 @@
+import { createFetchWithRetry } from "../utils/createFetchWithRetry.js";
+
 const link = <GID extends number>(gid: GID) =>
   ({
     gid,
@@ -5,34 +7,6 @@ const link = <GID extends number>(gid: GID) =>
   } as const);
 
 let hasErrors = false;
-
-function fetchWithRetry(url: string, retries = 3, delay = 1000): Promise<Response> {
-  return new Promise((resolve, reject) => {
-    const attempt = async (attemptNumber: number) => {
-      try {
-        const response = await fetch(url, {
-          signal: AbortSignal.timeout(30000),
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
-          }
-        });
-        resolve(response);
-      } catch (error) {
-        if (attemptNumber === retries) {
-          reject(error);
-          return;
-        }
-        // Calculate delay with exponential backoff: delay * 2^attemptNumber
-        const backoffDelay = delay * Math.pow(2, attemptNumber);
-        console.log(`Retry attempt ${attemptNumber + 1} after ${backoffDelay}ms`);
-        setTimeout(() => attempt(attemptNumber + 1), backoffDelay);
-      }
-    };
-
-    attempt(0);
-  });
-}
 
 /**
  * Helper to create final configuration object that will be used for the codebase.
@@ -58,9 +32,19 @@ export const createConfig = <
         return undefined;
       }
       console.log(`Updating ${themeConfig.theme}`);
-      return fetchWithRetry(spreadsheet.link)
-        .then(response => {
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return createFetchWithRetry({
+        url: spreadsheet.link,
+        retries: 3,
+        delay: 1000,
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      })
+        .then((response) => {
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+          hasErrors = false;
           return response.text();
         })
         .catch((e) => {
@@ -71,7 +55,7 @@ export const createConfig = <
           if (e.cause instanceof AggregateError) {
             console.error(e.cause.errors);
           }
-          if (e.name === 'AbortError') {
+          if (e.name === "AbortError") {
             console.error("Request timed out after 30 seconds");
           }
           hasErrors = true;

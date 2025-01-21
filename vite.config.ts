@@ -41,10 +41,7 @@ export default defineConfig((configEnv) => {
         moduleBase: "/src",
         Page,
         props,
-        Html: ({ children }) => {
-          console.log({ children });
-          return React.createElement('div', { key: 'html' }, children);
-        },
+        Html: React.Fragment,
         pageExportName: "Page",
         propsExportName: "props",
         collectCss: true,

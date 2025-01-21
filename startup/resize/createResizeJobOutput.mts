@@ -1,5 +1,5 @@
 import path from "node:path";
-import { PUBLIC_URL } from "../../src/config/constants.js";
+import { PUBLIC_URL } from "../../src/config/env.js";
 import { fileStat, folderStat } from "../file/stat.mjs";
 import { resizeTemplateParsers } from "./resizeTemplateParsers.mjs";
 

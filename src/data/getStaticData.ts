@@ -178,7 +178,7 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
           if (!result.clickable) {
             try {
               result.clickable = (
-                await import("../components/ClientClickable.jsx")
+                await import("../components/ClientClickable.js")
               ).ClientClickable;
             } catch (error) {
               console.error("Error loading ClientClickable:", error);
@@ -224,6 +224,5 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
     });
     throw error;
   }
-  // we made it passed all the throws, must be ok
   return result;
 };

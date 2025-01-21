@@ -23,7 +23,7 @@ export const createProps: CreatePropsFn = (route, options, fn) => {
         "No options provided, this will return the json directly, will not provide computed values"
       );
     }
-
+    console.log(to);
     const data = await getStaticData(pathInfo, options);
     if (!data) {
       return null;

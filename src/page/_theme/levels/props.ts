@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../../config/constants.js";
+import { BASE_URL } from "../../../config/env.js";
 import { siteName } from "../../../config/themeConfig.js";
 import { createProps } from "../../../data/createProps.js";
 

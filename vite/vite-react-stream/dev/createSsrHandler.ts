@@ -33,7 +33,8 @@ export function createSsrHandler(options: StreamPluginOptions, server: ViteDevSe
         loader: server.ssrLoadModule,
         temporaryReferences: new WeakMap(),
         url: req.url,
-        logger: createLogger()
+        logger: createLogger(),
+        moduleGraph: server.moduleGraph,
       });
       const moduleBase = options.moduleBase ?? DEFAULT_CONFIG.MODULE_BASE;
       const moduleBaseURL = options.moduleBaseURL ? options.moduleBaseURL : 

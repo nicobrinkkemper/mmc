@@ -1,32 +1,33 @@
 "use client";
 import React, { useCallback } from "react";
-import { getThemePathInfo } from "../data/getThemePathInfo.js";
 
-interface Props {
-  children: React.ReactNode;
-  className?: string;
-  href: string;
-}
-type PropsWithHref = Omit<Props, "to"> & { href: string; to?: never };
+type ClientClickableType = ThemeComponent<{}, "a", {
+  to: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+}>;
 
-export const ClientClickable: React.FC<Props | PropsWithHref> = ({
-  href,
+
+export const ClientClickable: ClientClickableType = ({
   children,
-  className,
+  as: Component = "a",
+  to,
+  ...props
 }) => {
+  const href = to || props.href;
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
-      const pathInfo = getThemePathInfo(e.currentTarget.href);
-      window.history.pushState(pathInfo, "", pathInfo.to);
-      window.dispatchEvent(new PopStateEvent("popstate", { state: pathInfo }));
+      const newTo = e.currentTarget && 'href' in e.currentTarget ? e.currentTarget.href : href;
+      const newState = { to: newTo };
+      window.history.pushState(newState, "", newTo);
+      window.dispatchEvent(new PopStateEvent("popstate", { state: newState }));
     },
     [href]
   );
 
   return (
-    <a href={href} onClick={handleClick} className={className}>
+    <Component {...props} onClick={handleClick}>
       {children}
-    </a>
+    </Component>
   );
 };

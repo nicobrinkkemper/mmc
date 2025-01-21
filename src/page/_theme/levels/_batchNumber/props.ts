@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../../../config/constants.js";
+import { BASE_URL } from "../../../../config/env.js";
 import { levels } from "../../../../config/themeConfig.js";
 import { convertNumberToWord } from "../../../../data/convertNumberToWord.js";
 import { createProps } from "../../../../data/createProps.js";
