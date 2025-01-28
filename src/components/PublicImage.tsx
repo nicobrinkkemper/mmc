@@ -14,12 +14,12 @@ export function PublicImage({
 >) {
   return (
     <img
-      src={props.src}
-      srcSet={props.srcSet}
-      alt={alt}
+      src={`${props.src ?? ""}`}
+      srcSet={`${props.srcSet ?? ""}`}
+      alt={alt ?? ""}
       width={width}
       height={height}
-      className={className}
+      className={className ?? ""}
     />
   );
 }

@@ -30,9 +30,12 @@ export const Layout: LayoutComponent = ({
         images={images}
         adjacent={adjacent}
         clickable={clickable}
+        key="logo"  
       />
-      <article className={className}>{children}</article>
-      <Footer pathInfo={pathInfo} clickable={clickable} />
+      <article className={className} key="article">
+        {children}
+      </article>
+      <Footer pathInfo={pathInfo} key="footer" clickable={clickable} />
     </>
   );
 };

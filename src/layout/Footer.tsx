@@ -11,7 +11,6 @@ export const Footer: FooterType = ({
   clickable: Clickable,
 }) => {
   return (
-    <>
       <footer className={styles["Footer"]}>
         <a
           href="https://discord.gg/8mnW3XfZq9"
@@ -31,6 +30,5 @@ export const Footer: FooterType = ({
           Credits
         </Clickable>
       </footer>
-    </>
   );
 };

@@ -4,11 +4,12 @@ import React, {
   useCallback,
   useState,
   useTransition,
-  type ReactNode
+  type ReactNode,
 } from "react";
-import { createRoot, hydrateRoot } from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "./ErrorBoundary.js";
 import { useEventListener } from "./hooks/useEventListener.js";
+import "./index.css";
 import { createReactFetcher } from "./utils/createReactFetcher.js";
 /**
  * Client-side React Server Components implementation
@@ -28,15 +29,18 @@ const Shell: React.FC<{
   data: React.Usable<unknown>;
 }> = ({ data: initialServerData }) => {
   const [, startTransition] = useTransition();
-  const [storeData, setStoreData] = useState<React.Usable<unknown>>(initialServerData);
+  const [storeData, setStoreData] =
+    useState<React.Usable<unknown>>(initialServerData);
 
   const navigate = useCallback((to: string) => {
-    window.scrollTo(0, 0);
+    if ("scrollTo" in window) window.scrollTo(0, 0);
     startTransition(() => {
       // Create new RSC data stream
-      setStoreData(createReactFetcher({
-        url: to,
-      }));
+      setStoreData(
+        createReactFetcher({
+          url: to,
+        })
+      );
     });
   }, []);
 
@@ -51,14 +55,9 @@ const Shell: React.FC<{
     }
   });
 
-
   const content = use(storeData);
 
-  return (
-    <ErrorBoundary>
-      {content as ReactNode}
-    </ErrorBoundary>
-  );
+  return <ErrorBoundary>{content as ReactNode}</ErrorBoundary>;
 };
 // Initialize the app
 const rootElement = document.getElementById("root");
@@ -66,24 +65,4 @@ if (!rootElement) throw new Error("Root element not found");
 
 const intitalData = createReactFetcher();
 
-
-if (rootElement.hasChildNodes() && !import.meta.env.DEV) {
-  hydrateRoot(
-    rootElement,
-    <Shell data={intitalData} />
-  );
-} else if (import.meta.hot) {
-  import.meta.hot.accept();
-  import.meta.hot.on('vite:afterUpdate', () => {
-    window.dispatchEvent(new PopStateEvent("popstate", { state: { to: window.location.href } }));
-  }); 
-  if(!rootElement.hasChildNodes()) {
-    createRoot(rootElement).render(
-      <Shell data={intitalData}  />
-    );
-  }
-} else {
-  createRoot(rootElement).render(
-    <Shell data={intitalData}  />
-  );
-}
+createRoot(rootElement).render(<Shell data={intitalData} />);

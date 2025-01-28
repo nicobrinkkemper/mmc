@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { createFromFetch } from "react-server-dom-esm/client.browser";
-import { absoluteUrl } from "../config/env";
-import { callServer } from "./callServer";
+import { absoluteUrl } from "../config/env.js";
+import { callServer } from "./callServer.js";
 
 export function createReactFetcher({
   url = window.location.pathname,

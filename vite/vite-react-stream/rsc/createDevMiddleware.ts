@@ -1,8 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 import type { ViteDevServer } from "vite";
-import { createLogger } from "vite";
-import { createHandler } from "../createHandler.js";
 import { type RequestHandler, type StreamPluginOptions } from "../types.js";
+import { createHandler } from "./createHandler.js";
 
 /**
  * Creates a request handler for development
@@ -20,12 +19,8 @@ export function createDevMiddleware(
     try {
       console.log("[stream] Handling RSC stream");
 
-      const result = await createHandler(options, {
-        url: req.url ?? "",
+      const result = await createHandler(req.url, options, {
         loader: server.ssrLoadModule,
-        temporaryReferences: new WeakMap(),
-        logger: createLogger(),
-        moduleGraph: server.moduleGraph,
       });
 
       if (result.type === "error") {

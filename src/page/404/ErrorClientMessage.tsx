@@ -15,7 +15,8 @@ export const ErrorClientMessage = ({
       : decodeURI(
           typeof search === "string" && search !== ""
             ? search
-            : window.location.search.split("error=")[1]
+            : window?.location?.search?.split("error=")[1]
         )}
   </code>
 );
+

@@ -85,19 +85,17 @@ export const Button = ({
     : {};
 
   return (
-    <>
-      <Clickable
-        href={normalizedHref}
-        id={id}
-        className={classN}
-        {...blankProps}
-      >
-        <div className={styles["ButtonInner"]}>
-          {iconPosition === "left" && Icon}
-          {buttonChildren}
-          {iconPosition !== "left" && Icon}
-        </div>
-      </Clickable>
-    </>
+    <Clickable
+      href={normalizedHref}
+      id={id}
+      className={classN}
+      {...blankProps}
+    >
+      <div className={styles["ButtonInner"]}>
+        {iconPosition === "left" && Icon}
+        {buttonChildren}
+        {iconPosition !== "left" && Icon}
+      </div>
+    </Clickable>
   );
 };

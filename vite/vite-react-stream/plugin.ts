@@ -1,133 +1,102 @@
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import type { ServerResponse } from 'node:http';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from "node:url";
-import type { NormalizedInputOptions } from 'rollup';
-import type { Plugin, PreviewServer, ResolvedConfig, UserConfig, ViteDevServer } from 'vite';
-import { build } from 'vite';
-import { Worker } from 'worker_threads';
-import { createStreamHandler } from './dev/createStreamHandler.js';
-import { DEFAULT_CONFIG, type StreamPluginOptions } from './types.js';
+import { readFileSync } from "node:fs";
+import type { ServerResponse } from "node:http";
+import { resolve as resolvePath } from "node:path";
+import { Worker } from "node:worker_threads";
+import type { Plugin as RollupPlugin } from "rollup";
+import type { Plugin as VitePlugin } from "vite";
+import {
+  createLogger,
+  type ResolvedConfig,
+  type UserConfig,
+  type ViteDevServer,
+} from "vite";
+import { createBuildConfig } from "./build/createBuildConfig.js";
+import { checkFilesExist } from "./checkFilesExist.js";
+import { getEnv } from "./getEnv.js";
+import { createPageLoader } from "./html/createPageLoader.js";
+import { renderPages } from "./html/renderPages.js";
+import { createHandler } from "./rsc/createHandler.js";
+import type { ReactStreamPluginMeta } from "./types.js";
+import { type StreamPluginOptions } from "./types.js";
+import { createWorker } from "./worker/createWorker.js";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+let pageSet: Set<string>;
+let pageMap: Map<string, string>;
+let propsSet: Set<string>;
+let propsMap: Map<string, string>;
+let entries: string[];
+let worker: Worker;
+let config: ResolvedConfig;
+let rootDir: string;
+let cssModules = new Set<string>();
+let clientComponents = new Map<string, string>();
+let define: Record<string, string>;
+let envPrefix: string;
+let env: Record<string, string>;
 
-function validateFiles(options: StreamPluginOptions, root: string) {
-  const errors: string[] = [];
-
-  // Check if files exist when string paths are provided
-  if (typeof options.Page === 'string') {
-    const pagePath = resolve(root, options.Page);
-    if (!existsSync(pagePath)) {
-      errors.push(`Page file not found: ${pagePath}`);
-    }
-  }
-
-  if (typeof options.props === 'string') {
-    const propsPath = resolve(root, options.props);
-    if (!existsSync(propsPath)) {
-      errors.push(`Props file not found: ${propsPath}`);
-    }
-  }
-
-  if (errors.length) {
-    throw new Error('React Stream Plugin Validation:\n' + errors.join('\n'));
-  }
-}
-
-const fileRegex = /\.m?[jt]sx?$/;
-
-export function reactStreamPlugin(options: StreamPluginOptions = {} as StreamPluginOptions): Plugin {
-  const clientComponents = new Map<string, string>();
-  const cssModules = new Set<string>();
-  let rootDir: string = process.cwd();
-  let cacheDir: string;
-  let resolvedConfig: ResolvedConfig;
-  let worker: Worker;
-  let isRestarting = false;
-  let blockRequestsUntil = 0;
-
+export async function reactStreamPlugin(
+  options: StreamPluginOptions = {} as StreamPluginOptions
+): Promise<VitePlugin & RollupPlugin & { meta: ReactStreamPluginMeta }> {
+  rootDir = options.projectRoot ?? process.cwd();
   return {
     name: "vite:react-stream",
+    meta: {} as ReactStreamPluginMeta,
 
-    // Add virtual module
-    resolveId(id) {
-      if (id === "virtual:rsc-test") {
-        return "\0virtual:rsc-test";
-      }
-    },
-
-    load(id) {
-      if (id === "\0virtual:rsc-test") {
-        return 'export default "test"';
-      }
-    },
-
-    async configureServer(server: ViteDevServer) {
-      cacheDir = server.config.cacheDir;
-
-      // Build loader first
-      await build({
-        build: {
-          write: true,
-          lib: {
-            entry: options?.loaderPath
-              ? resolve(rootDir, options?.loaderPath)
-              : resolve(__dirname, DEFAULT_CONFIG.LOADER_PATH),
-            formats: ["es"],
-            fileName: () => "worker/loader.js",
-          },
-          outDir: resolve(cacheDir, "react-stream"),
-          emptyOutDir: false,
-        },
+    configResolved(resolvedConfig) {
+      config = resolvedConfig;
+      console.log("[RSC] Output directories:", {
+        server: config.build.outDir,
       });
-
+    },
+    async configureServer(server: ViteDevServer) {
       if (server.config.root) {
         rootDir = server.config.root;
       }
+      console.log("RSC CONFIGURE SERVER CALLED");
 
-      let currentHandler: ReturnType<typeof createStreamHandler> | null = null;
-      let isHandlerReady = true;
       const activeStreams = new Set<ServerResponse>();
 
       // Handle Vite server restarts
-      server.watcher.on("change", (path) => {
-        if (path.includes("/vite-react-stream/")) {
-          console.log("[RSC] 🔧 Plugin changed, preparing for restart:", path);
-          isHandlerReady = false;
-          currentHandler = null;
+      server.ws.on("restart", (path) => {
+        console.log("[RSC] 🔧 Plugin changed, preparing for restart:", path);
 
-          // Close streams with restart message
-          for (const res of activeStreams) {
-            res.writeHead(503, {
-              "Content-Type": "text/x-component",
-              "Retry-After": "1",
-            });
-            res.end('{"error":"Server restarting..."}');
-          }
-          activeStreams.clear();
+        // Close streams with restart message
+        for (const res of activeStreams) {
+          res.writeHead(503, {
+            "Content-Type": "text/x-component",
+            "Retry-After": "1",
+          });
+          res.end('{"error":"Server restarting..."}');
         }
+        activeStreams.clear();
       });
 
-      // Handle HMR file changes
-      server.watcher.on("change", (path) => {
-        // send signal to hot client to start a new stream for the current route
-        // TODO: implement
+      server.ws.on("connection", (socket, req) => {
+        console.log("RSC WS CONNECTION CALLED");
+      });
+
+      server.ws.on("listening", () => {
+        console.log("RSC WS LISTENING CALLED");
       });
 
       server.middlewares.use(async (req, res, next) => {
-        if (!req.url || !req.url.startsWith("/")) return next();
         if (req.headers.accept !== "text/x-component") return next();
-
-        // Add to active streams for HMR
-        console.log("[RSC] ➕ Adding stream for:", req.url);
-        activeStreams.add(res);
-
+        console.log("RSC MIDDLEWARE CALLED");
         try {
-          if (!currentHandler) {
-            console.log("[RSC] 🔄 Creating new stream handler");
-            currentHandler = createStreamHandler(server, options);
-          }
-          await currentHandler(req, res, next);
+          const handler = await createHandler(
+            req.url ?? "",
+            {
+              ...options,
+              // stream only the page - since the html is already rendered by now in the browser
+              Html: ({ children }) => children,
+            },
+            {
+              cssFiles: Array.from(cssModules),
+              logger: createLogger(),
+              loader: server.ssrLoadModule,
+            }
+          );
+          handler?.stream?.pipe(res);
         } finally {
           res.on("close", () => {
             console.log("[RSC] ➖ Stream closed for:", req.url);
@@ -135,104 +104,136 @@ export function reactStreamPlugin(options: StreamPluginOptions = {} as StreamPlu
           });
         }
       });
-
-      return () => {
-        // Rest of server setup...
-      };
     },
 
-    async transform(code, id) {
-      // Handle client components only
-      if (fileRegex.test(id) && code?.trimStart().startsWith('"use client"')) {
-        clientComponents.set(id, code);
-        if (worker) {
-          worker.postMessage({
-            type: "REGISTER_COMPONENT",
-            id,
-            code,
-          });
-        }
-      }
-      return null;
-    },
-
-    config(config): UserConfig {
+    async config(config, configEnv): Promise<UserConfig> {
       if (config?.root) {
         rootDir = config.root;
       }
-      return {
-        worker: {
-          format: "es",
-          rollupOptions: {
-            input: {
-              "worker/index": options?.workerPath
-                ? resolve(rootDir, options?.workerPath)
-                : resolve(__dirname, DEFAULT_CONFIG.WORKER_PATH),
-              "worker/loader": options?.loaderPath
-                ? resolve(rootDir, options?.loaderPath)
-                : resolve(__dirname, DEFAULT_CONFIG.LOADER_PATH),
-            },
-            output: {
-              format: "esm",
-              dir: resolve(config.cacheDir ?? ".vite", "react-stream"),
-              entryFileNames: "[name].js",
-              preserveModules: false,
-            },
-          },
-        },
-      } as UserConfig;
-    },
-    configResolved(config) {
-      resolvedConfig = config;
-      validateFiles(options, config.root);
-    },
-    configurePreviewServer(server: PreviewServer) {
-      return () => {
-        server.middlewares.use(async (req, res, next) => {
-          if (!req.url || req.url.includes(".")) return next();
 
-          try {
-            const html = await import(
-              resolve(server.config.root, `dist${req.url}/index.html`)
-            );
-            res.setHeader("Content-Type", "text/html");
-            res.end(html.default);
-          } catch (e) {
-            next(e);
-          }
-        });
-      };
-    },
-    async buildStart(inputOptions: NormalizedInputOptions) {
-      // if (inputOptions.input) {
-      //   // Initialize worker for build
-      //   worker = new Worker(resolve(resolvedConfig.cacheDir, 'react-stream/worker/index.js'));
-      //   const userPages = await Promise.resolve(options.build?.pages() ?? []);
-      //   for (const route of userPages) {
-      //     // TODO: Build implementation
-      //   }
-      // }
-    },
-    async buildEnd() {
-      if (!options.collectCss) return;
+      const envResult = getEnv(config, configEnv);
+      define = envResult.define;
+      envPrefix = envResult.envPrefix;
+      env = envResult.env;
 
-      const cssManifest = Array.from(cssModules).map((file) => {
-        const relativePath = file.replace(rootDir, "").replace(/^\//, "");
-        return relativePath;
+      console.log("[RSC] 🔧 setting up build for ", {
+        define,
+      });
+      console.log(
+        configEnv.isSsrBuild || configEnv.isPreview
+          ? "SERVER SIDE BUILD"
+          : "CLIENT SIDE BUILD"
+      );
+      const root = config.root ?? process.cwd();
+      const result = await checkFilesExist(options, root);
+      pageSet = result.pageSet;
+      pageMap = result.pageMap;
+      propsSet = result.propsSet;
+      propsMap = result.propsMap;
+      entries = Array.from(
+        new Set([
+          ...Array.from(pageSet.values()),
+          ...Array.from(propsSet.values()),
+        ]).values()
+      );
+
+      const buildConfig = createBuildConfig({
+        root: config.root ?? process.cwd(),
+        base: config.base ?? envResult.publicUrl,
+        outDir: config.build?.outDir ?? "dist/server",
+        entries,
       });
 
-      // Write CSS manifest for SSR
-      const manifestPath = resolve(
-        resolvedConfig.build.outDir,
-        "server/css-manifest.json"
+      return {
+        ...buildConfig,
+        define,
+      };
+    },
+    async buildStart() {
+      const result = await checkFilesExist(options, config.root);
+      pageSet = result.pageSet;
+      pageMap = result.pageMap;
+      propsSet = result.propsSet;
+      propsMap = result.propsMap;
+      entries = Array.from(
+        new Set([
+          ...Array.from(pageSet.values()),
+          ...Array.from(propsSet.values()),
+        ]).values()
       );
-      mkdirSync(dirname(manifestPath), { recursive: true });
-      writeFileSync(manifestPath, JSON.stringify(cssManifest, null, 2));
+      if (!entries.length) {
+        console.warn("[RSC] No entries found");
+      }
+    },
+    async closeBundle() {
+      console.log("RSC CLOSE BUNDLE CALLED");
+      if (!pageSet?.size) return;
+
+      const manifest = JSON.parse(
+        readFileSync(
+          resolvePath(
+            config.root,
+            config.build.outDir,
+            ".vite",
+            "manifest.json"
+          ),
+          "utf-8"
+        )
+      );
+
+      // Create a single worker for all routes
+      if (!worker)
+        worker = await createWorker(
+          config.root,
+          config.build.outDir,
+          "worker.js",
+          this.environment.mode === "dev" ? "development" : "production"
+        );
+      // this is based on the user config - the routes should lead to a page and props but the rendering is agnostic of that
+      const routes = Array.from(pageMap.keys());
+      await renderPages(routes, {
+        manifest,
+        projectRoot: config.root,
+        outDir: config.build.outDir, // Use Vite's configured outDir
+        pluginOptions: options,
+        worker: worker,
+        loader: createPageLoader({
+          manifest,
+          root: config.root,
+          outDir: config.build.outDir,
+          moduleBase: options.moduleBase,
+          // already registered in the transform
+          registerClient: [...clientComponents.keys()],
+          alwaysRegisterServer: false,
+          registerServer: [],
+        }),
+      });
+      console.log("[RSC] Render complete");
+      console.log("[RSC] Terminating worker");
+      if (worker) await worker.terminate();
+    },
+    async buildEnd(error) {
+      if (error) {
+        console.error("[RSC] Build error:", error);
+      }
+      if (worker) await worker.terminate();
     },
     handleHotUpdate({ file }) {
       if (file.endsWith(".css")) {
         cssModules.add(file);
       }
+    },
+    transform(code: string, id: string) {
+      if (
+        (id.includes(".client") ||
+          code.startsWith('"use client"') ||
+          code.startsWith("use client")) &&
+        !id.includes("node_modules")
+      ) {
+        console.log("[RSC] Client component added", id);
+        clientComponents.set(id, code);
+      }
+      return { code };
     },
   };
 }

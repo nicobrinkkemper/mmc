@@ -5,7 +5,7 @@ declare module "react-server-dom-esm/server.node" {
     onError?: (error: unknown) => void;
     identifierPrefix?: string;
     onPostpone?: (reason: unknown) => void;
-    temporaryReferences?: WeakMap<any, string>;
+    temporaryReferences?: WeakMap<any, unknown>;
     environmentName?: string;
     filterStackFrame?: (frame: string) => boolean;
     signal?: AbortSignal;
@@ -95,20 +95,43 @@ declare module "react-server-dom-esm/node-loader" {
 }
 
 declare module "react-server-dom-esm/client.node" {
-  interface CreateFromNodeStreamOptions {
-    encodeFormAction?: boolean;
+  export interface CreateFromNodeStreamOptions {
+    /**
+     * Optional nonce for script tags
+     */
     nonce?: string;
-    findSourceMapURL?: (source: string) => string | undefined;
+
+    /**
+     * Function to find source map URLs for debugging
+     */
+    findSourceMapURL?: (source: string, env: string) => string | null;
+
+    /**
+     * Whether to replay console logs from the server
+     * @default false
+     */
     replayConsoleLogs?: boolean;
+
+    /**
+     * Name of the environment (e.g. "Server", "Client")
+     * @default "Server"
+     */
     environmentName?: string;
-    moduleLoading?:
-      | string
-      | {
-          prefix: string;
-          crossOrigin?: string;
-        };
+
+    /**
+     * Form action encoding handler
+     */
+    encodeFormAction?: boolean;
   }
 
+  /**
+   * Creates a React element from a Node.js Readable stream containing an RSC payload
+   *
+   * @param stream - Node.js Readable stream containing RSC data
+   * @param moduleRootPath - Root path for resolving modules (becomes bundlerConfig internally)
+   * @param moduleBaseURL - Base URL for module loading
+   * @param options - Additional options
+   */
   export function createFromNodeStream<T>(
     stream: import("node:stream").Readable,
     moduleRootPath: string,
@@ -120,38 +143,43 @@ declare module "react-server-dom-esm/client.node" {
 }
 
 declare module "react-dom/server.node" {
-    interface PipeableStreamOptions {
-        bootstrapModules?: string[];
-        bootstrapScripts?: string[];
-        bootstrapScriptContent?: string;
-        signal?: AbortSignal;
-        identifierPrefix?: string;
-        namespaceURI?: string;
-        nonce?: string;
-        progressiveChunkSize?: number;
-        onShellReady?: () => void;
-        onAllReady?: () => void;
-        onError?: (error: unknown) => void;
-        importMap?: {
-            imports?: Record<string, string>;
-        };
-    }
+  interface PipeableStreamOptions {
+    bootstrapModules?: string[];
+    bootstrapScripts?: string[];
+    bootstrapScriptContent?: string;
+    signal?: AbortSignal;
+    identifierPrefix?: string;
+    namespaceURI?: string;
+    nonce?: string;
+    progressiveChunkSize?: number;
+    onShellReady?: () => void;
+    onAllReady?: () => void;
+    onError?: (error: unknown) => void;
+    importMap?: {
+      imports?: Record<string, string>;
+    };
+  }
 
-    interface PipeableStream {
-        pipe: (destination: NodeJS.WritableStream) => NodeJS.WritableStream;
-        abort: (reason?: any) => void;
-    }
+  interface NodeResponseOptions {
+    moduleBasePath?: string;
+    moduleBaseURL?: string;
+  }
 
-    export function renderToPipeableStream(
-        children: React.ReactNode,
-        options?: PipeableStreamOptions
-    ): PipeableStream;
+  interface PipeableStream {
+    pipe: (destination: NodeJS.WritableStream) => NodeJS.WritableStream;
+    abort: (reason?: any) => void;
+  }
 
-    export function resumeToPipeableStream(
-        children: React.ReactNode,
-        postponedState: object,
-        options?: PipeableStreamOptions
-    ): PipeableStream;
+  export function renderToPipeableStream(
+    children: React.ReactNode,
+    options?: PipeableStreamOptions
+  ): PipeableStream;
 
-    export const version: string;
+  export function resumeToPipeableStream(
+    children: React.ReactNode,
+    postponedState: object,
+    options?: PipeableStreamOptions
+  ): PipeableStream;
+
+  export const version: string;
 } 

@@ -99,13 +99,14 @@ Each theme includes:
 
 ## Configuration
 
-### Environment Variables
+### Environment Variables (optional)
+These can be used to override or pre-set the server and client URLs.
 ```env
 VITE_BASE_URL=http://localhost:5173
-VITE_PUBLIC_URL=/
-RSC_PORT=3003
-SSR_PORT=3001
+VITE_PUBLIC_URL=
 ```
+If not set, the server will use the current URL as the base URL.
+The PUBLIC_URL should only be set if the target server uses a subpath, like gh-pages does.
 
 ### Adding New Themes
 

@@ -51,7 +51,7 @@ declare module "react-server-dom-esm/client.browser" {
   /**
    * Creates a temporary reference set for object deduplication
    */
-  export function createTemporaryReferenceSet(): Map<string, unknown>;
+  export function createTemporaryReferenceSet(): WeakMap<object, unknown>;
 
   /**
    * Encodes a reply to send to the server

@@ -1,11 +1,14 @@
-import React from "react";
 import type { PipeableStream } from "react-dom/server.node";
-import type { Connect, Logger, Manifest, ModuleGraph, ViteDevServer } from "vite";
+import type { Connect, Logger, Manifest, ViteDevServer } from "vite";
 
 export interface StreamPluginOptions {
+  projectRoot?: string;
   moduleBase: string;
+  moduleBasePath?: string;
   moduleBaseURL?: string;
   clientEntry?: string;
+  serverOutDir?: string;
+  clientOutDir?: string;
   // Auto-discovery (zero-config)
   autoDiscover?: {
     pagePattern?: string;
@@ -19,37 +22,23 @@ export interface StreamPluginOptions {
   loaderPath?: string;
   pageExportName?: string;
   propsExportName?: string;
-  Html?: React.ComponentType<React.PropsWithChildren<{ manifest: Manifest }>>;
+  Html?: React.FC<{
+    manifest: Manifest;
+    pageProps: any;
+    route: string;
+    url: string;
+    children: React.ReactNode;
+  }>;
   collectCss?: boolean;
   collectAssets?: boolean;
   build?: BuildConfig;
 }
 
-
-
-// Default configuration values
-export const DEFAULT_CONFIG = {
-  OUT_DIR: 'dist',
-  SERVER_DIR: 'server',
-  RSC_DIR: 'rsc',
-  MODULE_BASE: 'src',
-  MODULE_BASE_URL: '/src',
-  PAGE: '/src/page/page.tsx',
-  PROPS: '/src/page/props.ts',
-  CLIENT_ENTRY: '/src/client.tsx',
-  PAGE_EXPORT: 'Page',
-  PROPS_EXPORT: 'props',
-  WORKER_PATH: 'worker/index.ts',
-  LOADER_PATH: 'worker/loader.ts',
-  RSC_EXTENSION: '.rsc',
-  HTML: React.Fragment,
-  COLLECT_CSS: true,
-  COLLECT_ASSETS: true,
-  PAGE_PATTERN: '/src/page/**/*.page.tsx',
-  PROPS_PATTERN: '/src/page/**/*.props.ts',
-} as const;
-
-export type ModuleLoader = (url: string, context?: any, defaultLoad?: any) => Promise<Record<string, any>>;
+export type ModuleLoader = (
+  url: string,
+  context?: any,
+  defaultLoad?: any
+) => Promise<Record<string, any>>;
 
 export interface BaseProps {
   manifest: Manifest;
@@ -59,32 +48,28 @@ export interface BaseProps {
   };
 }
 
-
 export type StreamResult =
   | {
-    type: "success"; 
-    stream: PipeableStream;
-    assets?: {
-      css?: string[];
-    };
+      type: "success";
+      stream: PipeableStream;
+      assets?: {
+        css?: string[];
+      };
     }
   | { type: "error"; error: unknown }
   | { type: "skip" };
 
 export interface RscStreamOptions {
-  url: string;
   controller: AbortController;
-  loader: ModuleLoader;
-  moduleBase: string;
-  pagePath: string;
-  propsPath?: string;
-  pageExportName: string;
-  propsExportName: string;
+  moduleBasePath: string;
+  Page: React.ComponentType;
+  props: any;
   Html: any;
-  temporaryReferences: WeakMap<any, string>;
-  logger: Console | Logger;
+  temporaryReferences?: WeakMap<any, string>;
+  logger?: Console | Logger;
   cssFiles?: string[];
-  moduleGraph: ModuleGraph;
+  route: string;
+  url: string;
 }
 
 export interface RouteConfig {
@@ -101,18 +86,15 @@ export interface RouteConfig {
   };
 }
 
+export interface BuildOutput {
+  dir?: string;
+  rsc?: string;
+  ext?: string;
+}
+
 export interface BuildConfig {
-  routes?: RouteConfig[];
-  output?: {
-    dir?: string;
-    rsc?: string;
-    ext?: string;
-    worker?: string;
-    static?: string;
-  };
-  pages: () => (Promise<string[]> | string[]);
-  options?: Options;
-  server?: ViteDevServer;
+  pages: () => Promise<string[]> | string[];
+  client?: string; // Output directory for client files
 }
 
 export interface RscResolver {
@@ -127,7 +109,10 @@ export interface RscResolver {
 }
 
 export interface Options {
+  include?: RegExp;
   moduleBase: string;
+  // can be inferred from moduleBase, will add / to moduleBase by default (if not already present)
+  moduleBasePath?: string;
   Html?: React.ComponentType<React.PropsWithChildren<{ manifest: Manifest }>>;
   Page: string | ((url: string) => string);
   props?: string | ((url: string) => string);
@@ -138,8 +123,8 @@ export interface Options {
   emitCss?: boolean;
   moduleLoader?: (server: ViteDevServer) => ModuleLoader;
   build?: BuildConfig;
-  outDir?: string;  // defaults to 'dist'
-  /** 
+  outDir?: string; // defaults to 'dist'
+  /**
    * Configure static asset copying
    * - true: Copy all assets
    * - false: Don't copy assets
@@ -188,32 +173,36 @@ export interface RscServerModule {
   }>;
 }
 
-// serializable options for createFromNodeStream
-export interface CreateFromNodeStreamOptions {
-  encodeFormAction?: boolean;
-  nonce?: string;
- // findSourceMapURL?: (source: string) => string | undefined;
-  replayConsoleLogs?: boolean;
-  environmentName?: string;
-  moduleLoading?: string | {
-    prefix: string;
-    crossOrigin?: string;
-  };
-}
-
 export interface RegisterComponentMessage {
-  type: 'REGISTER_COMPONENT';
+  type: "REGISTER_COMPONENT";
   id: string;
   code: string;
 }
 
 export interface RenderMessage {
-  type: 'RENDER';
+  type: "RENDER";
   stream: string;
+  id: string;
   moduleBasePath: string;
   moduleBaseURL: string;
   pipableStreamOptions: {
     bootstrapModules: string[];
   };
   clientComponents: Record<string, string>;
+}
+
+export type RscBuildResult = string[];
+
+export interface ReactStreamPluginMeta {
+  rscBuild?: RscBuildResult;
+}
+
+export interface RenderState {
+  chunks: (Buffer | string[])[];
+  buffers: Buffer[];
+  complete: boolean;
+  rendered: boolean;
+  moduleBasePath: string;
+  moduleBaseURL: string;
+  outputPath: string; // Add this to track where to write
 }

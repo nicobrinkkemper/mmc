@@ -74,4 +74,3 @@ export const Page: ThemePageComponent<RouteType> = ({
     </App>
   );
 };
-

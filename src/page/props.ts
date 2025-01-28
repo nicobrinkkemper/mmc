@@ -11,7 +11,8 @@ import { createProps } from "../data/createProps.js";
 /**
  * Usage: `[MainPage.route]: MainPage`
  */
-export const route = `/` as const;
+export const route = "/";
+
 /**
  * Usage: `Page: ThemePageComponent<RouteType> = ...` alternatively `Page: ThemePageComponent<typeof route> = ...` or simply "/"
  */

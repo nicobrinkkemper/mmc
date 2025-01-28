@@ -45,8 +45,8 @@ declare global {
    * `ThemeStaticDataReturn` is the type returned by `getStaticData`
    */
   type ThemeStaticDataReturn<
-    R extends ValidRoute,
-    Opt extends ThemeDataOptions,
+    R extends ValidRoute = ValidRoute,
+    Opt extends ThemeDataOptions = ThemeDataOptions,
     PI extends ThemePathInfo<R> = ThemePathInfo<R>
   > = {
     [K in keyof ThemeDataMapping<R, PI> as WithOption<

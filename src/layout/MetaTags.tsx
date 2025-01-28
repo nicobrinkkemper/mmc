@@ -1,5 +1,5 @@
 import React from "react";
-import { BASE_URL_WITH_PUBLIC_URL } from "../config/env";
+import { BASE_URL_WITH_PUBLIC_URL } from "../config/env.js";
 
 export const MetaTags = ({
   title,

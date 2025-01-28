@@ -77,13 +77,17 @@
     "src/**/*.module.css",
     "types/**/*.d.ts",
     "test/setup.test.ts",
-    "types/babel-plugin-react-compiler.ts",
+    "types/babel-plugin-react-compiler.ts", "vite/vite-react-stream/rsc/createReactNodeStreamer.server.ts",
   ],
   "exclude": [
     "dist",
     "node_modules",
     "oss-experimental",
     "src/**/*.server.ts",
-    "src/**/*.server.tsx"
+    "src/**/*.server.tsx",
+    "src/**/*.server.mts",
+    "src/**/server.ts",
+    "src/**/server.tsx",
+    "src/**/server.mts",
   ]
 }

@@ -178,7 +178,7 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
           if (!result.clickable) {
             try {
               result.clickable = (
-                await import("../components/ClientClickable.js")
+                await import("../components/Clickable.client.js")
               ).ClientClickable;
             } catch (error) {
               console.error("Error loading ClientClickable:", error);

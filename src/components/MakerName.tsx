@@ -49,11 +49,11 @@ export const MakerName: MakerNameType = ({
     return (
       <div
         className={clsx(className, styles["MakerCollab"])}
-        key={makerSlug}
+        key={makerId}
         {...props}
       >
-        {makerProps.map(({ makerName, nationality, makerId, makerSlug }) => (
-          <div className={clsx(classes)} key={makerSlug}>
+        {makerProps.map(({ makerName, nationality, makerId }) => (
+          <div className={clsx(classes)} key={makerId}>
             <span
               className={`${styles["Nationality"]} ${nationalityFlag(
                 nationality

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { absoluteUrl } from "../config/env";
+import { absoluteUrl } from "../config/env.js";
 
 export function Favicons({
   favicons,
