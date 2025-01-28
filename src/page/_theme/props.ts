@@ -15,9 +15,9 @@ export const props = createProps(
     clickable: true,
     accordion: true,
   },
-  ({ info: { writtenOut, caps }, images: { logo } }) => ({
-    description: `Welcome to ${caps}! | ${siteName}`,
-    title: `${writtenOut} | Welcome`,
+  ({ info: { writtenOut, caps, ordinal }, images: { logo } }) => ({
+    description: `${caps}! | Welcome to ${writtenOut} | ${siteName}`,
+    title: `${caps} | Celebrating ${ordinal} years of Mario Maker!`,
     image: BASE_URL + logo.src,
   })
 );

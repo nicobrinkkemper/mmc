@@ -1,11 +1,10 @@
 import { Window } from "happy-dom";
-import { createWriteStream } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
-import { Readable } from "node:stream";
+import type { Writable } from "node:stream";
 import { parentPort } from "node:worker_threads";
-import { renderToPipeableStream } from "react-dom/server";
-import { createFromNodeStream } from "react-server-dom-esm/client.node";
+import type { PipeableStream } from "react-server-dom-esm/server.node";
+import { streamToFile } from "./streamToFile.js";
 import type { RenderState, WorkerMessage } from "./types.js";
 
 if (!parentPort) {
@@ -14,28 +13,34 @@ if (!parentPort) {
 
 // Track active renders
 const activeRenders = new Map<string, RenderState>();
-let isShuttingDown = false;
+const activeStreams = new Map<string, PipeableStream>();
+const activeWrites = new Map<string, Writable>();
 
+async function shutdown() {
+  console.log("[Worker] Shutting down forcefully");
+  while (activeRenders.size > 0) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  for (const stream of activeStreams.values()) {
+    stream.abort();
+  }
+  for (const writeStream of activeWrites.values()) {
+    writeStream.destroy();
+  }
+  process.exit(0);
+}
 // Handle incoming messages
 parentPort.on("message", async (message: WorkerMessage) => {
   if (message.type === "SHUTDOWN") {
-    isShuttingDown = true;
-    // Wait for all renders to complete
-    while (activeRenders.size > 0) {
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
-    process.exit(0);
+    await shutdown();
   }
-
   if (!parentPort) {
     throw new Error("No parent port available");
   }
-
   try {
     switch (message.type) {
       case "RSC_CHUNK": {
-        const { chunk, buffer, id, ...rest } = message;
-
+        const { chunk, id, ...rest } = message;
         // Skip if already rendered
         let renderState = activeRenders.get(id);
         if (renderState?.rendered) {
@@ -45,7 +50,6 @@ parentPort.on("message", async (message: WorkerMessage) => {
         if (!renderState) {
           renderState = {
             chunks: [],
-            buffers: [],
             complete: false,
             rendered: false,
             id: id,
@@ -55,24 +59,38 @@ parentPort.on("message", async (message: WorkerMessage) => {
         }
         // Add chunk
         if (chunk) renderState.chunks.push(chunk);
-        if (buffer) renderState.buffers.push(buffer);
         break;
       }
 
       case "RSC_END": {
         const { id } = message;
-        const renderState = activeRenders.get(id);
+        const render = activeRenders.get(id);
 
-        if (!renderState) {
-          console.warn(`[Worker] No active render to end: ${id}`);
-          return;
+        if (!render || !parentPort || render.rendered) return;
+
+        try {
+          // Write RSC content
+          await mkdir(dirname(render.htmlOutputPath), { recursive: true });
+          const { stream, writeStream } = streamToFile(render);
+          activeStreams.set(id, stream);
+          activeWrites.set(id, writeStream);
+          writeStream.on("finish", () => {
+            activeStreams.delete(id);
+            activeWrites.delete(id);
+          });
+          writeStream.on("error", () => {
+            activeStreams.delete(id);
+            activeWrites.delete(id);
+            stream.abort();
+          });
+        } catch (error) {
+          activeRenders.delete(id);
+          activeStreams.delete(id);
+          activeWrites.delete(id);
+          throw error;
+        } finally {
+          activeRenders.delete(id);
         }
-
-        if (renderState.rendered) {
-          return;
-        }
-
-        await startRender(id);
         break;
       }
     }
@@ -84,83 +102,6 @@ parentPort.on("message", async (message: WorkerMessage) => {
     });
   }
 });
-
-async function writeHtmlFile(content: Buffer, renderState: RenderState) {
-  const outputPath = renderState.htmlOutputPath;
-
-  await mkdir(dirname(outputPath), { recursive: true });
-  const writeStream = createWriteStream(outputPath);
-
-  // Create readable stream from RSC content
-  const rscStream = Readable.from(content);
-
-  // Create RSC node stream
-  const reactElements = await createFromNodeStream(
-    rscStream,
-    renderState.moduleBasePath,
-    renderState.moduleBaseURL
-  );
-
-  return new Promise<void>((resolve, reject) => {
-    // Create pipe with onAllReady callback
-    const { pipe, abort } = renderToPipeableStream(
-      reactElements as React.ReactNode,
-      {
-        onAllReady() {
-          pipe(writeStream);
-          writeStream.on("finish", () => {
-            parentPort?.postMessage({
-              type: "WROTE_FILE",
-              outputPath,
-              route: renderState.id,
-            });
-            writeStream.on("error", (error) => {
-              console.error("[Worker] Write error at", error);
-              abort();
-              reject(error);
-            });
-            resolve();
-          });
-        },
-        onError(error) {
-          console.error("[Worker] Render error at", error);
-          reject(error);
-        },
-      }
-    );
-    if (isShuttingDown) {
-      abort();
-    }
-  });
-}
-
-async function startRender(id: string) {
-  const render = activeRenders.get(id);
-  if (!render || !parentPort) return;
-
-  try {
-    // Combine chunks into buffer
-    const content = Buffer.concat(
-      render.chunks.map((chunk) => {
-        if (Array.isArray(chunk)) {
-          return Buffer.from(chunk);
-        }
-        return Buffer.from(chunk);
-      })
-    );
-
-    // Write RSC content
-    await writeHtmlFile(content, render);
-  } catch (error) {
-    parentPort.postMessage({
-      type: "ERROR",
-      route: id,
-      error: error instanceof Error ? error.message : String(error),
-    });
-  } finally {
-    activeRenders.delete(id);
-  }
-}
 
 // Signal ready only after loader is registered
 parentPort.postMessage({ type: "READY" });

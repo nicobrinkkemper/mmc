@@ -179,30 +179,18 @@ export interface RegisterComponentMessage {
   code: string;
 }
 
-export interface RenderMessage {
-  type: "RENDER";
-  stream: string;
-  id: string;
-  moduleBasePath: string;
-  moduleBaseURL: string;
-  pipableStreamOptions: {
-    bootstrapModules: string[];
-  };
-  clientComponents: Record<string, string>;
-}
-
 export type RscBuildResult = string[];
 
 export interface ReactStreamPluginMeta {
   rscBuild?: RscBuildResult;
 }
 
-export interface RenderState {
-  chunks: (Buffer | string[])[];
-  buffers: Buffer[];
-  complete: boolean;
-  rendered: boolean;
-  moduleBasePath: string;
-  moduleBaseURL: string;
-  outputPath: string; // Add this to track where to write
+export interface BuildTiming {
+  start: number;
+  configResolved?: number;
+  buildStart?: number;
+  buildEnd?: number;
+  renderStart?: number;
+  renderEnd?: number;
+  total?: number;
 }

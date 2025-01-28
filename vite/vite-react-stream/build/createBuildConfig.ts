@@ -2,11 +2,8 @@ import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import type { InlineConfig } from "vite";
 import { DEFAULT_CONFIG } from "../options.js";
-import { viteReactClientTransformPlugin } from "../transformer/index.js";
-import { preserveDirectives } from "../transformer/preserveDirectives.js";
 import type { StreamPluginOptions } from "../types.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const fileRegex = /\.m?[jt]sx?$/;
 
 type CreateBuildConfigOptions = {
   root: string;
@@ -47,17 +44,6 @@ export function createBuildConfig({
     configFile: false,
     root,
     base,
-    plugins: [
-      viteReactClientTransformPlugin({
-        moduleId: (path) => {
-          const relativePath = path.startsWith(root)
-            ? path.slice(root.length)
-            : path;
-          return relativePath.replace(fileRegex, ".js");
-        },
-      }),
-      preserveDirectives(),
-    ],
     build: {
       target: "node18",
       ssr: true,

@@ -14,7 +14,8 @@ export const props = createProps(
     clickable: true,
   },
   ({ info: { writtenOut }, images: { logo } }) => ({
-    description: `The ${writtenOut}! | ${siteName}`,
+    description: `${writtenOut}! | ${siteName}`,
+    title: `${writtenOut} | 404`,
     image: BASE_URL + logo,
   })
 );

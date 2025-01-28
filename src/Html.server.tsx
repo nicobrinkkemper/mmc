@@ -1,14 +1,24 @@
 import React from "react";
+import type { Manifest } from "vite";
+import { Favicons } from "./layout/Favicons.js";
+import { Head } from "./layout/Head.js";
 
-export const Html = ({ children }: { children: React.ReactNode }) => {
+export const Html = ({
+  children,
+  pageProps,
+  manifest,
+}: {
+  children: React.ReactNode;
+  pageProps: HtmlProps;
+  manifest: Manifest;
+}) => {
   if (process.env["NODE_ENV"] === "production") {
     return (
       <html>
         <head>
-          <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css"
-          />
+          <Head title={pageProps.title} />
+          <meta name="description" content={pageProps.description} />
+          <Favicons favicons={pageProps.favicons} />
         </head>
         <body>
           <div id="root">{children}</div>

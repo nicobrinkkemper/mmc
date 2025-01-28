@@ -82,26 +82,22 @@ export async function renderPages(
         // Pipe RSC stream to worker
         const transform = new Transform({
           transform(chunk, _encoding, callback) {
-            const buffer = chunk.buffer;
-            const transferable = buffer.slice(
-              chunk.byteOffset,
-              chunk.byteOffset + chunk.byteLength
-            );
+
+            const pipableStreamOptions = {
+              bootstrapModules: ["/dist/client.js"],
+            };
 
             // Send raw chunk
-            options.worker.postMessage(
-              {
-                type: "RSC_CHUNK",
-                id: route,
-                chunk: chunk,
-                buffer: transferable,
-                moduleBasePath,
-                moduleBaseURL,
-                htmlOutputPath: htmlOutputPath,
-                outDir: options.outDir,
-              } satisfies WorkerRscChunkMessage,
-              [transferable]
-            );
+            options.worker.postMessage({
+              type: "RSC_CHUNK",
+              id: route,
+              chunk: chunk,
+              moduleBasePath,
+              moduleBaseURL,
+              htmlOutputPath: htmlOutputPath,
+              outDir: options.outDir,
+              pipableStreamOptions,
+            } satisfies WorkerRscChunkMessage);
             callback();
           },
           flush(callback) {

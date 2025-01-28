@@ -4,11 +4,8 @@ import { fileURLToPath } from "node:url";
 import { Worker } from "node:worker_threads";
 import { type ViteDevServer } from "vite";
 import { DEFAULT_CONFIG } from "../options.js";
-import type {
-  RenderMessage,
-  RequestHandler,
-  StreamPluginOptions,
-} from "../types.js";
+import type { RequestHandler, StreamPluginOptions } from "../types.js";
+import type { WorkerRscChunkMessage } from "../worker/types.js";
 import { createHandler } from "./createHandler.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -83,16 +80,17 @@ export function createSsrHandler(
 
       // Send to worker for HTML rendering
       worker.postMessage({
-        type: "RENDER",
-        stream: rscData,
+        type: "RSC_CHUNK",
+        id: req.url,
+        chunk: rscData,
         moduleBasePath: moduleBasePath,
         moduleBaseURL: moduleBaseURL,
-        id: req.url,
-        clientComponents: Object.fromEntries(clientComponents),
+        outDir: server.config.root,
+        htmlOutputPath: join(server.config.root, "index.html"),
         pipableStreamOptions: {
           bootstrapModules: ["/dist/client.js"],
         },
-      } satisfies RenderMessage);
+      } satisfies WorkerRscChunkMessage);
 
       // Handle worker response
       const html = await new Promise<string>((resolve, reject) => {

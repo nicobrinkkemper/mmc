@@ -1,6 +1,7 @@
+import type { PipeableStreamOptions } from "react-dom/server.node";
+
 export interface RenderState {
   chunks: string[];
-  buffers: ArrayBuffer[];
   complete: boolean;
   rendered: boolean;
   outDir: string;
@@ -8,17 +9,18 @@ export interface RenderState {
   moduleBaseURL: string;
   htmlOutputPath: string;
   id: string;
+  pipableStreamOptions: PipeableStreamOptions;
 }
 
 export interface WorkerRscChunkMessage {
   type: "RSC_CHUNK";
   id: string;
   chunk: string;
-  buffer: ArrayBuffer;
   moduleBasePath: string;
   moduleBaseURL: string;
   outDir: string;
   htmlOutputPath: string;
+  pipableStreamOptions: PipeableStreamOptions;
 }
 
 export interface WorkerRscEndMessage {
