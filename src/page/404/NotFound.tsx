@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Button } from "../../components/Button.js";
 import { Card } from "../../components/Card.js";
-import { ErrorClientMessage } from "./ErrorClientMessage.js";
 import styles from "./NotFound.module.css";
 
 type NotFoundType = ThemeComponent<{
@@ -21,7 +20,6 @@ export const NotFound: NotFoundType = ({ pathInfo, clickable }) => {
         images={{}}
       >
         <p>Sorry! Jank can happen sometimes.</p>
-        <ErrorClientMessage search={search} />
       </Card>
       <div className={styles["Buttons"]}>
         <Button

@@ -9,9 +9,9 @@
     "lint": "eslint ./src --fix",
     "serve": "node dist/server/dev-server.mjs",
     "serve-gh": "export PUBLIC_URL=/mmc; node dist/server/dev-server.mjs",
-    "build:client": "vite build --config vite.config.ts",
-    "build:server": "NODE_OPTIONS='--conditions=react-server' vite build --config vite.server.config.ts --ssr",
-    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build",
+    "build:server": "NODE_OPTIONS='--conditions=react-server' vite build --ssr",
+    "build": "npm run build:server",
     "export": "node dist/server/export.js",
     "build:all": "npm run build && npm run export",
     "build-gh": "BASE_URL='https://nicobrinkkemper.github.io' PUBLIC_URL='/mmc' NODE_OPTIONS='--conditions=react-server' vite build --config vite.server.config.ts --ssr",
@@ -22,7 +22,8 @@
     "postbuild-gh": "echo 'Build completed'",
     "postinstall": "patch-package",
     "copy-oss": "cp -r oss-experimental/* node_modules/",
-    "patch-oss": "npx patch-package react-server-dom-esm --exclude 'nothing'",
+    "patch-oss": "node_modules/vite-plugin-react-server/bin/patch.mjs",
+    "link-dev": "npm link vite-plugin-react-server",
     "predeploy": "npm run build-gh",
     "deploy": "gh-pages -d build",
     "test": "run-s startup react:test",
@@ -100,13 +101,13 @@
     "npm-run-all": "^4.1.5",
     "patch-package": "^8.0.0",
     "postcss-modules": "^6.0.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0-beta-26f2496093-20240514",
+    "react": "^19.1.0-canary-8759c5c8-20250207",
+    "react-dom": "^19.1.0-canary-8759c5c8-20250207",
     "react-server-dom-esm": "^0.0.1",
     "sharp": "^0.33.5",
     "typescript": "^5.7.2",
     "typescript-plugin-css-modules": "^5.1.0",
-    "vite": "^6.0.3",
+    "vite": "^6.0.11",
     "vite-css-modules": "^1.8.0",
     "vitest": "^2.1.8",
     "webpack-sources": "^3.2.3"
@@ -117,5 +118,8 @@
   "overrides": {
     "react": "$react",
     "react-dom": "$react-dom"
+  },
+  "dependencies": {
+    "vite-plugin-react-server": "^0.3.8"
   }
 }

@@ -22,7 +22,7 @@ export const env = getEnv();
 export const BASE_URL =
   env?.["VITE_BASE_URL"] && env?.["VITE_BASE_URL"] !== ""
     ? env?.["VITE_BASE_URL"]
-    : "https://mmcelebration.com";
+    : "";
 
 /** Public URL path prefix, for example when using gh-pages */
 export const PUBLIC_URL = env?.["VITE_PUBLIC_URL"] ?? "";
@@ -37,7 +37,6 @@ export const absoluteUrl = (path: string) => {
   try {
     return new URL(path, BASE_URL_WITH_PUBLIC_URL).toString();
   } catch (error) {
-    console.error(error, { BASE_URL_WITH_PUBLIC_URL, path });
-    return window.location.origin + path;
+    return path;
   }
 };

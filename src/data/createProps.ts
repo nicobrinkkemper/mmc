@@ -9,6 +9,7 @@ export const createProps: CreatePropsFn = (route, options, fn) => {
   const validator = getRouteValidator(route);
   const head = createHead(fn);
   return async (to = route) => {
+    to = to.replace(/index\.[^.]+$/, "");
     if (!validator(to)) {
       console.log(
         `You called the wrong function, the requested path is "${to}" but this props function is for "${route}"`
@@ -23,7 +24,6 @@ export const createProps: CreatePropsFn = (route, options, fn) => {
         "No options provided, this will return the json directly, will not provide computed values"
       );
     }
-    console.log(to);
     const data = await getStaticData(pathInfo, options);
     if (!data) {
       return null;

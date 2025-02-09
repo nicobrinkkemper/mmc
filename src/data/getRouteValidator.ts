@@ -44,5 +44,8 @@ export const getRouteValidator = (route: string) => {
     return (to: string) => to === route;
   }
   assertRouteString(route);
-  return (to: string) => getRoute(to).route === route;
+  return (to: string) => {
+    const result = getRoute(to);
+    return result.route === route;
+  };
 };

@@ -1,17 +1,11 @@
-import React from "react";
-import type { Manifest } from "vite";
+import React, { PropsWithChildren } from "react";
 import { Favicons } from "./layout/Favicons.js";
 import { Head } from "./layout/Head.js";
 
 export const Html = ({
   children,
   pageProps,
-  manifest,
-}: {
-  children: React.ReactNode;
-  pageProps: HtmlProps;
-  manifest: Manifest;
-}) => {
+}: PropsWithChildren<{ pageProps: any }>) => {
   if (process.env["NODE_ENV"] === "production") {
     return (
       <html>
@@ -22,7 +16,6 @@ export const Html = ({
         </head>
         <body>
           <div id="root">{children}</div>
-          <script type="module" src="/src/client.js"></script>
         </body>
       </html>
     );

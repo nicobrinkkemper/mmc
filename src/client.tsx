@@ -7,7 +7,6 @@ import React, {
   type ReactNode,
 } from "react";
 import { createRoot } from "react-dom/client";
-import { ErrorBoundary } from "./ErrorBoundary.js";
 import { useEventListener } from "./hooks/useEventListener.js";
 import "./index.css";
 import { createReactFetcher } from "./utils/createReactFetcher.js";
@@ -38,7 +37,7 @@ const Shell: React.FC<{
       // Create new RSC data stream
       setStoreData(
         createReactFetcher({
-          url: to,
+          url: to.endsWith("/") ? to + "index.rsc" : to + "/index.rsc",
         })
       );
     });
@@ -63,6 +62,57 @@ const Shell: React.FC<{
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Root element not found");
 
-const intitalData = createReactFetcher();
+const intitalData = createReactFetcher({
+  url: "/index.rsc",
+});
 
 createRoot(rootElement).render(<Shell data={intitalData} />);
+
+const Redirect = ({ search }: { search?: string }) => {
+  React.useEffect(() => {
+    if (!window.location.href.includes("/404")) {
+      const timeout = setTimeout(() => {
+        window.location.href = "/404" + search;
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, []);
+  return null;
+};
+
+/**
+ * Error boundary
+ */
+class ErrorBoundary extends React.Component<
+  React.PropsWithChildren,
+  { hasError: boolean; error: Error | null }
+> {
+  state: { hasError: boolean; error: Error | null } = {
+    hasError: false,
+    error: null,
+  };
+  constructor(props: React.PropsWithChildren) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error(error);
+    this.setState({
+      hasError: true,
+      error:
+        error instanceof Error
+          ? error
+          : new Error("Error", {
+              cause: error,
+            }),
+    });
+  }
+
+  render() {
+    if (!this.state.hasError) {
+      return this.props.children;
+    }
+    return <Redirect search={`?error=${this.state.error?.message}`} />;
+  }
+}

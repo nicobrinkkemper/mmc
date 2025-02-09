@@ -40,9 +40,7 @@
     // If you are having issues with libraries, you can disable this and it won't check the types of the libraries.
     "skipLibCheck": false,
     // The source folder is intended for polymorphic code that can work on the client, server, or during development. By default new code should go here, and should follow the types defined here.
-    "rootDirs": [
-      "src",
-    ],
+    "rootDir": "./",
     // We collect all of our compiled files into the dist folder so that we do not clutter our source directories with distilled files.
     "outDir": "dist",
     // We tell the transpiler that we are using vite and that we want to use the client types. This makes sure that our import.meta.env types are available, as well as the experimental react types.
@@ -54,6 +52,7 @@
       "./node_modules/@types",
       "./node_modules",
       "./types",
+      "./types-node",
     ],
     // When we import a module.css file, typescript will know about the classnames. This plugin has a bit of a caveat, it will not work using composite typescript projects.
     // It's still useful during development, we simply don't use it for our composite tsconfig.node.json files.
@@ -77,7 +76,8 @@
     "src/**/*.module.css",
     "types/**/*.d.ts",
     "test/setup.test.ts",
-    "types/babel-plugin-react-compiler.ts", "vite/vite-react-stream/rsc/createReactNodeStreamer.server.ts",
+    "types/babel-plugin-react-compiler.ts",
+    "vite/vite-react-stream/react-server/createReactNodeStreamer.server.ts",
   ],
   "exclude": [
     "dist",

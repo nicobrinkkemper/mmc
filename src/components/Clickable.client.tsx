@@ -9,8 +9,15 @@ export const ClientClickable: React.FC<{
   <a
     {...props}
     onClick={(e) => {
-      e.preventDefault();
       const href = to || props.href;
+      const isBlank =
+        href?.startsWith("http") ||
+        (e.currentTarget &&
+          "target" in e.currentTarget &&
+          e.currentTarget.target === "_blank");
+      if (!isBlank) {
+        e.preventDefault();
+      }
       const newTo =
         e.currentTarget && "href" in e.currentTarget
           ? e.currentTarget.href
