@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 
 export function PublicImage({
@@ -13,10 +12,6 @@ export function PublicImage({
     "alt" | "className" | "width" | "height" | "src" | "srcSet"
   >
 >) {
-  const [loaded, setLoaded] = React.useState(false);
-  const handleLoad = () => {
-    setLoaded(true);
-  };
   return (
     <img
       src={`${props.src ?? ""}`}
@@ -24,9 +19,8 @@ export function PublicImage({
       alt={alt ?? ""}
       width={width}
       height={height}
-      style={{ opacity: loaded ? 1 : 0 }}
       className={className ?? ""}
-      onLoad={handleLoad}
+      style={{ opacity: 1 }}
     />
   );
 }
