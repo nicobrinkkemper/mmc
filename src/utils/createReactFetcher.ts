@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 import { createFromFetch } from "react-server-dom-esm/client.browser";
+import { BASE_URL_WITH_PUBLIC_URL } from "../config/env.js";
 import { callServer } from "./callServer.js";
 
 export function createReactFetcher({
-  url = window.location.pathname,
-  moduleBaseURL = "/src",
+  url = BASE_URL_WITH_PUBLIC_URL,
+  moduleBaseURL = "",
   headers = { Accept: "text/x-component" },
 }: {
   url?: string;
@@ -12,12 +13,19 @@ export function createReactFetcher({
   headers?: HeadersInit;
 } = {}): Promise<ReactNode> {
   return createFromFetch(
-    fetch(url, {
-      headers: headers,
-    }),
+    fetch(
+      url.endsWith(".rsc")
+        ? url
+        : url.endsWith("/")
+        ? url + "index.rsc"
+        : url + "/index.rsc",
+      {
+        headers: headers,
+      }
+    ),
     {
       callServer: callServer,
-      moduleBaseURL: new URL(moduleBaseURL, window.origin).href,
+      moduleBaseURL: "",
     }
   ) as Promise<ReactNode>;
 }

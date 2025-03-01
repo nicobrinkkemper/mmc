@@ -5,7 +5,7 @@ import {
 import { BASE_URL_WITH_PUBLIC_URL } from "../config/env.js";
 
 type ServerResponse = { returnValue: unknown };
-
+console.log(BASE_URL_WITH_PUBLIC_URL);
 export const callServer = async (
   id: string,
   args: unknown[]
@@ -20,7 +20,7 @@ export const callServer = async (
         "Content-Type": "application/json",
       },
     }),
-    { callServer, moduleBaseURL: BASE_URL_WITH_PUBLIC_URL + "/src" }
+    { callServer, moduleBaseURL: BASE_URL_WITH_PUBLIC_URL }
   );
   const returnValue = (response as ServerResponse).returnValue;
   return returnValue;

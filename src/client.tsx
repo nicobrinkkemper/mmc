@@ -7,9 +7,10 @@ import React, {
   type ReactNode,
 } from "react";
 import { createRoot } from "react-dom/client";
+import "./globalStyles.css";
 import { useEventListener } from "./hooks/useEventListener.js";
-import "./index.css";
 import { createReactFetcher } from "./utils/createReactFetcher.js";
+
 /**
  * Client-side React Server Components implementation
  *
@@ -63,7 +64,7 @@ const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Root element not found");
 
 const intitalData = createReactFetcher({
-  url: "/index.rsc",
+  url: window.location.pathname,
 });
 
 createRoot(rootElement).render(<Shell data={intitalData} />);

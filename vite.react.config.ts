@@ -41,6 +41,7 @@ const pages = async (): Promise<string[]> => {
 };
 
 const createRouter = (fileName: string) => (url: string) => {
+  url = url.replace("index.rsc", "");
   const { route } = getThemePathInfo(url);
   const folder = route === "/" ? "page" : `page${route.replace(/:/g, "_")}`;
   return join("src", folder, fileName);
@@ -53,8 +54,6 @@ export const config = {
   Html: Html,
   pageExportName: "Page",
   propsExportName: "props",
-  collectCss: true,
-  collectAssets: true,
   build: {
     pages: pages,
   },
