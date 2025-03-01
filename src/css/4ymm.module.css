@@ -27,7 +27,7 @@
   --button-after-border: none;
   --button-after-box-shadow: none;
 
-  --app-background: #facd00 repeat 512px 512px url(../assets/4ymm/bg-3x.webp);
+  --app-background: #facd00 repeat 512px 512px url(/4ymm/bg-3x.webp);
 
   --app-font: normal 1rem/1.2rem var(--font-primary);
   --about-button-after-background: none;
