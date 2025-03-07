@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+// @ts-ignore
 import { vitePluginReactServer } from "vite-plugin-react-server/server";
 import { config } from "./vite.react.config.js";
 
