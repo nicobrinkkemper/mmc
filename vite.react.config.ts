@@ -1,4 +1,5 @@
 import { join } from "node:path";
+// @ts-ignore
 import type { StreamPluginOptions } from "vite-plugin-react-server";
 import {
   credits,
@@ -49,6 +50,7 @@ const createRouter = (fileName: string) => (url: string) => {
 
 export const config = {
   moduleBase: "src",
+  moduleBaseUrl: "https://mmcelebration.com",
   Page: createRouter("page.tsx"),
   props: createRouter("props.ts"),
   Html: Html,

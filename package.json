@@ -112,7 +112,7 @@
     "vite-css-modules": "^1.8.0",
     "vitest": "^2.1.8",
     "webpack-sources": "^3.2.3",
-    "vite-plugin-react-server": "^0.3.19"
+    "vite-plugin-react-server": "^1.0.0"
   },
   "include": [
     "src"
