@@ -1,13 +1,18 @@
-import { assertObject } from "../utils/pickAssert.js";
-import { createHead } from "./createHead.js";
 import { getRouteValidator } from "./getRouteValidator.js";
 import { getStaticData } from "./getStaticData.js";
-import { getThemeInfo } from "./getThemeInfo.js";
 import { getThemePathInfo } from "./getThemePathInfo.js";
 
 export const createProps: CreatePropsFn = (route, options, fn) => {
   const validator = getRouteValidator(route);
-  const head = createHead(fn);
+  // add default props to options
+  options.title = true;
+  options.description = true;
+  options.image = true;
+  options.tags = true;
+  options.url = true;
+  options.contentType = true;
+  options.category = true;
+  options.twitter = true;
   return async (to = route) => {
     to = to.replace(/index\.[^.]+$/, "");
     if (!validator(to)) {
@@ -24,15 +29,28 @@ export const createProps: CreatePropsFn = (route, options, fn) => {
         "No options provided, this will return the json directly, will not provide computed values"
       );
     }
-    const data = await getStaticData(pathInfo, options);
-    if (!data) {
-      return null;
-    }
-    assertObject(data, ["images"]);
-    return head({
+    const data = await getStaticData<
+      typeof route,
+      ThemePathInfo<typeof route>,
+      ThemeDataOptions<ValidRoute>
+    >(pathInfo, options);
+    const returned = fn(data as any);
+    if (!returned || typeof returned !== "object") return data;
+    return {
       ...data,
-      info: getThemeInfo(pathInfo.theme),
-      pathInfo,
-    } as never);
+      ...returned,
+    } as any;
+  };
+};
+
+export const createPropsAsync: CreatePropsAsyncFn = (route, options, fn) => {
+  const propsFn = createProps(route, options, () => ({}));
+  return async (to = route) => {
+    const staticProps = await propsFn(to);
+    const props = await fn(staticProps);
+    return {
+      ...staticProps,
+      ...(props as any),
+    };
   };
 };

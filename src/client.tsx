@@ -7,9 +7,11 @@ import React, {
   type ReactNode,
 } from "react";
 import { createRoot } from "react-dom/client";
+import { createReactFetcher } from "vite-plugin-react-server/utils";
+import { baseURL } from "./config/env.client.js";
+import { ErrorMessage } from "./ErrorMessage.js";
 import "./globalStyles.css";
 import { useEventListener } from "./hooks/useEventListener.js";
-import { createReactFetcher } from "./utils/createReactFetcher.js";
 
 /**
  * Client-side React Server Components implementation
@@ -36,24 +38,24 @@ const Shell: React.FC<{
     if ("scrollTo" in window) window.scrollTo(0, 0);
     startTransition(() => {
       // Create new RSC data stream
-      setStoreData(
-        createReactFetcher({
-          url: to.endsWith("/") ? to + "index.rsc" : to + "/index.rsc",
-        })
-      );
+      setStoreData(createReactFetcher());
     });
   }, []);
 
   // Handle browser navigation
-  useEventListener("popstate", (e) => {
-    if (e instanceof PopStateEvent) {
-      if (e.state?.to) {
-        return navigate(e.state.to);
-      }
-    } else {
-      return navigate(window.location.pathname);
-    }
-  });
+  useEventListener(
+    "popstate",
+    (e) => {
+      const newTo = baseURL(
+        !(e instanceof PopStateEvent) || typeof e.state?.to !== "string"
+          ? window.location.pathname
+          : e.state.to
+      );
+      console.log("navigating to", newTo);
+      return navigate(newTo);
+    },
+    window
+  );
 
   const content = use(storeData);
 
@@ -63,57 +65,51 @@ const Shell: React.FC<{
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Root element not found");
 
-const intitalData = createReactFetcher({
-  url: window.location.pathname,
-});
+const intitalData = createReactFetcher();
 
 createRoot(rootElement).render(<Shell data={intitalData} />);
-
-const Redirect = ({ search }: { search?: string }) => {
-  React.useEffect(() => {
-    if (!window.location.href.includes("/404")) {
-      const timeout = setTimeout(() => {
-        window.location.href = "/404" + search;
-      }, 1000);
-      return () => clearTimeout(timeout);
-    }
-  }, []);
-  return null;
-};
 
 /**
  * Error boundary
  */
-class ErrorBoundary extends React.Component<
-  React.PropsWithChildren,
-  { hasError: boolean; error: Error | null }
-> {
-  state: { hasError: boolean; error: Error | null } = {
+
+export class ErrorBoundary extends React.Component {
+  public state: {
+    hasError: boolean;
+    error: Error | null;
+  } = {
     hasError: false,
     error: null,
   };
-  constructor(props: React.PropsWithChildren) {
+  public props: {
+    children: React.ReactNode;
+  } = {
+    children: null,
+  };
+  constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false, error: null };
+    this.props = props;
   }
 
-  componentDidCatch(error: unknown) {
-    console.error(error);
-    this.setState({
-      hasError: true,
-      error:
-        error instanceof Error
-          ? error
-          : new Error("Error", {
-              cause: error,
-            }),
-    });
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
   }
 
   render() {
-    if (!this.state.hasError) {
-      return this.props.children;
+    if (this.state.hasError) {
+      if (this.state.error) {
+        return (
+          <ErrorMessage
+            error={{
+              message: this.state.error.message,
+              stack: this.state.error.stack,
+            }}
+          />
+        );
+      }
+      return <div>Error</div>;
     }
-    return <Redirect search={`?error=${this.state.error?.message}`} />;
+    return this.props.children;
   }
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 declare global {
   /**
@@ -45,8 +45,8 @@ declare global {
    * `ThemeStaticDataReturn` is the type returned by `getStaticData`
    */
   type ThemeStaticDataReturn<
-    R extends ValidRoute = ValidRoute,
-    Opt extends ThemeDataOptions = ThemeDataOptions,
+    R extends ValidRoute,
+    Opt extends ThemeDataOptions<R> = ThemeDataOptions<R>,
     PI extends ThemePathInfo<R> = ThemePathInfo<R>
   > = {
     [K in keyof ThemeDataMapping<R, PI> as WithOption<
@@ -62,15 +62,27 @@ declare global {
     >;
   };
 
+  type StaticDataReturn = ThemeStaticDataReturn<"/">;
+
   /**
    * `ThemeUtil` is the main type to use when creating new utilities for the theme. Anything that isn't a React component.
    */
   type ThemeUtil<
     R extends ValidRoute,
-    Opt extends ThemeDataOptions = ThemeDataOptions,
+    Opt extends ThemeDataOptions<R> = ThemeDataOptions<R>,
     Custom = Record<never, never>,
-    Return = any
+    Return = unknown
   > = (props: ThemeStaticDataReturn<R, Opt> & Custom) => Return;
+
+  /**
+   * `ThemeUtil` is the main type to use when creating new utilities for the theme. Anything that isn't a React component.
+   */
+  type AsyncThemeUtil<
+    R extends ValidRoute,
+    Opt extends ThemeDataOptions<R> = ThemeDataOptions<R>,
+    Custom = Record<string, unknown>,
+    Return = unknown
+  > = (props: ThemeStaticDataReturn<R, Opt> & Custom) => Promise<Return>;
 
   /**
    * Helper to create a page aware component for a theme
@@ -83,9 +95,7 @@ declare global {
    */
   type ThemePageComponent<
     R extends ValidRoute,
-    Props extends ReturnType<PageMap[R]["props"]> = ReturnType<
-      PageMap[R]["props"]
-    >,
+    Props extends PropsMap[R] = PropsMap[R],
     As extends keyof React.JSX.IntrinsicElements = "div"
   > = (props: Props & React.JSX.IntrinsicElements[As]) => React.ReactNode;
 
@@ -132,8 +142,7 @@ declare global {
   >(
     pathInfo: PI,
     options?: Opt
-  ) => Promise<ThemeStaticDataReturn<R, Opt> & PI>;
+  ) => Promise<ThemeStaticDataReturn<R, Opt, PI>>;
 }
 
 export {};
-

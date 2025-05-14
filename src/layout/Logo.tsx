@@ -1,6 +1,7 @@
 import classNames from "clsx";
 import * as React from "react";
 import { PublicImage } from "../components/PublicImage.js";
+import { baseURL } from "../config/env.server.js";
 import styles from "./Logo.module.css";
 
 type LogoType = ThemeComponent<{
@@ -25,7 +26,7 @@ export const Logo: LogoType = ({
   return (
     <>
       <Clickable
-        href={pathInfo.toHome}
+        href={baseURL(pathInfo.toHome)}
         className={classNames(
           className,
           styles["Logo"],
@@ -41,7 +42,7 @@ export const Logo: LogoType = ({
             styles["PrevTheme"],
             small ? styles["small"] : styles["big"]
           )}
-          href={adjacent.prev.value.pathInfo.to}
+          href={baseURL(adjacent.prev.value.pathInfo.to)}
         >
           <PublicImage {...adjacent.prev.value.images.logo} />
         </Clickable>
@@ -52,7 +53,7 @@ export const Logo: LogoType = ({
             styles["NextTheme"],
             small ? styles["small"] : styles["big"]
           )}
-          href={adjacent.next.value.pathInfo.to}
+          href={baseURL(adjacent.next.value.pathInfo.to)}
         >
           <PublicImage {...adjacent.next.value.images.logo} />
         </Clickable>

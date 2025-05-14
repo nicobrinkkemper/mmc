@@ -1,6 +1,7 @@
 import { join } from "node:path";
 // @ts-ignore
-import type { StreamPluginOptions } from "vite-plugin-react-server";
+import { metricWatcher } from "vite-plugin-react-server/metrics";
+import type { StreamPluginOptions } from "vite-plugin-react-server/types";
 import {
   credits,
   levels,
@@ -48,14 +49,39 @@ const createRouter = (fileName: string) => (url: string) => {
   return join("src", folder, fileName);
 };
 
+// process.env.GITHUB_ACTIONS = "true";
 export const config = {
   moduleBase: "src",
-  moduleBaseUrl: "https://mmcelebration.com",
+  ...(process.env.GITHUB_ACTIONS
+    ? {
+        moduleBasePath: "/mmc/",
+        moduleBaseURL: "/mmc/",
+        publicOrigin: "https://nicobrinkkemper.github.io",
+      }
+    : typeof process.env.VITE_PUBLIC_ORIGIN === "string"
+    ? {
+        publicOrigin: process.env.VITE_PUBLIC_ORIGIN,
+      }
+    : process.env.NODE_ENV === "production"
+    ? {
+        // custom host or local host
+        publicOrigin: "http://mmcelebration.com",
+      }
+    : {
+        // development local host
+        publicOrigin: "http://localhost:5173",
+      }),
   Page: createRouter("page.tsx"),
   props: createRouter("props.ts"),
   Html: Html,
+  onMetrics: metricWatcher({
+    maxTime: 200,
+    warnOnly: false, // will show the duration info for each page
+  }),
   pageExportName: "Page",
   propsExportName: "props",
+  serverEntry: "src/server.tsx",
+  clientEntry: "src/client.tsx",
   build: {
     pages: pages,
   },

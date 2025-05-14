@@ -27,6 +27,13 @@ declare global {
     readonly favicon: ResizedImage;
   };
 
+  type Favicons = {
+    readonly favicon_512x512: string;
+    readonly favicon_192x192: string;
+    readonly favicon_64x64: string;
+    readonly favicon: string;
+  };
+
   type ResizedBatchImage = Readonly<Record<80 | 160, [string]> & ResizedImage>;
 
   type ResizedLevelImage = Readonly<
@@ -78,7 +85,7 @@ declare global {
     [K in ResizedImageType]: ResizedImage;
   };
 
-  // these images might exists depending on the theme
+  // these images might exist depending on the theme
   type ResizedImageName = IsGeneratedThemes extends true
     ? // if we have no themes.json, this is the fallback type
       keyof ResizedImages

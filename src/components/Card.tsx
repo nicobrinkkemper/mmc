@@ -1,5 +1,6 @@
 import c from "clsx";
 import * as React from "react";
+import { baseURL } from "../config/env.server.js";
 import styles from "./Card.module.css";
 import { PublicImage } from "./PublicImage.js";
 
@@ -30,7 +31,7 @@ const CardInner: ThemeComponent<
 > = ({ clickable: Clickable, children, className, to }) => {
   const names = c(styles["CardInner"], className);
   return to && Clickable ? (
-    <Clickable href={to} className={names}>
+    <Clickable href={baseURL(to)} className={names}>
       {children}
     </Clickable>
   ) : (

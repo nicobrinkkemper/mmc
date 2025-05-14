@@ -1,3 +1,5 @@
+import type React from "react";
+
 type MapType = <T extends unknown[]>({
   children,
   items,
@@ -7,4 +9,4 @@ type MapType = <T extends unknown[]>({
 }) => React.ReactNode;
 
 export const Map: MapType = ({ children, items }) =>
-  items.map(children as never);
+  items?.map(children as never) ?? null;

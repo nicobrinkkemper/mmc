@@ -8,9 +8,10 @@ import { BatchListCardContent } from "./BatchListCardContent.js";
 type BatchesType = ThemeComponent<{
   batches: true;
   clickable: true;
+  pathInfo: ["theme"];
 }>;
 
-export const BatchList: BatchesType = ({ batches, clickable }) => {
+export const BatchList: BatchesType = ({ batches, clickable, pathInfo }) => {
   if (!batches.length) {
     return (
       <div className={styles["Batches"]}>No releases yet, stay tuned!</div>
@@ -25,7 +26,7 @@ export const BatchList: BatchesType = ({ batches, clickable }) => {
           heading={undefined}
           subHeading={undefined}
           images={{}}
-          to={`${levels}/${batch.batchNumber}`}
+          to={`/${pathInfo.theme}/${levels}/${batch.batchNumber}`}
           key={batch.batchNumber}
         >
           <BatchListCardContent

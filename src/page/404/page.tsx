@@ -8,9 +8,33 @@ export const Page: ThemePageComponent<RouteType> = ({
   images,
   pathInfo: { theme, toHome, toCredits, toLevels, search },
   clickable,
+  favicons,
+  published,
+  updated,
+  twitter,
+  contentType,
+  category,
+  tags,
+  url,
+  title,
+  description,
+  image,
 }) => {
   return (
-    <App pathInfo={{ theme }}>
+    <App
+      pathInfo={{ theme }}
+      favicons={favicons}
+      published={published}
+      updated={updated}
+      twitter={twitter}
+      contentType={contentType}
+      category={category}
+      tags={tags}
+      url={url}
+      title={title}
+      description={description}
+      image={image}
+    >
       <Layout
         small
         images={images}

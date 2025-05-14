@@ -1,4 +1,5 @@
-import { themes } from "../config/themeConfig.js";
+import { absoluteUrl } from "../config/env.server.js";
+import { siteName, themes } from "../config/themeConfig.js";
 import { isKeyOf } from "../utils/isKeyOf.js";
 import { pickRequired } from "../utils/pickRequired.js";
 import { getAdjacent } from "./getAdjacent.js";
@@ -198,6 +199,7 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
           break;
         }
         case "accordion": {
+          // TODO: add client-side accordion
           result.accordion = {
             accordion: "div",
             accordionItem: "div",
@@ -205,6 +207,73 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
             accordionItemButton: "div",
             accordionItemPanel: "div",
           } satisfies AccordionProps;
+          break;
+        }
+        case "updated": {
+          result.updated = new Date().toISOString();
+          break;
+        }
+        case "published": {
+          result.published = new Date().toISOString();
+          break;
+        }
+        case "favicons": {
+          result.favicons = {
+            favicon_512x512: absoluteUrl(images.favicon_512x512.src),
+            favicon_192x192: absoluteUrl(images.favicon_192x192.src),
+            favicon_64x64: absoluteUrl(images.favicon_64x64.src),
+            favicon: absoluteUrl(images.favicon.src),
+          };
+          break;
+        }
+        case "image": {
+          result.image = absoluteUrl(images?.favicon_512x512.src);
+          break;
+        }
+        case "title": {
+          result.title = `${pathInfo.theme} | ${siteName}`;
+          break;
+        }
+        case "description": {
+          result.description = `${pathInfo.theme} | ${siteName}`;
+          break;
+        }
+        case "url": {
+          if (
+            !process.env.VITE_PUBLIC_ORIGIN ||
+            process.env.VITE_PUBLIC_ORIGIN === ""
+          ) {
+            console.warn(
+              "PUBLIC_ORIGIN is not set, so the url can not be absolute. It's typeof",
+              JSON.stringify(process.env.VITE_PUBLIC_ORIGIN),
+              JSON.stringify(import.meta.env)
+            );
+          }
+          result.url = absoluteUrl(
+            pathInfo.to,
+            process.env.VITE_BASE_URL,
+            process.env.VITE_PUBLIC_ORIGIN
+          );
+          break;
+        }
+        case "tags": {
+          result.tags = [
+            "Mario Maker 2",
+            "Mario Maker Community Levels",
+            "Mario Anniversary",
+          ];
+          break;
+        }
+        case "contentType": {
+          result.contentType = "text/html; charset=UTF-8";
+          break;
+        }
+        case "category": {
+          result.category = "gaming";
+          break;
+        }
+        case "twitter": {
+          result.twitter = "summary";
           break;
         }
         default:

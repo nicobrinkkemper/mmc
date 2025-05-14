@@ -1,24 +1,39 @@
-import React, { PropsWithChildren } from "react";
+import React, { type PropsWithChildren } from "react";
+import { CssCollectorElements } from "vite-plugin-react-server/components";
+import type { HtmlProps } from "vite-plugin-react-server/types";
 import { Favicons } from "./layout/Favicons.js";
 import { Head } from "./layout/Head.js";
-
 export const Html = ({
   children,
   pageProps,
-}: PropsWithChildren<{ pageProps: any }>) => {
-  if (process.env["NODE_ENV"] === "production") {
-    return (
-      <html>
-        <head>
-          <Head title={pageProps.title} />
-          <meta name="description" content={pageProps.description} />
-          <Favicons favicons={pageProps.favicons} />
-        </head>
-        <body>
-          <div id="root">{children}</div>
-        </body>
-      </html>
-    );
-  }
-  return <>{children}</>;
+  globalCss,
+  cssFiles,
+}: PropsWithChildren<HtmlProps>) => {
+  return (
+    <html>
+      <head>
+        <Head
+          title={pageProps.title}
+          description={pageProps.description}
+          url={pageProps.url}
+          contentType={pageProps.contentType}
+          published={pageProps.published}
+          updated={pageProps.updated}
+          category={pageProps.category}
+          tags={pageProps.tags}
+          twitter={pageProps.twitter}
+          image={pageProps.image}
+        />
+        <meta name="description" content={pageProps.description} />
+        <Favicons favicons={pageProps.favicons} />
+        <CssCollectorElements cssFiles={globalCss} />
+      </head>
+      <body>
+        <div id="root">
+          {children}
+          <CssCollectorElements cssFiles={cssFiles} />
+        </div>
+      </body>
+    </html>
+  );
 };

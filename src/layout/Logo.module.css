@@ -24,6 +24,8 @@
 
 .Logo.big {
     justify-content: center;
+    justify-self: center;
+        max-width: 320px;
 }
 
 .Logo.small {
@@ -43,6 +45,7 @@
     object-fit: contain;
     object-position: 50% 50%;
 }
+
 @media screen and (min-width: 700px) {
 
     .PrevTheme,

@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../config/env.js";
+import { absoluteUrl } from "../../config/env.server.js";
 import { siteName } from "../../config/themeConfig.js";
 import { createProps } from "../../data/createProps.js";
 
@@ -14,10 +14,21 @@ export const props = createProps(
     adjacent: true,
     clickable: true,
     accordion: true,
+    favicons: true,
+    published: true,
+    updated: true,
+    twitter: true,
+    contentType: true,
+    category: true,
+    tags: true,
+    url: true,
+    title: true,
+    description: true,
+    image: true,
   },
   ({ info: { writtenOut, caps, ordinal }, images: { logo } }) => ({
     description: `${caps}! | Welcome to ${writtenOut} | ${siteName}`,
     title: `${caps} | Celebrating ${ordinal} years of Mario Maker!`,
-    image: BASE_URL + logo.src,
+    image: absoluteUrl(logo.src),
   })
 );

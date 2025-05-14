@@ -1,18 +1,50 @@
 import React from "react";
 import { defaultTitle } from "../config/themeConfig.js";
+import { StaticMetaTags } from "./MetaTags.js";
 
-const criticalCSS = `body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; } * { padding: 0; margin: 0; min-width: 0; box-sizing: border-box; } img { max-width: 100%; object-fit: cover; color: transparent; } strong { font-weight: bold; } svg { max-height:1rem; }`;
+type HeadType = ThemeComponent<{
+  title: true;
+  description: true;
+  url: true;
+  contentType: true;
+  published: true;
+  updated: true;
+  category: true;
+  tags: true;
+  twitter: true;
+  image: true;
+}>;
 
-export function Head({ title = defaultTitle }: Pick<HtmlProps, "title">) {
+export const Head: HeadType = ({
+  title = defaultTitle,
+  description,
+  url,
+  contentType,
+  published,
+  updated,
+  category,
+  tags,
+  twitter,
+  image,
+}) => {
   return (
     <>
-      <meta html-charset="utf-8" />
-      <title>{title}</title>
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
       />
-      <style>{criticalCSS}</style>
+      <StaticMetaTags
+        title={title}
+        description={description}
+        url={url}
+        contentType={contentType}
+        published={published}
+        updated={updated}
+        category={category}
+        tags={tags}
+        twitter={twitter}
+        image={image}
+      />
     </>
   );
-}
+};

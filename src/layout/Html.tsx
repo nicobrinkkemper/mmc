@@ -1,42 +1,48 @@
-import * as React from "react";
-import { Assets } from "./Assets.js";
-import { Favicons } from "./Favicons.js";
-import { Head } from "./Head.js";
-import { MetaTags } from "./MetaTags.js";
+// import * as React from "react";
+// import { Head } from "./Head.js";
 
-export function Html({
-  children,
-  assets,
-  favicons,
-  title,
-  description,
-  contentType,
-  url,
-  published,
-  updated,
-  category,
-  tags,
-  twitter,
-  image,
-}: React.PropsWithChildren<Required<HtmlProps>>) {
-  return (
-    <>
-      <Head title={title} />
-      <MetaTags
-        title={title}
-        description={description}
-        contentType={contentType}
-        url={url}
-        published={published}
-        updated={updated}
-        category={category}
-        tags={tags}
-        twitter={twitter}
-        image={image}
-      />
-      <Favicons favicons={favicons}  />
-      <Assets assets={assets} />
-      {children}
-    </>
-  );
-}
+// type HtmlType = ThemeComponent<{
+//   title: true;
+//   description: true;
+//   url: true;
+//   contentType: true;
+//   published: true;
+//   updated: true;
+//   category: true;
+//   tags: true;
+//   twitter: true;
+//   image: true;
+//   favicons: true;
+// }>;
+
+// export const Html: HtmlType = ({
+//   children,
+//   title,
+//   description,
+//   url,
+//   contentType,
+//   published,
+//   updated,
+//   category,
+//   tags,
+//   twitter,
+//   image,
+// }: React.PropsWithChildren<Required<HtmlHeadProps>>) => {
+//   return (
+//     <>
+//       <Head
+//         title={title}
+//         description={description}
+//         url={url}
+//         contentType={contentType}
+//         published={published}
+//         updated={updated}
+//         category={category}
+//         tags={tags}
+//         twitter={twitter}
+//         image={image}
+//       />
+//       {children}
+//     </>
+//   );
+// };

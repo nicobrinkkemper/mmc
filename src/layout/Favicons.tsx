@@ -1,17 +1,16 @@
 import * as React from "react";
-import { absoluteUrl } from "../config/env.js";
+import { absoluteUrl } from "../config/env.server.js";
 
-export function Favicons({
-  favicons,
-}: Pick<HtmlProps, "favicons">) {
+type FaviconsType = ThemeComponent<{
+  favicons: true;
+}>;
+
+export const Favicons: FaviconsType = ({ favicons }) => {
   if (!favicons) return null;
   return (
     <>
       {favicons.favicon ? (
-        <link
-          rel="icon"
-          href={absoluteUrl(favicons.favicon)}
-        />
+        <link rel="icon" href={absoluteUrl(favicons.favicon)} />
       ) : null}
       {favicons.favicon_512x512 ? (
         <link
@@ -36,4 +35,4 @@ export function Favicons({
       ) : null}
     </>
   );
-}
+};

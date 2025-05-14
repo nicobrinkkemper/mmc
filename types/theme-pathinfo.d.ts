@@ -19,7 +19,7 @@ declare global {
    * This is the type that's used throughout the project to get context about where we are in the app.
    */
   type ThemePathInfo<
-    R extends string = string,
+    R extends ValidRoute = ValidRoute,
     T extends ValidPath = ValidPath
   > = {
     path: string;

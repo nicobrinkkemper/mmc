@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../../config/env.js";
+import { absoluteUrl } from "../../../config/env.server.js";
 import { siteName } from "../../../config/themeConfig.js";
 import { createProps } from "../../../data/createProps.js";
 
@@ -23,10 +23,21 @@ export const props = createProps(
       pathInfo: ["to"],
       images: ["logo"],
     },
+    favicons: true,
+    published: true,
+    updated: true,
+    twitter: true,
+    contentType: true,
+    category: true,
+    tags: true,
+    url: true,
+    title: true,
+    description: true,
+    image: true,
   },
   ({ info: { caps }, images: { logo } }) => ({
     description: `Special thanks to all contributors! ${siteName}`,
     title: `${caps} | Credits | Site by General BB`,
-    image: BASE_URL + logo.src,
+    image: absoluteUrl(logo.src),
   })
 );

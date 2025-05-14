@@ -60,6 +60,7 @@
     "test/setup.test.ts",
     // package.json
     "package.json",
+    "postcss.config.ts"
   ],
   "exclude": [
     "dist",

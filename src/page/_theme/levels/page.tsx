@@ -11,9 +11,31 @@ export const Page: ThemePageComponent<RouteType> = ({
   pathInfo,
   clickable,
   adjacent,
+  favicons,
+  published,
+  updated,
+  twitter,
+  contentType,
+  category,
+  tags,
+  url,
+  title,
+  description,
+  image,
 }) => {
   return (
     <App
+      favicons={favicons}
+      published={published}
+      updated={updated}
+      twitter={twitter}
+      contentType={contentType}
+      category={category}
+      tags={tags}
+      url={url}
+      title={title}
+      description={description}
+      image={image}
       pathInfo={{
         theme: pathInfo.theme,
       }}
@@ -36,9 +58,12 @@ export const Page: ThemePageComponent<RouteType> = ({
         >
           Back to Welcome
         </Button>
-        <BatchList batches={batches} clickable={clickable} />
+        <BatchList
+          batches={batches}
+          clickable={clickable}
+          pathInfo={pathInfo}
+        />
       </Layout>
     </App>
   );
 };
-

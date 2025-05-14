@@ -1,5 +1,5 @@
 declare global {
-  type HtmlProps = {
+  type HtmlHeadProps = {
     title?: string;
     description?: string;
     url?: string;
@@ -10,12 +10,12 @@ declare global {
     tags?: string[];
     twitter?: string;
     image?: string;
-    schema?: string;
-    assets?: {
-      main?: string;
-      imports?: string[];
-      css?: string[];
-    };
+    // schema?: string;
+    // assets?: {
+    //   main?: string;
+    //   imports?: string[];
+    //   css?: string[];
+    // };
     favicons: {
       favicon_512x512: string;
       favicon_192x192: string;
@@ -40,27 +40,29 @@ declare global {
     clickable: true;
   };
 
-  type CreateHeadFn = <R extends ValidRoute>(
-    fn: ThemeUtil<R, HeadDefaultOpt>
-  ) => ThemeUtil<
-    R,
-    HeadDefaultOpt,
-    Partial<HtmlProps>,
-    Required<HtmlProps> & ReturnType<typeof fn>
-  >;
+  type CreatePropsAsyncFn = <
+    R extends ValidRoute,
+    Opt extends ThemeDataOptions,
+    FN extends AsyncThemeUtil<R, Opt>
+  >(
+    route: R,
+    options: Opt,
+    fn: FN
+  ) => (to: string) => Promise<ReturnType<FN> & ThemeStaticDataReturn<R, Opt>>;
 
-  type CreatePropsFn = <R extends ValidRoute>(
-    route: ThemePathInfo<R>["route"],
-    options: ThemeDataOptions<R>,
-    fn: ThemeUtil<R, typeof options & HeadDefaultOpt>
-  ) => (
-    to: string
-  ) => ThemeStaticDataReturn<R, typeof options> & ReturnType<typeof fn>;
+  type CreatePropsFn = <
+    R extends ValidRoute,
+    Opt extends ThemeDataOptions,
+    FN extends ThemeUtil<R, Opt, {}>
+  >(
+    route: R,
+    options: Opt,
+    fn: FN
+  ) => (to: string) => Promise<ReturnType<FN> & ThemeStaticDataReturn<R, Opt>>;
 
   type Clickable = {
     clickable: React.ElementType | "a" | "button";
   };
 }
-
 export {};
 

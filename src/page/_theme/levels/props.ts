@@ -1,4 +1,3 @@
-import { BASE_URL } from "../../../config/env.js";
 import { siteName } from "../../../config/themeConfig.js";
 import { createProps } from "../../../data/createProps.js";
 
@@ -14,9 +13,27 @@ export const props = createProps(
     pathInfo: true,
     clickable: true,
     adjacent: true,
+    favicons: true,
+    published: true,
+    updated: true,
+    twitter: true,
+    contentType: true,
+    category: true,
+    tags: true,
+    url: true,
+    title: true,
+    description: true,
+    image: true,
   },
-  ({ info: { writtenOut }, images: { logo } }) => ({
-    description: `The ${writtenOut}! | ${siteName}`,
-    image: BASE_URL + logo,
-  })
+  (props) => {
+    if (!props) throw new Error("props is undefined");
+    const {
+      info: { writtenOut },
+      images: { logo },
+    } = props;
+    return {
+      description: `The ${writtenOut}! | ${siteName}`,
+      image: (process.env["VITE_BASE_URL"] ?? "/") + logo,
+    };
+  }
 );

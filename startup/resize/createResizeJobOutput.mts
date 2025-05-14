@@ -1,5 +1,4 @@
 import path from "node:path";
-import { PUBLIC_URL } from "../../src/config/env.js";
 import { fileStat, folderStat } from "../file/stat.mjs";
 import { resizeTemplateParsers } from "./resizeTemplateParsers.mjs";
 
@@ -51,10 +50,10 @@ export async function createResizeJobOutput(
     : applyChangesToFileName(changes, job.userInfo.fileName);
 
   const file = path.join(job.original.outputFolder, outputFileName);
-
-  const REPLACE_PUBLIC_URL = PUBLIC_URL.endsWith("/")
-    ? PUBLIC_URL
-    : PUBLIC_URL + `/`;
+  const BASE_URL = process.env["VITE_BASE_URL"] ?? "/";
+  const REPLACE_PUBLIC_URL = BASE_URL?.endsWith("/")
+    ? BASE_URL
+    : BASE_URL + `/`;
 
   const href =
     (job.userInfo.href ?? "") +

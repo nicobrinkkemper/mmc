@@ -2,8 +2,6 @@ import { merge } from "lodash-es";
 import path from "node:path";
 import { resizeImages } from "./resizeImages.mjs";
 
-
-
 export async function resizeFolders(): Promise<ResizeImageStructure> {
   try {
     const resizeInfo = await resizeImages();

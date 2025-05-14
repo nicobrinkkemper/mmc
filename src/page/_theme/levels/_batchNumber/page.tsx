@@ -9,14 +9,39 @@ import { LevelListHeader } from "./LevelListHeader.js";
 import type { RouteType } from "./props.js";
 
 export const Page: ThemePageComponent<RouteType> = ({
-  images: { logo, logo_small, logo_simple_small },
-  pathInfo: { theme, toLevels, toCredits, toHome },
-  batch: { levels, weekTrailer, adjacent, batchName, batchDescription, image },
+  images: { logo, logo_small, logo_simple_small, favicon },
+  pathInfo,
+  batch,
   clickable,
+  favicons,
+  published,
+  updated,
+  image,
+  twitter,
+  contentType,
+  category,
+  tags,
+  url,
+  title,
+  description,
 }) => {
+  const { theme, toLevels, toCredits, toHome } = pathInfo;
   return (
     <>
-      <App pathInfo={{ theme }}>
+      <App
+        pathInfo={{ theme }}
+        favicons={favicons}
+        published={published}
+        updated={updated}
+        twitter={twitter}
+        contentType={contentType}
+        category={category}
+        tags={tags}
+        url={url}
+        title={title}
+        description={description}
+        image={image}
+      >
         <Layout
           small={true}
           images={{
@@ -38,20 +63,33 @@ export const Page: ThemePageComponent<RouteType> = ({
           >
             Back to releases
           </Button>
-          {weekTrailer ? (
+          {batch.weekTrailer ? (
             <div className={styles["Youtube"]}>
               <iframe
                 className={styles["Iframe"]}
-                title={weekTrailer}
+                title={batch.weekTrailer}
                 allowFullScreen={true}
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                src={`https://www.youtube.com/embed/${weekTrailer}?modestbranding=1&enablejsapi=1&controls=1&rel=0&loop=1&listType=playlist`}
+                src={`https://www.youtube.com/embed/${batch.weekTrailer}?modestbranding=1&enablejsapi=1&controls=1&rel=0&loop=1&listType=playlist`}
               />
             </div>
           ) : null}
-          <LevelListHeader batch={{ batchName, batchDescription, image }} />
-          <LevelList batch={{ levels }} clickable={clickable} />
-          <BatchAdjacent batch={{ adjacent }} clickable={clickable} />
+          <LevelListHeader
+            batch={{
+              batchName: batch.batchName,
+              batchDescription: batch.batchDescription,
+              image: batch.image,
+            }}
+          />
+          <LevelList
+            batch={{ levels: batch.levels }}
+            clickable={clickable}
+            pathInfo={pathInfo}
+          />
+          <BatchAdjacent
+            batch={{ adjacent: batch.adjacent }}
+            clickable={clickable}
+          />
         </Layout>
       </App>
     </>

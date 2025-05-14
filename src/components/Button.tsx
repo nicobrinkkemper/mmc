@@ -1,5 +1,6 @@
 import classNames from "clsx";
 import React from "react";
+import { baseURL } from "../config/env.server.js";
 import styles from "./Button.module.css";
 import { ButtonIcons } from "./ButtonIcons.js";
 
@@ -86,7 +87,7 @@ export const Button = ({
 
   return (
     <Clickable
-      href={normalizedHref}
+      href={baseURL(normalizedHref ?? "")}
       id={id}
       className={classN}
       {...blankProps}

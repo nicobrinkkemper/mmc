@@ -71,6 +71,17 @@ declare global {
     small?: OptValue;
     accordion?: OptValue | OptPick<readonly (keyof AccordionProps)[]>;
     clickable?: OptValue;
+    published?: OptValue;
+    updated?: OptValue;
+    favicons?: OptValue;
+    image?: OptValue;
+    title?: OptValue;
+    description?: OptValue;
+    contentType?: OptValue;
+    category?: OptValue;
+    tags?: OptValue;
+    url?: OptValue;
+    twitter?: OptValue;
   };
 
   /**
@@ -78,7 +89,7 @@ declare global {
    */
   type ThemeDataMapping<
     R extends ValidRoute,
-    PI extends Pick<ThemePathInfo<R>, "theme" | "params">
+    PI extends ThemePathInfo<R> = ThemePathInfo<R>
   > = {
     pathInfo: PI;
     batches: ThemeBatch[];
@@ -90,6 +101,17 @@ declare global {
     small?: true;
     accordion: AccordionProps;
     clickable: React.ElementType | "button" | "a";
+    published: string;
+    updated: string;
+    favicons: Favicons;
+    image: string;
+    title: string;
+    description: string;
+    contentType: string;
+    category: string;
+    tags: string[];
+    url: string;
+    twitter: string;
   };
 }
 // prettier-ignore

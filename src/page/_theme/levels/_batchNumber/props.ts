@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../../../config/env.js";
+import { absoluteUrl } from "../../../../config/env.server.js";
 import { levels } from "../../../../config/themeConfig.js";
 import { convertNumberToWord } from "../../../../data/convertNumberToWord.js";
 import { createProps } from "../../../../data/createProps.js";
@@ -20,6 +20,16 @@ export const props = createProps(
     pathInfo: true,
     clickable: true,
     small: true,
+    favicons: true,
+    published: true,
+    updated: true,
+    twitter: true,
+    contentType: true,
+    category: true,
+    tags: true,
+    url: true,
+    title: true,
+    description: true,
   },
   ({ info: { writtenOut, caps }, images: { logo }, batch }) => {
     if (!batch || !("batchNumber" in batch)) return {};
@@ -34,7 +44,7 @@ export const props = createProps(
         batch.releaseDate.value
       }.`,
       title: `${caps} | Week overview`,
-      image: BASE_URL + logo,
+      image: absoluteUrl(logo.src),
     };
   }
 );

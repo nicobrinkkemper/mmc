@@ -1,14 +1,20 @@
 import classNames from "clsx";
 import * as React from "react";
 import { Button } from "../../../../../components/Button.js";
+import { levels } from "../../../../../config/themeConfig.js";
 import styles from "./Level.module.css";
 
 type LevelAdjacentType = ThemeComponent<{
   clickable: true;
-  level: ["adjacent"];
+  level: ["adjacent", "batchNumber"];
+  pathInfo: ["theme"];
 }>;
 
-export const LevelAdjacent: LevelAdjacentType = ({ level, clickable }) => {
+export const LevelAdjacent: LevelAdjacentType = ({
+  level,
+  clickable,
+  pathInfo,
+}) => {
   return (
     <div
       className={classNames(
@@ -21,7 +27,7 @@ export const LevelAdjacent: LevelAdjacentType = ({ level, clickable }) => {
         <Button
           icon="arrow-left"
           iconPosition="left"
-          href={level.adjacent.prev.value.order}
+          href={`/${pathInfo.theme}/${levels}/${level.batchNumber}/${level.adjacent.prev.value.order}`}
           hidden={!level.adjacent.prev.exists}
           clickable={clickable}
         >
@@ -31,7 +37,7 @@ export const LevelAdjacent: LevelAdjacentType = ({ level, clickable }) => {
       {level.adjacent.next?.exists ? (
         <Button
           icon="arrow-right"
-          href={level.adjacent.next.value.order}
+          href={`/${pathInfo.theme}/${levels}/${level.batchNumber}/${level.adjacent.next.value.order}`}
           hidden={!level.adjacent.next.exists}
           clickable={clickable}
         >

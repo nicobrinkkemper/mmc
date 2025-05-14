@@ -1,45 +1,77 @@
 import React from "react";
-import { BASE_URL_WITH_PUBLIC_URL } from "../config/env.js";
+import { absoluteUrl } from "../config/env.server.js";
 
-export const MetaTags = ({
-  title,
-  description,
-  url,
-  contentType,
-  published,
-  updated,
-  category,
-  tags,
-  twitter,
-  image,
-}: Pick<
-  Required<HtmlProps>,
-  | "title"
-  | "description"
-  | "url"
-  | "contentType"
-  | "published"
-  | "updated"
-  | "category"
-  | "tags"
-  | "twitter"
-  | "image"
->) => {
+const defaultTitle = "Official Mario Maker Celebration Site";
+const defaultDescription =
+  "Each year, we celebrate the best levels from Mario Maker! Check out the best levels from the past year!";
+
+type MetaTagsType = ThemeComponent<{
+  title: true;
+  description: true;
+}>;
+
+export const MetaTags: MetaTagsType = ({
+  title = defaultTitle,
+  description = defaultDescription,
+}) => {
   const metaTags = [
-    { itemProp: "name", content: title },
-    { itemProp: "description", content: description },
     { name: "viewport", content: `width=device-width,initial-scale=1` },
     { name: "description", content: description },
-    { name: "twitter:title", content: `${title} | ${BASE_URL_WITH_PUBLIC_URL}` },
+    { name: "title", content: title },
+  ];
+
+  return (
+    <>
+      {Object.entries(metaTags).map(([key, value]) => (
+        <meta key={key} {...value} />
+      ))}
+    </>
+  );
+};
+
+type StaticMetaTagsType = ThemeComponent<{
+  title: true;
+  description: true;
+  url: true;
+  contentType: true;
+  published: true;
+  updated: true;
+  category: true;
+  tags: true;
+  twitter: true;
+  image: true;
+}>;
+
+export const StaticMetaTags: StaticMetaTagsType = ({
+  title = defaultTitle,
+  description = defaultDescription,
+  url = absoluteUrl("/"),
+  contentType = "text/html; charset=UTF-8",
+  published = new Date().toISOString(),
+  updated = new Date().toISOString(),
+  category = "Mario Maker",
+  tags = ["Mario Maker", "Celebration", "Levels"],
+  twitter = "summary_large_image",
+  image = absoluteUrl("images/favicon-512x512.png"),
+}) => {
+  const metaTags = [
+    { name: "html-charset", content: "utf-8" },
+    {
+      name: "twitter:title",
+      content: `${title} | ${url}`,
+    },
     { name: "twitter:description", content: description },
     { name: "twitter:creator", content: "@bbmariomaker2" },
-    { name: "og:title", content: `${title} | ${BASE_URL_WITH_PUBLIC_URL}` },
+    { name: "og:title", content: `${title} | ${url}` },
     { name: "og:type", content: contentType },
     { name: "og:url", content: url },
     { name: "og:description", content: description },
-    { name: "og:site_name", content: `${BASE_URL_WITH_PUBLIC_URL}` },
+    { name: "og:site_name", content: url },
     { name: "og:locale", content: "en_EN" },
   ];
+  if (process.env["NODE_ENV"] === "production") {
+    metaTags.push({ name: "robots", content: "noindex" });
+  }
 
   if (published)
     metaTags.push({ name: "article:published_time", content: published });
@@ -48,7 +80,7 @@ export const MetaTags = ({
   if (category) metaTags.push({ name: "article:section", content: category });
   if (tags) metaTags.push({ name: "article:tag", content: tags.join(",") });
   if (image) {
-    metaTags.push({ itemProp: "image", content: image });
+    metaTags.push({ name: "image", content: image });
     metaTags.push({ name: "twitter:image", content: image });
     metaTags.push({ name: "og:image", content: image });
     metaTags.push({ name: "twitter:card", content: twitter });
