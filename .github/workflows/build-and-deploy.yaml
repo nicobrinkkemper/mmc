@@ -24,6 +24,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - run: npm ci
+      - run: npm run startup:gh
       - run: npm run build --if-present
       - name: List contents
         run: |
