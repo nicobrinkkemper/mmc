@@ -102,10 +102,24 @@ Each theme includes:
 ### Environment Variables (optional)
 These can be used to override or pre-set the server and client URLs.
 ```env
-VITE_BASE_URL=/
+VITE_PUBLIC_ORIGIN=https://mmcelebration.com
 ```
-If not set, the server will use the current URL as the base URL.
-The PUBLIC_URL should only be set if the target server uses a subpath, like gh-pages does.
+or simply run `npm run build`
+Above config is for production builds.
+For github pages it's
+```env
+VITE_BASE_URL=/mmc/
+VITE_PUBLIC_ORIGIN=https://nicobrinkkemper.github.io
+```
+or simply run `npm run build:gh`
+If you want to see how it looks like locally, including favicons, etc,
+The config is
+```
+VITE_PUBLIC_ORIGIN=http://localhost:4137
+```
+Or simply run `npm run preview`
+
+Setting NODE_ENV to development will show any error and stacktraces in the console.
 
 ### Adding New Themes
 

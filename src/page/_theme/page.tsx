@@ -9,20 +9,11 @@ export const Page: ThemePageComponent<RouteType | "/"> = (props) => {
     throw new Error("props is undefined");
   }
   const {
-    images: {
-      logo,
-      logo_special,
-      illustration,
-      favicon,
-      favicon_512x512,
-      favicon_192x192,
-      favicon_64x64,
-    },
-    info: { writtenOut, themeYear, caps, ordinal },
-    pathInfo: { toHome, toLevels, theme, toCredits, toAbout, hash, to },
+    images: { logo, logo_special, illustration },
+    info: { writtenOut, themeYear },
+    pathInfo: { toHome, toLevels, theme, toCredits },
     adjacent,
     clickable,
-    accordion,
     favicons,
     published,
     updated,

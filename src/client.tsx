@@ -38,7 +38,13 @@ const Shell: React.FC<{
     if ("scrollTo" in window) window.scrollTo(0, 0);
     startTransition(() => {
       // Create new RSC data stream
-      setStoreData(createReactFetcher());
+      setStoreData(
+        createReactFetcher({
+          url: to,
+          moduleBaseURL: import.meta.env.BASE_URL,
+          publicOrigin: import.meta.env.PUBLIC_ORIGIN,
+        })
+      );
     });
   }, []);
 
@@ -65,7 +71,11 @@ const Shell: React.FC<{
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Root element not found");
 
-const intitalData = createReactFetcher();
+const intitalData = createReactFetcher({
+  url: window.location.pathname,
+  moduleBaseURL: import.meta.env.BASE_URL,
+  publicOrigin: import.meta.env.PUBLIC_ORIGIN,
+});
 
 createRoot(rootElement).render(<Shell data={intitalData} />);
 

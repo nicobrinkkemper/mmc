@@ -1,5 +1,4 @@
 import { join } from "node:path";
-// @ts-ignore
 import { metricWatcher } from "vite-plugin-react-server/metrics";
 import type { StreamPluginOptions } from "vite-plugin-react-server/types";
 import {
