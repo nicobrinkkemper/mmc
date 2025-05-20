@@ -1,59 +1,41 @@
 .MakerName {
-    display: grid;
-        grid-template-columns: auto;
-        /* Single column for stacking */
-        grid-template-rows: auto auto auto;
-        /* Rows for images, flags, and name/ID */
+    display: inline-grid;
     justify-items: center;
-    /* Center-align everything */
-        gap: 8px;
-        /* Space between rows */
+    grid-template-columns:
+        [first-start] 24px [first-end] 8px [second-start] max-content [second-end];
+    grid-template-rows:
+        [first-row] max-content [second-row] 24px [end];
     width: max-content;
 }
 
-.MakerImages {
-    display: flex;
-    /* Flexbox for maker images */
-    gap: 8px;
-    /* Space between images */
-}
-
-.MakerImage {
-    width: 50px;
-    /* Set size for maker images */
-    height: 50px;
-    object-fit: cover;
-    /* Ensure images fit without distortion */
-    border-radius: 50%;
-    /* Optional: make images circular */
-}
-
-.Nationalities {
-    display: flex;
-    /* Flexbox for flags */
-    gap: 4px;
-    /* Add space between flags */
-}
 .Nationality {
-    width: 20px;
-        /* Flag size */
-        height: 15px;
-        background-size: cover;
+    grid-area: first-row / first;
 }
 
 .Name {
+    grid-area: first-row;
     font-size: 1rem;
-        /* Larger font size for name */
-        line-height: 1.5;
-        color: black;
-        font-weight: bold;
+    line-height: 150%;
+    grid-area: first-row / second;
+}
+.compact .Name {
+    justify-self: flex-start;
+    font-size: 0.8rem;
 }
 
 .MakerId {
-    font-size: 0.9rem;
-        /* Larger font size for ID */
-        color: black;
-        /* Black text */
-        font-weight: bold;
-        text-align: center;
+    grid-area: second-row;
+    font-size: 1rem;
+    display: block;
+    grid-area: second-row / first / second-row / second;
+}
+.compact .MakerId {
+    font-size: 0.8rem;
+    justify-self: flex-start;
+}
+
+.MakerCollab {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
 }

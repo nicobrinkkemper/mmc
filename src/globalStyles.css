@@ -1,0 +1,169 @@
+/* RESET DEFAULT HTML STYLING */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+
+a,
+a:active {
+  color: var(--text-color);
+}
+
+picture {
+  display: flex;
+}
+
+picture img {
+  max-width: 100%;
+  object-fit: cover;
+  color: transparent;
+}
+
+h1 {
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  letter-spacing: var(--h1-letter-spacing, normal);
+  font: var(--h1-font);
+}
+
+h2,
+h3 {
+  font: var(--h2-font);
+}
+
+p {
+  text-align: left;
+}
+
+p>strong {
+  font-weight: bold;
+}
+
+h1,
+h2,
+p {
+  mix-blend-mode: var(--text-mix-blend-mode);
+  text-shadow: var(--text-shadow);
+  letter-spacing: var(--letter-spacing);
+}
+
+code {
+  font-family: var(--font-monospace);
+}
+
+@media (min-width: 320px) {
+  .App {
+    --side-space: 6px;
+  }
+}
+
+@media (min-width: 520px) {
+  .App {
+    --side-space: clamp(1rem, 6vw, 3rem);
+  }
+}
+
+@media (min-width: 720px) {
+  .App {
+    --side-space: clamp(1rem, 6vw, 3rem);
+  }
+}
+
+
+/* TYPOGRAPHY */
+body {
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  line-height: 1.125rem;
+  color: transparent;
+}
+
+img {
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+@media only screen and (min-width: 620px) {
+
+  html,
+  body {
+    font-size: 18px;
+  }
+}
+
+@font-face {
+  font-family: "SuperMarioMakerExtended";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/SuperMarioMakerExtended.eot");
+  src: local("Super-Mario-Maker-Extended"), local("SuperMarioMakerExtended"),
+    url("./fonts/SuperMarioMakerExtended.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */
+    url("./fonts/SuperMarioMakerExtended.woff2") format("woff2"),
+    /* Super Modern Browsers */
+    url("./fonts/SuperMarioMakerExtended.woff") format("woff"),
+    /* Modern Browsers */
+    url("./fonts/SuperMarioMakerExtended.ttf") format("truetype"),
+    /* Safari, Android, iOS */
+    url("./fonts/SuperMarioMakerExtended.svg#SuperMarioMakerExtended") format("svg");
+  /* Legacy iOS */
+}
+
+@font-face {
+  font-family: "SuperMario";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/SuperMario.eot");
+  src: local("Super-Mario"), local("SuperMario"),
+    url("./fonts/SuperMario.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */
+    url("./fonts/SuperMario.woff2") format("woff2"),
+    /* Super Modern Browsers */
+    url("./fonts/SuperMario.woff") format("woff"),
+    /* Modern Browsers */
+    url("./fonts/SuperMario.ttf") format("truetype"),
+    /* Safari, Android, iOS */
+    url("./fonts/SuperMario.svg#SuperMario") format("svg");
+  /* Legacy iOS */
+}
+
+@font-face {
+  font-family: "latoregular";
+  font-display: swap;
+  src: url("./fonts/lato-regular.woff2") format("woff2"),
+    url("./fonts/lato-regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HeaderMarker";
+  font-display: swap;
+  src: url("./fonts/HeaderMarker.otf");
+}
+
+@font-face {
+  font-family: "HeartWarming";
+  font-display: swap;
+  src: url("./fonts/HeartWarming.otf");
+}
+
+@font-face {
+  font-family: "HeartWarmingExtra";
+  font-display: swap;
+  src: url("./fonts/HeartWarmingExtra.otf");
+}
+
+@font-face {
+  font-family: "BordersDivideButHeartsShallConquer";
+  font-display: swap;
+  src: url('./fonts/BordersDivideButHeartsShallConquer.otf');
+}

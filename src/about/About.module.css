@@ -1,5 +1,4 @@
-/** the accordion css is under src/content/default/accordion.module.css */
-.outer {
+.outer:global(#\!\/about):target, .outer.visible {
   position: fixed;
   top: 0;
   left: 0;

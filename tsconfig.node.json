@@ -1,24 +1,74 @@
 {
+  // we will reuse our tsconfig.json settings
+  "extends": "./tsconfig.json",
+  // when we extend a tsconfig.json file, it will merge and override the compilerOptions but not the arrays like lib, rootDirs, etc.
   "compilerOptions": {
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["node", "webpack-env"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "declaration": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    // The very latest ES features
+    "target": "es2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "lib": [
+      "es2023",
+      "dom",
+      "dom.iterable",
+    ],
+    // to support project references and npx tsc --project tsconfig.node.json
+    "noEmit": false,
+    // we want to be able to reference tsconfig.node.json in other tsconfig.json files higher up the directory tree
+    "composite": true,
+    // emit map.d.ts files next to our .d.ts files, allowing vscode to click-through to the source code
+    "declarationMap": true,
+    // emit map.js files next to our .js files, allowing vscode to click-through to the type definition source code
     "sourceMap": true,
-    "outDir": "startup/dist",
-    "jsx": "react-jsx"
+    "declaration": true, // The source folder is intended for polymorphic code that can work on the client, server, or during development. By default new code should go here, and should follow the types defined here.
+    "rootDir": "./",
+    // We collect all of our compiled files into the dist folder so that we do not clutter our source directories with distilled files.
+    "outDir": "dist",
+    // Hear me our, I am not supporting to maintain source code portability. 
+    "allowImportingTsExtensions": false
+    // using this configuration and the source code should work just using `tsc` except for some css stuff, which should be copied `npm run css-to-dist`
   },
-  "include": ["startup/src"],
-  "exclude": ["node_modules", "build", "dist", "coverage"]
+  "include": [
+    // support just normal ts
+    "src/**/*.ts",
+    "startup/**/*.ts",
+    "server/**/*.ts",
+    "vite/**/*.ts",
+    // support tsx
+    "src/**/*.tsx",
+    "startup/**/*.tsx",
+    "server/**/*.tsx",
+    "vite/**/*.tsx",
+    // support mts
+    "src/**/*.mts",
+    "startup/**/*.mts",
+    "server/**/*.mts",
+    "vite/**/*.mts",
+    // support json
+    "src/**/*.json",
+    "startup/**/*.json",
+    "server/**/*.json",
+    // support css files, does not get copied to dist using tsc, find src -name \"*.css\" -exec cp --parents {} dist/ \\;
+    "src/**/*.css",
+    "src/**/*.module.css",
+    "server/**/*.css",
+    "server/**/*.module.css",
+    // support d.ts files. All types here are globally available
+    "types/**/*.d.ts",
+    // Node only types, globally available only in node-referenced files
+    "types-node/**/*.d.ts",
+    "test/setup.test.ts",
+    // package.json
+    "package.json",
+    "postcss.config.ts"
+  ],
+  "exclude": [
+    "dist",
+    "startup/tsconfig.json",
+    "server/tsconfig.json",
+    "tsconfig.node.json",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.test.mts",
+  ]
 }

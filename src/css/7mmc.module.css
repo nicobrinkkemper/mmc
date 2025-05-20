@@ -5,7 +5,7 @@
     --font-tertiary: "BordersDivideButHeartsShallConquer", sans-serif;
     --h1-font: bolder 1.6rem/2rem var(--font-secondary);
     --h2-font: bolder 1rem/1.2rem var(--font-primary);
-  --gap: .5rem;
+    --gap: .5rem;
 
     --background: #000;
     --text-color: #111;
@@ -14,7 +14,7 @@
     --text-shadow: 0 -1px #d8d8d8;
     --letter-spacing: 0;
     --link-color-active: #2c001f;
-    --card-texture: url('../assets/7mmc/card_texture.webp');
+    --card-texture: url('/7mmc/card_texture.webp');
 
     --button-font: 400 1.2em/1.125em var(--font-tertiary);
     --button-background: var(--card-texture) 100%/100%;
@@ -28,7 +28,7 @@
     --box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
     --app-font: normal 1rem/1.2rem var(--font-primary);
-    --app-background: 512px/512px #FFF url("../assets/7mmc/gridpaper_special-3x.webp") repeat;
+    --app-background: 512px/512px #FFF url(/7mmc/gridpaper_special-3x.webp) repeat;
 
     --modal-inner-color: var(--text-color);
     --modal-outer-background: rgba(205, 205, 205, 0.4);
@@ -56,9 +56,9 @@
     --tag-before-content: '';
     --tag-text-align: center;
     --tag-before-mix-blend-mode: darken;
-    --tag-before-background: no-repeat url('../assets/7mmc/highlight_yellow.svg');
-    --tag-new-background: no-repeat url('../assets/7mmc/highlight_magenta.svg');
-        --tag-other-background: no-repeat url('../assets/7mmc/highlight_cyan.svg');
+    --tag-before-background: no-repeat url('/7mmc/highlight_yellow.svg');
+        --tag-new-background: no-repeat url('/7mmc/highlight_magenta.svg');
+        --tag-other-background: no-repeat url('/7mmc/highlight_cyan.svg');
     --tag-before-transform: scale(1, 1);
     --tag-before-top: 0;
     --tag-before-left: 0;

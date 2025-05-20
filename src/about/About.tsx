@@ -1,29 +1,45 @@
+import classNames from "clsx";
+import * as React from "react";
+import styles from "./About.module.css";
+import { CloseSvg } from "./CloseSvg.js";
 
-import { default as classes } from './About.module.css';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { CloseSvg } from './CloseSvg';
-import { Content } from "../copy/Content";
+type AboutType = ThemeComponent<
+  {
+    clickable: true;
+  },
+  "div",
+  {
+    closeProps: React.JSX.IntrinsicElements["a"];
+    visible: boolean;
+  }
+>;
 
-export const About = () => {
-    const location = useLocation()
-    const navigate = useNavigate()
-    if (location.hash !== '#!/about') return null
-    return (
-        <div className={classes.outer} >
-            <div className={classes.main}>
-                <div className={classes.inner}>
-                    <div className={classes.header}>
-                        <button className={classes.close} onClick={() => navigate(location.pathname)}>
-                            <CloseSvg />
-                        </button>
-                    </div>
-                    <div className={classes.body}>
-                        <div>
-                            <Content.About />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div >
-    );
-}
+export const About: AboutType = ({
+  closeProps,
+  children,
+  visible,
+  clickable: Clickable,
+}) => {
+  return (
+    <div
+      className={classNames(styles["outer"], visible && styles["visible"])}
+      id={"!/about"}
+    >
+      <div className={styles["main"]}>
+        <div className={styles["inner"]}>
+          <div className={styles["header"]}>
+            <Clickable
+              className={classNames(styles["close"], closeProps?.className)}
+              {...closeProps}
+            >
+              <CloseSvg />
+            </Clickable>
+          </div>
+          <div className={styles["body"]}>
+            <div>{children}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -1,132 +1,143 @@
-# The Official Mario Maker Celebration Repository
+# Mario Maker Celebration (MMC)
 
-The best Mario Makers from around the world showcase their style.
+A React Server Components (RSC) powered website showcasing the best Mario Makers from around the world.
 
-[Official site](https://mmcelebration.com)
+[Official site](https://mmcelebration.com) | [Latest (GitHub Pages)](https://nicobrinkkemper.github.io/mmc)
 
-[Github hosted (latest)](https://nicobrinkkemper.github.io/mmc)
+## Featured Projects
 
 - [4YMM](https://mmcelebration.com/4ymm)
 - [5YMM](https://mmcelebration.com/5ymm)
 - [6YMM](https://mmcelebration.com/6ymm)
 - [7MMC](https://mmcelebration.com/7mmc)
 - [8MMC](https://mmcelebration.com/8mmc)
+- [9MMC](https://mmcelebration.com/9mmc)
 
+## Architecture
 
-### `npm run startup`
-- resize images
-- download and parse csv
-- combine image and csv data
-- check existence of needed level, maker, thumbnail
-- output `themes.json` in convenient format for react
+This project uses:
+- React Server Components (RSC) for server-side rendering
+- Vite for development and bundling
+- TypeScript for type safety
+- CSS Modules for styling
+- Custom RSC streaming implementation
 
-### `npm run start`
-Run react app using generated `themes.json` and images
+## Development
 
-### `npm run build`
-Build production version of the site to upload to [mmcelebration.com](https://mmcelebration.com)
+```bash
+# Install dependencies
+npm install
 
-Every page of the website is post-processed via [react snap](https://github.com/stereobooster/react-snap).
+# Start development server
+npm run start
 
+# Build for production
+npm run build
 
-# Theming
-## /startup
-To get all the art work in sync, the crew uses a [google spreadsheet](https://docs.google.com/spreadsheets/d/e/2PACX-1vROk4rxqS9jPImRfwqL6T6pFHJSBs4Gx3O9JUzabTeDA0aZrr2xccinxeuWhSNJJflByzbE63CAkZj0/pub) to keep track
-of everything. This goes in to the trailers, the art work and the website.
+# Preview production build
+npm run preview
 
-This code base downloads the spreadsheet information and combines it with images and art work to build
-the final product.
-
-## themes.json
-
-Get the data for the current theme
-```tsx
-const {data} = useTheme();
-// data includes all the data for the current theme
-<PublicImage {...data.images.logo} />
+# Run tests
+npm test
 ```
 
-Get the current level
-```ts
-const {level} = useLevel();
+## Project Structure
+
+```
+.
+├── src/
+│   ├── page/           # Page components and routing
+│   ├── components/     # Shared components
+│   ├── data/          # Data fetching and management
+│   ├── css/           # Global and theme styles
+│   └── config/        # Configuration files
+├── vite/              # Vite plugins and config
+│   └── vite-react-stream/  # RSC streaming implementation
+├── public/            # Static assets
+└── types/             # TypeScript type definitions
 ```
 
-Get the current batch
-```ts
-const {batch} = useBatch();
+## Key Features
+
+### React Server Components
+- Server-side rendering with streaming
+- Client-side hydration
+- Automatic CSS collection and injection
+- Custom RSC implementation using `react-server-dom-esm`
+
+### Theming System
+Each theme includes:
+- Custom CSS variables
+- Theme-specific components
+- Dedicated routing
+- Asset management
+
+### Data Management
+- Google Sheets integration for content
+- Automatic image optimization
+- Type-safe data fetching
+- Cached data generation
+
+## Build Process
+
+1. **Development**
+   - `npm run start`: Starts Vite dev server with RSC support
+   - Hot Module Replacement (HMR) enabled
+   - CSS Modules with automatic typing
+
+2. **Production Build**
+   - `npm run build`: Creates optimized production build
+   - RSC payload generation
+   - Static asset optimization
+   - CSS minification
+
+3. **Static Export**
+   - `npm run export`: Generates static HTML
+   - Pre-renders all routes
+   - Optimizes assets
+   - Creates RSC payloads
+
+## Configuration
+
+### Environment Variables (optional)
+These can be used to override or pre-set the server and client URLs.
+```env
+VITE_BASE_URL=/
+```
+If not set, the server will use the current URL as the base URL.
+The PUBLIC_URL should only be set if the target server uses a subpath, like gh-pages does.
+
+### Adding New Themes
+
+1. Add theme configuration in `src/config/themeConfig.ts`:
+```typescript
+createConfig({
+    theme: "new_theme",
+    gid: "spreadsheet_gid",
+    weekTrailers: ["video_id1", "video_id2"],
+})
 ```
 
-## /resizeImages
-All original images are collected here using snake_case naming.
-
-All images will be resized to single and double format, a href and srcSet attribute are stored in themes.json.
-
-## src/css/index.ts
-```ts
-export { default as _4ymm } from "./4ymm.module.css";
-export { default as _5ymm } from "./5ymm.module.css";
-export { default as _6ymm } from "./5ymm.module.css"; // same as 5ymm
-export { default as _7mmc } from "./7mmc.module.css";
-export { default as _8mmc } from "./8mmc.module.css";
+2. Create theme assets:
 ```
-Each theme sets css variables that alter the look of the website.
-This file needs to have such an export for each theme.
-
-Any class defined in a theme has to be defined in all the themes. Currently only the Theme class is used to keep it simple.
-
-```ts
-const Theme = useCss('Theme')
-...
-<App className={Theme}>
+public/new_theme/
+├── level/      # Level screenshots
+├── maker/      # Maker avatars
+└── batch/      # Batch images
 ```
-This applies the current theme's css variables to the website.
 
-## src/content/index.ts
-```ts
-export * as _4ymm from "./4ymm";
-export * as _5ymm from "./5ymm";
-export * as _6ymm from "./5ymm"; // same as 5ymm
-export * as _7mmc from "./7mmc";
-export * as _8mmc from "./8mmc";
-export * as _default from "./default";
-```
-The welcome, about and credit contents are exported here. Use it like so:
-```tsx
-<Content.About />
-<Content.Welcome />
-<Content.Credits />
-```
-Using these components will automatically load the right content for the theme, based on what is available. Any props given to the component
-will be given to the final component as well.
+3. Add theme styles in `src/css/new_theme.module.css`
 
-## startup/src/themeConfig.ts
-```ts
-...
-_5ymm: {
-    gid: 588603541,
-    weektrailers: ["b26QvbP4MUI", "-f83uRDCZpA", "ouKbaTu5YKc", "13Sb6V8ydPM"],
-}
-```
-This is the entry point for all themes. There's a few requirements:
-- GID for the spreadsheet
-- Weektrailer for each batch in the spreadsheet
-- Resized maker image, screenshot and thumbnail image in `/public`
+4. Add theme content in `src/content/new_theme.tsx`
 
+## Contributing
 
-# Adding new theme
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Add to 
+## License
 
-- src/copy/index.ts
-- src/css/index.ts
-- startup/src/themeConfig.mts
-- resizeImages/public/
-
-If everything went well, you can now run `npm run startup` to generate the images, themes.json and themeKeys.json.
-
-If that went well, try `npm run build`, this will do the following:
-- generate the `themes.json` and `themeKeys.json` in `server/src/` and `src/data/`
-- generate the simple react client in `build/`
-- generate a optimized version of the website by running the server's crawl command: `npm run ssg`
-- Now you can look at the build folder to see the final product
-- If you want to test out the final product, run `npm run serve` and click through the website in the browser, this is what the users will see once uploaded to mmcelebration.com, you can view the page source and see that the html is generated for each page. 
+MIT

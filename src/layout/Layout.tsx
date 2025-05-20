@@ -1,34 +1,41 @@
-import { ComponentProps, PropsWithChildren } from "react";
-import { About } from "../about/About";
-import { AboutButton } from "../about/AboutButton";
-import { BackButton } from "../components/BackButton";
-import { Seo } from "../components/Seo";
-import { Footer } from "./Footer";
-import { Logo } from "./Logo";
+import * as React from "react";
+import { Footer } from "./Footer.js";
+import { Logo } from "./Logo.js";
 
-export function Layout({
+type LayoutComponent = ThemeComponent<{
+  images: ["logo"];
+  pathInfo: ["toHome", "toCredits"];
+  adjacent: {
+    pathInfo: ["to"];
+    images: ["logo"];
+  };
+  small: true;
+  clickable: true;
+}>;
+
+export const Layout: LayoutComponent = ({
   children,
   className,
-  type = "normal",
-  small = false,
-  seo,
-}: PropsWithChildren<{
-  className?: string;
-  type?: "special" | "simple" | "normal";
-  small?: boolean;
-  seo: ComponentProps<typeof Seo>;
-}>) {
+  small,
+  images,
+  pathInfo,
+  adjacent,
+  clickable,
+}) => {
   return (
     <>
-      <AboutButton />
-      <Logo small={small} logo={type === "normal" ? "logo" : `logo_${type}`} />
-      <article className={className}>
-        <BackButton />
+      <Logo
+        small={small}
+        pathInfo={pathInfo}
+        images={images}
+        adjacent={adjacent}
+        clickable={clickable}
+        key="logo"  
+      />
+      <article className={className} key="article">
         {children}
       </article>
-      <About />
-      <Footer />
-      <Seo {...seo} />
+      <Footer pathInfo={pathInfo} key="footer" clickable={clickable} />
     </>
   );
-}
+};

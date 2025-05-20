@@ -1,24 +1,31 @@
-import { ComponentProps } from "react";
-import {
-    type ContentComponent,
-    type ContentKey,
-    contentsKeys,
-} from "./contents";
-import { useContent } from "./useContent";
+import * as React from "react";
+import { contentsKeys } from "./contents.js";
+import { getContent } from "./getContent.js";
 
-function ContentAt<
-    Key extends ContentKey,
-    P extends ComponentProps<ContentComponent<Key>>,
->({ at, ...props }: Readonly<{ at: Key } & P>) {
-    const Component: ContentComponent<ContentKey> = useContent(at);
-    return <Component {...(props ?? {})} />;
-}
+const ContentAt: ContentAtFn = ({ at, pathInfo, ...props }) => {
+  if (!pathInfo) {
+    console.warn("PathInfo is required for a Content component");
+    return null;
+  }
+  if (!pathInfo.theme) {
+    console.warn(
+      `No theme found in pathInfo, you need to request it as a type via \`pathInfo:['theme']\`. available: ${JSON.stringify(
+        pathInfo,
+        null,
+        2
+      )}`
+    );
+    return null;
+  }
+  const Component: any = getContent(pathInfo.theme, at);
+  return <Component pathInfo={pathInfo} {...props} />;
+};
 
 export const Content = Object.fromEntries(
-    contentsKeys.map((at) => [
-        at,
-        (props: any) => <ContentAt at={at} {...(props ?? {})} />
-    ])
+  contentsKeys.map((at) => [
+    at,
+    (props: any) => <ContentAt at={at} {...props} />,
+  ])
 ) as {
-        [Key in ContentKey]: ContentComponent<Key>;
-    };
+  [Key in ContentKey]: ContentComponent<Key>;
+};

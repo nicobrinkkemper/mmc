@@ -1,19 +1,26 @@
-import Button from "../components/Button";
-import { useTheme } from "../theme/useTheme";
+import * as React from "react";
+import { Button } from "../components/Button.js";
 import styles from "./AboutButton.module.css";
-export const AboutButton = () => {
-    // this solves redirecting to '/' when running build-gh
-    const { info: { currentThemeUrl } } = useTheme();
-    // because it always puts the theme in the url, the user will see url change from / to /theme#!/about
-    return (
+
+type AboutButtonType = ThemeComponent<{
+  clickable: true;
+  pathInfo: ["toAbout"];
+}>;
+
+export const AboutButton: AboutButtonType = ({
+  clickable,
+  pathInfo: { toAbout },
+}) => {
+  return (
+    <>
       <Button
-        inverted={true}
-        icon={"info-inverted"}
-        to={`/${currentThemeUrl}#!/about`}
-        className={styles.AboutButton}
+        href={toAbout}
+        className={styles["AboutButton"]}
+        icon="info-inverted"
+        clickable={clickable}
       >
         About
       </Button>
-    );
-}
-
+    </>
+  );
+};

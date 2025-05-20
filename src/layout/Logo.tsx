@@ -1,55 +1,63 @@
-import { PropsWithChildren } from "react";
-import { Link } from "react-router-dom";
-import { useTheme } from "../theme/useTheme";
-import classNames from "classnames";
+import classNames from "clsx";
+import * as React from "react";
+import { PublicImage } from "../components/PublicImage.js";
+import { baseURL } from "../config/env.server.js";
 import styles from "./Logo.module.css";
-import { ThemeLogo } from "./ThemeLogo";
-type logoImageTypes = "logo" | "logo_simple" | "logo_special" | "logo_small";
 
-export type LogoProps = PropsWithChildren<{
-  logo?: logoImageTypes;
-  small?: boolean;
-  className?: string;
+type LogoType = ThemeComponent<{
+  images: ["logo"];
+  pathInfo: ["toHome"];
+  small: true;
+  clickable: true;
+  adjacent?: {
+    pathInfo: ["to"];
+    images: ["logo"];
+  };
 }>;
-export const Logo = ({
-  logo = "logo",
-  small = false,
+
+export const Logo: LogoType = ({
+  small,
   className,
-}: LogoProps) => {
-
-  const {
-    theme,
-    themeSlug,
-    info: { nextThemeUrl, prevThemeUrl, nextTheme, prevTheme },
-  } = useTheme();
-
-  const hasPrev = !small && prevTheme;
-  const hasNext = !small && nextTheme;
-  const size = small ? "small" : "big";
+  images,
+  pathInfo,
+  adjacent,
+  clickable: Clickable,
+}) => {
   return (
     <>
-      <Link
-        to={`/${themeSlug}`}
+      <Clickable
+        href={baseURL(pathInfo.toHome)}
         className={classNames(
           className,
-          styles.Logo,
-          styles[size],
-          styles[logo]
+          styles["Logo"],
+          small ? styles["small"] : styles["big"]
         )}
       >
-        <ThemeLogo small={small} logo={logo} theme={theme} />
-      </Link>
+        <PublicImage {...images.logo} />
+      </Clickable>
 
-      {hasPrev && (
-        <Link className={styles.PrevTheme} to={`/${prevThemeUrl ?? ""}`}>
-          <ThemeLogo theme={prevTheme ?? "8mmc"} small logo="logo_simple" />
-        </Link>
-      )}
-      {hasNext && (
-        <Link className={styles.NextTheme} to={`/${nextThemeUrl ?? ""}`}>
-          <ThemeLogo theme={nextTheme ?? "8mmc"} small logo="logo_simple" />
-        </Link>
-      )}
+      {adjacent?.prev.exists === true ? (
+        <Clickable
+          className={classNames(
+            styles["PrevTheme"],
+            small ? styles["small"] : styles["big"]
+          )}
+          href={baseURL(adjacent.prev.value.pathInfo.to)}
+        >
+          <PublicImage {...adjacent.prev.value.images.logo} />
+        </Clickable>
+      ) : null}
+      {adjacent?.next.exists === true ? (
+        <Clickable
+          className={classNames(
+            styles["NextTheme"],
+            small ? styles["small"] : styles["big"]
+          )}
+          href={baseURL(adjacent.next.value.pathInfo.to)}
+        >
+          <PublicImage {...adjacent.next.value.images.logo} />
+        </Clickable>
+      ) : null}
     </>
   );
 };

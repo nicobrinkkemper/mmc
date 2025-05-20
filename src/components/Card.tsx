@@ -1,90 +1,105 @@
-import classnames from "classnames";
-import { PropsWithChildren } from "react";
-import { Link, To } from "react-router-dom";
+import c from "clsx";
+import * as React from "react";
+import { baseURL } from "../config/env.server.js";
 import styles from "./Card.module.css";
-import { Image } from "./Image";
+import { PublicImage } from "./PublicImage.js";
 
-export type CardProps = PropsWithChildren<{
-  illustration?: boolean;
-  disabled?: boolean;
-  to?: To;
-  className?: string;
-  heading?: string | JSX.Element;
-  subHeading?: string;
-  type?: "special" | "simple";
-}>;
-
-function CardOuter({
-  children,
-  heading,
-}: Readonly<Pick<CardProps, "heading" | "children">>) {
+const CardOuter: ThemeComponent<
+  {},
+  "div",
+  {
+    heading: React.ReactNode;
+  }
+> = ({ heading, children }) => {
   if (!heading) return <>{children}</>;
   return (
-    <div className={classnames(styles.CardOuter)}>
-      <h1>{heading}</h1>
+    <div className={c(styles["CardOuter"])}>
+      {typeof heading === "string" ? <h1>{heading}</h1> : heading}
       {children}
     </div>
   );
-}
+};
 
-function CardClickable({
-  children,
-  to,
-  disabled,
-  className,
-}: Readonly<Pick<CardProps, "to" | "children" | "disabled" | "className">>) {
-  const names = classnames(styles.CardInner, className);
-  if (!to) return <div className={names}>{children}</div>;
-  return (
-    <Link to={to} aria-disabled={disabled} className={names}>
+const CardInner: ThemeComponent<
+  {
+    clickable: boolean;
+  },
+  "div",
+  {
+    to?: string;
+  }
+> = ({ clickable: Clickable, children, className, to }) => {
+  const names = c(styles["CardInner"], className);
+  return to && Clickable ? (
+    <Clickable href={baseURL(to)} className={names}>
       {children}
-    </Link>
+    </Clickable>
+  ) : (
+    <div className={names}>{children}</div>
   );
-}
+};
 
-function CardIllustration({
-  illustration,
-  type,
-}: Readonly<Pick<CardProps, "illustration" | "type">>) {
-  if (!illustration) return null;
-  const names = classnames(
-    type === "special"
-      ? styles.SpecialCardIllustration
-      : styles.CardIllustration,
-    illustration
-  );
-  return <Image alt={"illustration"} name="illustration" className={names} />;
-}
-
-export const Card = ({
+export const Card: ThemeComponent<
+  {
+    images: ["illustration"] | [];
+    clickable: boolean;
+  },
+  "div",
+  {
+    to?: string;
+    type?: "simple" | "special";
+    heading?: string | React.ReactNode;
+    subHeading?: string | React.ReactNode;
+    disabled?: boolean;
+  }
+> = ({
   children,
-  illustration,
-  disabled = false,
-  to,
   type = "simple",
   className,
+  images,
+  clickable,
   heading,
   subHeading,
-}: CardProps) => {
-  const names = classnames(
-    illustration,
-    styles.Card,
-    illustration,
+  disabled,
+  to,
+}) => {
+  const cardIllustration =
+    typeof images === "object" && images != null && "illustration" in images
+      ? images["illustration"]
+      : null;
+  const names = c(
+    styles["Card"],
     className,
-    disabled && styles.CardDisabled,
-    !!to && styles.CardClickable,
-    illustration &&
+    disabled && styles["IsCardDisabled"],
+    !!clickable && styles["IsClickableCard"],
+    cardIllustration?.className,
+    cardIllustration &&
       (type === "special"
-        ? styles.HasSpecialCardIllustration
-        : styles.HasCardIllustration)
+        ? styles["HasSpecialCardIllustration"]
+        : styles["HasCardIllustration"])
   );
   return (
-    <CardOuter heading={heading}>
-      <CardClickable to={to} disabled={disabled} className={names}>
-        <CardIllustration illustration={illustration} type={type} />
-        <h2>{subHeading}</h2>
-        {children}
-      </CardClickable>
-    </CardOuter>
+    <>
+      <CardOuter heading={heading}>
+        <CardInner className={names} clickable={clickable} to={to}>
+          {cardIllustration ? (
+            <PublicImage
+              className={c(
+                type === "special"
+                  ? styles["SpecialCardIllustration"]
+                  : styles["CardIllustration"],
+                cardIllustration.className
+              )}
+              src={cardIllustration.src}
+              srcSet={cardIllustration.srcSet}
+              width={cardIllustration.width}
+              height={cardIllustration.height}
+            />
+          ) : null}
+          {typeof subHeading === "string" ? <h2>{subHeading}</h2> : subHeading}
+          {children}
+        </CardInner>
+      </CardOuter>
+    </>
   );
 };

@@ -1,25 +1,26 @@
+import * as React from "react";
+
 export function PublicImage({
   alt,
   width,
   height,
   className,
   ...props
-}: Readonly<{
-  alt: string;
-  className?: string;
-  width: number;
-  height: number;
-  srcSet: string;
-  src: string;
-}>) {
+}: Readonly<
+  Pick<
+    ImageStructure,
+    "alt" | "className" | "width" | "height" | "src" | "srcSet"
+  >
+>) {
   return (
     <img
-      className={className}
-      src={props.src}
-      srcSet={props.srcSet}
-      alt={alt}
+      src={`${props.src ?? ""}`}
+      srcSet={`${props.srcSet ?? ""}`}
+      alt={alt ?? ""}
       width={width}
       height={height}
+      className={className ?? ""}
+      style={{ opacity: 1 }}
     />
   );
 }

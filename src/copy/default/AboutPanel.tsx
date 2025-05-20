@@ -1,8 +1,10 @@
-import { PropsWithChildren } from "react";
-import { AccordionItemPanel } from "react-accessible-accordion";
+import * as React from "react";
 
-export const AboutPanel = ({ children }: PropsWithChildren) => (
-    <AccordionItemPanel>
-        <p>{children}</p>
-    </AccordionItemPanel>
+export const AboutPanel: AboutPanelType = ({
+  children,
+  accordionItemPanel: AccordionItemPanel,
+}) => (
+  <AccordionItemPanel>
+    <p>{children}</p>
+  </AccordionItemPanel>
 );

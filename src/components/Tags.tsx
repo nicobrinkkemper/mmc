@@ -1,18 +1,27 @@
-import classNames from "classnames";
+import classNames from "clsx";
+import React from "react";
 import styles from "./Tags.module.css";
 
-export function Tags({
-  tags,
-}: Readonly<{ tags: Record<string, string | undefined> }>) {
+
+export const Tags: ThemeComponent<{
+  level: ["tags"];
+}> = ({ level }) => {
   return (
-    <div className={styles.Tags}>
-      {Object.entries(tags).map(([key, tag]) => {
+    <div className={styles["Tags"]}>
+      {Object.entries(level.tags).map(([key, tag], i) => {
+        let uniqueKey = key + i;
         return (
-          <span className={classNames(styles.Tag, styles[key])} key={key}>
+          <span
+            className={classNames(
+              styles["Tag"],
+              styles[key as keyof typeof styles]
+            )}
+            key={uniqueKey}
+          >
             {tag}
           </span>
         );
       })}
     </div>
   );
-}
+};
