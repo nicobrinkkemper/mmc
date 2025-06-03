@@ -52,8 +52,8 @@ const createRouter = (fileName: string) => (url: string) => {
 export const config = {
   moduleBase: "src",
   moduleBasePath: process.env.VITE_BASE_URL ?? "/",
-  moduleBaseURL: process.env.VITE_BASE_URL ?? "/",
-  publicOrigin: process.env.VITE_PUBLIC_ORIGIN ?? "http://localhost:4173",
+  moduleBaseURL: process.env.VITE_BASE_URL,
+  publicOrigin: process.env.VITE_PUBLIC_ORIGIN,
   Page: createRouter("page.tsx"),
   props: createRouter("props.ts"),
   CssCollector: MmcCssCollector,

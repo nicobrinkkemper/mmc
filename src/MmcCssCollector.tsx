@@ -1,8 +1,7 @@
-import React from "react";
+import React, { type Fragment } from "react";
 import { CssCollectorElements } from "vite-plugin-react-server/components";
-import type { CssContent } from "vite-plugin-react-server/types";
+import type { CssCollectorProps } from "vite-plugin-react-server/types";
 import { themes } from "./config/themeConfig.js";
-import type { PageProps } from "./Html.js";
 
 const removeableCSS = [
   "/src/css/4ymm.module.css",
@@ -26,22 +25,32 @@ const filters = Object.fromEntries(themes.map(createFilter)) as unknown as {
 export type CssCollectorType = ThemeComponent<
   {},
   "div",
-  {
-    pageProps: PageProps;
-    cssFiles: Map<string, CssContent>;
-    children: React.ReactNode;
-  }
+  CssCollectorProps<
+    {
+      pathInfo: { theme: Theme };
+    },
+    boolean,
+    "div" | typeof Fragment
+  >
 >;
 
-export const MmcCssCollector: CssCollectorType = ({
-  as: Component = React.Fragment,
+export const MmcCssCollector = ({
+  as: Component,
   children,
   cssFiles,
   pageProps,
+  Page,
   ...props
-}) => {
-  if (!cssFiles) return children;
-
+}: CssCollectorProps<
+  {
+    pathInfo: { theme: Theme };
+  },
+  boolean,
+  "div" | typeof Fragment
+>) => {
+  if (!cssFiles) return null;
+  if (!pageProps || !("pathInfo" in pageProps)) return null;
+  const theme = pageProps.pathInfo.theme;
   const cssArray = Array.isArray(cssFiles)
     ? cssFiles
     : Array.from(cssFiles?.values() ?? []);
@@ -50,15 +59,14 @@ export const MmcCssCollector: CssCollectorType = ({
     cssArray
       .filter(
         (file) =>
-          !removeableCSS.includes(file.id) ||
-          filters[pageProps.pathInfo.theme].includes(file.id)
+          !removeableCSS.includes(file.id) || filters[theme].includes(file.id)
       )
       .map((file) => [file.id, file])
   );
 
   return (
     <Component {...props}>
-      {children}
+      <Page {...pageProps} />
       <CssCollectorElements cssFiles={removeNonCurrentThemeCss} />
     </Component>
   );
