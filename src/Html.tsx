@@ -1,14 +1,44 @@
-import React, { type PropsWithChildren } from "react";
+import React from "react";
 import { CssCollectorElements } from "vite-plugin-react-server/components";
 import type { HtmlProps } from "vite-plugin-react-server/types";
 import { Favicons } from "./layout/Favicons.js";
 import { Head } from "./layout/Head.js";
-export const Html = ({
+
+export type PageProps = ThemeStaticDataReturn<
+  ValidRoute,
+  {
+    title: true;
+    description: true;
+    url: true;
+    contentType: true;
+    published: true;
+    updated: true;
+    category: true;
+    tags: true;
+    twitter: true;
+    image: true;
+    favicons: true;
+    pathInfo: ["theme"];
+  }
+>;
+
+export type MmcHtmlType = ThemeComponent<
+  {},
+  typeof React.Fragment,
+  HtmlProps<PageProps, boolean>
+>;
+
+export const Html: MmcHtmlType = ({
   children,
   pageProps,
   globalCss,
   cssFiles,
-}: PropsWithChildren<HtmlProps>) => {
+  CssCollector,
+  Page,
+}) => {
+  if (!pageProps) {
+    throw new Error("pageProps is required");
+  }
   return (
     <html>
       <head>
@@ -30,7 +60,7 @@ export const Html = ({
       </head>
       <body>
         <div id="root">
-          {children}
+          <Page {...pageProps} />
           <CssCollectorElements cssFiles={cssFiles} />
         </div>
       </body>

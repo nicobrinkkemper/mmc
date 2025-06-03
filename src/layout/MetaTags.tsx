@@ -1,5 +1,5 @@
 import React from "react";
-import { absoluteUrl } from "../config/env.server.js";
+import { absoluteURL } from "../config/env.server.js";
 
 const defaultTitle = "Official Mario Maker Celebration Site";
 const defaultDescription =
@@ -45,14 +45,14 @@ type StaticMetaTagsType = ThemeComponent<{
 export const StaticMetaTags: StaticMetaTagsType = ({
   title = defaultTitle,
   description = defaultDescription,
-  url = absoluteUrl("/"),
+  url = absoluteURL("/"),
   contentType = "text/html; charset=UTF-8",
   published = new Date().toISOString(),
   updated = new Date().toISOString(),
   category = "Mario Maker",
   tags = ["Mario Maker", "Celebration", "Levels"],
   twitter = "summary_large_image",
-  image = absoluteUrl("images/favicon-512x512.png"),
+  image = absoluteURL("images/favicon-512x512.png"),
 }) => {
   const metaTags = [
     { name: "html-charset", content: "utf-8" },

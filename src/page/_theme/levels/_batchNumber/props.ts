@@ -1,4 +1,4 @@
-import { absoluteUrl } from "../../../../config/env.server.js";
+import { absoluteURL } from "../../../../config/env.server.js";
 import { levels } from "../../../../config/themeConfig.js";
 import { convertNumberToWord } from "../../../../data/convertNumberToWord.js";
 import { createProps } from "../../../../data/createProps.js";
@@ -44,7 +44,7 @@ export const props = createProps(
         batch.releaseDate.value
       }.`,
       title: `${caps} | Week overview`,
-      image: absoluteUrl(logo.src),
+      image: absoluteURL(logo.src),
     };
   }
 );

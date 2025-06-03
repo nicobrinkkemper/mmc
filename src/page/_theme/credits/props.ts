@@ -1,4 +1,4 @@
-import { absoluteUrl } from "../../../config/env.server.js";
+import { absoluteURL } from "../../../config/env.server.js";
 import { siteName } from "../../../config/themeConfig.js";
 import { createProps } from "../../../data/createProps.js";
 
@@ -38,6 +38,6 @@ export const props = createProps(
   ({ info: { caps }, images: { logo } }) => ({
     description: `Special thanks to all contributors! ${siteName}`,
     title: `${caps} | Credits | Site by General BB`,
-    image: absoluteUrl(logo.src),
+    image: absoluteURL(logo.src),
   })
 );

@@ -12,7 +12,6 @@ import { baseURL } from "./config/env.client.js";
 import { ErrorMessage } from "./ErrorMessage.js";
 import "./globalStyles.css";
 import { useEventListener } from "./hooks/useEventListener.js";
-
 /**
  * Client-side React Server Components implementation
  *
