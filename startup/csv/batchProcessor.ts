@@ -16,7 +16,6 @@ export const batchProcessor: ThemeBatchProcessorFn = (
     const toBatch = baseURL(
       `${themeConfig.theme}/${levelsSlug}/${batchNumber}`
     );
-    console.log("toBatch", toBatch);
     return {
       batchNumber: batchNumber,
       batchName: batchName ?? `Week ${batchNumber}`,

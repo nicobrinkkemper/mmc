@@ -9,7 +9,6 @@ type BatchAdjacentType = ThemeComponent<{
 }>;
 
 export const BatchAdjacent: BatchAdjacentType = ({ batch, clickable }) => {
-  console.log("batch", batch.adjacent.next.value);
   return (
     <div
       className={classNames(
