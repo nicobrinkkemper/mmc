@@ -89,6 +89,7 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
             result.batch.toBatch = baseURL(
               `${pathInfo.theme}/${levels}/${batch.batchNumber}`
             );
+            console.log("result.batch.toBatch", result.batch.toBatch);
           }
           if (value === true) {
             // the default value for batch is to get the adjacent
