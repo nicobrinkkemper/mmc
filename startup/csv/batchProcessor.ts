@@ -1,4 +1,5 @@
 import { groupBy } from "lodash-es";
+import { baseURL } from "../../src/config/env.server.js";
 
 export const batchProcessor: ThemeBatchProcessorFn = (
   themeConfig,
@@ -20,6 +21,7 @@ export const batchProcessor: ThemeBatchProcessorFn = (
       levels: levels,
       releaseDate: levels[0].releaseDate,
       image: batchImage ?? null,
+      toBatch: baseURL(`${themeConfig.theme}/${levels}/${batchNumber}`),
     };
   });
   return {
