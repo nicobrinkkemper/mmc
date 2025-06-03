@@ -85,6 +85,7 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
           if (!batch) break;
           result.batch = batch;
           if (!result.batch.toBatch) {
+            console.warn("toBatch is not set");
             result.batch.toBatch = baseURL(
               `${pathInfo.theme}/${levels}/${batch.batchNumber}`
             );
