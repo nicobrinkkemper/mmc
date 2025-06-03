@@ -1,4 +1,3 @@
-import "./env.mjs";
 //
 import {
   generatedFolder,
