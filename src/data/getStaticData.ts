@@ -84,9 +84,12 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
         case "batch": {
           if (!batch) break;
           result.batch = batch;
-          result.batch.toBatch = baseURL(
-            `${pathInfo.theme}/${levels}/${batch.batchNumber}`
-          );
+          if (!result.batch.toBatch) {
+            console.warn("toBatch is not set");
+            result.batch.toBatch = baseURL(
+              `${pathInfo.theme}/${levels}/${batch.batchNumber}`
+            );
+          }
           if (value === true) {
             // the default value for batch is to get the adjacent
             value = ["adjacent"];
@@ -101,12 +104,20 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
                   batches as never,
                   batchIndex
                 ).adjacent;
-                if (result.batch.adjacent.next.exists) {
+                if (
+                  result.batch.adjacent.next.exists &&
+                  !result.batch.adjacent.next.value.toBatch
+                ) {
+                  console.warn("toBatch is not set");
                   result.batch.adjacent.next.value.toBatch = baseURL(
                     `${pathInfo.theme}/${levels}/${result.batch.adjacent.next.value.batchNumber}`
                   );
                 }
-                if (result.batch.adjacent.prev.exists) {
+                if (
+                  result.batch.adjacent.prev.exists &&
+                  !result.batch.adjacent.prev.value.toBatch
+                ) {
+                  console.warn("toBatch is not set");
                   result.batch.adjacent.prev.value.toBatch = baseURL(
                     `${pathInfo.theme}/${levels}/${result.batch.adjacent.prev.value.batchNumber}`
                   );
