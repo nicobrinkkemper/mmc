@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import * as React from "react";
-import { absoluteURL } from "../config/env.server";
+import { absoluteURL } from "../config/env.server.js";
 
 export type FaviconsType = ThemeComponent<{
   favicons: true;
