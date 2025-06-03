@@ -10,7 +10,7 @@
     "lint": "eslint ./src --fix",
     "serve": "node dist/server/dev-server.mjs",
     "serve-gh": "export PUBLIC_URL=/mmc; node dist/server/dev-server.mjs",
-    "build": "npm run env:prod -- npm run build:static && npm run env:prod -- npm run build:client && npm run env:prod -- npm run build:server",
+    "build": "npm run build:static && npm run env:prod -- npm run build:client && npm run env:prod -- npm run build:server",
     "build:prod": "npm run build:static:prod && npm run build:client:prod && npm run build:server:prod",
     "build:gh": "npm run build:static:gh && npm run build:client:gh && npm run build:server:gh",
     "build:preview": "npm run build:static:preview && npm run build:client:preview && npm run build:server:preview",
