@@ -16,7 +16,7 @@
     "build:preview": "npm run build:static:preview && npm run build:client:preview && npm run build:server:preview",
     "build:dev": "npm run build:static:dev && npm run build:client:dev && npm run build:server:dev",
     "env:prod": "PUBLIC_ORIGIN='https://mmcelebration.com' BASE_URL='/' NODE_ENV=production",
-    "env:gh": "PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' BASE_URL='/mmc/' NODE_ENV=production",
+    "env:gh": "PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' BASE_URL='/mmc/' NODE_ENV=production GITHUB_ACTIONS=true",
     "env:preview": "PUBLIC_ORIGIN='http://localhost:4173' BASE_URL='/' NODE_ENV=production",
     "env:dev": "NODE_ENV=development",
     "build:static": "vite build",

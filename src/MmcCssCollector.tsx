@@ -54,7 +54,6 @@ export const MmcCssCollector = ({
   const cssArray = Array.isArray(cssFiles)
     ? cssFiles
     : Array.from(cssFiles?.values() ?? []);
-
   const removeNonCurrentThemeCss = new Map(
     cssArray
       .filter(
