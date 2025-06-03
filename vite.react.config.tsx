@@ -65,7 +65,6 @@ export const config = {
   pageExportName: "Page",
   propsExportName: "props",
   serverEntry: "src/server.tsx",
-  clientEntry: "src/client.tsx",
   build: {
     pages: pages,
   },
