@@ -1,11 +1,19 @@
-import { absoluteUrl } from "../config/env.server.js";
-import { siteName, themes } from "../config/themeConfig.js";
+import {
+  createAbsoluteURL,
+  createBaseURL,
+} from "vite-plugin-react-server/utils";
+import { ClientClickable } from "../components/Clickable.client.js";
+import { levels, siteName, themes } from "../config/themeConfig.js";
 import { isKeyOf } from "../utils/isKeyOf.js";
 import { pickRequired } from "../utils/pickRequired.js";
 import { getAdjacent } from "./getAdjacent.js";
 import { getTheme } from "./getTheme.js";
 import { getThemeInfo } from "./getThemeInfo.js";
 
+let publicOrigin = import.meta.env.PUBLIC_ORIGIN ?? "https://mmcelebration.com";
+let baseUrl = import.meta.env.BASE_URL ?? "/";
+let absoluteURL = createAbsoluteURL(baseUrl, publicOrigin);
+let baseURL = createBaseURL(baseUrl);
 const mapAdjacent = (
   {
     images,
@@ -76,6 +84,9 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
         case "batch": {
           if (!batch) break;
           result.batch = batch;
+          result.batch.toBatch = baseURL(
+            `${pathInfo.theme}/${levels}/${batch.batchNumber}`
+          );
           if (value === true) {
             // the default value for batch is to get the adjacent
             value = ["adjacent"];
@@ -90,6 +101,16 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
                   batches as never,
                   batchIndex
                 ).adjacent;
+                if (result.batch.adjacent.next.exists) {
+                  result.batch.adjacent.next.value.toBatch = baseURL(
+                    `${pathInfo.theme}/${levels}/${result.batch.adjacent.next.value.batchNumber}`
+                  );
+                }
+                if (result.batch.adjacent.prev.exists) {
+                  result.batch.adjacent.prev.value.toBatch = baseURL(
+                    `${pathInfo.theme}/${levels}/${result.batch.adjacent.prev.value.batchNumber}`
+                  );
+                }
                 break;
               }
               default: {
@@ -178,9 +199,7 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
         case "clickable":
           if (!result.clickable) {
             try {
-              result.clickable = (
-                await import("../components/Clickable.client.js")
-              ).ClientClickable;
+              result.clickable = ClientClickable;
             } catch (error) {
               console.error("Error loading ClientClickable:", error);
             }
@@ -219,15 +238,15 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
         }
         case "favicons": {
           result.favicons = {
-            favicon_512x512: absoluteUrl(images.favicon_512x512.src),
-            favicon_192x192: absoluteUrl(images.favicon_192x192.src),
-            favicon_64x64: absoluteUrl(images.favicon_64x64.src),
-            favicon: absoluteUrl(images.favicon.src),
+            favicon_512x512: absoluteURL(images.favicon_512x512.src),
+            favicon_192x192: absoluteURL(images.favicon_192x192.src),
+            favicon_64x64: absoluteURL(images.favicon_64x64.src),
+            favicon: absoluteURL(images.favicon.src),
           };
           break;
         }
         case "image": {
-          result.image = absoluteUrl(images?.favicon_512x512.src);
+          result.image = absoluteURL(images?.favicon_512x512.src);
           break;
         }
         case "title": {
@@ -239,21 +258,7 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
           break;
         }
         case "url": {
-          if (
-            !process.env.VITE_PUBLIC_ORIGIN ||
-            process.env.VITE_PUBLIC_ORIGIN === ""
-          ) {
-            console.warn(
-              "PUBLIC_ORIGIN is not set, so the url can not be absolute. It's typeof",
-              JSON.stringify(process.env.VITE_PUBLIC_ORIGIN),
-              JSON.stringify(import.meta.env)
-            );
-          }
-          result.url = absoluteUrl(
-            pathInfo.to,
-            process.env.VITE_BASE_URL,
-            process.env.VITE_PUBLIC_ORIGIN
-          );
+          result.url = absoluteURL(pathInfo.to);
           break;
         }
         case "tags": {

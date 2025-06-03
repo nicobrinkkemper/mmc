@@ -1,4 +1,4 @@
-import { absoluteUrl } from "../../config/env.server.js";
+import { absoluteURL } from "../../config/env.server.js";
 import { siteName } from "../../config/themeConfig.js";
 import { createProps } from "../../data/createProps.js";
 
@@ -29,6 +29,6 @@ export const props = createProps(
   ({ info: { writtenOut, caps, ordinal }, images: { logo } }) => ({
     description: `${caps}! | Welcome to ${writtenOut} | ${siteName}`,
     title: `${caps} | Celebrating ${ordinal} years of Mario Maker!`,
-    image: absoluteUrl(logo.src),
+    image: absoluteURL(logo.src),
   })
 );

@@ -20,6 +20,7 @@ declare global {
     weekTrailer: string;
     levels: ThemeLevel[];
     image: ResizedBatchImage | null;
+    toBatch: string;
     releaseDate: {
       value: string;
       date: Date;
@@ -130,7 +131,16 @@ declare global {
     },
     As extends AsProperty = "div",
     Custom extends Record<string, unknown> = Record<never, never>
-  > = ThemeUtil<ValidRoute, Opt, WithAsProperty<As> & Custom, React.ReactNode>;
+  > = ThemeUtil<
+    ValidRoute,
+    Opt,
+    WithAsProperty<As> &
+      Custom &
+      (As extends keyof React.JSX.IntrinsicElements
+        ? React.JSX.IntrinsicElements[As]
+        : {}),
+    React.ReactNode
+  >;
 
   /**
    * `GetStaticDataFn` is used for `getStaticData`, cntr+click on any type to see it.
@@ -146,3 +156,4 @@ declare global {
 }
 
 export {};
+

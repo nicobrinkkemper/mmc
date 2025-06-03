@@ -31,7 +31,7 @@ export const BatchAdjacent: BatchAdjacentType = ({ batch, clickable }) => {
       {batch.adjacent.next?.exists ? (
         <Button
           icon="arrow-right"
-          href={batch.adjacent.next.value.batchNumber}
+          href={batch.adjacent.next.value.toBatch}
           hidden={!batch.adjacent.next.exists}
           clickable={clickable}
         >

@@ -56,7 +56,7 @@
     --card-background: var(--card-texture) repeat;
     --card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
     --illustration-box-shadow: none;
-    --card-illustration-transform: rotate(0deg) translate(6em, -18rem);
+    --card-illustration-transform: rotate(0deg) translate(6rem, -18rem);
 
     --tag-min-width: 100px;
     --tag-before-content: '';

@@ -9,8 +9,8 @@ import {
   themes,
 } from "./src/config/themeConfig.js";
 import { getThemePathInfo } from "./src/data/getThemePathInfo.js";
-import { Html } from "./src/Html.server.js";
-
+import { Html } from "./src/Html.js";
+import { MmcCssCollector } from "./src/MmcCssCollector.js";
 const themeLevelPages = async (): Promise<string[]> => {
   const themeData = await import("./src/data/generated/themes.js");
   const batches = themes.flatMap((theme: string, i: number) => {
@@ -51,27 +51,12 @@ const createRouter = (fileName: string) => (url: string) => {
 // process.env.GITHUB_ACTIONS = "true";
 export const config = {
   moduleBase: "src",
-  ...(process.env.GITHUB_ACTIONS
-    ? {
-        moduleBasePath: "/mmc/",
-        moduleBaseURL: "/mmc/",
-        publicOrigin: "https://nicobrinkkemper.github.io",
-      }
-    : typeof process.env.VITE_PUBLIC_ORIGIN === "string"
-    ? {
-        publicOrigin: process.env.VITE_PUBLIC_ORIGIN,
-      }
-    : process.env.NODE_ENV === "production"
-    ? {
-        // custom host or local host
-        publicOrigin: "http://mmcelebration.com",
-      }
-    : {
-        // development local host
-        publicOrigin: "http://localhost:5173",
-      }),
+  moduleBasePath: process.env.VITE_BASE_URL ?? "/",
+  moduleBaseURL: process.env.VITE_BASE_URL ?? "/",
+  publicOrigin: process.env.VITE_PUBLIC_ORIGIN ?? "http://localhost:4173",
   Page: createRouter("page.tsx"),
   props: createRouter("props.ts"),
+  CssCollector: MmcCssCollector,
   Html: Html,
   onMetrics: metricWatcher({
     maxTime: 200,
