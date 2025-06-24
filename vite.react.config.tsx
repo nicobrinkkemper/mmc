@@ -54,6 +54,7 @@ export const config = {
   moduleBasePath: process.env.VITE_BASE_URL ?? "/",
   moduleBaseURL: process.env.VITE_BASE_URL,
   publicOrigin: process.env.VITE_PUBLIC_ORIGIN,
+  verbose: true,
   Page: createRouter("page.tsx"),
   props: createRouter("props.ts"),
   CssCollector: MmcCssCollector,

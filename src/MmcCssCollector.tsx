@@ -1,4 +1,4 @@
-import React, { type Fragment } from "react";
+import React from "react";
 import { CssCollectorElements } from "vite-plugin-react-server/components";
 import type { CssCollectorProps } from "vite-plugin-react-server/types";
 import { themes } from "./config/themeConfig.js";
@@ -18,25 +18,12 @@ const createFilter = (theme: Theme) => {
   return [theme, removeableCSS.filter((css) => css.includes(theme))];
 };
 
-const filters = Object.fromEntries(themes.map(createFilter)) as unknown as {
+const filters = Object.fromEntries(themes.map(createFilter)) as {
   [key in Theme]: string[];
 };
 
-export type CssCollectorType = ThemeComponent<
-  {},
-  "div",
-  CssCollectorProps<
-    {
-      pathInfo: { theme: Theme };
-    },
-    boolean,
-    "div" | typeof Fragment
-  >
->;
-
 export const MmcCssCollector = ({
   as: Component,
-  children,
   cssFiles,
   pageProps,
   Page,
@@ -46,7 +33,7 @@ export const MmcCssCollector = ({
     pathInfo: { theme: Theme };
   },
   boolean,
-  "div" | typeof Fragment
+  "div"
 >) => {
   if (!cssFiles) return null;
   if (!pageProps || !("pathInfo" in pageProps)) return null;
@@ -62,7 +49,7 @@ export const MmcCssCollector = ({
       )
       .map((file) => [file.id, file])
   );
-
+  console.log({ Component, Page, props });
   return (
     <Component {...props}>
       <Page {...pageProps} />

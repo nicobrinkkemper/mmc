@@ -122,3 +122,13 @@ export class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+
+if (import.meta.hot) {
+  import.meta.hot.accept((newModule) => {
+    console.log("newModule", newModule);
+    if (newModule) {
+      // newModule is undefined when SyntaxError happened
+      console.log("updated: count is now ", newModule["count"]);
+    }
+  });
+}

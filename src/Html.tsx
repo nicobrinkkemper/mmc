@@ -25,16 +25,16 @@ export type PageProps = ThemeStaticDataReturn<
 export type MmcHtmlType = ThemeComponent<
   {},
   typeof React.Fragment,
-  HtmlProps<PageProps, boolean>
+  HtmlProps<PageProps, boolean, "div">
 >;
 
 export const Html: MmcHtmlType = ({
-  children,
   pageProps,
   globalCss,
   cssFiles,
   CssCollector,
   Page,
+  as: Component = "div" as "div",
 }) => {
   if (!pageProps) {
     throw new Error("pageProps is required");
@@ -63,10 +63,13 @@ export const Html: MmcHtmlType = ({
         />
       </head>
       <body>
-        <div id="root">
-          <Page {...pageProps} />
-          <CssCollectorElements cssFiles={cssFiles} />
-        </div>
+        <CssCollector
+          id="root"
+          Page={Page}
+          cssFiles={cssFiles}
+          pageProps={pageProps}
+          as={Component}
+        />
       </body>
     </html>
   );
