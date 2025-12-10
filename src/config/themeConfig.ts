@@ -68,6 +68,11 @@ export const themeConfig = [
     gid: 614218153,
     weekTrailers: ["_hABAT2_1Nk", "TpdedGjPOMo"],
   }),
+  createConfig({
+    theme: "10mmc",
+    gid: 1217313722,
+    weekTrailers: [],
+  }),
 ] as const;
 
 // some helpers

@@ -144,6 +144,9 @@ public/new_theme/
 
 4. Add theme content in `src/content/new_theme.tsx`
 
+5. Add new theme to the barrel files (index.ts)
+ - 
+
 ## Contributing
 
 1. Fork the repository

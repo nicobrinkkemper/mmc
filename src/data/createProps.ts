@@ -15,11 +15,6 @@ export const createProps: CreatePropsFn = (route, options, fn) => {
   options.twitter = true;
   return async (to = route) => {
     to = to.replace(/index\.[^.]+$/, "");
-    if (!validator(to)) {
-      console.log(
-        `You called the wrong function, the requested path is "${to}" but this props function is for "${route}"`
-      );
-    }
     const pathInfo = getThemePathInfo(to) as ThemePathInfo<
       typeof route,
       PathMap[typeof route]

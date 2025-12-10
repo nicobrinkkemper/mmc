@@ -1,4 +1,5 @@
 declare global {
+
   type HtmlHeadProps = {
     title?: string;
     description?: string;

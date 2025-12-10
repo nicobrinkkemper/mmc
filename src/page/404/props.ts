@@ -26,6 +26,6 @@ export const props = createProps(
   ({ info: { writtenOut }, images: { logo } }) => ({
     description: `${writtenOut}! | ${siteName}`,
     title: `${writtenOut} | 404`,
-    image: (process.env["VITE_BASE_URL"] ?? "/") + logo,
+    image: (import.meta.env.BASE_URL ?? "/") + logo,
   })
 );

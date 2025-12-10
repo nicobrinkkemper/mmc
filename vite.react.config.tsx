@@ -1,6 +1,9 @@
 import { join } from "node:path";
 import { metricWatcher } from "vite-plugin-react-server/metrics";
-import type { StreamPluginOptions } from "vite-plugin-react-server/types";
+import type {
+  DefaultInterface,
+  StreamPluginOptions,
+} from "vite-plugin-react-server/types";
 import {
   credits,
   levels,
@@ -9,8 +12,16 @@ import {
   themes,
 } from "./src/config/themeConfig.js";
 import { getThemePathInfo } from "./src/data/getThemePathInfo.js";
-import { Html } from "./src/Html.js";
-import { MmcCssCollector } from "./src/MmcCssCollector.js";
+import "./types/html.d.ts";
+import "./types/page-props.d.ts";
+
+export interface MMCInterface
+  extends Omit<DefaultInterface, "RootExportName" | "HtmlExportName"> {
+  PageProps: PageProps; // your custom PageProps type
+  RootExportName: "MmcRoot"; // Brand our root component
+  HtmlExportName: "MmcHtml"; // Brand our html component
+}
+
 const themeLevelPages = async (): Promise<string[]> => {
   const themeData = await import("./src/data/generated/themes.js");
   const batches = themes.flatMap((theme: string, i: number) => {
@@ -42,31 +53,37 @@ const pages = async (): Promise<string[]> => {
 };
 
 const createRouter = (fileName: string) => (url: string) => {
-  url = url.replace("index.rsc", "");
   const { route } = getThemePathInfo(url);
   const folder = route === "/" ? "page" : `page${route.replace(/:/g, "_")}`;
-  return join("src", folder, fileName);
+  const path = join("src", folder, fileName);
+  return path;
 };
 
 // process.env.GITHUB_ACTIONS = "true";
 export const config = {
   moduleBase: "src",
-  moduleBasePath: process.env.VITE_BASE_URL ?? "/",
-  moduleBaseURL: process.env.VITE_BASE_URL,
+  moduleBasePath: "/",
+  moduleBaseURL: process.env.VITE_BASE_URL ?? "/",
   publicOrigin: process.env.VITE_PUBLIC_ORIGIN,
-  verbose: true,
+  verbose: false,
   Page: createRouter("page.tsx"),
   props: createRouter("props.ts"),
-  CssCollector: MmcCssCollector,
-  Html: Html,
-  onMetrics: metricWatcher({
-    maxTime: 200,
-    warnOnly: false, // will show the duration info for each page
-  }),
+  Root: "src/MmcRoot.tsx",
+  Html: "src/MmcHtml.tsx",
   pageExportName: "Page",
   propsExportName: "props",
+  htmlExportName: "MmcHtml",
+  rootExportName: "MmcRoot",
+  onMetrics: metricWatcher({
+    warnOnly: false,
+    warn: (...args) => console.warn(...args),
+    info: (...args) => console.info(...args),
+  }),
   serverEntry: "src/server.tsx",
+  css: {
+    inlineCss: true,
+  },
   build: {
     pages: pages,
   },
-} as StreamPluginOptions;
+} satisfies StreamPluginOptions<MMCInterface>;

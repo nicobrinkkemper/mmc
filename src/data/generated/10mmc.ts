@@ -1,0 +1,1 @@
+export {default as _10mmc} from "./10mmc.json" with { type: "json" };

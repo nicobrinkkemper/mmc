@@ -4,6 +4,6 @@ import { config } from "./vite.react.config.js";
 
 export default defineConfig(() => {
   return {
-    plugins: vitePluginReactServer(config),
+    plugins: vitePluginReactServer(config) as never,
   };
 });

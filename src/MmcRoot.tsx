@@ -1,7 +1,7 @@
 import React from "react";
-import { CssCollectorElements } from "vite-plugin-react-server/components";
-import type { CssCollectorProps } from "vite-plugin-react-server/types";
-import { themes } from "./config/themeConfig.js";
+import { Css } from "vite-plugin-react-server/components";
+import type { RootProps } from "vite-plugin-react-server/types";
+import { mainTheme, themes } from "./config/themeConfig.js";
 
 const removeableCSS = [
   "/src/css/4ymm.module.css",
@@ -22,25 +22,17 @@ const filters = Object.fromEntries(themes.map(createFilter)) as {
   [key in Theme]: string[];
 };
 
-export const MmcCssCollector = ({
+export const MmcRoot = ({
   as: Component,
-  cssFiles,
-  pageProps,
+  cssFiles = new Map<string, never>(),
+  pageProps = { pathInfo: { theme: mainTheme } },
   Page,
   ...props
-}: CssCollectorProps<
-  {
-    pathInfo: { theme: Theme };
-  },
-  boolean,
-  "div"
->) => {
-  if (!cssFiles) return null;
-  if (!pageProps || !("pathInfo" in pageProps)) return null;
+}: RootProps<{
+  pathInfo: { theme: Theme };
+}>) => {
   const theme = pageProps.pathInfo.theme;
-  const cssArray = Array.isArray(cssFiles)
-    ? cssFiles
-    : Array.from(cssFiles?.values() ?? []);
+  const cssArray = Array.from(cssFiles.values());
   const removeNonCurrentThemeCss = new Map(
     cssArray
       .filter(
@@ -49,11 +41,10 @@ export const MmcCssCollector = ({
       )
       .map((file) => [file.id, file])
   );
-  console.log({ Component, Page, props });
   return (
     <Component {...props}>
       <Page {...pageProps} />
-      <CssCollectorElements cssFiles={removeNonCurrentThemeCss} />
+      <Css cssFiles={removeNonCurrentThemeCss} />
     </Component>
   );
 };
