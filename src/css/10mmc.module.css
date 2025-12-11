@@ -30,8 +30,10 @@
 
 
     --app-font: normal 1rem/1.2rem var(--font-primary);
-    --app-background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)),
-        url("/9mmc/hologram-3x.webp") repeat center;
+    --app-background:
+            /*linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)),*/
+            url("/10mmc/starbg-3x.webp") repeat center;
+        /*url("/10mmc/hologram-3x.webp") repeat center;*/
     background-size: cover;
 
     --modal-inner-color: var(--text-color);
