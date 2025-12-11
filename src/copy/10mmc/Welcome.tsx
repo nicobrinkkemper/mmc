@@ -37,7 +37,7 @@ export const Welcome9MMC: Welcome9MMCType = ({
         </p>
         <p>
           Every level has birthday balloons for you to discover. Can you find
-          them all?
+          them all? Hmm yes, ass
           <br />
           <br />
           As a special gift this Christmas, here's Duffy's maker code! Be sure
