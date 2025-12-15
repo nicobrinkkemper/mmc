@@ -67,7 +67,7 @@
     --card-border: 40px solid transparent;
         --card-padding: 15px;
         --card-border-image: url("/10mmc/border.webp") 75 round;
-                /*--card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;*/
+        --card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
     --illustration-box-shadow: none;
     --card-illustration-transform: rotate(0deg) translate(6rem, -25rem);
         /* here to move illustration */
