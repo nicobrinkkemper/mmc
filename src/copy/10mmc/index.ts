@@ -1,3 +1,4 @@
-export { About9MMC as About } from "./About.js";
-export { Credits9MMC as Credits } from "./Credits.js";
-export { Welcome9MMC as Welcome } from "./Welcome.js";
+export { About10MMC as About } from "./About.js";
+export { Credits10MMC as Credits } from "./Credits.js";
+export { Welcome10MMC as Welcome } from "./Welcome.js";
+

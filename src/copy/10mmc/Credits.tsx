@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Card } from "../../components/Card.js";
 import { CreditsWebsite } from "../default/CreditsWebsite.js";
-import { Mm9CreditsTrailerCard } from "./cards/Mm9CreditsTrailerCard.js";
+import { Mm10CreditsTrailerCard } from "./cards/Mm10CreditsTrailerCard.js";
 
-export const Credits9MMC: CreditsContentCardType = ({
+export const Credits10MMC: CreditsContentCardType = ({
   clickable,
   ...props
 }) => (
@@ -17,21 +17,20 @@ export const Credits9MMC: CreditsContentCardType = ({
     >
       <dl>
         <dt>Executive Producer</dt>
-        <dd>Wizulus Redikulus</dd>
+        <dd>MrElectrodude</dd>
 
         <dt>Judges</dt>
+        <dd>Shearwater</dd>
+        <dd>Sacha</dd>
+        <dd>Zach Divine</dd>
         <dd>Barnstorm</dd>
-        <dd>jneen</dd>
-        <dd>MrElectroDude</dd>
-        <dd>Rubenscube</dd>
-        <dd>Wsacha</dd>
-        <dd>SevenSilhouette</dd>
+        <dd>MrElectrodude</dd>
 
         <dt>Visual profile/marketing</dt>
-        <dd>Duffy, Wizulus, TripDraws</dd>
+        <dd>Duffy, MrElectrodude</dd>
       </dl>
     </Card>
     <CreditsWebsite clickable={clickable} />
-    <Mm9CreditsTrailerCard />
+    <Mm10CreditsTrailerCard />
   </>
 );

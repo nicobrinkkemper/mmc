@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Card } from "../../../components/Card.js";
 
-export const Mm9CreditsTrailerCard: CreditsTrailerCardType = (props) => (
+export const Mm10CreditsTrailerCard: CreditsTrailerCardType = (props) => (
   <Card
     subHeading={`Trailers`}
     clickable={undefined}
@@ -11,10 +11,10 @@ export const Mm9CreditsTrailerCard: CreditsTrailerCardType = (props) => (
   >
     <dl>
       <dt>Script and video</dt>
-      <dd>Paxsman</dd>
+      <dd>DuffyWeber</dd>
 
-      <dt>Intro animation</dt>
-      <dd>Lektor</dd>
+      <dt>Animated visuals</dt>
+      <dd>MrElectrodude</dd>
 
       <dt>Voice</dt>
       <dd>DuffyWeber</dd>
@@ -22,6 +22,5 @@ export const Mm9CreditsTrailerCard: CreditsTrailerCardType = (props) => (
       <dt>Music</dt>
       <dd>Qumu</dd>
     </dl>
-    <p>Special thanks to Lektor Jr. (a.k.a. Liam)</p>
   </Card>
 );
