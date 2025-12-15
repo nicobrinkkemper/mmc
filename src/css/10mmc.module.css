@@ -1,11 +1,8 @@
-#borderimg {
-    border: 10px solid transparent;
-    padding: 15px;
-    border-image: url("/10mmc/border.webp") 30 stretch;
-}
 .Theme {
     --font-monospace: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-    --font-primary: 'Courier New', Courier, monospace;
+    /*--font-primary: 'Courier New', Courier, monospace;*/
+        --font-primary: verdana;
+        /* verdana, Tahoma */
     --font-primary-weight: bold;
     --font-secondary: 'Calibri Bold', 'Tahoma', sans-serif;
         --font-tertiary: "BordersDivideButHeartsShallConquer", 'Tahoma', sans-serif;
@@ -15,23 +12,23 @@
     --gap: .5rem;
 
     --background: #000;
-    --text-color: #000000;
+    --text-color: #ffffff;
     --link-color: #61dafb;
     --letter-spacing: 0;
     --link-color-active: #2c001f;
-    --card-texture: #436e79;
+    --card-texture: #000129;
     --base-font-size: 1.2rem;
         --font-weight: bold;
     --font-tertiary: 'Poppins', sans-serif;
     --button-font: 700 1.2em/1.125em var(--font-tertiary);
         --button-font-weight: bold;
-        --button-background: rgb(73, 163, 218);
-        --button-box-shadow: 0 0 10px 1px rgba(0, 0, 0, .5);
+        --button-background: rgb(199, 93, 93);
+            --button-box-shadow: 0 0 10px 1px rgba(255, 255, 255, .3);
         --button-padding: .6em 1em;
     --button-after-background: ;
     --button-after-border: 1px solid rgba(0, 0, 0, .5);
     /*--button-outline: 2px solid rgba(0, 0, 0, 1); */
-    --button-border-radius: 9999px;
+    /*--button-border-radius: 9999px;*/
 
 
     --app-font: normal 1rem/1.2rem var(--font-primary);
@@ -55,7 +52,7 @@
 
     --navigation-button-color: #4b4c96;
     --app-header-button-color: #0c171b;
-    --box-shadow: 0 0 10px 1px rgba(0, 0, 0, .9);
+    --box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0.3);
     --card-button-color: #111;
     --card-button-border: 1px solid rgba(0, 0, 0, .5);
     --card-button-border-radius: .5rem;
@@ -66,10 +63,10 @@
     --card-background: var(--card-texture) repeat;
     --card-border: 40px solid transparent;
         --card-padding: 15px;
-        --card-border-image: url("/10mmc/border.webp") 75 round;
+        --card-border-image: url("/10mmc/border-3x.webp") 225 round;
         --card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
     --illustration-box-shadow: none;
-    --card-illustration-transform: rotate(0deg) translate(6rem, -25rem);
+    --card-illustration-transform: rotate(0deg) translate(6rem, 100rem);
         /* here to move illustration */
 
     --tag-min-width: 100px;
