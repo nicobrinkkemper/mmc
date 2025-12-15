@@ -58,15 +58,15 @@
     --box-shadow: 0 0 10px 1px rgba(0, 0, 0, .9);
     --card-button-color: #111;
     --card-button-border: 1px solid rgba(0, 0, 0, .5);
-/*--card-button-border-image: url("/10mmc/border.webp");*/
     --card-button-border-radius: .5rem;
-        /*.5rem; */
     --card-button-box-shadow: var(--box-shadow);
     --card-button-after-background: #facd00;
 
+    /* TODO TEST */
     --card-background: var(--card-texture) repeat;
-    --card-border-image: url("/10mmc/border.webp");
-        /*--card-border: 10px solid transparent
+    --card-border: 40px solid transparent;
+        --card-padding: 15px;
+        --card-border-image: url("/10mmc/border.webp") 75 round;
                 /*--card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;*/
     --illustration-box-shadow: none;
     --card-illustration-transform: rotate(0deg) translate(6rem, -25rem);

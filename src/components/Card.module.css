@@ -17,6 +17,10 @@
     height: max-content;
     text-decoration: none;
     font-weight: var(--font-weight);
+/* TODO TEST */
+    border: var(--card-border);
+    padding: var(--card-padding);
+    border-image: var(--card-border-image);
 }
 
 .SpecialCardIllustration {
