@@ -41,6 +41,18 @@
     height: auto;
 }
 
+.CardIllustration_2 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: var(--card-illustration2-transform, rotate(4deg) translate(2em, 2rem));
+    box-shadow: var(--illustration2-box-shadow, var(--box-shadow));
+    max-width: 220px;
+    margin-left: 180px;
+    margin-top: 2em;
+    margin-bottom: -1em;
+    height: auto;
+}
 .IsCardDisabled {
     opacity: 0.5;
     pointer-events: none;

@@ -6,14 +6,14 @@ import { StayUpToDate } from "../default/StayUpToDate.js";
 
 type Welcome10MMCType = ThemeComponent<{
   info: pickRequired<["writtenOut", "themeYear"]>;
-  images: pickRequired<["illustration"]>;
+  images: pickRequired<["illustration", "illustration_2"]>;
   pathInfo: pickRequired<["toLevels"]>;
   clickable: required;
 }>;
 
 export const Welcome10MMC: Welcome10MMCType = ({
   info: { writtenOut, themeYear },
-  images: { illustration },
+  images: { illustration, illustration_2 },
   pathInfo: { toLevels },
   clickable,
   ...props
@@ -23,7 +23,7 @@ export const Welcome10MMC: Welcome10MMCType = ({
       <Card
         heading={`The ${writtenOut}`}
         subHeading={`Mario Maker turns ${themeYear}!`}
-        images={{ illustration }}
+        images={{ illustration, illustration_2 }}
         clickable={undefined}
         {...props}
       >

@@ -66,9 +66,11 @@
         --card-border-image: url("/10mmc/border-3x.webp") 225 round;
         --card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
     --illustration-box-shadow: none;
-    --card-illustration-transform: rotate(0deg) translate(6rem, 100rem);
+    --card-illustration-transform: translate(7rem, 9rem) scale(0.7);
         /* here to move illustration */
 
+    --illustration2-box-shadow: none;
+        --card-illustration2-transform: translate(0rem, 0rem) scale(0.7);
     --tag-min-width: 100px;
     --tag-before-content: '';
     --tag-text-align: center;
