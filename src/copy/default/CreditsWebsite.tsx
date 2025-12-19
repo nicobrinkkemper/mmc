@@ -29,16 +29,16 @@ export const CreditsWebsite: CreditsWebsiteCardType = ({
         <dd>MrElectrodude</dd>
         <dd>Wizulus</dd>
         <dd>Mr. Games All day</dd>
-        <br></br>
+        <br/>
 
         <dt>UX Design</dt>
         <dd>Birdhare</dd>
-        <br></br>
+        <br/>
 
         <dt>Graphics</dt>
         <dd>Lektor</dd>
         <dd>MrElectrodude</dd>
-        <br></br>
+        <br/>
 
         <dt>Hosting</dt>
         <dd>DuffyWeber</dd>
