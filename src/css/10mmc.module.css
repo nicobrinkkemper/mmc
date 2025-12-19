@@ -1,7 +1,5 @@
 .Theme {
-    --font-monospace: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-    /*--font-primary: 'Courier New', Courier, monospace;*/
-        --font-primary: verdana;
+    --font-primary: verdana;
         /* verdana, Tahoma */
     --font-primary-weight: bold;
     --font-secondary: 'Calibri Bold', 'Tahoma', sans-serif;
@@ -18,7 +16,7 @@
     --link-color-active: #2c001f;
     --card-texture: #000129;
     --base-font-size: 1.2rem;
-        --font-weight: bold;
+    --font-weight: bold;
     --font-tertiary: 'Poppins', sans-serif;
     --button-font: 700 1.2em/1.125em var(--font-tertiary);
     --button-font-weight: bold;
