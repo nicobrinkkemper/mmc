@@ -31,7 +31,7 @@ export const Credits9MMC: CreditsContentCardType = ({
         <dd>Duffy, Wizulus, TripDraws</dd>
       </dl>
     </Card>
-    <CreditsWebsite clickable={clickable} />
-    <Mm9CreditsTrailerCard />
+    <CreditsWebsite clickable={clickable} className={props.className} />
+    <Mm9CreditsTrailerCard className={props.className} />
   </>
 );
