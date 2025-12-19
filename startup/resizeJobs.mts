@@ -164,7 +164,7 @@ export const resizeJobs: ResizeJobsFn = ({
 }) => {
   if (name === "favicon") return resizeFavicon;
   if (name === "404") return _404;
-  if (name === "illustration" || name === "illustration2") return resizeIllustration;
+  if (name === "illustration") return resizeIllustration;
   if (name === "logo") return resizeMainLogo;
   if (name === "logo_simple") return resizeMainLogo;
   if (name === "logo_special") return resizeLogoSpecial;

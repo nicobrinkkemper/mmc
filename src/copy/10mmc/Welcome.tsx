@@ -6,14 +6,14 @@ import { StayUpToDate } from "../default/StayUpToDate.js";
 
 type Welcome10MMCType = ThemeComponent<{
   info: pickRequired<["writtenOut", "themeYear"]>;
-  images: pickRequired<["illustration", "illustration_2"]>;
+  images: pickRequired<["illustration"]>;
   pathInfo: pickRequired<["toLevels"]>;
   clickable: required;
 }>;
 
 export const Welcome10MMC: Welcome10MMCType = ({
   info: { writtenOut, themeYear },
-  images: { illustration, illustration_2 },
+  images: { illustration },
   pathInfo: { toLevels },
   clickable,
   ...props
@@ -23,7 +23,7 @@ export const Welcome10MMC: Welcome10MMCType = ({
       <Card
         heading={`The ${writtenOut}`}
         subHeading={`Mario Maker turns ${themeYear}!`}
-        images={{ illustration, illustration_2 }}
+        images={{ illustration }}
         clickable={undefined}
         {...props}
       >
@@ -40,6 +40,8 @@ export const Welcome10MMC: Welcome10MMCType = ({
           <br />
           Just like last year, here's Duffy's maker code :)
           <br />- 9KX-PDY-61G
+          <br />
+          <br />
         </p>
         <Button icon="arrow-right" href={toLevels} clickable={clickable}>
           To the levels

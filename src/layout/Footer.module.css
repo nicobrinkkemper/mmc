@@ -6,6 +6,9 @@
     grid-template-columns: repeat(3, max-content);
     background: var(--footer-background, inherit);
     padding: 1rem 0;
+    border: var(--footer-border);
+        border-image: var(--footer-border-image);
+        box-shadow: var(--box-shadow);
 }
 
 .Footer a {

@@ -17,6 +17,7 @@
     color: var(--tag-color, black);
         background: var(--tag-background, none);
         border-radius: var(--tag-border-radius, 0);
+    box-shadow: var(--tag-shadow);
 }
 
 .Tag:before {

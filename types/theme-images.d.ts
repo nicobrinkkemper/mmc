@@ -21,7 +21,6 @@ declare global {
     readonly logo_simple_small?: ResizedImage;
     readonly logo_special?: ResizedImage;
     readonly illustration: ResizedImage;
-    readonly illustration_2: ResizedImage; // TODO generalize or broken ik weet het fucking niet
     readonly favicon_512x512: ResizedImage;
     readonly favicon_192x192: ResizedImage;
     readonly favicon_64x64: ResizedImage;

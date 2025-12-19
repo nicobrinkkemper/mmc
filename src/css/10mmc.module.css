@@ -21,22 +21,16 @@
         --font-weight: bold;
     --font-tertiary: 'Poppins', sans-serif;
     --button-font: 700 1.2em/1.125em var(--font-tertiary);
-        --button-font-weight: bold;
-        --button-background: rgb(199, 93, 93);
-            --button-box-shadow: 0 0 10px 1px rgba(255, 255, 255, .3);
-        --button-padding: .6em 1em;
+    --button-font-weight: bold;
+    --button-background: rgb(31, 42, 73);
+    --button-box-shadow: 0 0 10px 3px rgba(255, 255, 255, .4);
+    --button-padding: .6em 1em;
     --button-after-background: ;
     --button-after-border: 1px solid rgba(0, 0, 0, .5);
-    /*--button-outline: 2px solid rgba(0, 0, 0, 1); */
-    /*--button-border-radius: 9999px;*/
 
 
     --app-font: normal 1rem/1.2rem var(--font-primary);
-    --app-background:
-            /*linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)),*/
-            url("/10mmc/starbg-3x.webp") repeat center;
-                /* Gets this from public! */
-        /*url("/10mmc/hologram-3x.webp") repeat center;*/
+    --app-background: url("/10mmc/starbg-3x.webp") repeat center;
     background-size: cover;
 
     --modal-inner-color: var(--text-color);
@@ -54,7 +48,7 @@
     --app-header-button-color: #0c171b;
     --box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0.3);
     --card-button-color: #111;
-    --card-button-border: 1px solid rgba(0, 0, 0, .5);
+    --card-button-border: 2px solid rgba(255, 255, 255, 0.5);
     --card-button-border-radius: .5rem;
     --card-button-box-shadow: var(--box-shadow);
     --card-button-after-background: #facd00;
@@ -62,37 +56,23 @@
     /* TODO TEST */
     --card-background: var(--card-texture) repeat;
     --card-border: 40px solid transparent;
-        --card-padding: 15px;
-        --card-border-image: url("/10mmc/border-3x.webp") 225 round;
-        --card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
+    --card-padding: 15px;
+    --card-border-image: url("/10mmc/border-3x.webp") 225 round;
+    --card-border-radius: 0.01rem 0.2rem 0.02rem 0.01rem;
     --illustration-box-shadow: none;
     --card-illustration-transform: translate(7rem, 9rem) scale(0.7);
-        /* here to move illustration */
 
-    --illustration2-box-shadow: none;
-        --card-illustration2-transform: translate(0rem, 0rem) scale(0.7);
     --tag-min-width: 100px;
-    --tag-before-content: '';
     --tag-text-align: center;
-    --tag-before-mix-blend-mode: darken;
-    --tag-before-background: yellow;
-    --tag-new-background: red;
-        --tag-other-background: green;
-    --tag-before-transform: scale(1, 1);
-    --tag-before-top: 0;
-    --tag-before-left: 0;
-    --tag-before-right: 0;
-    --tag-before-bottom: 0;
-    --tag-before-color: #ffffff;
+    --tag-new-background: rgb(255, 255, 255);
     --tag-border-radius: 999px;
-        --tag-before-border-radius: 999px;
+    --tag-color: white;
+    --tag-background: rgba(100, 66, 154, 0.3);
+    --tag-shadow: 0 0 5px 1px rgba(255, 255, 255, .3);
 
     --maker-info-mix-blend-mode: multiply;
-    --level-code-mix-blend-mode: color-burn;
-    --level-code-filter: invert(100%);
-    /* --level-code-color will be inverted to black via color-burn */
     --level-code-color: white;
-    --level-code-background: rgb(255 0 229 / 30%);
+    --level-code-background: rgba(66, 87, 154, 0.3);
     --level-code-font: 900 1.5rem/3rem var(--font-primary);
 
     --max-content-width: 617px;
@@ -100,8 +80,10 @@
     --app-min-width: 32rem;
     --card-width: 100%;
 
-    --footer-font: .875rem/.875rem var(--font-monospace);
+    --footer-font: .875rem/.875rem var(--font-primary);
     --footer-color: var(--text-color);
     --footer-background: var(--card-texture) repeat;
+    --footer-border: 20px solid transparent;
+    --footer-border-image: url("/10mmc/border-3x.webp") 225 round;
     --maker-card-img-blend-mode: normal;
 }
