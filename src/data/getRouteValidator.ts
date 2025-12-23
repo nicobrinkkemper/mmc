@@ -40,8 +40,15 @@ function assertRouteString(
 }
 
 export const getRouteValidator = (route: string) => {
+  const routeParts = route.split("/").filter(Boolean);
   if (!route.includes(":")) {
-    return (to: string) => to === route;
+    return (to: string) => {
+      const parts = to.split("/").filter(Boolean);
+      return (
+        parts.length === routeParts.length &&
+        parts.every((part, index) => part === routeParts[index])
+      );
+    };
   }
   assertRouteString(route);
   return (to: string) => {

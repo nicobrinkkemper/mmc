@@ -17,6 +17,8 @@
     height: max-content;
     text-decoration: none;
     font-weight: var(--font-weight);
+    border: var(--card-border);
+    border-image: var(--card-border-image);
 }
 
 .SpecialCardIllustration {

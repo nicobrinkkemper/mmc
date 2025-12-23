@@ -14,6 +14,8 @@ export const StayUpToDate: StayUpToDateCardType = ({ clickable, ...props }) => (
       If you want to be notified when a new release drops, subscribe to our
       YouTube channel, where we will post a video showcasing all new levels
       every week!
+      <br />
+      <br />
     </p>
     <Button
       icon="play-button"

@@ -1,3 +1,4 @@
+export * as _10mmc from "./10mmc/index.js";
 export * as _4ymm from "./4ymm/index.js";
 export * as _7mmc from "./7mmc/index.js";
 export * as _8mmc from "./8mmc/index.js";

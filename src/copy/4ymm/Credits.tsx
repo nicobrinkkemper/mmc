@@ -31,7 +31,7 @@ export const Credits4YMM: CreditsContentCardType = ({
         <dd>Julian</dd>
       </dl>
     </Card>
-    <CreditsWebsite clickable={clickable} />
-    <Ymm4CreditsTrailerCard />
+    <CreditsWebsite clickable={clickable} className={props.className} />
+    <Ymm4CreditsTrailerCard className={props.className} />
   </>
 );

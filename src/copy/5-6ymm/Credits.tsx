@@ -36,7 +36,7 @@ export const Credits5YMM: Credits5YMMType = ({ clickable, ...props }) => (
         <dd>Salt Lake</dd>
       </dl>
     </Card>
-    <CreditsWebsite clickable={clickable} />
-    <Ymm5CreditsTrailerCard />
+    <CreditsWebsite clickable={clickable} className={props.className} />
+    <Ymm5CreditsTrailerCard className={props.className} />
   </>
 );

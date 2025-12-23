@@ -42,7 +42,7 @@ export const Credits7MMC: CreditsContentCardType = ({
         <dd>Lektor</dd>
       </dl>
     </Card>
-    <CreditsWebsite clickable={clickable} />
-    <Mm7CreditsTrailerCard />
+    <CreditsWebsite clickable={clickable} className={props.className} />
+    <Mm7CreditsTrailerCard className={props.className} />
   </>
 );

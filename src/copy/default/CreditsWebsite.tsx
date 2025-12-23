@@ -26,6 +26,7 @@ export const CreditsWebsite: CreditsWebsiteCardType = ({
             General BB / Geitje
           </Clickable>
         </dd>
+        <dd>MrElectrodude</dd>
         <dd>Wizulus</dd>
         <dd>Mr. Games All day</dd>
 
@@ -34,6 +35,7 @@ export const CreditsWebsite: CreditsWebsiteCardType = ({
 
         <dt>Graphics</dt>
         <dd>Lektor</dd>
+        <dd>MrElectrodude</dd>
 
         <dt>Hosting</dt>
         <dd>DuffyWeber</dd>

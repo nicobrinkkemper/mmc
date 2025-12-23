@@ -1,40 +1,22 @@
 import React from "react";
-import { CssCollectorElements } from "vite-plugin-react-server/components";
+import { Css } from "vite-plugin-react-server/components";
 import type { HtmlProps } from "vite-plugin-react-server/types";
 import { Favicons } from "./layout/Favicons.js";
 import { Head } from "./layout/Head.js";
 
-export type PageProps = ThemeStaticDataReturn<
-  ValidRoute,
-  {
-    title: true;
-    description: true;
-    url: true;
-    contentType: true;
-    published: true;
-    updated: true;
-    category: true;
-    tags: true;
-    twitter: true;
-    image: true;
-    favicons: true;
-    pathInfo: ["theme"];
-  }
->;
-
 export type MmcHtmlType = ThemeComponent<
   {},
   typeof React.Fragment,
-  HtmlProps<PageProps, boolean>
+  HtmlProps<PageProps, boolean, "div">
 >;
 
-export const Html: MmcHtmlType = ({
-  children,
+export const MmcHtml: MmcHtmlType = ({
   pageProps,
   globalCss,
   cssFiles,
-  CssCollector,
+  Root,
   Page,
+  as: Component = "div" as "div",
 }) => {
   if (!pageProps) {
     throw new Error("pageProps is required");
@@ -56,17 +38,20 @@ export const Html: MmcHtmlType = ({
         />
         <meta name="description" content={pageProps.description} />
         <Favicons favicons={pageProps.favicons} />
-        <CssCollectorElements cssFiles={globalCss} />
+        <Css cssFiles={globalCss} />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css"
         />
       </head>
       <body>
-        <div id="root">
-          <Page {...pageProps} />
-          <CssCollectorElements cssFiles={cssFiles} />
-        </div>
+        <Root
+          id="root"
+          Page={Page}
+          cssFiles={cssFiles}
+          pageProps={pageProps}
+          as={Component}
+        />
       </body>
     </html>
   );
