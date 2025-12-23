@@ -1,6 +1,6 @@
 import { createConfig } from "./createConfig.js";
 
-export const mainTheme = "9mmc";
+export const mainTheme = "10mmc";
 // slug config
 export const levels = "levels";
 export const credits = "credits";
