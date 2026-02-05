@@ -5,8 +5,8 @@
   "type": "module",
   "homepage": "https://mmcelebration.com",
   "scripts": {
-    "start": "vite",
-    "dev": "NODE_OPTIONS='--conditions=react-server' vite",
+    "dev:ssr": "vite",
+    "dev:rsc": "NODE_OPTIONS='--conditions=react-server' vite",
     "lint": "eslint ./src --fix",
     "serve": "node dist/server/dev-server.mjs",
     "serve-gh": "export PUBLIC_URL=/mmc; node dist/server/dev-server.mjs",
