@@ -13,7 +13,7 @@
     "build": "NODE_OPTIONS='--conditions react-server' vite build --app",
     "build:app": "vite build --app",
     "build:prod": "npm run env:prod -- vite build --app",
-    "build:gh": "npm run env:gh -- vite build --app",
+    "build:gh": "PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' BASE_URL='/mmc/' NODE_ENV=production GITHUB_ACTIONS=true NODE_OPTIONS='--conditions react-server' vite build --app",
     "build:preview": "npm run env:preview -- vite build --app",
     "build:dev": "vite build --app",
     "debug-build": "NODE_ENV=development npm run build",
@@ -131,6 +131,6 @@
     "react-dom": "$react-dom"
   },
   "dependencies": {
-    "vite-plugin-react-server": "^1.2.0"
+    "vite-plugin-react-server": "1.2.1"
   }
 }
