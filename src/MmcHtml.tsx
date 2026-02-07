@@ -10,7 +10,7 @@ export type MmcHtmlType = ThemeComponent<
   HtmlProps<PageProps, boolean, "div">
 >;
 
-export const MmcHtml: MmcHtmlType = ({
+export const Html: MmcHtmlType = ({
   pageProps,
   globalCss,
   cssFiles,

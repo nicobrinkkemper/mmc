@@ -1,9 +1,5 @@
 import { join } from "node:path";
 import { metricWatcher } from "vite-plugin-react-server/metrics";
-import type {
-  DefaultInterface,
-  StreamPluginOptions,
-} from "vite-plugin-react-server/types";
 import {
   credits,
   levels,
@@ -12,15 +8,6 @@ import {
   themes,
 } from "./src/config/themeConfig.js";
 import { getThemePathInfo } from "./src/data/getThemePathInfo.js";
-import "./types/html.d.ts";
-import "./types/page-props.d.ts";
-
-export interface MMCInterface
-  extends Omit<DefaultInterface, "RootExportName" | "HtmlExportName"> {
-  PageProps: PageProps; // your custom PageProps type
-  RootExportName: "MmcRoot"; // Brand our root component
-  HtmlExportName: "MmcHtml"; // Brand our html component
-}
 
 const themeLevelPages = async (): Promise<string[]> => {
   const themeData = await import("./src/data/generated/themes.js");
@@ -62,18 +49,20 @@ const createRouter = (fileName: string) => (url: string) => {
 // process.env.GITHUB_ACTIONS = "true";
 export const config = {
   moduleBase: "src",
-  moduleBasePath: "/",
-  moduleBaseURL: process.env.VITE_BASE_URL ?? "/",
   publicOrigin: process.env.VITE_PUBLIC_ORIGIN,
+  moduleBaseURL: process.env.VITE_BASE_URL || "/",
   verbose: false,
+  rscTimeout: 30000, // 30 seconds for large projects
+  htmlTimeout: 60000, // 60 seconds for large projects
+  fileWriteTimeout: 30000, // 30 seconds for large projects
   Page: createRouter("page.tsx"),
   props: createRouter("props.ts"),
   Root: "src/MmcRoot.tsx",
   Html: "src/MmcHtml.tsx",
   pageExportName: "Page",
   propsExportName: "props",
-  htmlExportName: "MmcHtml",
-  rootExportName: "MmcRoot",
+  htmlExportName: "Html",
+  rootExportName: "Root",
   onMetrics: metricWatcher({
     warnOnly: false,
     warn: (...args) => console.warn(...args),
@@ -81,9 +70,9 @@ export const config = {
   }),
   serverEntry: "src/server.tsx",
   css: {
-    inlineCss: true,
+    inlineThreshold: 1000,
   },
   build: {
     pages: pages,
   },
-} satisfies StreamPluginOptions<MMCInterface>;
+};

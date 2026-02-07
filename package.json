@@ -5,35 +5,17 @@
   "type": "module",
   "homepage": "https://mmcelebration.com",
   "scripts": {
-    "start": "vite",
-    "dev": "NODE_OPTIONS='--conditions=react-server' vite",
+    "dev:ssr": "vite",
+    "dev:rsc": "NODE_OPTIONS='--conditions=react-server' vite",
     "lint": "eslint ./src --fix",
     "serve": "node dist/server/dev-server.mjs",
     "serve-gh": "export PUBLIC_URL=/mmc; node dist/server/dev-server.mjs",
-    "build": "npm run build:static && npm run env:prod -- npm run build:client && npm run env:prod -- npm run build:server",
-    "build:prod": "npm run build:static:prod && npm run build:client:prod && npm run build:server:prod",
-    "build:gh": "npm run build:static:gh && npm run build:client:gh && npm run build:server:gh",
-    "build:preview": "npm run build:static:preview && npm run build:client:preview && npm run build:server:preview",
-    "build:dev": "npm run build:static:dev && npm run build:client:dev && npm run build:server:dev",
-    "env:prod": "PUBLIC_ORIGIN='https://mmcelebration.com' BASE_URL='/' NODE_ENV=production",
-    "env:gh": "PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' BASE_URL='/mmc/' NODE_ENV=production GITHUB_ACTIONS=true",
-    "env:preview": "PUBLIC_ORIGIN='http://localhost:4173' BASE_URL='/' NODE_ENV=production",
-    "env:dev": "NODE_ENV=development",
-    "build:static": "vite build",
-    "build:client": "vite build --ssr",
-    "build:server": "NODE_OPTIONS='--conditions=react-server' vite build --ssr",
-    "build:static:prod": "npm run env:prod -- vite build",
-    "build:client:prod": "npm run env:prod -- vite build --ssr",
-    "build:server:prod": "npm run env:prod -- NODE_OPTIONS='--conditions=react-server' vite build",
-    "build:static:gh": "npm run env:gh -- vite build",
-    "build:client:gh": "npm run env:gh -- vite build --ssr",
-    "build:server:gh": "npm run env:gh -- NODE_OPTIONS='--conditions=react-server' vite build",
-    "build:static:preview": "npm run env:preview -- vite build",
-    "build:client:preview": "npm run env:preview -- vite build --ssr",
-    "build:server:preview": "npm run env:preview -- NODE_OPTIONS='--conditions=react-server' vite build",
-    "build:static:dev": "npm run env:dev -- vite build",
-    "build:client:dev": "npm run env:dev -- vite build --ssr",
-    "build:server:dev": "npm run env:dev -- NODE_OPTIONS='--conditions=react-server' vite build --ssr",
+    "build": "NODE_OPTIONS='--conditions react-server' vite build --app",
+    "build:app": "vite build --app",
+    "build:prod": "npm run env:prod -- vite build --app",
+    "build:gh": "npm run env:gh -- vite build --app",
+    "build:preview": "npm run env:preview -- vite build --app",
+    "build:dev": "vite build --app",
     "debug-build": "NODE_ENV=development npm run build",
     "export": "node dist/server/export.js",
     "build-mmc": "npm run startup && npm run build",
@@ -61,7 +43,11 @@
     "preview": "npm run build:preview && vite preview",
     "preview:prod": "npm run startup:prod && npm run build:prod && vite preview",
     "preview:gh": "npm run startup:gh && npm run build:gh && npm run env:gh -- vite preview",
-    "oopsie-wsl": "find . -type f -name \"*:Zone.Identifier\" -exec rm {} \\;"
+    "oopsie-wsl": "find . -type f -name \"*:Zone.Identifier\" -exec rm {} \\;",
+    "env:prod": "PUBLIC_ORIGIN='https://mmcelebration.com' BASE_URL='/' NODE_ENV=production",
+    "env:gh": "PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' BASE_URL='/mmc/' NODE_ENV=production GITHUB_ACTIONS=true",
+    "env:preview": "PUBLIC_ORIGIN='http://localhost:4173' BASE_URL='/' NODE_ENV=production",
+    "env:dev": "NODE_ENV=development"
   },
   "engines": {
     "node": ">=18"
@@ -129,11 +115,11 @@
     "react-server-dom-esm": "^0.0.1",
     "sharp": "^0.33.5",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.2",
     "typescript-plugin-css-modules": "^5.1.0",
-    "vite": "^6.3.5",
+    "vite": "^6.4.1",
     "vite-css-modules": "^1.8.0",
-    "vite-plugin-react-server": "^1.2.0-alpha.1",
     "vitest": "^3.0.4",
     "webpack-sources": "^3.2.3"
   },
@@ -143,5 +129,8 @@
   "overrides": {
     "react": "$react",
     "react-dom": "$react-dom"
+  },
+  "dependencies": {
+    "vite-plugin-react-server": "^1.2.0"
   }
 }

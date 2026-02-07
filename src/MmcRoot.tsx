@@ -22,7 +22,7 @@ const filters = Object.fromEntries(themes.map(createFilter)) as {
   [key in Theme]: string[];
 };
 
-export const MmcRoot = ({
+export const Root = ({
   as: Component,
   cssFiles = new Map<string, never>(),
   pageProps = { pathInfo: { theme: mainTheme } },
@@ -31,7 +31,7 @@ export const MmcRoot = ({
 }: RootProps<{
   pathInfo: { theme: Theme };
 }>) => {
-  const theme = pageProps.pathInfo.theme;
+  const theme = pageProps?.pathInfo?.theme ?? mainTheme;
   const cssArray = Array.from(cssFiles.values());
   const removeNonCurrentThemeCss = new Map(
     cssArray

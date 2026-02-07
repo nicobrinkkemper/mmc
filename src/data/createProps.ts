@@ -14,6 +14,11 @@ export const createProps: CreatePropsFn = (route, options, fn) => {
   options.category = true;
   options.twitter = true;
   return async (to = route) => {
+    if (!validator(to)) {
+      throw new Error(
+        `You called createProps with the route: ${to}, but this function only works with the route: ${route}.`
+      );
+    }
     to = to.replace(/index\.[^.]+$/, "");
     const pathInfo = getThemePathInfo(to) as ThemePathInfo<
       typeof route,
