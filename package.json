@@ -120,7 +120,6 @@
     "typescript-plugin-css-modules": "^5.1.0",
     "vite": "^6.4.1",
     "vite-css-modules": "^1.8.0",
-    "vite-plugin-react-server": "^1.2.0-alpha.1",
     "vitest": "^3.0.4",
     "webpack-sources": "^3.2.3"
   },
@@ -130,5 +129,8 @@
   "overrides": {
     "react": "$react",
     "react-dom": "$react-dom"
+  },
+  "dependencies": {
+    "vite-plugin-react-server": "^1.2.0"
   }
 }
