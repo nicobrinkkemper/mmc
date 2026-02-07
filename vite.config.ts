@@ -31,6 +31,7 @@ function trailingSlashPlugin(): Plugin {
 
 export default defineConfig(() => {
   return {
+    base: process.env.BASE_URL || "/",
     plugins: [
       trailingSlashPlugin(),
       ...(vitePluginReactServer(config) as Plugin[]),
