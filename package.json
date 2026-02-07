@@ -131,6 +131,6 @@
     "react-dom": "$react-dom"
   },
   "dependencies": {
-    "vite-plugin-react-server": "1.2.1"
+    "vite-plugin-react-server": "1.2.2"
   }
 }
