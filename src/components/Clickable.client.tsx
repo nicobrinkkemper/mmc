@@ -18,10 +18,11 @@ export const ClientClickable: React.FC<{
       if (!isBlank) {
         e.preventDefault();
       }
+      // Use pathname, not full href - createReactFetcher expects a path like "/10mmc/"
       const newTo =
         e.currentTarget && "href" in e.currentTarget
-          ? e.currentTarget.href
-          : href;
+          ? new URL(e.currentTarget.href).pathname
+          : href || '/';
       const newState = { to: newTo };
       window.history.pushState(newState, "", newTo);
       window.dispatchEvent(new PopStateEvent("popstate", { state: newState }));
