@@ -22,10 +22,9 @@
     "tsc": "rm -rf dist && npx tsc --project tsconfig.node.json && find src -name \"*.css\" -exec cp --parents {} dist/ \\;",
     "tsc-watch": "npx tsc --build --watch --incremental --force",
     "ssg": "run-s build server:crawl",
-    "postinstall": "patch-package",
-    "clean-install": "npm install vite-plugin-react-server react@experimental react-dom@experimental react-server-dom-esm --save-dev",
+    "clean-install": "npm install vite-plugin-react-server react@experimental react-dom@experimental --save-dev",
     "patch": "patch",
-    "link-dev": "npm link vite-plugin-react-server && npm run postinstall",
+    "link-dev": "npm link vite-plugin-react-server",
     "predeploy": "npm run build-gh",
     "deploy": "gh-pages -d build",
     "test": "run-s startup react:test",
@@ -33,13 +32,13 @@
     "startup": "run-s startup:dev:*",
     "startup:dev": "run-s startup:dev:*",
     "startup:dev:compile": "npx tsc --project tsconfig.node.json",
-    "startup:dev:run": "npm run env:dev -- node ./dist/startup/startup.mjs",
+    "startup:dev:run": "npm run env:dev -- node --import vite-plugin-react-server/register ./dist/startup/startup.mjs",
     "startup:prod": "run-s startup:prod:*",
     "startup:prod:compile": "npx tsc --project tsconfig.node.json",
-    "startup:prod:run": "npm run env:prod -- node ./dist/startup/startup.mjs",
+    "startup:prod:run": "npm run env:prod -- node --import vite-plugin-react-server/register ./dist/startup/startup.mjs",
     "startup:gh": "run-s startup:gh:*",
     "startup:gh:compile": "npx tsc --project tsconfig.node.json",
-    "startup:gh:run": "npm run env:gh -- node ./dist/startup/startup.mjs",
+    "startup:gh:run": "npm run env:gh -- node --import vite-plugin-react-server/register ./dist/startup/startup.mjs",
     "preview": "npm run build:preview && vite preview",
     "preview:prod": "npm run startup:prod && npm run build:prod && vite preview",
     "preview:gh": "npm run startup:gh && npm run build:gh && npm run env:gh -- vite preview",
@@ -109,10 +108,8 @@
     "markdown-to-jsx": "^7.7.2",
     "npm-check-updates": "^17.1.11",
     "npm-run-all": "^4.1.5",
-    "patch-package": "^8.0.0",
     "react": "^0.0.0-experimental-19baee81-20250725",
     "react-dom": "^0.0.0-experimental-19baee81-20250725",
-    "react-server-dom-esm": "^0.0.1",
     "sharp": "^0.33.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
@@ -121,7 +118,8 @@
     "vite": "^6.4.1",
     "vite-css-modules": "^1.8.0",
     "vitest": "^3.0.4",
-    "webpack-sources": "^3.2.3"
+    "webpack-sources": "^3.2.3",
+    "vite-plugin-react-server": "^1.3.3"
   },
   "include": [
     "src"
@@ -130,7 +128,5 @@
     "react": "$react",
     "react-dom": "$react-dom"
   },
-  "dependencies": {
-    "vite-plugin-react-server": "1.2.3"
-  }
+  "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264"
 }
