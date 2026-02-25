@@ -129,7 +129,6 @@
     "react-dom": "$react-dom"
   },
   "dependencies": {
-    "vite-plugin-react-server": "1.2.3",
     "react": "0.0.0-experimental-e33071c6-20260224",
     "react-dom": "0.0.0-experimental-e33071c6-20260224"
   },
