@@ -32,13 +32,13 @@
     "startup": "run-s startup:dev:*",
     "startup:dev": "run-s startup:dev:*",
     "startup:dev:compile": "npx tsc --project tsconfig.node.json",
-    "startup:dev:run": "npm run env:dev -- node ./dist/startup/startup.mjs",
+    "startup:dev:run": "npm run env:dev -- node --import vite-plugin-react-server/register ./dist/startup/startup.mjs",
     "startup:prod": "run-s startup:prod:*",
     "startup:prod:compile": "npx tsc --project tsconfig.node.json",
-    "startup:prod:run": "npm run env:prod -- node ./dist/startup/startup.mjs",
+    "startup:prod:run": "npm run env:prod -- node --import vite-plugin-react-server/register ./dist/startup/startup.mjs",
     "startup:gh": "run-s startup:gh:*",
     "startup:gh:compile": "npx tsc --project tsconfig.node.json",
-    "startup:gh:run": "npm run env:gh -- node ./dist/startup/startup.mjs",
+    "startup:gh:run": "npm run env:gh -- node --import vite-plugin-react-server/register ./dist/startup/startup.mjs",
     "preview": "npm run build:preview && vite preview",
     "preview:prod": "npm run startup:prod && npm run build:prod && vite preview",
     "preview:gh": "npm run startup:gh && npm run build:gh && npm run env:gh -- vite preview",
@@ -119,7 +119,7 @@
     "vite-css-modules": "^1.8.0",
     "vitest": "^3.0.4",
     "webpack-sources": "^3.2.3",
-    "vite-plugin-react-server": "^1.3.2"
+    "vite-plugin-react-server": "^1.3.3"
   },
   "include": [
     "src"
