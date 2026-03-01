@@ -119,7 +119,7 @@
     "vite-css-modules": "^1.8.0",
     "vitest": "^3.0.4",
     "webpack-sources": "^3.2.3",
-    "vite-plugin-react-server": "^1.3.6"
+    "vite-plugin-react-server": "^1.4.0"
   },
   "include": [
     "src"
@@ -129,7 +129,7 @@
     "react-dom": "$react-dom"
   },
   "dependencies": {
-    "vite-plugin-react-server": "1.2.3",
+    "vite-plugin-react-server": "^1.4.0",
     "react": "0.0.0-experimental-e33071c6-20260224",
     "react-dom": "0.0.0-experimental-e33071c6-20260224"
   },
