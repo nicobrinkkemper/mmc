@@ -3,7 +3,10 @@ import { Client } from "basic-ftp";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
-import "dotenv/config";
+import dotenv from "dotenv";
+
+dotenv.config({ path: ".env" });
+dotenv.config({ path: ".env.local", override: true });
 
 const required = ["FTP_HOST", "FTP_USER", "FTP_PASS"];
 const missing = required.filter((k) => !process.env[k]);
