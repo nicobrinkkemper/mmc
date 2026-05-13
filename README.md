@@ -16,11 +16,10 @@ A React Server Components (RSC) powered website showcasing the best Mario Makers
 ## Architecture
 
 This project uses:
-- React Server Components (RSC) for server-side rendering
+- React Server Components (RSC) via [`vite-plugin-react-server`](https://github.com/nicobrinkkemper/vite-plugin-react-server)
 - Vite for development and bundling
 - TypeScript for type safety
 - CSS Modules for styling
-- Custom RSC streaming implementation
 
 ## Development
 
@@ -28,8 +27,11 @@ This project uses:
 # Install dependencies
 npm install
 
-# Start development server
-npm run start
+# Start dev server (RSC mode — requires --conditions=react-server)
+npm run dev:rsc
+
+# Or start dev server in plain SSR mode
+npm run dev:ssr
 
 # Build for production
 npm run build
@@ -48,22 +50,23 @@ npm test
 ├── src/
 │   ├── page/           # Page components and routing
 │   ├── components/     # Shared components
-│   ├── data/          # Data fetching and management
-│   ├── css/           # Global and theme styles
-│   └── config/        # Configuration files
-├── vite/              # Vite plugins and config
-│   └── vite-react-stream/  # RSC streaming implementation
-├── public/            # Static assets
-└── types/             # TypeScript type definitions
+│   ├── data/           # Data fetching and management
+│   ├── css/            # Global and theme styles
+│   └── config/         # Configuration files
+├── public/             # Static assets
+├── scripts/            # Build/deploy scripts (e.g. FTP deploy)
+├── startup/            # Build-time data fetch / image generation
+├── types/              # TypeScript type definitions
+├── vite.config.ts      # Vite static-build config
+└── vite.react.config.tsx # Vite RSC app config
 ```
 
 ## Key Features
 
 ### React Server Components
-- Server-side rendering with streaming
+- Server-side rendering powered by `vite-plugin-react-server`
 - Client-side hydration
 - Automatic CSS collection and injection
-- Custom RSC implementation using `react-server-dom-esm`
 
 ### Theming System
 Each theme includes:
@@ -92,10 +95,21 @@ Each theme includes:
    - CSS minification
 
 3. **Static Export**
-   - `npm run export`: Generates static HTML
+   - `npm run build` produces a fully static site under `dist/static/`
    - Pre-renders all routes
    - Optimizes assets
-   - Creates RSC payloads
+   - Emits RSC payloads alongside the HTML
+
+## Deploying to mmcelebration.com
+
+`mmcelebration.com` is hosted on a shared etcserver account that only exposes FTP, so the deploy step is an FTPS upload of `dist/static/` to the remote `/www` directory.
+
+1. Copy `.env.example` to `.env.local` (gitignored) and fill in `FTP_*` credentials.
+2. Build the static site: `npm run build:prod` (writes to `dist/static/`).
+3. Sanity-check the connection without uploading: `npm run deploy:ftp:check`.
+4. Upload: `npm run deploy:ftp`.
+
+The upload overwrites files in place and reuses existing remote directories — it does **not** delete unrelated remote files, so the remote tree is never wiped first.
 
 ## Configuration
 
