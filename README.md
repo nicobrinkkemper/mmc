@@ -16,11 +16,10 @@ A React Server Components (RSC) powered website showcasing the best Mario Makers
 ## Architecture
 
 This project uses:
-- React Server Components (RSC) for server-side rendering
+- React Server Components (RSC) via [`vite-plugin-react-server`](https://github.com/nicobrinkkemper/vite-plugin-react-server)
 - Vite for development and bundling
 - TypeScript for type safety
 - CSS Modules for styling
-- Custom RSC streaming implementation
 
 ## Development
 
@@ -28,8 +27,11 @@ This project uses:
 # Install dependencies
 npm install
 
-# Start development server
-npm run start
+# Start dev server (RSC mode — requires --conditions=react-server)
+npm run dev:rsc
+
+# Or start dev server in plain SSR mode
+npm run dev:ssr
 
 # Build for production
 npm run build
@@ -48,22 +50,23 @@ npm test
 ├── src/
 │   ├── page/           # Page components and routing
 │   ├── components/     # Shared components
-│   ├── data/          # Data fetching and management
-│   ├── css/           # Global and theme styles
-│   └── config/        # Configuration files
-├── vite/              # Vite plugins and config
-│   └── vite-react-stream/  # RSC streaming implementation
-├── public/            # Static assets
-└── types/             # TypeScript type definitions
+│   ├── data/           # Data fetching and management
+│   ├── css/            # Global and theme styles
+│   └── config/         # Configuration files
+├── public/             # Static assets
+├── scripts/            # Build/deploy scripts (e.g. FTP deploy)
+├── startup/            # Build-time data fetch / image generation
+├── types/              # TypeScript type definitions
+├── vite.config.ts      # Vite static-build config
+└── vite.react.config.tsx # Vite RSC app config
 ```
 
 ## Key Features
 
 ### React Server Components
-- Server-side rendering with streaming
+- Server-side rendering powered by `vite-plugin-react-server`
 - Client-side hydration
 - Automatic CSS collection and injection
-- Custom RSC implementation using `react-server-dom-esm`
 
 ### Theming System
 Each theme includes:
@@ -92,10 +95,40 @@ Each theme includes:
    - CSS minification
 
 3. **Static Export**
-   - `npm run export`: Generates static HTML
+   - `npm run build` produces a fully static site under `dist/static/`
    - Pre-renders all routes
    - Optimizes assets
-   - Creates RSC payloads
+   - Emits RSC payloads alongside the HTML
+
+## Deploying to mmcelebration.com
+
+`mmcelebration.com` is hosted on a shared etcserver account that only exposes FTP, so the deploy step is an FTPS upload of `dist/static/` to the remote `/www` directory.
+
+The default `deploy:ftp` is **incremental** — it diffs each built file (SHA1) against a local backup mirror and uploads only the files whose content changed (skipping images by default, since `dist/static/` images are large and rarely change). Successful uploads are mirrored into the backup so the next run picks up where this one left off. Nothing on the remote is ever deleted; files are overwritten in place.
+
+### First-time setup
+
+1. Copy `.env.example` to `.env.local` (gitignored) and fill in `FTP_*` credentials. `FTP_BACKUP_DIR` defaults to `.backup/ftp-mmc` (also gitignored).
+2. Build the static site: `npm run build:prod` (writes to `dist/static/`).
+3. Do the first full upload: `npm run deploy:ftp:full`. This sends every file via `uploadFromDir` (overwrite-in-place, never deletes).
+4. Seed the local backup so subsequent runs can diff against it: `npm run deploy:ftp:backup`.
+
+### Day-to-day
+
+```bash
+npm run build:prod          # rebuild dist/static
+npm run deploy:ftp:check    # dry-run: print what would upload
+npm run deploy:ftp          # incremental upload of changed files only
+```
+
+Useful flags on the incremental script (pass after `--`):
+
+- `--with-images` — also upload changed images (default skips them)
+- `--images-only` — upload changed images, skip everything else
+- `--concurrency N` — parallel FTP workers, 1–16 (default 4)
+- `--verbose` — print every file as it's planned/uploaded
+
+If the local backup ever gets out of sync with the remote, delete it and rerun the first-time setup (`deploy:ftp:full` + `deploy:ftp:backup`).
 
 ## Configuration
 

@@ -18,6 +18,7 @@ scripts/.oauthkey.json
 /build
 /docker-build
 /dist
+/.backup
 
 # misc
 .DS_Store
