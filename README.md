@@ -104,12 +104,31 @@ Each theme includes:
 
 `mmcelebration.com` is hosted on a shared etcserver account that only exposes FTP, so the deploy step is an FTPS upload of `dist/static/` to the remote `/www` directory.
 
-1. Copy `.env.example` to `.env.local` (gitignored) and fill in `FTP_*` credentials.
-2. Build the static site: `npm run build:prod` (writes to `dist/static/`).
-3. Sanity-check the connection without uploading: `npm run deploy:ftp:check`.
-4. Upload: `npm run deploy:ftp`.
+The default `deploy:ftp` is **incremental** — it diffs each built file (SHA1) against a local backup mirror and uploads only the files whose content changed (skipping images by default, since `dist/static/` images are large and rarely change). Successful uploads are mirrored into the backup so the next run picks up where this one left off. Nothing on the remote is ever deleted; files are overwritten in place.
 
-The upload overwrites files in place and reuses existing remote directories — it does **not** delete unrelated remote files, so the remote tree is never wiped first.
+### First-time setup
+
+1. Copy `.env.example` to `.env.local` (gitignored) and fill in `FTP_*` credentials. `FTP_BACKUP_DIR` defaults to `.backup/ftp-mmc` (also gitignored).
+2. Build the static site: `npm run build:prod` (writes to `dist/static/`).
+3. Do the first full upload: `npm run deploy:ftp:full`. This sends every file via `uploadFromDir` (overwrite-in-place, never deletes).
+4. Seed the local backup so subsequent runs can diff against it: `npm run deploy:ftp:backup`.
+
+### Day-to-day
+
+```bash
+npm run build:prod          # rebuild dist/static
+npm run deploy:ftp:check    # dry-run: print what would upload
+npm run deploy:ftp          # incremental upload of changed files only
+```
+
+Useful flags on the incremental script (pass after `--`):
+
+- `--with-images` — also upload changed images (default skips them)
+- `--images-only` — upload changed images, skip everything else
+- `--concurrency N` — parallel FTP workers, 1–16 (default 4)
+- `--verbose` — print every file as it's planned/uploaded
+
+If the local backup ever gets out of sync with the remote, delete it and rerun the first-time setup (`deploy:ftp:full` + `deploy:ftp:backup`).
 
 ## Configuration
 
