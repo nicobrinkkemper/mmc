@@ -5,7 +5,6 @@ import {
 
 declare global {
   interface ImportMetaEnv {
-    PUBLIC_ORIGIN: string;
     BASE_URL: string;
     NODE_ENV: string;
     DEV: boolean;
