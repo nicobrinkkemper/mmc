@@ -47,6 +47,7 @@
     "types": [
       "@types/react/experimental",
       "vite/client",
+      "vite-plugin-react-server/virtual",
       "node"
     ],
     "typeRoots": [

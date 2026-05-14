@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { createRoot } from "react-dom/client";
 import { createReactFetcher } from "vite-plugin-react-server/utils";
+import { useRscHmr } from "virtual:react-server/hmr";
 import { baseURL } from "./config/env.client.js";
 import { ErrorMessage } from "./ErrorMessage.js";
 import "./globalStyles.css";
@@ -33,10 +34,9 @@ const Shell: React.FC<{
   const [storeData, setStoreData] =
     useState<React.Usable<unknown>>(initialServerData);
 
-  const navigate = useCallback((to: string) => {
-    if ("scrollTo" in window) window.scrollTo(0, 0);
+  const refetch = useCallback((to: string, scrollToTop = true) => {
+    if (scrollToTop && "scrollTo" in window) window.scrollTo(0, 0);
     startTransition(() => {
-      // Create new RSC data stream
       setStoreData(
         createReactFetcher({
           url: to,
@@ -57,10 +57,14 @@ const Shell: React.FC<{
           : e.state.to
       );
       console.log("navigating to", newTo);
-      return navigate(newTo);
+      return refetch(newTo);
     },
     window
   );
+
+  // RSC HMR: refetch the stream when server components or CSS modules change.
+  // scrollToTop=false preserves the user's scroll position across edits.
+  useRscHmr((url) => refetch(url, false));
 
   const content = use(storeData);
 
