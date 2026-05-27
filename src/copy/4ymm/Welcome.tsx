@@ -2,7 +2,7 @@ import * as React from "react";
 import { Button } from "../../components/Button.js";
 import { Card } from "../../components/Card.js";
 import { StayUpToDate } from "../default/StayUpToDate.js";
-import { MM4ContentCreatorCard } from "./cards/Mm4ContentCreatorCard.js";
+import { Ymm4ContentCreatorCard } from "./cards/Ymm4ContentCreatorCard.js";
 
 export const Welcome4YMM: DefaultWelcomeContentType = ({
   info: { writtenOut },
@@ -38,7 +38,7 @@ export const Welcome4YMM: DefaultWelcomeContentType = ({
           To the levels
         </Button>
       </Card>
-      <MM4ContentCreatorCard clickable={clickable} />
+      <Ymm4ContentCreatorCard clickable={clickable} />
       <StayUpToDate clickable={clickable} />
     </>
   );

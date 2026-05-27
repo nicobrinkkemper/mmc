@@ -2,7 +2,7 @@ import * as React from "react";
 import { Button } from "../../../components/Button.js";
 import { Card } from "../../../components/Card.js";
 
-export const MM4ContentCreatorCard: ContentCreatorCardType = ({
+export const Ymm4ContentCreatorCard: ContentCreatorCardType = ({
   clickable,
   ...props
 }) => (
