@@ -59,13 +59,6 @@ export const config = {
   props: createRouter("props.ts"),
   Root: "src/MmcRoot.tsx",
   Html: "src/MmcHtml.tsx",
-  // Tell vprs which file is the client hydration entry. Without this,
-  // its globalCss collection (processCssFilesForPages.ts) has no
-  // clientEntry to scan, so client.tsx's `import "./globalStyles.css"`
-  // never reaches the static HTML's <Css cssFiles={globalCss} />.
-  // Result: built globalStyles-*.css contains the @font-face rules but
-  // no <link> in the rendered HTML — fonts silently fail.
-  clientEntry: "src/client.tsx",
   pageExportName: "Page",
   propsExportName: "props",
   htmlExportName: "Html",
