@@ -50,6 +50,7 @@ const createRouter = (fileName: string) => (url: string) => {
 export const config = {
   moduleBase: "src",
   publicOrigin: process.env.PUBLIC_ORIGIN || process.env.VITE_PUBLIC_ORIGIN || "",
+  moduleBasePath: "/",
   moduleBaseURL: process.env.BASE_URL || process.env.VITE_BASE_URL || "/",
   verbose: false,
   rscTimeout: 30000, // 30 seconds for large projects
