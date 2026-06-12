@@ -114,8 +114,8 @@
     "markdown-to-jsx": "^7.7.2",
     "npm-check-updates": "^17.1.11",
     "npm-run-all": "^4.1.5",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "react": "0.0.0-experimental-900ae094-20260605",
+    "react-dom": "0.0.0-experimental-900ae094-20260605",
     "sharp": "^0.33.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
@@ -132,6 +132,7 @@
   ],
   "overrides": {
     "react": "$react",
-    "react-dom": "$react-dom"
+    "react-dom": "$react-dom",
+    "react-server-loader": "0.0.0-experimental-900ae094-20260605"
   }
 }
