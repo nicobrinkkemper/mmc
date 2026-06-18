@@ -1,12 +1,11 @@
 "use client";
 import React, {
-  use,
   useCallback,
   useState,
   useTransition,
   type ReactNode,
 } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import { createReactFetcher } from "vite-plugin-react-server/utils";
 import { useRscHmr } from "virtual:react-server/hmr";
 import { baseURL } from "./config/env.client.js";
@@ -28,22 +27,25 @@ import { useEventListener } from "./hooks/useEventListener.js";
  * Handles navigation and RSC data updates
  */
 const Shell: React.FC<{
-  data: React.Usable<unknown>;
-}> = ({ data: initialServerData }) => {
+  initialNode: ReactNode;
+}> = ({ initialNode }) => {
   const [, startTransition] = useTransition();
-  const [storeData, setStoreData] =
-    useState<React.Usable<unknown>>(initialServerData);
+  const [content, setContent] = useState<ReactNode>(initialNode);
 
   const refetch = useCallback((to: string, scrollToTop = true) => {
     if (scrollToTop && "scrollTo" in window) window.scrollTo(0, 0);
-    startTransition(() => {
-      setStoreData(
-        createReactFetcher({
-          url: to,
-          moduleBaseURL: import.meta.env.BASE_URL,
-          publicOrigin: import.meta.env.PUBLIC_ORIGIN,
-        })
-      );
+    // Resolve the next route's payload to a ReactNode *before* swapping it in,
+    // so the render stays synchronous (no Suspense boundary, no `use()`) and
+    // never flashes an empty tree — the same decode-then-render path as the
+    // initial mount below.
+    Promise.resolve(
+      createReactFetcher({
+        url: to,
+        moduleBaseURL: import.meta.env.BASE_URL,
+        publicOrigin: import.meta.env.PUBLIC_ORIGIN,
+      })
+    ).then((node) => {
+      startTransition(() => setContent(node as ReactNode));
     });
   }, []);
 
@@ -66,21 +68,43 @@ const Shell: React.FC<{
   // scrollToTop=false preserves the user's scroll position across edits.
   useRscHmr((url) => refetch(url, false));
 
-  const content = use(storeData);
-
-  return <ErrorBoundary>{content as ReactNode}</ErrorBoundary>;
+  return <ErrorBoundary>{content}</ErrorBoundary>;
 };
 // Initialize the app
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Root element not found");
 
-const intitalData = createReactFetcher({
-  url: window.location.pathname,
-  moduleBaseURL: import.meta.env.BASE_URL,
-  publicOrigin: import.meta.env.PUBLIC_ORIGIN,
-});
-
-createRoot(rootElement).render(<Shell data={intitalData} />);
+// Fully resolve the initial payload to a ReactNode *before* mounting, then
+// render that node directly — a synchronous first render with no Suspense
+// boundary, so hydrateRoot matches the prerendered HTML exactly. (Wrapping the
+// root in a <Suspense> the server never rendered, or `use()`-ing a pending
+// thenable, mismatches the prerender → React #418.) With the build's inlined
+// flight payload, createReactFetcher decodes in place with no network
+// round-trip; without it (e.g. dev) it falls back to fetching index.rsc.
+Promise.resolve(
+  createReactFetcher({
+    url: window.location.pathname,
+    moduleBaseURL: import.meta.env.BASE_URL,
+    publicOrigin: import.meta.env.PUBLIC_ORIGIN,
+  })
+).then(
+  (initialNode) => {
+    // Hydrate the prerendered HTML when present; fall back to a fresh client
+    // render when #root is empty (e.g. dev without prerender).
+    if (rootElement.hasChildNodes()) {
+      hydrateRoot(rootElement, <Shell initialNode={initialNode as ReactNode} />);
+    } else {
+      createRoot(rootElement).render(
+        <Shell initialNode={initialNode as ReactNode} />
+      );
+    }
+  },
+  (err) => {
+    // Stay on the prerendered static HTML rather than mounting a broken tree;
+    // links fall back to normal full-page navigation.
+    console.error("[mmc] initial RSC payload failed to load; staying static", err);
+  }
+);
 
 /**
  * Error boundary
