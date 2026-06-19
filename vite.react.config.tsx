@@ -75,5 +75,8 @@ export const config = {
   },
   build: {
     pages: pages,
+    // Flash-free first render: vprs inlines each route's flight payload into its
+    // index.html at the post-SSG point, in both build modes (>= 2.6.0).
+    inlineFlight: true,
   },
 };
