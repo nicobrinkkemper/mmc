@@ -24,6 +24,11 @@ export const Html: MmcHtmlType = ({
   return (
     <html>
       <head>
+        {/* Must be the first head element: declares the document encoding so the
+            browser decodes the prerendered UTF-8 HTML correctly even when the
+            host doesn't send a charset header. Without it, non-ASCII text (™, —)
+            decodes as Latin-1 and mismatches the client render (React #418). */}
+        <meta charSet="utf-8" />
         <Head
           title={pageProps.title}
           description={pageProps.description}
