@@ -135,5 +135,8 @@
     "react": "$react",
     "react-dom": "$react-dom",
     "react-server-loader": "0.0.0-experimental-d9158919-20260615"
+  },
+  "dependencies": {
+    "flag-icons": "^7.5.0"
   }
 }

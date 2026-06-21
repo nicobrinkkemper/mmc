@@ -44,10 +44,6 @@ export const Html: MmcHtmlType = ({
         <meta name="description" content={pageProps.description} />
         <Favicons favicons={pageProps.favicons} />
         <Css cssFiles={globalCss} />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css"
-        />
       </head>
       <body>
         <Root
