@@ -1,0 +1,7 @@
+/* Self-hosted flag-icons. Pulling the package CSS in through a project-relative
+   file (rather than a bare `flag-icons/...` import) lets vprs collect it into a
+   precedence-managed <link> in the prerendered <head>, same as globalStyles, so
+   it ships same-origin and render-blocking instead of as a remote CDN stylesheet
+   still loading at hydration. Imported only by MakerName, so the (large, all
+   flags inlined as data URIs) sheet is scoped to pages that render flags. */
+@import "flag-icons/css/flag-icons.min.css";

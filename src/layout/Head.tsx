@@ -29,10 +29,6 @@ export const Head: HeadType = ({
 }) => {
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
-      />
       <StaticMetaTags
         title={title}
         description={description}
