@@ -78,5 +78,10 @@ export const config = {
     // Flash-free first render: vprs inlines each route's flight payload into its
     // index.html at the post-SSG point, in both build modes (>= 2.6.0).
     inlineFlight: true,
+    // The single-isolate edge bundle (vprs >= 2.10.0, on by default) is for
+    // edge-runtime deploys. mmc is a static FTP-hosted site and its pinned
+    // experimental react-server-loader predates the `server.edge` export the bake
+    // needs, so opt out — keeps the build clean (no warn-and-skip).
+    edge: false,
   },
 };
