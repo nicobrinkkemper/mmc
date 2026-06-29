@@ -1,4 +1,4 @@
-import sharp from "sharp";
+import type { Sharp } from "sharp";
 import { aspectRatio } from "./faviconRatio.mjs";
 
 /**
@@ -6,7 +6,7 @@ import { aspectRatio } from "./faviconRatio.mjs";
  */
 export async function toPlaceholderBase64(
   job: ResizeJob,
-  instance: sharp.Sharp
+  instance: Sharp
 ) {
   if (!job.userInfo.placeholder) return;
   try {
