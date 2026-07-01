@@ -1,50 +1,46 @@
-import { join } from "node:path";
+import { StreamPluginOptions } from "vite-plugin-react-server";
+import { fileRouter } from "vite-plugin-react-server/router";
 import { metricWatcher } from "vite-plugin-react-server/metrics";
-import {
-  credits,
-  levels,
-  notfound,
-  themeKeys,
-  themes,
-} from "./src/config/themeConfig.js";
-import { getThemePathInfo } from "./src/data/getThemePathInfo.js";
+import { levels, themeKeys, themes } from "./src/config/themeConfig.js";
 
-const themeLevelPages = async (): Promise<string[]> => {
+// Data-driven prerender paths for the dynamic ($param) routes. Static routes
+// (/, /404) are discovered from the file tree automatically, so only the
+// concrete theme/level urls need enumerating here.
+const themeLevelBatchPaths = async (): Promise<string[]> => {
   const themeData = await import("./src/data/generated/themes.js");
-  const batches = themes.flatMap((theme: string, i: number) => {
-    const { batches } = themeData[themeKeys[i]];
-    return batches.flatMap(
-      (batch: { batchNumber: number; levels: { order: string }[] }) => [
-        `/${theme}/${levels}/${batch.batchNumber}`,
-        ...batch.levels.map(
+  return themes.flatMap((theme: string, i: number) =>
+    themeData[themeKeys[i]].batches.map(
+      (batch: { batchNumber: number }) =>
+        `/${theme}/${levels}/${batch.batchNumber}`
+    )
+  );
+};
+
+const themeLevelOrderPaths = async (): Promise<string[]> => {
+  const themeData = await import("./src/data/generated/themes.js");
+  return themes.flatMap((theme: string, i: number) =>
+    themeData[themeKeys[i]].batches.flatMap(
+      (batch: { batchNumber: number; levels: { order: string }[] }) =>
+        batch.levels.map(
           (level) => `/${theme}/${levels}/${batch.batchNumber}/${level.order}`
-        ),
-      ]
-    );
-  });
-  return [...batches];
+        )
+    )
+  );
 };
 
-const pages = async (): Promise<string[]> => {
-  const rest = await themeLevelPages();
-  return [
-    "/",
-    `/${notfound}`,
-    ...themes.flatMap((theme) => [
-      `/${theme}`,
-      `/${theme}/${credits}`,
-      `/${theme}/${levels}`,
-    ]),
-    ...rest,
-  ];
-};
-
-const createRouter = (fileName: string) => (url: string) => {
-  const { route } = getThemePathInfo(url);
-  const folder = route === "/" ? "page" : `page${route.replace(/:/g, "_")}`;
-  const path = join("src", folder, fileName);
-  return path;
-};
+// File-based routing lives in the engine now. fileRouter scans src/page/** for
+// page.tsx (+ sibling props.ts) and produces Page/props/build.pages, replacing
+// the hand-rolled createRouter(url)=>path switch and the manual `pages` list.
+// Only the data-driven concrete paths for the $param routes stay here.
+const router = fileRouter("src/page", {
+  staticPaths: {
+    "/$theme": () => themes.map((theme: string) => ({ theme })),
+    "/$theme/credits": () => themes.map((theme: string) => ({ theme })),
+    "/$theme/levels": () => themes.map((theme: string) => ({ theme })),
+    "/$theme/levels/$batchNumber": themeLevelBatchPaths,
+    "/$theme/levels/$batchNumber/$order": themeLevelOrderPaths,
+  },
+});
 
 // process.env.GITHUB_ACTIONS = "true";
 export const config = {
@@ -56,8 +52,9 @@ export const config = {
   rscTimeout: 30000, // 30 seconds for large projects
   htmlTimeout: 60000, // 60 seconds for large projects
   fileWriteTimeout: 30000, // 30 seconds for large projects
-  Page: createRouter("page.tsx"),
-  props: createRouter("props.ts"),
+  Page: router.Page,
+  props: router.props,
+  routePatterns: router.routePatterns,
   Root: "src/MmcRoot.tsx",
   Html: "src/MmcHtml.tsx",
   pageExportName: "Page",
@@ -74,9 +71,9 @@ export const config = {
     inlineThreshold: 1000,
   },
   build: {
-    pages: pages,
+    pages: router.build.pages,
     // Flash-free first render: vprs inlines each route's flight payload into its
     // index.html at the post-SSG point, in both build modes (>= 2.6.0).
     inlineFlight: true,
   },
-};
+} satisfies StreamPluginOptions;
