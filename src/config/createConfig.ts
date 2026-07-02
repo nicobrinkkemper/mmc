@@ -1,10 +1,13 @@
 import { createFetchWithRetry } from "../utils/createFetchWithRetry.js";
-
+import { spreadsheetCsvLink } from "./spreadsheetCsvLink.js";
 const link = <GID extends number>(gid: GID) =>
-  ({
-    gid,
-    link: `https://docs.google.com/spreadsheets/d/e/2PACX-1vROk4rxqS9jPImRfwqL6T6pFHJSBs4Gx3O9JUzabTeDA0aZrr2xccinxeuWhSNJJflByzbE63CAkZj0/pub?gid=${gid}&single=true&output=csv`,
-  } as const);
+({
+  gid,
+  link: `${spreadsheetCsvLink}?gid=${gid}&single=true&output=csv`,
+} as {
+  gid: GID;
+  link: `${typeof spreadsheetCsvLink}?gid=${GID}&single=true&output=csv`;
+});
 
 let hasErrors = false;
 

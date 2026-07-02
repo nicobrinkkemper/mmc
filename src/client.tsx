@@ -6,8 +6,8 @@ import React, {
   type ReactNode,
 } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
-import { createReactFetcher } from "vite-plugin-react-server/utils";
 import { useRscHmr } from "virtual:react-server/hmr";
+import { createReactFetcher } from "vite-plugin-react-server/utils";
 import { baseURL } from "./config/env.client.js";
 import { ErrorMessage } from "./ErrorMessage.js";
 import "./globalStyles.css";

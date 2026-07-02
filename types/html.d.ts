@@ -41,16 +41,6 @@ declare global {
     clickable: true;
   };
 
-  type CreatePropsAsyncFn = <
-    R extends ValidRoute,
-    Opt extends ThemeDataOptions,
-    FN extends AsyncThemeUtil<R, Opt>
-  >(
-    route: R,
-    options: Opt,
-    fn: FN
-  ) => (to: string) => Promise<ReturnType<FN> & ThemeStaticDataReturn<R, Opt>>;
-
   type CreatePropsFn = <
     R extends ValidRoute,
     Opt extends ThemeDataOptions,
@@ -65,5 +55,5 @@ declare global {
     clickable: React.ElementType | "a" | "button";
   };
 }
-export {};
+export { };
 

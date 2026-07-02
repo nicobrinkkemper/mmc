@@ -43,14 +43,3 @@ export const createProps: CreatePropsFn = (route, options, fn) => {
   };
 };
 
-export const createPropsAsync: CreatePropsAsyncFn = (route, options, fn) => {
-  const propsFn = createProps(route, options, () => ({}));
-  return async (to = route) => {
-    const staticProps = await propsFn(to);
-    const props = await fn(staticProps);
-    return {
-      ...staticProps,
-      ...(props as any),
-    };
-  };
-};

@@ -1,5 +1,5 @@
-import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
+import { defineConfig, type Plugin } from "vite";
 import { vitePluginReactServer } from "vite-plugin-react-server";
 import { config } from "./vite.react.config.js";
 
@@ -38,7 +38,7 @@ export default defineConfig(() => {
       // (state-preserving hot updates); vprs owns server-component HMR.
       react(),
       trailingSlashPlugin(),
-      ...(vitePluginReactServer(config) as Plugin[]),
+      ...vitePluginReactServer(config),
     ],
   };
 });

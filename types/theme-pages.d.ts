@@ -27,7 +27,7 @@ declare global {
   type BatchPageImages = BatchPageProps["images"];
   type LevelPageImages = LevelPageProps["images"];
   // favicons
-  type HomePageFavicon = HomePageImages["logo"];
+  // type HomePageFavicon = HomePageImages["logo"];
   
 }
 

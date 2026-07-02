@@ -73,6 +73,12 @@ export const themeConfig = [
     gid: 70552422,
     weekTrailers: ["Ly4K9GMgzok"],
   }),
+  // future themes below
+  // createConfig({
+  //   theme: "11mmc",
+  //   gid: paste-gid-of-table-here-from-spreadsheet,
+  //   weekTrailers: ["youtube-trailer-id1", "youtube-trailer-id2"],
+  // })
 ] as const;
 
 // some helpers
