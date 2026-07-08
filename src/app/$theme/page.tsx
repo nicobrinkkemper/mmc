@@ -29,7 +29,6 @@ export const Page: ThemePageComponent<RouteType | "/"> = (props) => {
   return (
     <>
       <App
-        pathInfo={{ theme }}
         favicons={favicons}
         published={published}
         updated={updated}

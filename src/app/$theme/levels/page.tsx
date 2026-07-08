@@ -36,9 +36,6 @@ export const Page: ThemePageComponent<RouteType> = ({
       title={title}
       description={description}
       image={image}
-      pathInfo={{
-        theme: pathInfo.theme,
-      }}
     >
       <Layout
         images={images}

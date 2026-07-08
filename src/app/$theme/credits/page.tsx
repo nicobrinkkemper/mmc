@@ -27,7 +27,6 @@ export const Page: ThemePageComponent<RouteType> = ({
   return (
     <>
       <App
-        pathInfo={{ theme }}
         favicons={favicons}
         published={published}
         updated={updated}

@@ -1,11 +1,13 @@
 import { absoluteURL } from "../../config/env.js";
 import { siteName } from "../../config/themeConfig.js";
 import { createProps } from "../../data/createProps.js";
+import { getRoute } from "../../data/getRoute.js";
+import { getThemePathInfo } from "../../data/getThemePathInfo.js";
 
 export const route = `/:theme` as const;
 export type RouteType = typeof route;
 
-export const props = createProps(
+const homeProps = createProps(
   route,
   {
     images: true,
@@ -32,3 +34,15 @@ export const props = createProps(
     image: absoluteURL(logo.src),
   })
 );
+
+/**
+ * `$theme/route.tsx` (the dynamic theme layout) wraps this whole subtree, so
+ * this loader is invoked not just for the theme home (`/5ymm`) but for every
+ * descendant the layout wraps (`/5ymm/credits`, `/5ymm/levels/…`). The full home
+ * data only makes sense at the theme root; deeper down the layout needs only the
+ * theme identity — so return that instead of tripping the home-route validator.
+ */
+export const props = async (to: string = route) =>
+  getRoute(to).route === route
+    ? homeProps(to)
+    : { pathInfo: getThemePathInfo(to) };

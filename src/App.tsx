@@ -1,12 +1,9 @@
-import classNames from "clsx";
 import * as React from "react";
 import styles from "./App.module.css";
-import { getCss } from "./css/getCss.js";
 import { Favicons } from "./layout/Favicons.js";
 import { MetaTags } from "./layout/MetaTags.js";
 
 type AppType = ThemeComponent<{
-  pathInfo: ["theme"];
   favicons: true;
   title: true;
   description: true;
@@ -20,10 +17,15 @@ type AppType = ThemeComponent<{
   twitter: true;
 }>;
 
+/**
+ * Theme-agnostic app shell. The theme `.Theme` class (its CSS custom
+ * properties) is applied by a theme layout's wrapper div — a static per-theme
+ * `route.tsx` for migrated themes, or the dynamic `app/$theme/route.tsx` for the
+ * rest — so App no longer pulls the all-themes CSS barrel.
+ */
 export const App: AppType = ({
   children,
   style,
-  pathInfo,
   favicons,
   title,
   description,
@@ -37,13 +39,12 @@ export const App: AppType = ({
   twitter,
   ...rest
 }) => {
-  const themeClass = getCss(pathInfo.theme, "Theme");
   return (
     <>
       <title key={title}>{title}</title>
       <Favicons favicons={favicons} />
       <MetaTags title={title} description={description} />
-      <div className={classNames(styles["App"], themeClass)} {...rest}>
+      <div className={styles["App"]} {...rest}>
         {children}
       </div>
     </>

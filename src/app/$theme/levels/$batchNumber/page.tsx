@@ -25,11 +25,10 @@ export const Page: ThemePageComponent<RouteType> = ({
   title,
   description,
 }) => {
-  const { theme, toLevels, toCredits, toHome } = pathInfo;
+  const { toLevels, toCredits, toHome } = pathInfo;
   return (
     <>
       <App
-        pathInfo={{ theme }}
         favicons={favicons}
         published={published}
         updated={updated}
