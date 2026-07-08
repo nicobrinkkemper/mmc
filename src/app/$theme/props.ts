@@ -36,11 +36,12 @@ const homeProps = createProps(
 );
 
 /**
- * `$theme/route.tsx` (the dynamic theme layout) wraps this whole subtree, so
- * this loader is invoked not just for the theme home (`/5ymm`) but for every
- * descendant the layout wraps (`/5ymm/credits`, `/5ymm/levels/…`). The full home
- * data only makes sense at the theme root; deeper down the layout needs only the
- * theme identity — so return that instead of tripping the home-route validator.
+ * Each theme's `app/<theme>/route.tsx` layout wraps its whole subtree and shares
+ * this loader (re-exported by every `<theme>/props.ts`), so it is invoked not
+ * just for the theme home (`/5ymm`) but for every descendant the layout wraps
+ * (`/5ymm/credits`, `/5ymm/levels/…`). The full home data only makes sense at the
+ * theme root; deeper down the layout needs only the theme identity — so return
+ * that instead of tripping the home-route validator.
  */
 export const props = async (to: string = route) =>
   getRoute(to).route === route

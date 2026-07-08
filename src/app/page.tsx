@@ -1,18 +1,18 @@
 import * as React from "react";
 import { Page as HomePage } from "./$theme/page.js";
-import { Layout as ThemeLayout } from "./$theme/route.js";
+import { Layout as MainThemeLayout } from "./10mmc/route.js";
 /**
- * Root page: the main theme's home. `/` sits above the `$theme` segment, so the
- * dynamic theme layout doesn't wrap it automatically — apply it here so the
- * main theme's `.Theme` class is present, same as any other theme route.
+ * Root page: the main theme's home. `/` sits above the theme segment, so wrap
+ * it in the main theme's layout (10mmc) directly — the same `.Theme` div every
+ * theme route gets. Keep in sync with `mainTheme` in themeConfig.
  */
 export const Page: ThemePageComponent<"/"> = (props) => {
   if (!props) {
     throw new Error("props is undefined");
   }
   return (
-    <ThemeLayout pathInfo={{ theme: props.pathInfo.theme }}>
+    <MainThemeLayout>
       <HomePage {...props} />
-    </ThemeLayout>
+    </MainThemeLayout>
   );
 };

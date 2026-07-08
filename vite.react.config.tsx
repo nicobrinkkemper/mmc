@@ -4,15 +4,10 @@ import { levels, themeKeys, themes } from "./src/config/themeConfig.js";
 
 type ThemeData = typeof import("./src/data/generated/themes.js");
 
-// Themes that have graduated to their own static `app/<theme>/` route folder.
-// Their concrete level paths are enumerated per-folder (below), so the dynamic
-// `$theme` generators skip them — each concrete url is prerendered exactly once
-// and static routes out-rank the `$theme` fallback at match time.
-const migratedThemes: readonly string[] = ["4ymm"];
-const isMigrated = (theme: string) => migratedThemes.includes(theme);
-
-// Per-theme concrete paths for the `levels/$batchNumber(/$order)` routes, shared
-// by the dynamic `$theme` fallback and each migrated theme's static folder.
+// Every theme now lives in its own static `app/<theme>/` route folder, so the
+// static /<theme> /credits /levels routes are auto-discovered from the file
+// tree. Only the two dynamic level routes per theme (`levels/$batchNumber` and
+// its `/$order`) need concrete prerender paths enumerated here.
 const batchPaths = (data: ThemeData, theme: string, i: number): string[] =>
   data[themeKeys[i] as keyof ThemeData].batches.map(
     (batch) => `/${theme}/${levels}/${batch.batchNumber}`
@@ -25,38 +20,23 @@ const orderPaths = (data: ThemeData, theme: string, i: number): string[] =>
     )
   );
 
-// Data-driven prerender paths for the dynamic ($param) routes. Static routes
-// (/, /404, and each migrated theme's /home /credits /levels) are discovered
-// from the file tree automatically, so only the concrete theme/level urls for
-// still-dynamic routes need enumerating here.
-const themeLevelBatchPaths = async (): Promise<string[]> => {
-  const data = await import("./src/data/generated/themes.js");
-  return themes.flatMap((theme: string, i: number) =>
-    isMigrated(theme) ? [] : batchPaths(data, theme, i)
-  );
-};
-
-const themeLevelOrderPaths = async (): Promise<string[]> => {
-  const data = await import("./src/data/generated/themes.js");
-  return themes.flatMap((theme: string, i: number) =>
-    isMigrated(theme) ? [] : orderPaths(data, theme, i)
-  );
-};
-
-// Per-migrated-theme generators: the `$batchNumber(/$order)` segments stay
-// dynamic inside a theme folder, so enumerate that one theme's concrete paths.
-const migratedBatchPaths = (theme: string) => async (): Promise<string[]> => {
+const themeBatchPaths = (theme: string) => async (): Promise<string[]> => {
   const data = await import("./src/data/generated/themes.js");
   return batchPaths(data, theme, themes.indexOf(theme as never));
 };
 
-const migratedOrderPaths = (theme: string) => async (): Promise<string[]> => {
+const themeOrderPaths = (theme: string) => async (): Promise<string[]> => {
   const data = await import("./src/data/generated/themes.js");
   return orderPaths(data, theme, themes.indexOf(theme as never));
 };
 
-const themeOrder = (): Record<string, string>[] =>
-  themes.filter((theme: string) => !isMigrated(theme)).map((theme: string) => ({ theme }));
+// One generator pair per theme, keyed by that theme's dynamic level routes.
+const staticPaths = Object.fromEntries(
+  themes.flatMap((theme: string) => [
+    [`/${theme}/${levels}/$batchNumber`, themeBatchPaths(theme)],
+    [`/${theme}/${levels}/$batchNumber/$order`, themeOrderPaths(theme)],
+  ])
+);
 
 // File-based routing in one field: `routes: { dir }` (relative to moduleBase)
 // scans src/app/** for page.tsx (+ sibling props.ts) and derives Page / props /
@@ -72,17 +52,7 @@ export const config = {
   verbose: false,
   routes: {
     dir: "app",
-    staticPaths: {
-      "/$theme": themeOrder,
-      "/$theme/credits": themeOrder,
-      "/$theme/levels": themeOrder,
-      "/$theme/levels/$batchNumber": themeLevelBatchPaths,
-      "/$theme/levels/$batchNumber/$order": themeLevelOrderPaths,
-      // Migrated theme folders (static /home /credits /levels are auto-discovered;
-      // only their still-dynamic level routes need concrete paths).
-      "/4ymm/levels/$batchNumber": migratedBatchPaths("4ymm"),
-      "/4ymm/levels/$batchNumber/$order": migratedOrderPaths("4ymm"),
-    },
+    staticPaths,
   },
   Root: "src/MmcRoot.tsx",
   Html: "src/MmcHtml.tsx",

@@ -19,9 +19,8 @@ type AppType = ThemeComponent<{
 
 /**
  * Theme-agnostic app shell. The theme `.Theme` class (its CSS custom
- * properties) is applied by a theme layout's wrapper div — a static per-theme
- * `route.tsx` for migrated themes, or the dynamic `app/$theme/route.tsx` for the
- * rest — so App no longer pulls the all-themes CSS barrel.
+ * properties) is applied by each theme's `app/<theme>/route.tsx` layout wrapper
+ * div, so App carries no theme knowledge and pulls no CSS barrel.
  */
 export const App: AppType = ({
   children,

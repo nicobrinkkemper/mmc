@@ -1,5 +1,5 @@
 /**
- * `/404` sits above the `$theme` segment, so reuse the dynamic theme layout
- * directly — its loader props (this segment's `props.ts`) carry `pathInfo.theme`.
+ * `/404` sits above the theme segment, so reuse the main theme's layout (10mmc)
+ * — the same `.Theme` wrapper every theme route gets.
  */
-export { Layout } from "../$theme/route.js";
+export { Layout } from "../10mmc/route.js";
