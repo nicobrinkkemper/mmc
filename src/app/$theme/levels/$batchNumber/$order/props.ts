@@ -1,4 +1,4 @@
-import { absoluteURL } from "../../../../../config/env.server.js";
+import { absoluteURL } from "../../../../../config/env.js";
 import { createProps } from "../../../../../data/createProps.js";
 
 export const route = "/:theme/levels/:batchNumber/:order" as const;

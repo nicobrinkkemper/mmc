@@ -1,5 +1,5 @@
 import { credits, levels } from "../src/config/themeConfig.ts";
-import { pageNesting } from "../src/page/pageNesting.ts";
+import { pageNesting } from "../src/app/pageNesting.ts";
 
 declare global {
   /**

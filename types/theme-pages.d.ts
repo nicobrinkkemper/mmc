@@ -1,4 +1,4 @@
-import { pages } from "../src/page/pages.tsx";
+import { pages } from "../src/app/pages.tsx";
 
 declare global {
   type PageMap = {

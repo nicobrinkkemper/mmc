@@ -1,5 +1,4 @@
 import React from "react";
-import { Css } from "vite-plugin-react-server/components";
 import type { RootProps } from "vite-plugin-react-server/types";
 import { mainTheme, themes } from "./config/themeConfig.js";
 
@@ -10,6 +9,45 @@ const removeableCSS = [
   "/src/css/8mmc.module.css",
   "/src/css/9mmc.module.css",
 ];
+
+import type { CssComponentType, CssContent } from "vite-plugin-react-server/types";
+
+// Copied from vite-plugin-react-server/components/css.tsx to test a theory (build with react-server global condition)
+export const Css: CssComponentType = ({ cssFiles }) => {
+  if (!cssFiles) return null;
+  const cssFilesArray = Array.isArray(cssFiles)
+    ? cssFiles
+    : Array.from(cssFiles.values());
+  if (!cssFilesArray.length) return null;
+  const arr = cssFilesArray.map((cssFile: CssContent) => {
+    // Emit style tag for inline CSS
+    const {
+      as: As = React.Fragment,
+      id,
+      children,
+      precedence,
+      type,
+      ...rest
+    } = cssFile;
+    if (
+      As !== "link" &&
+      (typeof children === "string" || React.isValidElement(children))
+    ) {
+      // style tag
+      // since we can't bubble up the style tags, we need to be creative
+      return (
+        <As {...rest} type={type ?? "text/css"} key={id}>
+          {children ?? null}
+        </As>
+      );
+    }
+    // link tag
+    return <As {...rest} key={id} precedence={precedence} />;
+  });
+  if (!arr.length) return null;
+  return arr;
+};
+
 
 const createFilter = (theme: Theme) => {
   if (theme === "5ymm" || theme === "6ymm") {

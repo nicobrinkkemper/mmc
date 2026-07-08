@@ -8,7 +8,7 @@ import React, {
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { useRscHmr } from "virtual:react-server/hmr";
 import { createReactFetcher } from "vite-plugin-react-server/utils";
-import { baseURL } from "./config/env.client.js";
+import { baseURL } from "./config/env.js";
 import { ErrorMessage } from "./ErrorMessage.js";
 import "./globalStyles.css";
 import { useEventListener } from "./hooks/useEventListener.js";

@@ -1,6 +1,6 @@
 import c from "clsx";
 import * as React from "react";
-import { baseURL } from "../config/env.server.js";
+import { baseURL } from "../config/env.js";
 import styles from "./Card.module.css";
 import { PublicImage } from "./PublicImage.js";
 

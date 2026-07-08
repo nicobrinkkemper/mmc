@@ -1,4 +1,4 @@
-import { absoluteURL } from "../config/env.server.js";
+import { absoluteURL } from "../config/env.js";
 import { siteName } from "../config/themeConfig.js";
 import { createProps } from "../data/createProps.js";
 /**

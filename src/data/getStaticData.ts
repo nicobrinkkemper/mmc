@@ -1,8 +1,6 @@
-import {
-  createAbsoluteURL,
-  createBaseURL,
-} from "vite-plugin-react-server/utils";
+
 import { ClientClickable } from "../components/Clickable.client.js";
+import { absoluteURL, baseURL } from "../config/env.js";
 import { levels, siteName, themes } from "../config/themeConfig.js";
 import { isKeyOf } from "../utils/isKeyOf.js";
 import { pickRequired } from "../utils/pickRequired.js";
@@ -10,10 +8,6 @@ import { getAdjacent } from "./getAdjacent.js";
 import { getTheme } from "./getTheme.js";
 import { getThemeInfo } from "./getThemeInfo.js";
 
-let publicOrigin = import.meta.env.PUBLIC_ORIGIN ?? "https://mmcelebration.com";
-let baseUrl = import.meta.env.BASE_URL ?? "/";
-let absoluteURL = createAbsoluteURL(baseUrl, publicOrigin);
-let baseURL = createBaseURL(baseUrl);
 const mapAdjacent = (
   {
     images,

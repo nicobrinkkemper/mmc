@@ -1,4 +1,4 @@
-import { pageNesting } from "../page/pageNesting.js";
+import { pageNesting } from "../app/pageNesting.js";
 
 export const getRouteSegments = (
   seg: string,
