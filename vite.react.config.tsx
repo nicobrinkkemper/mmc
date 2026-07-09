@@ -54,7 +54,8 @@ export const config = {
     dir: "app",
     staticPaths,
   },
-  Root: "src/MmcRoot.tsx",
+  // No custom Root: each route's `route.tsx` layout scopes its own theme CSS, so
+  // vprs's default Root (render the page + its collected CSS) is all we need.
   Html: "src/MmcHtml.tsx",
   onMetrics: metricWatcher({
     warnOnly: false,
