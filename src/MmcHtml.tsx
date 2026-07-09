@@ -1,6 +1,6 @@
 import React from "react";
-import { Css } from "vite-plugin-react-server/components";
 import type { HtmlProps } from "vite-plugin-react-server/types";
+import { Css } from "./MmcRoot.js";
 import { Favicons } from "./layout/Favicons.js";
 import { Head } from "./layout/Head.js";
 
