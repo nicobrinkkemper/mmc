@@ -43,7 +43,7 @@ const homeProps = createProps(
  * theme root; deeper down the layout needs only the theme identity — so return
  * that instead of tripping the home-route validator.
  */
-export const props = async (to: string = route) =>
-  getRoute(to).route === route
+export const props = async <T extends string = typeof route>(to: T) =>
+  (getRoute(to).route === route
     ? homeProps(to)
-    : { pathInfo: getThemePathInfo(to) };
+    : { pathInfo: getThemePathInfo(to) });
