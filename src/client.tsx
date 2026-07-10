@@ -8,7 +8,6 @@ import React, {
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { useRscHmr } from "virtual:react-server/hmr";
 import { createReactFetcher } from "vite-plugin-react-server/utils";
-import { baseURL } from "./config/env.js";
 import { ErrorMessage } from "./ErrorMessage.js";
 import "./globalStyles.css";
 import { useEventListener } from "./hooks/useEventListener.js";
@@ -53,11 +52,14 @@ const Shell: React.FC<{
   useEventListener(
     "popstate",
     (e) => {
-      const newTo = baseURL(
+      // window.location.pathname and Clickable's pushState `to` are already
+      // base-absolute (e.g. "/mmc/5ymm/"). Do NOT re-apply baseURL() — it would
+      // prepend the deploy base a second time ("/mmc/mmc/5ymm/") and 404 the RSC
+      // fetch. createReactFetcher handles the base-absolute path directly.
+      const newTo =
         !(e instanceof PopStateEvent) || typeof e.state?.to !== "string"
           ? window.location.pathname
-          : e.state.to
-      );
+          : e.state.to;
       console.log("navigating to", newTo);
       return refetch(newTo);
     },
