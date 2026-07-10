@@ -26,12 +26,22 @@ const origin =
 const isAbsolute = (path: string): boolean =>
   /^[a-z][a-z0-9+.-]*:/i.test(path) || path.startsWith("//");
 
-/** Prefix a path with the deploy base (`/mmc/foo`); absolute URLs pass through. */
-export const baseURL = (path: string): string =>
-  isAbsolute(path)
-    ? path
-    : new URL(path.replace(/^\/+/, ""), `http://_/${base.replace(/^\/+/, "")}`)
-        .pathname;
+/**
+ * Prefix a path with the deploy base (`/mmc/foo`); absolute URLs pass through.
+ *
+ * De-dupes: a path that ALREADY carries the base is returned unchanged instead
+ * of double-prefixed. Vite asset URLs (e.g. `images.favicon.src`) already
+ * include the deploy base, so without this `absoluteURL(images.favicon.src)`
+ * produced `/mmc/mmc/…/favicon.ico`.
+ */
+export const baseURL = (path: string): string => {
+  if (isAbsolute(path)) return path;
+  const b = base.replace(/\/+$/, ""); // "/mmc" (or "" for root base "/")
+  const p = path.startsWith("/") ? path : `/${path}`;
+  if (b && (p === b || p.startsWith(`${b}/`))) return p;
+  return new URL(p.replace(/^\/+/, ""), `http://_/${base.replace(/^\/+/, "")}`)
+    .pathname;
+};
 
 /** `baseURL`, resolved absolute against the public origin. */
 export const absoluteURL = (path: string): string =>
