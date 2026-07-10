@@ -15,14 +15,16 @@ export const ClientClickable: React.FC<{
         (e.currentTarget &&
           "target" in e.currentTarget &&
           e.currentTarget.target === "_blank");
-      if (!isBlank) {
-        e.preventDefault();
-      }
-      // Use pathname, not full href - createReactFetcher expects a path like "/10mmc/"
+      if (isBlank) return;
+      e.preventDefault();
+      // Scroll to top on forward navigation (a link click). Doing it here — not
+      // on every popstate — means browser back/forward keeps its scroll offset.
+      if ("scrollTo" in window) window.scrollTo(0, 0);
+      // Use pathname, not full href — the router expects a path like "/10mmc/".
       const newTo =
         e.currentTarget && "href" in e.currentTarget
           ? new URL(e.currentTarget.href).pathname
-          : href || '/';
+          : href || "/";
       const newState = { to: newTo };
       window.history.pushState(newState, "", newTo);
       window.dispatchEvent(new PopStateEvent("popstate", { state: newState }));
