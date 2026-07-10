@@ -7,6 +7,8 @@ import { type RouteType } from "./props.js";
 export const Page: ThemePageComponent<RouteType | "/"> = (props) => {
   if (!props) {
     throw new Error("props is undefined");
+  } else if(!("images" in props) || !props.images) {
+    throw new Error("props.images is undefined. It's likely that the props function didn't get the correct route.");
   }
   const {
     images: { logo, logo_special, illustration },
