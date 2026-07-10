@@ -76,7 +76,7 @@ declare global {
   > = (props: ThemeStaticDataReturn<R, Opt> & Custom) => Return;
 
   /**
-   * `ThemeUtil` is the main type to use when creating new utilities for the theme. Anything that isn't a React component.
+   * `AsyncThemeUtil` is the main type to use when creating new asynchronous utilities for the theme. Anything that isn't a React component.
    */
   type AsyncThemeUtil<
     R extends ValidRoute,
@@ -155,5 +155,5 @@ declare global {
   ) => Promise<ThemeStaticDataReturn<R, Opt, PI>>;
 }
 
-export {};
+export { };
 

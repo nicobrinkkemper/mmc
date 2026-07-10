@@ -1,51 +1,48 @@
-import { join } from "node:path";
+import { StreamPluginOptions } from "vite-plugin-react-server";
 import { metricWatcher } from "vite-plugin-react-server/metrics";
-import {
-  credits,
-  levels,
-  notfound,
-  themeKeys,
-  themes,
-} from "./src/config/themeConfig.js";
-import { getThemePathInfo } from "./src/data/getThemePathInfo.js";
+import { levels, themeKeys, themes } from "./src/config/themeConfig.js";
 
-const themeLevelPages = async (): Promise<string[]> => {
-  const themeData = await import("./src/data/generated/themes.js");
-  const batches = themes.flatMap((theme: string, i: number) => {
-    const { batches } = themeData[themeKeys[i]];
-    return batches.flatMap(
-      (batch: { batchNumber: number; levels: { order: string }[] }) => [
-        `/${theme}/${levels}/${batch.batchNumber}`,
-        ...batch.levels.map(
-          (level) => `/${theme}/${levels}/${batch.batchNumber}/${level.order}`
-        ),
-      ]
-    );
-  });
-  return [...batches];
+type ThemeData = typeof import("./src/data/generated/themes.js");
+
+// Every theme now lives in its own static `app/<theme>/` route folder, so the
+// static /<theme> /credits /levels routes are auto-discovered from the file
+// tree. Only the two dynamic level routes per theme (`levels/$batchNumber` and
+// its `/$order`) need concrete prerender paths enumerated here.
+const batchPaths = (data: ThemeData, theme: string, i: number): string[] =>
+  data[themeKeys[i] as keyof ThemeData].batches.map(
+    (batch) => `/${theme}/${levels}/${batch.batchNumber}`
+  );
+
+const orderPaths = (data: ThemeData, theme: string, i: number): string[] =>
+  data[themeKeys[i] as keyof ThemeData].batches.flatMap((batch) =>
+    batch.levels.map(
+      (level) => `/${theme}/${levels}/${batch.batchNumber}/${level.order}`
+    )
+  );
+
+const themeBatchPaths = (theme: string) => async (): Promise<string[]> => {
+  const data = await import("./src/data/generated/themes.js");
+  return batchPaths(data, theme, themes.indexOf(theme as never));
 };
 
-const pages = async (): Promise<string[]> => {
-  const rest = await themeLevelPages();
-  return [
-    "/",
-    `/${notfound}`,
-    ...themes.flatMap((theme) => [
-      `/${theme}`,
-      `/${theme}/${credits}`,
-      `/${theme}/${levels}`,
-    ]),
-    ...rest,
-  ];
+const themeOrderPaths = (theme: string) => async (): Promise<string[]> => {
+  const data = await import("./src/data/generated/themes.js");
+  return orderPaths(data, theme, themes.indexOf(theme as never));
 };
 
-const createRouter = (fileName: string) => (url: string) => {
-  const { route } = getThemePathInfo(url);
-  const folder = route === "/" ? "page" : `page${route.replace(/:/g, "_")}`;
-  const path = join("src", folder, fileName);
-  return path;
-};
+// One generator pair per theme, keyed by that theme's dynamic level routes.
+const staticPaths = Object.fromEntries(
+  themes.flatMap((theme: string) => [
+    [`/${theme}/${levels}/$batchNumber`, themeBatchPaths(theme)],
+    [`/${theme}/${levels}/$batchNumber/$order`, themeOrderPaths(theme)],
+  ])
+);
 
+// File-based routing in one field: `routes: { dir }` (relative to moduleBase)
+// scans src/app/** for page.tsx (+ sibling props.ts) and derives Page / props /
+// routePatterns / the prerender worklist — no more restating them. Static routes
+// (/, /404) are discovered from the tree; only the data-driven concrete paths
+// for the $param routes need enumerating here.
 // process.env.GITHUB_ACTIONS = "true";
 export const config = {
   moduleBase: "src",
@@ -53,17 +50,13 @@ export const config = {
   moduleBasePath: "/",
   moduleBaseURL: process.env.BASE_URL || process.env.VITE_BASE_URL || "/",
   verbose: false,
-  rscTimeout: 30000, // 30 seconds for large projects
-  htmlTimeout: 60000, // 60 seconds for large projects
-  fileWriteTimeout: 30000, // 30 seconds for large projects
-  Page: createRouter("page.tsx"),
-  props: createRouter("props.ts"),
-  Root: "src/MmcRoot.tsx",
+  routes: {
+    dir: "app",
+    staticPaths,
+  },
+  // No custom Root: each route's `route.tsx` layout scopes its own theme CSS, so
+  // vprs's default Root (render the page + its collected CSS) is all we need.
   Html: "src/MmcHtml.tsx",
-  pageExportName: "Page",
-  propsExportName: "props",
-  htmlExportName: "Html",
-  rootExportName: "Root",
   onMetrics: metricWatcher({
     warnOnly: false,
     warn: (...args) => console.warn(...args),
@@ -74,9 +67,8 @@ export const config = {
     inlineThreshold: 1000,
   },
   build: {
-    pages: pages,
     // Flash-free first render: vprs inlines each route's flight payload into its
     // index.html at the post-SSG point, in both build modes (>= 2.6.0).
     inlineFlight: true,
   },
-};
+} satisfies StreamPluginOptions;

@@ -1,4 +1,4 @@
-import { pages } from "../src/page/pages.tsx";
+import { pages } from "../src/app/pages.tsx";
 
 declare global {
   type PageMap = {
@@ -27,7 +27,7 @@ declare global {
   type BatchPageImages = BatchPageProps["images"];
   type LevelPageImages = LevelPageProps["images"];
   // favicons
-  type HomePageFavicon = HomePageImages["logo"];
+  // type HomePageFavicon = HomePageImages["logo"];
   
 }
 

@@ -1,6 +1,6 @@
 import classNames from "clsx";
 import React from "react";
-import { baseURL } from "../config/env.server.js";
+import { baseURL } from "../config/env.js";
 import styles from "./Button.module.css";
 import { ButtonIcons } from "./ButtonIcons.js";
 

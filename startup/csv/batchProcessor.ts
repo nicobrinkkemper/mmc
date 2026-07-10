@@ -1,5 +1,5 @@
 import { groupBy } from "lodash-es";
-import { baseURL } from "../../src/config/env.server.js";
+import { baseURL } from "../../src/config/env.js";
 import { levels as levelsSlug } from "../../src/config/themeConfig.js";
 export const batchProcessor: ThemeBatchProcessorFn = (
   themeConfig,

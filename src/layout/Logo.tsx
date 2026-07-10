@@ -1,7 +1,7 @@
 import classNames from "clsx";
 import * as React from "react";
 import { PublicImage } from "../components/PublicImage.js";
-import { baseURL } from "../config/env.server.js";
+import { baseURL } from "../config/env.js";
 import styles from "./Logo.module.css";
 
 type LogoType = ThemeComponent<{
