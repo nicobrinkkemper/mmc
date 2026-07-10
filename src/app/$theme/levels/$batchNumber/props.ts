@@ -1,5 +1,4 @@
 import { absoluteURL } from "../../../../config/env.js";
-import { levels } from "../../../../config/themeConfig.js";
 import { convertNumberToWord } from "../../../../data/convertNumberToWord.js";
 import { createProps } from "../../../../data/createProps.js";
 
@@ -33,16 +32,22 @@ export const props = createProps(
   },
   ({ info: { writtenOut, caps }, images: { logo }, batch }) => {
     if (!batch || !("batchNumber" in batch)) return {};
+
+    const levels = batch.levels ?? [];
+    const released = levels.length > 0;
+
+    // Released and unreleased weeks read differently: a released week describes
+    // the actual levels it shipped; an upcoming week is a teaser.
+    const description = released
+      ? `Week ${batch.batchNumber} of ${caps} has started! In this week's trailer we show off ${convertNumberToWord(
+          levels.length
+        )} new levels: ${humanReadableArray(
+          levels.map(({ levelName: { value } }) => value)
+        )}. Celebrating ${writtenOut}! Week ${batch.batchNumber} was released on ${batch.releaseDate?.value}.`
+      : `Week ${batch.batchNumber} of ${caps} is coming soon — stay tuned for more information. Celebrating ${writtenOut}!`;
+
     return {
-      description: `Week ${
-        batch?.batchNumber
-      } of ${caps} has started! In this week's trailer we show off ${convertNumberToWord(
-        levels.length
-      )} new levels: ${humanReadableArray(
-        batch?.levels.map(({ levelName: { value } }) => value)
-      )}. Celebrating ${writtenOut}! Week ${batch.batchNumber} released at ${
-        batch.releaseDate.value
-      }.`,
+      description,
       title: `${caps} | Week overview`,
       image: absoluteURL(logo.src),
     };
