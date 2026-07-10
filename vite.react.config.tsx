@@ -64,7 +64,7 @@ export const config = {
   }),
   serverEntry: "src/server.tsx",
   css: {
-    inlineThreshold: 1000,
+    inlineThreshold: 4096,
   },
   build: {
     // Flash-free first render: vprs inlines each route's flight payload into its
