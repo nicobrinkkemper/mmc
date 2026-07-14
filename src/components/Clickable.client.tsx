@@ -16,6 +16,20 @@ export const ClientClickable: React.FC<{
           "target" in e.currentTarget &&
           e.currentTarget.target === "_blank");
       if (isBlank) return;
+      // Same-document fragment links (the About modal opens on `#!/about` and
+      // closes on `#`) must stay with the browser. The modal is shown by CSS
+      // `:target`, and only a real fragment navigation updates that: the
+      // pushState below changes the URL WITHOUT recomputing `:target`, so an
+      // intercepted click would strand the modal open under a fragment-less URL.
+      // The router also navigates by pathname alone, which drops the fragment
+      // outright — so the modal would never open in the first place.
+      const target = new URL(e.currentTarget.href, window.location.href);
+      if (
+        target.pathname === window.location.pathname &&
+        (target.hash || window.location.hash)
+      ) {
+        return;
+      }
       e.preventDefault();
       // Scroll to top on forward navigation (a link click). Doing it here — not
       // on every popstate — means browser back/forward keeps its scroll offset.

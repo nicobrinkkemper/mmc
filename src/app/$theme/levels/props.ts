@@ -11,6 +11,7 @@ export const props = createProps(
     info: true,
     batches: true,
     pathInfo: true,
+    accordion: true,
     clickable: true,
     adjacent: true,
     favicons: true,

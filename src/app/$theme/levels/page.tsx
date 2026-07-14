@@ -8,7 +8,9 @@ import { type RouteType } from "./props.js";
 export const Page: ThemePageComponent<RouteType> = ({
   batches,
   images,
+  info,
   pathInfo,
+  accordion,
   clickable,
   adjacent,
   favicons,
@@ -39,10 +41,9 @@ export const Page: ThemePageComponent<RouteType> = ({
     >
       <Layout
         images={images}
-        pathInfo={{
-          toHome: pathInfo.toHome,
-          toCredits: pathInfo.toCredits,
-        }}
+        info={info}
+        pathInfo={pathInfo}
+        accordion={accordion}
         clickable={clickable}
         adjacent={adjacent}
       >

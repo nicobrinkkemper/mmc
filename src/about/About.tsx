@@ -3,6 +3,12 @@ import * as React from "react";
 import styles from "./About.module.css";
 import { CloseSvg } from "./CloseSvg.js";
 
+/**
+ * `visible` forces the modal open. It is optional because the modal is normally
+ * driven by CSS `:target`: the outer div carries `id="!/about"`, so linking to
+ * `#!/about` opens it and clearing the fragment closes it again — no JS, so it
+ * works on the statically served page before (or entirely without) hydration.
+ */
 type AboutType = ThemeComponent<
   {
     clickable: true;
@@ -10,7 +16,7 @@ type AboutType = ThemeComponent<
   "div",
   {
     closeProps: React.JSX.IntrinsicElements["a"];
-    visible: boolean;
+    visible?: boolean;
   }
 >;
 

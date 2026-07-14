@@ -9,7 +9,9 @@ import { type RouteType } from "./props.js";
 
 export const Page: ThemePageComponent<RouteType> = ({
   images,
-  pathInfo: { toHome, toCredits, theme },
+  info,
+  pathInfo,
+  accordion,
   adjacent,
   clickable,
   favicons,
@@ -24,6 +26,7 @@ export const Page: ThemePageComponent<RouteType> = ({
   description,
   image,
 }) => {
+  const { toHome, theme } = pathInfo;
   return (
     <>
       <App
@@ -41,10 +44,9 @@ export const Page: ThemePageComponent<RouteType> = ({
       >
         <Layout
           images={images}
-          pathInfo={{
-            toCredits,
-            toHome,
-          }}
+          info={info}
+          pathInfo={pathInfo}
+          accordion={accordion}
           adjacent={adjacent}
           clickable={clickable}
         >

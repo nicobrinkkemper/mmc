@@ -33,9 +33,14 @@ const isAbsolute = (path: string): boolean =>
  * of double-prefixed. Vite asset URLs (e.g. `images.favicon.src`) already
  * include the deploy base, so without this `absoluteURL(images.favicon.src)`
  * produced `/mmc/mmc/…/favicon.ico`.
+ *
+ * A fragment-only path (`#!/about`) addresses the CURRENT document, so it is
+ * returned untouched. It must not be prefixed: the function resolves through
+ * `new URL(...).pathname`, which discards the fragment entirely, so `#!/about`
+ * would come back as `/` (or `/mmc/`) — a link to the site root.
  */
 export const baseURL = (path: string): string => {
-  if (isAbsolute(path)) return path;
+  if (isAbsolute(path) || path.startsWith("#")) return path;
   const b = base.replace(/\/+$/, ""); // "/mmc" (or "" for root base "/")
   const p = path.startsWith("/") ? path : `/${path}`;
   if (b && (p === b || p.startsWith(`${b}/`))) return p;

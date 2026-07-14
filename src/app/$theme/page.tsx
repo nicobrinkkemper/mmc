@@ -12,8 +12,9 @@ export const Page: ThemePageComponent<RouteType | "/"> = (props) => {
   }
   const {
     images: { logo, logo_special, illustration },
-    info: { writtenOut, themeYear },
-    pathInfo: { toHome, toLevels, theme, toCredits },
+    info,
+    pathInfo,
+    accordion,
     adjacent,
     clickable,
     favicons,
@@ -28,6 +29,8 @@ export const Page: ThemePageComponent<RouteType | "/"> = (props) => {
     description,
     image,
   } = props;
+  const { writtenOut, themeYear } = info;
+  const { toLevels, theme } = pathInfo;
   return (
     <>
       <App
@@ -47,10 +50,9 @@ export const Page: ThemePageComponent<RouteType | "/"> = (props) => {
           images={{
             logo: logo_special ?? logo,
           }}
-          pathInfo={{
-            toHome,
-            toCredits,
-          }}
+          info={info}
+          pathInfo={pathInfo}
+          accordion={accordion}
           adjacent={adjacent}
           clickable={clickable}
         >

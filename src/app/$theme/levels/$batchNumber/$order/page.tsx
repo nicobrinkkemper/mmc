@@ -22,9 +22,12 @@ export const Page: ThemePageComponent<RouteType> = ({
   description,
   level,
   batch: { batchName, batchNumber },
-  pathInfo: { theme, toBatch, toCredits, toHome },
+  info,
+  pathInfo,
+  accordion,
   clickable,
 }) => {
+  const { theme, toBatch } = pathInfo;
   return (
     <App
       favicons={favicons}
@@ -42,10 +45,9 @@ export const Page: ThemePageComponent<RouteType> = ({
       <Layout
         small
         images={{ logo: logo_simple_small ?? logo_small ?? logo }}
-        pathInfo={{
-          toHome,
-          toCredits,
-        }}
+        info={info}
+        pathInfo={pathInfo}
+        accordion={accordion}
         clickable={clickable}
         adjacent={undefined as never}
       >
