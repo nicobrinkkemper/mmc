@@ -11,6 +11,7 @@ export const props = createProps(
     images: ["logo", "favicon"],
     pathInfo: true,
     info: true,
+    accordion: true,
     clickable: true,
     favicons: true,
     published: true,

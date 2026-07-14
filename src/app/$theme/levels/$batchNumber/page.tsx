@@ -10,7 +10,9 @@ import type { RouteType } from "./props.js";
 
 export const Page: ThemePageComponent<RouteType> = ({
   images: { logo, logo_small, logo_simple_small, favicon },
+  info,
   pathInfo,
+  accordion,
   batch,
   clickable,
   favicons,
@@ -25,7 +27,7 @@ export const Page: ThemePageComponent<RouteType> = ({
   title,
   description,
 }) => {
-  const { toLevels, toCredits, toHome } = pathInfo;
+  const { toLevels } = pathInfo;
   return (
     <>
       <App
@@ -46,10 +48,9 @@ export const Page: ThemePageComponent<RouteType> = ({
           images={{
             logo: logo_simple_small ?? logo_small ?? logo,
           }}
-          pathInfo={{
-            toHome,
-            toCredits,
-          }}
+          info={info}
+          pathInfo={pathInfo}
+          accordion={accordion}
           clickable={clickable}
           adjacent={undefined as never}
         >

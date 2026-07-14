@@ -1,4 +1,15 @@
+/**
+ * The modal is always in the document — it is opened by CSS `:target` when the
+ * URL carries `#!/about`, so it works before (and without) hydration. That makes
+ * this hidden default load-bearing: without it the About content renders inline,
+ * in the page flow, on every page.
+ */
+.outer {
+  display: none;
+}
+
 .outer:global(#\!\/about):target, .outer.visible {
+  display: block;
   position: fixed;
   top: 0;
   left: 0;

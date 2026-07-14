@@ -16,8 +16,9 @@ export const props = createProps(
       "favicon_64x64",
       "illustration",
     ],
-    info: ["caps", "writtenOut"],
-    pathInfo: ["to", "theme", "toHome", "toCredits", "route"],
+    info: ["caps", "snake", "writtenOut"],
+    pathInfo: ["to", "theme", "toHome", "toCredits", "toAbout", "route"],
+    accordion: true,
     clickable: true,
     adjacent: {
       pathInfo: ["to"],
