@@ -44,8 +44,31 @@ class ErrorBoundary extends React.Component<
   }
 }
 
-startClient({
-  moduleBaseURL: import.meta.env.BASE_URL,
-  publicOrigin: import.meta.env.PUBLIC_ORIGIN,
-  wrap: (node: React.ReactNode) => <ErrorBoundary>{node}</ErrorBoundary>,
-});
+const boot = () =>
+  startClient({
+    moduleBaseURL: import.meta.env.BASE_URL,
+    publicOrigin: import.meta.env.PUBLIC_ORIGIN,
+    wrap: (node: React.ReactNode) => <ErrorBoundary>{node}</ErrorBoundary>,
+  });
+
+/**
+ * WORKAROUND, pending a fix in vite-plugin-react-server.
+ *
+ * `startClient` reads the initial flight payload out of the inlined
+ * `<script id="vprs-flight">` element as soon as it runs. This entry is emitted
+ * as `<script type="module" async>`, so its execution is not ordered against the
+ * HTML parser: once the module is in cache (a repeat visit, or navigating away
+ * from a still-loading page) it can run while the parser is still streaming text
+ * into that script element. It then decodes a TRUNCATED payload — measured at
+ * 1319 of 22088 chars — React reaches the end of an incomplete flight stream and
+ * throws #412 ("Connection closed"), and the page stays un-hydrated until a
+ * reload: no client-side navigation at all.
+ *
+ * A fully parsed document is what makes the payload whole, so wait for one.
+ * Remove this once the plugin defers the read itself.
+ */
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", boot, { once: true });
+} else {
+  boot();
+}
