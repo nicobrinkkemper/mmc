@@ -1,7 +1,15 @@
 #!/usr/bin/env node
-// Incremental FTP upload: walks dist/static, skips images, and only uploads
-// files whose content differs from the local backup. Bails out unless the
-// backup directory exists, so we always have something to roll back to.
+// Incremental FTP upload: walks dist/static, skips CONTENT images (the big,
+// stable-named theme sets copied from public/), and only uploads files whose
+// content differs from the local backup. Bails out unless the backup directory
+// exists, so we always have something to roll back to.
+//
+// The image skip is by ROLE, not extension: a file is skippable only if its
+// relative path exists in public/ (it was copied, not emitted). Everything the
+// BUILD emitted — content-hashed names that change every build — always
+// uploads regardless of extension. The old extension filter skipped emitted
+// .svg flags (br-<hash>.svg & co) and 404'd them in prod: content images
+// tolerate being skipped because their names are stable; hashed assets do not.
 
 import { Client } from "basic-ftp";
 import { createHash } from "node:crypto";
@@ -44,7 +52,14 @@ const concurrency = (() => {
 })();
 
 const IMAGE_EXT = new Set([".webp", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".avif"]);
-const SKIP_EXT = imagesOnly ? null : (withImages ? new Set() : IMAGE_EXT);
+const publicDir = resolve(process.env.FTP_PUBLIC_DIR ?? "public");
+
+/**
+ * Role test: a dist file whose relative path exists in public/ was COPIED
+ * from there — app content with a stable name. Only these are candidates for
+ * the image skip. Anything else was emitted by the build and must upload.
+ */
+const isPublicContent = (rel) => existsSync(join(publicDir, rel));
 
 if (!existsSync(localDir)) {
   console.error(`[ftp-changed] local dir not found: ${localDir}`);
@@ -63,8 +78,9 @@ console.log(`[ftp-changed] remote:  ${remoteDir}`);
 console.log(`[ftp-changed] local:   ${localDir}`);
 console.log(`[ftp-changed] backup:  ${backupDir}`);
 console.log(
-  `[ftp-changed] images: ${imagesOnly ? "ONLY images" : withImages ? "include" : "skip"} ` +
-    `(${[...IMAGE_EXT].join(", ")})`
+  `[ftp-changed] content images (public/-copied): ${
+    imagesOnly ? "ONLY these" : withImages ? "include" : "skip"
+  } (${[...IMAGE_EXT].join(", ")}); build-emitted files always upload`
 );
 console.log(`[ftp-changed] workers: ${concurrency}`);
 if (dryRun) console.log(`[ftp-changed] DRY RUN — no upload`);
@@ -109,16 +125,18 @@ async function buildPlan() {
 
   for await (const file of walk(localDir)) {
     const ext = extOf(file);
-    const isImage = IMAGE_EXT.has(ext);
-    if (imagesOnly && !isImage) {
+    const rel = relative(localDir, file);
+    // Skippable = image extension AND copied from public/. Build-emitted
+    // files (hashed flags, fonts, chunks) never match and always upload.
+    const contentImage = IMAGE_EXT.has(ext) && isPublicContent(rel);
+    if (imagesOnly && !contentImage) {
       skippedNonImage++;
       continue;
     }
-    if (SKIP_EXT && SKIP_EXT.has(ext)) {
+    if (!imagesOnly && !withImages && contentImage) {
       skippedImage++;
       continue;
     }
-    const rel = relative(localDir, file);
     const backup = join(backupDir, rel);
     const localSize = statSync(file).size;
 
