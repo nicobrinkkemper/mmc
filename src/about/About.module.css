@@ -21,11 +21,31 @@
   z-index: 2;
 }
 
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+}
+
 .main {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  /* Clicks in the empty area around the panel fall through to the backdrop
+     close link; the panel re-enables them for its own content. */
+  pointer-events: none;
+}
+
+.main .inner {
+  pointer-events: auto;
+  /* Positioned + above the (positioned) backdrop, or the backdrop paints over
+     the panel and steals its clicks. */
+  position: relative;
+  z-index: 1;
 }
 
 .close {

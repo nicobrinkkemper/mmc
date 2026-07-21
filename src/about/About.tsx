@@ -31,6 +31,16 @@ export const About: AboutType = ({
       className={classNames(styles["outer"], visible && styles["visible"])}
       id={"!/about"}
     >
+      {/* Full-viewport close target behind the panel: clicking outside the
+          panel clears the fragment, and `:target` closes the modal — the same
+          no-JS mechanism that opens it. `.main` lets clicks fall through
+          (pointer-events) so only the panel itself swallows them. */}
+      <Clickable
+        className={styles["backdrop"]}
+        {...closeProps}
+        aria-label="Close"
+        tabIndex={-1}
+      />
       <div className={styles["main"]}>
         <div className={styles["inner"]}>
           <div className={styles["header"]}>

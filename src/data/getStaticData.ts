@@ -223,11 +223,13 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
           break;
         }
         case "accordion": {
-          // TODO: add client-side accordion
+          // Native <details>/<summary>: collapse behavior with no JS, so it
+          // works on the statically served page before (or entirely without)
+          // hydration — same philosophy as the :target-driven About modal.
           result.accordion = {
             accordion: "div",
-            accordionItem: "div",
-            accordionItemHeading: "div",
+            accordionItem: "details",
+            accordionItemHeading: "summary",
             accordionItemButton: "div",
             accordionItemPanel: "div",
           } satisfies AccordionProps;

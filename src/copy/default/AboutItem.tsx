@@ -8,5 +8,5 @@ export const AboutItem: AboutItemType = ({
   const header: any = Array.isArray(children) ? children[0] : null;
   if (!header) return header;
   const uuid = snakeCase(header.props.children);
-  return <AccordionItem uuid={uuid}>{children}</AccordionItem>;
+  return <AccordionItem id={uuid}>{children}</AccordionItem>;
 };
