@@ -12,11 +12,12 @@ export const About7MMC: DefaultAboutContentType = ({
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemButton: AccordionItemButton = "a",
   accordionItemPanel: AccordionItemPanel = "div",
+  preExpanded,
 }) => {
   return (
     <Accordion>
       <h1>About {caps}</h1>
-      <AboutItem accordionItem={AccordionItem}>
+      <AboutItem accordionItem={AccordionItem} preExpanded={preExpanded}>
         <AboutItemHeading
           accordionItemHeading={AccordionItemHeading}
           accordionItemButton={AccordionItemButton}

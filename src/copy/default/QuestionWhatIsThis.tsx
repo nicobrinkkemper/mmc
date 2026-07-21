@@ -9,9 +9,10 @@ export const QuestionWhatIsThis: QuestionWhatIsThisType = ({
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemPanel: AccordionItemPanel = "div",
   accordionItemButton: AccordionItemButton = "a",
+  preExpanded,
 }) => {
   return (
-    <AboutItem accordionItem={AccordionItem}>
+    <AboutItem accordionItem={AccordionItem} preExpanded={preExpanded}>
       <AboutItemHeading
         accordionItemHeading={AccordionItemHeading}
         accordionItemButton={AccordionItemButton}

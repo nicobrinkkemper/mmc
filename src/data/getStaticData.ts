@@ -1,5 +1,6 @@
 
 import { ClientClickable } from "../components/Clickable.client.js";
+import { aboutSectionSlug } from "../copy/default/aboutSlug.js";
 import { absoluteURL, baseURL } from "../config/env.js";
 import { levels, siteName, themes } from "../config/themeConfig.js";
 import { isKeyOf } from "../utils/isKeyOf.js";
@@ -226,12 +227,17 @@ export const getStaticData: GetStaticDataFn = async (pathInfo, options) => {
           // Native <details>/<summary>: collapse behavior with no JS, so it
           // works on the statically served page before (or entirely without)
           // hydration — same philosophy as the :target-driven About modal.
+          // preExpanded opens the theme's "What is X?" section by default —
+          // computed with the SAME slug function AboutItem derives ids with,
+          // from the same heading text every About variant renders.
+          const { caps } = getThemeInfo(theme);
           result.accordion = {
             accordion: "div",
             accordionItem: "details",
             accordionItemHeading: "summary",
             accordionItemButton: "div",
             accordionItemPanel: "div",
+            preExpanded: [aboutSectionSlug(`What is ${caps}?`)],
           } satisfies AccordionProps;
           break;
         }
