@@ -54,8 +54,8 @@
 }
 
 .ButtonIcon {
-    height: 1.1em;
-    width: 1.1em;
+    height: var(--button-icon-size, 1.1em);
+    width: var(--button-icon-size, 1.1em);
 }
 
 .ButtonIcon svg {

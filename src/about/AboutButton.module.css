@@ -4,6 +4,18 @@
     height: min-content;
 }
 
+/* One size across themes: several theme --button-font vars scale ALL their
+   buttons to 1.2em, which made this one oversized (and, padding being em,
+   too tall). The doubled class outranks .Button's `font:` shorthand on the
+   same element in any module order, while family/weight/line-height stay
+   themed. em, not rem: 1em of the same header context every theme renders
+   at the reference size, so correct themes don't move by even a pixel.
+   The --about-button-* vars stay as per-theme escape hatches. */
+.AboutButton.AboutButton {
+    font-size: var(--about-button-font-size, 1em);
+    --button-icon-size: var(--about-button-icon-size, 1.2em);
+}
+
 .AboutButton .Button-inner:after {
     background: var(--about-button-after-background, var(--button-after-background, inherit));
 }
