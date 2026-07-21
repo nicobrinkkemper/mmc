@@ -19,9 +19,9 @@ const fromMeta = (): { base?: string; origin?: string } => {
 // default too (the old env.server read process.env, which is *undefined*, so ??
 // worked there — import.meta.env bakes "").
 const meta = fromMeta();
-const base = meta.base || process.env["VITE_BASE_URL"] || "/";
+const base = meta.base || process.env["BASE_URL"] || "/";
 const origin =
-  meta.origin || process.env["VITE_PUBLIC_ORIGIN"] || "https://mmcelebration.com";
+  meta.origin || process.env["PUBLIC_ORIGIN"] || "https://mmcelebration.com";
 
 const isAbsolute = (path: string): boolean =>
   /^[a-z][a-z0-9+.-]*:/i.test(path) || path.startsWith("//");

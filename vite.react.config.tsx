@@ -46,9 +46,10 @@ const staticPaths = Object.fromEntries(
 // process.env.GITHUB_ACTIONS = "true";
 export const config = {
   moduleBase: "src",
-  publicOrigin: process.env.PUBLIC_ORIGIN || process.env.VITE_PUBLIC_ORIGIN || "",
+  publicOrigin: process.env.PUBLIC_ORIGIN || "",
   moduleBasePath: "/",
-  moduleBaseURL: process.env.BASE_URL || process.env.VITE_BASE_URL || "/",
+  // No moduleBaseURL: vprs ≥3.2.2 takes Vite's `base` (vite.config.ts reads
+  // BASE_URL), so the deploy base is configured once.
   verbose: false,
   routes: {
     dir: "app",
