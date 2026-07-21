@@ -11,6 +11,7 @@ export const DefaultAboutContent: DefaultAboutContentType = ({
   accordionItemHeading: AccordionItemHeading = "div",
   accordionItemPanel: AccordionItemPanel = "div",
   accordionItemButton: AccordionItemButton = "a",
+  preExpanded,
 }) => {
   return (
     <Accordion className={styles["accordion"]}>
@@ -20,6 +21,7 @@ export const DefaultAboutContent: DefaultAboutContentType = ({
           caps,
           writtenOut,
         }}
+        preExpanded={preExpanded}
         accordionItem={AccordionItem}
         accordionItemHeading={AccordionItemHeading}
         accordionItemPanel={AccordionItemPanel}

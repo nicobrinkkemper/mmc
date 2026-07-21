@@ -1,3 +1,17 @@
+/**
+ * Native <details>/<summary> accordion (see getStaticData's accordion case):
+ * .accordion__heading is the <summary>, its child div carries the layout and
+ * the chevron, the sibling div is the panel. No JS — the marker is hidden and
+ * the chevron flips on the details' own [open] state.
+ */
+.accordion__heading {
+    list-style: none;
+}
+
+.accordion__heading::-webkit-details-marker {
+    display: none;
+}
+
 .accordion__heading>div {
     font-size: 1rem;
     line-height: 1.125rem;
@@ -9,23 +23,28 @@
     justify-content: space-between;
 }
 
-a.accordion__heading>div:after {
+.accordion__heading>div:after {
     content: "";
     display: flex;
+    align-self: center;
     height: 0.5rem;
     width: 0.75rem;
     background-color: var(--modal-inner-color);
     -webkit-mask: url("data:image/svg+xml,<svg viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'><path d='M0 6.00003L1.41 7.41003L6 2.83003L10.59 7.41003L12 6.00003L6 3.43323e-05L0 6.00003Z' /></svg>");
     mask: url("data:image/svg+xml,<svg viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'><path d='M0 6.00003L1.41 7.41003L6 2.83003L10.59 7.41003L12 6.00003L6 3.43323e-05L0 6.00003Z' /></svg>");
+    transform: rotate(180deg);
 }
 
-a.accordion__heading>div:focus {
+.accordion__heading:focus {
     outline: none;
+}
+
+.accordion__heading:focus>div {
     text-decoration: underline;
 }
 
-a.accordion__heading>div[aria-expanded="true"]:after {
-    transform: rotate(180deg);
+details[open]>.accordion__heading>div:after {
+    transform: none;
 }
 
 .accordion h1 {

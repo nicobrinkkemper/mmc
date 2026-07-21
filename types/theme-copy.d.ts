@@ -5,6 +5,12 @@ declare global {
     accordionItemHeading: React.ElementType;
     accordionItemButton: React.ElementType;
     accordionItemPanel: React.ElementType;
+    /**
+     * Heading slugs (see aboutSectionSlug) whose sections start open — the
+     * typed successor of react-accessible-accordion's preExpanded uuids. The
+     * data layer decides (getStaticData), the item renders `open`.
+     */
+    preExpanded?: readonly string[];
   };
 
   type AboutPanelType = ThemeComponent<
@@ -16,7 +22,7 @@ declare global {
   type AboutItemType = ThemeComponent<
     {},
     "div",
-    Pick<AccordionProps, "accordionItem">
+    Pick<AccordionProps, "accordionItem" | "preExpanded">
   >;
 
   type AboutItemHeadingType = ThemeComponent<
@@ -45,6 +51,7 @@ declare global {
       | "accordionItemHeading"
       | "accordionItemButton"
       | "accordionItemPanel"
+      | "preExpanded"
     >
   >;
 
@@ -71,6 +78,7 @@ declare global {
       | "accordionItemHeading"
       | "accordionItemPanel"
       | "accordionItemButton"
+      | "preExpanded"
     >
   >;
 
