@@ -13,7 +13,7 @@
     "build": "NODE_OPTIONS='--conditions react-server' vite build --app",
     "build:app": "vite build --app",
     "build:prod": "npm run env:prod -- vite build --app",
-    "build:gh": "PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' BASE_URL='/mmc/' NODE_ENV=production GITHUB_ACTIONS=true NODE_OPTIONS='--conditions react-server' vite build --app",
+    "build:gh": "VITE_PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' BASE_URL='/mmc/' NODE_ENV=production GITHUB_ACTIONS=true NODE_OPTIONS='--conditions react-server' vite build --app",
     "build:preview": "npm run env:preview -- vite build --app",
     "build:dev": "vite build --app",
     "debug-build": "NODE_ENV=development npm run build",
@@ -47,9 +47,9 @@
     "preview:prod": "npm run startup:prod && npm run build:prod && vite preview",
     "preview:gh": "npm run startup:gh && npm run build:gh && npm run env:gh -- vite preview",
     "oopsie-wsl": "find . -type f -name \"*:Zone.Identifier\" -exec rm {} \\;",
-    "env:prod": "PUBLIC_ORIGIN='https://mmcelebration.com' BASE_URL='/' NODE_ENV=production",
-    "env:gh": "PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' BASE_URL='/mmc/' NODE_ENV=production GITHUB_ACTIONS=true",
-    "env:preview": "PUBLIC_ORIGIN='http://localhost:4173' BASE_URL='/' NODE_ENV=production",
+    "env:prod": "VITE_PUBLIC_ORIGIN='https://mmcelebration.com' PUBLIC_ORIGIN='https://mmcelebration.com' BASE_URL='/' NODE_ENV=production",
+    "env:gh": "VITE_PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' PUBLIC_ORIGIN='https://nicobrinkkemper.github.io' BASE_URL='/mmc/' NODE_ENV=production GITHUB_ACTIONS=true",
+    "env:preview": "VITE_PUBLIC_ORIGIN='http://localhost:4173' PUBLIC_ORIGIN='http://localhost:4173' BASE_URL='/' NODE_ENV=production",
     "env:dev": "NODE_ENV=development"
   },
   "engines": {
