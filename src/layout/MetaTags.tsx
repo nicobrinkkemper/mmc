@@ -1,4 +1,3 @@
-import React from "react";
 import { absoluteURL } from "../config/env.js";
 
 const defaultTitle = "Official Mario Maker Celebration Site";

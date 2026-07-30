@@ -1,4 +1,3 @@
-import React from "react";
 import { defaultTitle } from "../config/themeConfig.js";
 import { StaticMetaTags } from "./MetaTags.js";
 

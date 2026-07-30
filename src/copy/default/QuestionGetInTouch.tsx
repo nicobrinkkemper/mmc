@@ -1,4 +1,3 @@
-import * as React from "react";
 import { AboutItem } from "./AboutItem.js";
 import { AboutItemHeading } from "./AboutItemHeading.js";
 import { AboutPanel } from "./AboutPanel.js";

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Difficulty } from "../../../../components/Difficulty.js";
 import { MakerName } from "../../../../components/MakerName.js";
 import { PublicImage } from "../../../../components/PublicImage.js";

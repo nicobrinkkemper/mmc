@@ -1,5 +1,4 @@
-import React from "react";
-
+import * as React from "react";
 export const useEventListener = <
   T extends HTMLElement | (Window & typeof globalThis)
 >(

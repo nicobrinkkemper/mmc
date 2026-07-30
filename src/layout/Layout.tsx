@@ -1,4 +1,3 @@
-import * as React from "react";
 import { About } from "../about/About.js";
 import { AboutButton } from "../about/AboutButton.js";
 import { Content } from "../copy/Content.js";

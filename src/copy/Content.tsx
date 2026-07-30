@@ -1,4 +1,3 @@
-import * as React from "react";
 import { contentsKeys } from "./contents.js";
 import { getContent } from "./getContent.js";
 

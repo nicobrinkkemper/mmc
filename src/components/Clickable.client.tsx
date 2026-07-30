@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-
+import type * as React from "react";
 export const ClientClickable: React.FC<{
   children: React.ReactNode;
   to?: string;

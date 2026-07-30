@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Mm7ArtWorkCard } from "./cards/Mm7ArtworkCard.js";
 import { MM7ContentCreatorCard } from "./cards/Mm7ContentCreatorCard.js";
 

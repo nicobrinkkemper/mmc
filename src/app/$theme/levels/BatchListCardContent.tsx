@@ -1,4 +1,3 @@
-import * as React from "react";
 import { PublicImage } from "../../../components/PublicImage.js";
 import styles from "./BatchList.module.css";
 

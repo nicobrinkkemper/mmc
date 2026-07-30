@@ -1,4 +1,3 @@
-import * as React from "react";
 import styles from "./accordion.module.css";
 import { QuestionGetInTouch } from "./QuestionGetInTouch.js";
 import { QuestionWhatIsThis } from "./QuestionWhatIsThis.js";

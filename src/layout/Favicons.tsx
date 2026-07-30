@@ -1,6 +1,4 @@
 import type { ComponentProps } from "react";
-import * as React from "react";
-
 export type FaviconsType = ThemeComponent<{
   favicons: true;
 }>;

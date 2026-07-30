@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./Difficulty.module.css";
 import { Stars } from "./Stars.js";
 

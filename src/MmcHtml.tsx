@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import type { HtmlProps } from "vite-plugin-react-server/types";
 import { Css } from "vite-plugin-react-server/components";
 import { Favicons } from "./layout/Favicons.js";

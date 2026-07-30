@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Card } from "../../../../../components/Card.js";
 import { CompileJSX } from "../../../../../components/CompileJSX.js";
 import { MakerName } from "../../../../../components/MakerName.js";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import s from "../../css/4ymm.module.css";
 /**
  * Static theme layout for 4ymm. Imports ONLY 4ymm's CSS module and wraps the

@@ -1,4 +1,3 @@
-import * as React from "react";
 import styles from "./accordion.module.css";
 
 export const AboutItemHeading: AboutItemHeadingType = ({

@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import * as React from "react";
 import { expect, test } from "vitest";
 import { Page } from "../src/app/$theme/credits/page.js";
 import { props } from "../src/app/$theme/credits/props.js";

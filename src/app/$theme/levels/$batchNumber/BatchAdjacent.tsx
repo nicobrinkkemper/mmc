@@ -1,5 +1,4 @@
 import classNames from "clsx";
-import * as React from "react";
 import { Button } from "../../../../components/Button.js";
 import styles from "./LevelList.module.css";
 

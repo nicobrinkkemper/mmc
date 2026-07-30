@@ -1,5 +1,4 @@
-import type React from "react";
-
+import type * as React from "react";
 type MapType = <T extends unknown[]>({
   children,
   items,

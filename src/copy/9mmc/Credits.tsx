@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Card } from "../../components/Card.js";
 import { CreditsWebsite } from "../default/CreditsWebsite.js";
 import { Mm9CreditsTrailerCard } from "./cards/Mm9CreditsTrailerCard.js";

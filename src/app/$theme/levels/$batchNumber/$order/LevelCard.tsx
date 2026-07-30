@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Card } from "../../../../../components/Card.js";
 import { Difficulty } from "../../../../../components/Difficulty.js";
 import { PublicImage } from "../../../../../components/PublicImage.js";

@@ -1,5 +1,4 @@
 import classNames from "clsx";
-import * as React from "react";
 import { Button } from "../../../../../components/Button.js";
 import { levels } from "../../../../../config/themeConfig.js";
 import styles from "./Level.module.css";

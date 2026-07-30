@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Card } from "../../../components/Card.js";
 
 export const Mm10CreditsTrailerCard: CreditsTrailerCardType = (props) => (

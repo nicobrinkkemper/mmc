@@ -1,4 +1,3 @@
-import * as React from "react";
 import styles from "./App.module.css";
 import { Favicons } from "./layout/Favicons.js";
 import { MetaTags } from "./layout/MetaTags.js";

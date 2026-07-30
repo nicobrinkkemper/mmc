@@ -1,4 +1,3 @@
-import * as React from "react";
 import { App } from "../../../../../App.js";
 import { Button } from "../../../../../components/Button.js";
 import { Layout } from "../../../../../layout/Layout.js";

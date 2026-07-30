@@ -1,5 +1,5 @@
 import classNames from "clsx";
-import * as React from "react";
+import type * as React from "react";
 import styles from "./About.module.css";
 import { CloseSvg } from "./CloseSvg.js";
 

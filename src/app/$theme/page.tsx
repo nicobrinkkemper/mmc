@@ -1,4 +1,3 @@
-import React from "react";
 import { App } from "../../App.js";
 import { Content } from "../../copy/Content.js";
 import { Layout } from "../../layout/Layout.js";

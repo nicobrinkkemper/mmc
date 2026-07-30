@@ -8,12 +8,10 @@
     "allowJs": true,
     // prevents issues when renaming files only in casing
     "forceConsistentCasingInFileNames": true,
-    // our jsx type's will be configured for react.
-    "jsx": "react",
-    // RSC portability - JSX will be transpiled to React.createElement
-    "jsxFactory": "React.createElement",
-    // The fragment refers to the empty component, like <></>
-    "jsxFragmentFactory": "React.Fragment",
+    // Automatic JSX runtime (react/jsx-runtime) — matches what
+    // @vitejs/plugin-react compiles in the build, so vitest and editors
+    // see the same transform and no runtime React import is needed.
+    "jsx": "react-jsx",
     // We allow the latest ES features, and since we are making a website we add the common DOM types.
     "lib": [
       "ESNext",

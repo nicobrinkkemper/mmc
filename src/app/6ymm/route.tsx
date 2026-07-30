@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import s from "../../css/5-6ymm.module.css";
 /**
  * Static theme layout for 6ymm. Imports ONLY its CSS module and wraps the whole

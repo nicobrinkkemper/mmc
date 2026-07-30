@@ -1,4 +1,3 @@
-import * as React from "react";
 import { MarioTurnsXth } from "./MarioTurnsXth.js";
 import { StayUpToDate } from "./StayUpToDate.js";
 

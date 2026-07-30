@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import * as React from "react";
 import { safeSnakecase } from "../utils/safeSnakecase.js";
 import styles from "./MakerName.module.css";
 import "./flag-icons.css";

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Card } from "../../../../components/Card.js";
 import { Map } from "../../../../components/Map.js";
 import { levels } from "../../../../config/themeConfig.js";

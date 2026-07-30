@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Page as HomePage } from "./$theme/page.js";
 import { Layout as MainThemeLayout } from "./10mmc/route.js";
 /**

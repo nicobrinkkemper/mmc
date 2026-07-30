@@ -1,4 +1,3 @@
-import * as React from "react";
 import { baseURL } from "../config/env.js";
 import styles from "./Footer.module.css";
 
