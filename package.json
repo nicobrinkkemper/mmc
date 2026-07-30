@@ -21,7 +21,6 @@
     "build-mmc": "npm run startup && npm run build",
     "tsc": "rm -rf dist && npx tsc --project tsconfig.node.json && find src -name \"*.css\" -exec cp --parents {} dist/ \\;",
     "tsc-watch": "npx tsc --build --watch --incremental --force",
-    "ssg": "run-s build server:crawl",
     "clean-install": "npm install vite-plugin-react-server react@experimental react-dom@experimental react-server-loader@experimental --save-dev",
     "patch": "patch",
     "link-dev": "npm link vite-plugin-react-server",
