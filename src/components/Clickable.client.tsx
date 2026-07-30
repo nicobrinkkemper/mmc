@@ -31,8 +31,17 @@ export const ClientClickable: React.FC<{
         return;
       }
       e.preventDefault();
-      // Scroll to top on forward navigation (a link click). Doing it here — not
-      // on every popstate — means browser back/forward keeps its scroll offset.
+      // Scroll to top on forward navigation (a link click). Doing it here, not
+      // on every popstate, means browser back/forward keeps its scroll offset.
+      // The window never scrolls: `.App` is the overflow-y container, so reset
+      // every scrolled ancestor of the link (window kept as a fallback).
+      for (
+        let el: HTMLElement | null = e.currentTarget;
+        el;
+        el = el.parentElement
+      ) {
+        if (el.scrollTop > 0) el.scrollTop = 0;
+      }
       if ("scrollTo" in window) window.scrollTo(0, 0);
       // Use pathname, not full href — the router expects a path like "/10mmc/".
       const newTo =
