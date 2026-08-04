@@ -104,6 +104,9 @@ function extOf(name) {
   return i === -1 ? "" : name.slice(i).toLowerCase();
 }
 
+// Upload-order document pass: files whose markup references hashed assets.
+const DOCUMENT_EXT = new Set([".html", ".rsc"]);
+
 async function sha1(file) {
   const hash = createHash("sha1");
   await pipeline(createReadStream(file), hash);
@@ -150,7 +153,18 @@ async function buildPlan() {
     totalBytes += localSize;
   }
 
-  upload.sort((a, b) => a.rel.localeCompare(b.rel));
+  // Referenced assets land before the documents that reference them: every
+  // rebuild rotates content hashes, so a purely alphabetical order overwrites
+  // a page's HTML with markup pointing at hashed CSS/JS that is still minutes
+  // away over FTP — visitors mid-deploy got unstyled, unhydrated pages. Two
+  // passes (assets, then .html/.rsc documents), each alphabetical, keep the
+  // order stable and the backup-diff resume property intact.
+  const isDocument = (rel) => DOCUMENT_EXT.has(extOf(rel));
+  upload.sort(
+    (a, b) =>
+      (isDocument(a.rel) ? 1 : 0) - (isDocument(b.rel) ? 1 : 0) ||
+      a.rel.localeCompare(b.rel)
+  );
   return { upload, skippedImage, skippedNonImage, skippedSame, totalBytes };
 }
 
