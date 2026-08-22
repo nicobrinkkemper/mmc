@@ -1,4 +1,5 @@
 import { StreamPluginOptions } from "vite-plugin-react-server";
+import { getCondition } from "vite-plugin-react-server/config";
 import { metricWatcher } from "vite-plugin-react-server/metrics";
 import { levels, themeKeys, themes } from "./src/config/themeConfig.js";
 
@@ -45,6 +46,9 @@ const staticPaths = Object.fromEntries(
 // for the $param routes need enumerating here.
 // process.env.GITHUB_ACTIONS = "true";
 export const config = {
+  // 4.0: the runner is explicit and tracks the process (dev:ssr runs plain,
+  // dev:rsc and the builds run --conditions react-server).
+  runner: getCondition() === "react-server" ? ("main" as const) : ("isolated" as const),
   moduleBase: "src",
   publicOrigin: process.env.PUBLIC_ORIGIN || "",
   moduleBasePath: "/",
